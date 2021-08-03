@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Jam54_Launcher"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Jam54 Launcher" Height="750" Width="1230">
     <Grid>
 
     </Grid>
