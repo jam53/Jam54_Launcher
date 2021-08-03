@@ -14,11 +14,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Deniz\\OneDrive\\Documenten\\Scripts\\C#\\Jam54_Launcher\\Jam54_Launcher\\Jam54_Launcher.csproj",
+      "projectUniqueName": "D:\\Deniz\\OneDrive\\Documenten\\Scripts\\C#\\Jam54_Launcher\\Jam54_Launcher.csproj",
       "projectName": "Jam54_Launcher",
-      "projectPath": "D:\\Deniz\\OneDrive\\Documenten\\Scripts\\C#\\Jam54_Launcher\\Jam54_Launcher\\Jam54_Launcher.csproj",
+      "projectPath": "D:\\Deniz\\OneDrive\\Documenten\\Scripts\\C#\\Jam54_Launcher\\Jam54_Launcher.csproj",
       "packagesPath": "C:\\Users\\deniz\\.nuget\\packages\\",
-      "outputPath": "D:\\Deniz\\OneDrive\\Documenten\\Scripts\\C#\\Jam54_Launcher\\Jam54_Launcher\\obj\\",
+      "outputPath": "D:\\Deniz\\OneDrive\\Documenten\\Scripts\\C#\\Jam54_Launcher\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
