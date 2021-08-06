@@ -6,4 +6,16 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="Data\Images\icoon 4.png" />
+    <None Remove="Rectangle 6.svg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Data\Images\icoon 4.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Rectangle 6.svg" />
+  </ItemGroup>
+
 </Project>

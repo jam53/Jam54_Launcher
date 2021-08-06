@@ -5,14 +5,18 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Jam54_Launcher"
         mc:Ignorable="d"
-        Title="Jam54 Launcher" Height="750" Width="1230">
-    <Grid>
+        Title="Jam54 Launcher" Height="785" Width="1240">
+    <Grid x:Name="BackgroundBaseLayer">
         <Grid.Background>
             <LinearGradientBrush EndPoint="0.6,1.5" StartPoint="0,0" Opacity="0.995" SpreadMethod="Pad" MappingMode="RelativeToBoundingBox">
                 <GradientStop Color="Black" Offset="1"/>
                 <GradientStop Color="#FF0F1330" Offset="0.36"/>
             </LinearGradientBrush>
         </Grid.Background>
+
+        <Rectangle x:Name="TopBlueRectangle" Height="60" VerticalAlignment="Top" Fill="#FFF01717"/>
+        <Rectangle x:Name="LeftBlueRectangle" HorizontalAlignment="Left" Width="58" Fill="Red"/>
+        <Image x:Name="Jam54Icon" HorizontalAlignment="Left" Height="50" VerticalAlignment="Top" Width="50" Source="/Data/Images/icoon 4.png" Margin="4,5,0,0"/>
 
     </Grid>
 </Window>
