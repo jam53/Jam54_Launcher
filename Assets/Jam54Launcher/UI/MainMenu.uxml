@@ -1,0 +1,7 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement name="TopBar" style="background-color: rgb(10, 10, 29); flex-grow: 0; height: 57px; opacity: 1; display: flex; align-items: flex-start; justify-content: flex-start;">
+        <ui:VisualElement name="Icon" style="background-color: rgba(255, 0, 0, 0); flex-grow: 0; background-image: url(&apos;project://database/Assets/Jam54Launcher/Textures/icoon4.png?fileID=2800000&amp;guid=d70f18cad4934374c896bd21fe7ee271&amp;type=3#icoon4&apos;); flex-basis: auto; align-items: auto; position: relative; left: 11px; top: 9px; scale: 1 1; width: auto; height: auto; justify-content: flex-start; transform-origin: center; border-left-width: 0; border-right-width: 0; border-top-width: 0; border-bottom-width: 0; min-width: 45px; min-height: 45px;" />
+        <ui:Label text="Label" display-tooltip-when-elided="true" />
+    </ui:VisualElement>
+    <ui:VisualElement name="SideBar" style="background-color: rgb(12, 15, 39); flex-grow: 1; height: auto; width: 57px; opacity: 1; display: flex;" />
+</ui:UXML>

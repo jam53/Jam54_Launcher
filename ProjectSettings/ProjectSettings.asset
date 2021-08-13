@@ -673,7 +673,7 @@ PlayerSettings:
   scriptingBackend:
     Standalone: 1
   il2cppCompilerConfiguration:
-    Standalone: 2
+    Standalone: 1
   managedStrippingLevel:
     Standalone: 3
   incrementalIl2cppBuild: {}
