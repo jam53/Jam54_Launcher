@@ -1,3 +1,5 @@
+![](Assets/Jam54Launcher/Textures/icoon4.png)
+
 # Jam54_Launcher
 The Jam54 Launcher is used to install and update all the software developed by jam54. The launcher itself is written in C# and developed with Unity.
 > Unity was chosen over a traditional developing environment like WinForms or WPF, since it offered better/more features that are used within the launcher.
