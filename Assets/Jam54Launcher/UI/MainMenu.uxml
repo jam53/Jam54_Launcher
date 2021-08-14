@@ -5,5 +5,8 @@
             <ui:VisualElement name="UpdatesIcon_Image" style="background-image: url(&apos;project://database/Assets/Jam54Launcher/Textures/1200px-Globe_icon.svg.png?fileID=2800000&amp;guid=18e130577c001444fb96181b1e2b2bd7&amp;type=3#1200px-Globe_icon.svg&apos;); width: 18px; height: 18px; position: absolute; top: 3px; left: -23px; justify-content: center; -unity-text-outline-color: rgb(0, 0, 0); -unity-background-image-tint-color: rgb(37, 200, 94); background-color: rgba(207, 207, 207, 0); -unity-background-scale-mode: stretch-to-fill;" />
         </ui:Label>
     </ui:VisualElement>
-    <ui:VisualElement name="SideBar" style="background-color: rgb(12, 15, 39); flex-grow: 1; height: auto; width: 57px; opacity: 1; display: flex;" />
+    <ui:VisualElement name="SideBarAndBackgroundHolder" style="margin-left: 0; left: auto; flex-grow: 1; background-color: rgba(255, 0, 0, 0); flex-direction: row; justify-content: center; align-items: stretch; display: flex;">
+        <ui:VisualElement name="SideBar" style="background-color: rgb(12, 15, 39); flex-grow: 0; height: auto; width: 62px; opacity: 1; display: flex;" />
+        <ui:VisualElement name="Background" style="-unity-background-image-tint-color: rgb(255, 255, 255); background-color: rgba(0, 0, 0, 0); flex-grow: 1; background-image: url(&apos;project://database/Assets/Jam54Launcher/Textures/Background.png?fileID=2800000&amp;guid=fb56a08e0edb3b74fb0db8a064f66abe&amp;type=3#Background&apos;); -unity-background-scale-mode: stretch-to-fill;" />
+    </ui:VisualElement>
 </ui:UXML>
