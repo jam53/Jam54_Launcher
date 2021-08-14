@@ -1,0 +1,8 @@
+.regular_button {
+    left: 314px;
+    -unity-font-definition: url('project://database/Assets/Jam54Launcher/Other/Fonts/Roboto-Regular%20SDF.asset?fileID=11400000&guid=3425d65c12ac42647a4dfc5a05176cd2&type=2#Roboto-Regular SDF');
+    font-size: 24px;
+    background-color: rgba(255, 4, 4, 0);
+    color: rgb(255, 255, 255);
+    background-image: none;
+}
