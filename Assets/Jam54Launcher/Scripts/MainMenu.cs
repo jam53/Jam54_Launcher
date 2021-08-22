@@ -2,12 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
+using UnityEngine.UIElements.Experimental;
 
 public class MainMenu : MonoBehaviour
 {
     //Objects
     public Button Games_Button;
-    public ScrollView GamesPrograms_ScrollView;
+    public VisualElement AppHolder;
 
     private void OnEnable()
     {
@@ -16,33 +17,46 @@ public class MainMenu : MonoBehaviour
 
         //Find the object of type 'Button' with the name 'Games_Button' in the root visual element
         Games_Button = rootVisualElement.Q<Button>("Games_Button");
-
-        GamesPrograms_ScrollView = rootVisualElement.Q<ScrollView>("GamesPrograms_ScrollView");
+        AppHolder = rootVisualElement.Q<VisualElement>("AppHolder");
 
         #region Add corresponding methods to the elements
         Games_Button.clicked += GamesButtonPressed;
+
+        AppHolder.RegisterCallback<MouseDownEvent>(test);//MouseOverEvent(hover), MouseOutEvent(mous moves away from element)
+
+
         #endregion
     }
 
     private void Start()
     {
-        GamesPrograms_ScrollView.touchScrollBehavior = ScrollView.TouchScrollBehavior.Elastic;
-        Debug.Log(GamesPrograms_ScrollView.childCount);
+
     }
 
-    private void GamesButtonPressed()
+    private void test(MouseDownEvent evt)
+    {
+        print("it works");
+    }
+
+
+private void GamesButtonPressed()
     {
         Debug.Log("games button pressed");
-        GamesPrograms_ScrollView.Clear();
-        for (int i = 0; i < 20; i++)
+        Games_Button.experimental.animation.Start(25f, 200f, 3000, (b, val) =>
         {
-            GamesPrograms_ScrollView.Add(Games_Button);
+            b.style.height = val;
+        }).Ease(Easing.OutBounce);
 
-        }
-        Games_Button.style.display = DisplayStyle.Flex;
+        
+
     }
 }
 
 /* Cheat sheet
  * Make visible/invisible button.style.display = DisplayStyle.~Flex/None~;
+ * https://docs.unity3d.com/Packages/com.unity.ui@1.0/api/UnityEngine.UIElements.Experimental.ITransitionAnimations.html
+ * //Games_Button.experimental.animation.Start(25f, 200f, 3000, (b, val) =>
+        //{
+        //    b.style.height = val;
+        //}).Ease(Easing.OutBounce);
  */
