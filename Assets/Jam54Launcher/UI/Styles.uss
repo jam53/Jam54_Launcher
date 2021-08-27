@@ -1,0 +1,18 @@
+.my-dropdown > .unity-base-field__input {
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    border-left-color: rgba(255, 0, 0, 0);
+    border-right-color: rgba(255, 0, 0, 0);
+    border-top-color: rgba(255, 0, 0, 0);
+    border-bottom-color: rgba(255, 0, 0, 0);
+    background-color: rgba(255, 255, 255, 0);
+}
+
+.my-dropdown .unity-base-popup-field__arrow {
+    background-image: url('project://database/Assets/Jam54Launcher/Textures/DropDown.png?fileID=2800000&guid=facdf41ba3aea5e4b965f41aa306e1ca&type=3#DropDown');
+    -unity-background-image-tint-color: rgba(255, 255, 255, 255);
+    width: 26px;
+    height: 18px;
+}
