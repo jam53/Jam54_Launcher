@@ -28,14 +28,19 @@ public class MainMenu : MonoBehaviour
         #endregion
     }
 
-    private void Start()
+    private void Awake()
     {
-
+        QualitySettings.vSyncCount = 0;
+        Application.targetFrameRate = 30;
     }
 
     private void test(MouseDownEvent evt)
     {
         print("it works");
+        //builden en // kijken als de lettertypes enz wel groot genoeg zijn.
+            // tekst op settings menu is sws te klein, en mss bij main menu en product page ook wa groter
+            //Desnoods target resolution veranderen, zodat het groter/kleiner wordt
+            //ook naar rainway kijken, hoe groot daar de letterypes izjn
     }
 
 
