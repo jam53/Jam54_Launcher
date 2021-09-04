@@ -12,7 +12,9 @@ public class NavigationAndAnimations : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+     //als we kunnen animeren met uibuilder, dan mag da uit de titel
+     //ofwel animaten met code of met die styles
+     windows //en android icoon toevoegen op product page en dan pushen naar github
     }
 
     // Update is called once per frame
