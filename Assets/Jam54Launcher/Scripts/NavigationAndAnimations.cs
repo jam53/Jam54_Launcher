@@ -9,17 +9,40 @@ using UnityEngine.UIElements.Experimental;
 //This script may also call certain methods from order scripts, to execute an action
 public class NavigationAndAnimations : MonoBehaviour
 {
+    //UI Objects
+    public Button Games_Selected_Button;
+
+    private void OnEnable()
+    {
+        //Get the root visual element that contains all the objects we need
+        VisualElement rootVisualElement = GetComponent<UIDocument>().rootVisualElement;
+
+
+        #region Assign objects
+        //Find the object of type 'Button' with the name 'Games_Button' in the root visual element
+        Games_Selected_Button = rootVisualElement.Q<Button>("Games_Selected_Button");
+        #endregion
+
+
+        #region Add corresponding methods to the elements
+        Games_Selected_Button.clicked += Games_Selected_ButtonPressed;
+        #endregion
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-     //als we kunnen animeren met uibuilder, dan mag da uit de titel
-     //ofwel animaten met code of met die styles
-     windows //en android icoon toevoegen op product page en dan pushen naar github
+
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    private void Games_Selected_ButtonPressed()
+    {
+
     }
 }
