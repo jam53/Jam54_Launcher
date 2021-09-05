@@ -16,3 +16,96 @@
     width: 26px;
     height: 18px;
 }
+
+.Programs_Unselected_Button {
+    left: auto;
+    background-image: url('project://database/Assets/Jam54Launcher/Textures/EdgeButton.png?fileID=2800000&guid=63d857324c103854e89fbb45e9ebb7ac&type=3#EdgeButton');
+    border-left-color: rgba(149, 149, 149, 0);
+    border-right-color: rgba(149, 149, 149, 0);
+    border-top-color: rgba(149, 149, 149, 0);
+    border-bottom-color: rgba(149, 149, 149, 0);
+    background-color: rgba(188, 188, 188, 0);
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+    -unity-background-scale-mode: scale-to-fit;
+    width: 144px;
+    height: 64px;
+    color: rgb(255, 255, 255);
+    -unity-font-definition: url('project://database/Assets/Jam54Launcher/Other/Fonts/BalooDa2-Regular%20SDF.asset?fileID=11400000&guid=22c9334beaad2444688d0e6089d93388&type=2#BalooDa2-Regular SDF');
+    font-size: 24px;
+    top: 2px;
+    -unity-font-style: normal;
+}
+
+.Programs_Unselected_Button:hover {
+    left: auto;
+    background-image: url('project://database/Assets/Jam54Launcher/Textures/EdgeButton.png?fileID=2800000&guid=63d857324c103854e89fbb45e9ebb7ac&type=3#EdgeButton');
+    border-left-color: rgba(149, 149, 149, 0);
+    border-right-color: rgba(149, 149, 149, 0);
+    border-top-color: rgba(149, 149, 149, 0);
+    border-bottom-color: rgba(149, 149, 149, 0);
+    background-color: rgba(188, 188, 188, 0);
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+    -unity-background-scale-mode: scale-to-fit;
+    width: 144px;
+    height: 70px;
+    color: rgb(255, 255, 255);
+    -unity-font-definition: url('project://database/Assets/Jam54Launcher/Other/Fonts/BalooDa2-Regular%20SDF.asset?fileID=11400000&guid=22c9334beaad2444688d0e6089d93388&type=2#BalooDa2-Regular SDF');
+    font-size: 24px;
+    top: 2px;
+    -unity-font-style: normal;
+}
+
+.App_Image {
+    width: 188px;
+    height: 188px;
+    background-image: url('project://database/Assets/Jam54Launcher/Textures/AstrorRunLogo.png?fileID=2800000&guid=39933fd16f00e774d920b730f9ba3ca0&type=3#AstrorRunLogo');
+    border-top-left-radius: 30px;
+    border-bottom-left-radius: 30px;
+    border-top-right-radius: 30px;
+    border-bottom-right-radius: 30px;
+    flex-direction: row-reverse;
+    align-items: flex-end;
+}
+
+.App_Image:hover {
+    width: 188px;
+    height: 188px;
+    background-image: url('project://database/Assets/Jam54Launcher/Textures/AstrorRunLogo.png?fileID=2800000&guid=39933fd16f00e774d920b730f9ba3ca0&type=3#AstrorRunLogo');
+    border-top-left-radius: 30px;
+    border-bottom-left-radius: 30px;
+    border-top-right-radius: 30px;
+    border-bottom-right-radius: 30px;
+    flex-direction: row-reverse;
+    align-items: flex-end;
+    -unity-background-image-tint-color: rgba(166, 166, 166, 255);
+}
+
+.AppOptions {
+    width: 33px;
+    height: 33px;
+    background-image: url('project://database/Assets/Jam54Launcher/Textures/AppOptions.png?fileID=2800000&guid=fc93ca14f0e4e6244adbe0c5c4254435&type=3#AppOptions');
+    -unity-background-image-tint-color: rgb(154, 154, 154);
+    position: absolute;
+    top: 6px;
+    left: 157px;
+}
+
+.AppOptions:hover {
+    width: 33px;
+    height: 33px;
+    background-image: url('project://database/Assets/Jam54Launcher/Textures/AppOptions.png?fileID=2800000&guid=fc93ca14f0e4e6244adbe0c5c4254435&type=3#AppOptions');
+    position: absolute;
+    top: 6px;
+    left: 157px;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
