@@ -176,7 +176,7 @@
     border-bottom-right-radius: 30px;
     flex-direction: row-reverse;
     align-items: flex-end;
-    -unity-background-image-tint-color: rgba(166, 166, 166, 255);
+    -unity-background-image-tint-color: rgb(166, 166, 166);
 }
 
 .Programs_AdjustedBackground_Image {
