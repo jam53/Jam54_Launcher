@@ -83,7 +83,7 @@
     border-bottom-right-radius: 30px;
     flex-direction: row-reverse;
     align-items: flex-end;
-    -unity-background-image-tint-color: rgba(166, 166, 166, 255);
+    -unity-background-image-tint-color: rgb(166, 166, 166);
 }
 
 .AppOptions {
@@ -108,4 +108,151 @@
     border-bottom-left-radius: 10px;
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
+}
+
+.Games_Unselected_Button {
+    left: auto;
+    background-image: url('project://database/Assets/Jam54Launcher/Textures/EdgeButton.png?fileID=2800000&guid=63d857324c103854e89fbb45e9ebb7ac&type=3#EdgeButton');
+    border-left-color: rgba(149, 149, 149, 0);
+    border-right-color: rgba(149, 149, 149, 0);
+    border-top-color: rgba(149, 149, 149, 0);
+    border-bottom-color: rgba(149, 149, 149, 0);
+    background-color: rgba(188, 188, 188, 0);
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+    -unity-background-scale-mode: scale-to-fit;
+    width: 144px;
+    height: 64px;
+    color: rgb(255, 255, 255);
+    -unity-font-definition: url('project://database/Assets/Jam54Launcher/Other/Fonts/BalooDa2-Regular%20SDF.asset?fileID=11400000&guid=22c9334beaad2444688d0e6089d93388&type=2#BalooDa2-Regular SDF');
+    font-size: 24px;
+    top: 2px;
+    -unity-font-style: normal;
+}
+
+.Games_Unselected_Button:hover {
+    left: auto;
+    background-image: url('project://database/Assets/Jam54Launcher/Textures/EdgeButton.png?fileID=2800000&guid=63d857324c103854e89fbb45e9ebb7ac&type=3#EdgeButton');
+    border-left-color: rgba(149, 149, 149, 0);
+    border-right-color: rgba(149, 149, 149, 0);
+    border-top-color: rgba(149, 149, 149, 0);
+    border-bottom-color: rgba(149, 149, 149, 0);
+    background-color: rgba(188, 188, 188, 0);
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+    -unity-background-scale-mode: scale-to-fit;
+    width: 144px;
+    height: 70px;
+    color: rgb(255, 255, 255);
+    -unity-font-definition: url('project://database/Assets/Jam54Launcher/Other/Fonts/BalooDa2-Regular%20SDF.asset?fileID=11400000&guid=22c9334beaad2444688d0e6089d93388&type=2#BalooDa2-Regular SDF');
+    font-size: 24px;
+    top: 2px;
+    -unity-font-style: normal;
+}
+
+.Programs_Image {
+    width: 188px;
+    height: 188px;
+    background-image: url('project://database/Assets/Jam54Launcher/Textures/AutoEditor.jpg?fileID=2800000&guid=550de9583e2ecb54898e568a0101bea1&type=3#AutoEditor');
+    border-top-left-radius: 30px;
+    border-bottom-left-radius: 30px;
+    border-top-right-radius: 30px;
+    border-bottom-right-radius: 30px;
+    flex-direction: row-reverse;
+    align-items: flex-end;
+}
+
+.Programs_Image:hover {
+    width: 188px;
+    height: 188px;
+    background-image: url('project://database/Assets/Jam54Launcher/Textures/AutoEditor.jpg?fileID=2800000&guid=550de9583e2ecb54898e568a0101bea1&type=3#AutoEditor');
+    border-top-left-radius: 30px;
+    border-bottom-left-radius: 30px;
+    border-top-right-radius: 30px;
+    border-bottom-right-radius: 30px;
+    flex-direction: row-reverse;
+    align-items: flex-end;
+    -unity-background-image-tint-color: rgba(166, 166, 166, 255);
+}
+
+.Programs_AdjustedBackground_Image {
+    width: 188px;
+    height: 188px;
+    background-image: url('project://database/Assets/Jam54Launcher/Textures/ImageSearcher.png?fileID=2800000&guid=87106e2db89180f4f875b722bd70fcd8&type=3#ImageSearcher');
+    border-top-left-radius: 30px;
+    border-bottom-left-radius: 30px;
+    border-top-right-radius: 30px;
+    border-bottom-right-radius: 30px;
+    flex-direction: row-reverse;
+    align-items: flex-end;
+    background-color: rgb(240, 240, 240);
+}
+
+.Programs_AdjustedBackground_Image:hover {
+    width: 188px;
+    height: 188px;
+    background-image: url('project://database/Assets/Jam54Launcher/Textures/ImageSearcher.png?fileID=2800000&guid=87106e2db89180f4f875b722bd70fcd8&type=3#ImageSearcher');
+    border-top-left-radius: 30px;
+    border-bottom-left-radius: 30px;
+    border-top-right-radius: 30px;
+    border-bottom-right-radius: 30px;
+    flex-direction: row-reverse;
+    align-items: flex-end;
+    background-color: rgb(166, 166, 166);
+}
+
+.Programs_AdjustedTint_Image {
+    width: 188px;
+    height: 188px;
+    background-image: url('project://database/Assets/Jam54Launcher/Textures/IToW.png?fileID=2800000&guid=4f0774cad74d93447b84beb24556f892&type=3#IToW');
+    border-top-left-radius: 30px;
+    border-bottom-left-radius: 30px;
+    border-top-right-radius: 30px;
+    border-bottom-right-radius: 30px;
+    flex-direction: row-reverse;
+    align-items: flex-end;
+    -unity-background-image-tint-color: rgb(229, 229, 229);
+}
+
+.Programs_AdjustedTint_Image:hover {
+    width: 188px;
+    height: 188px;
+    background-image: url('project://database/Assets/Jam54Launcher/Textures/IToW.png?fileID=2800000&guid=4f0774cad74d93447b84beb24556f892&type=3#IToW');
+    border-top-left-radius: 30px;
+    border-bottom-left-radius: 30px;
+    border-top-right-radius: 30px;
+    border-bottom-right-radius: 30px;
+    flex-direction: row-reverse;
+    align-items: flex-end;
+    -unity-background-image-tint-color: rgb(166, 166, 166);
+}
+
+.Programs_AdjustedTint2_Image {
+    width: 188px;
+    height: 188px;
+    background-image: url('project://database/Assets/Jam54Launcher/Textures/WToI.png?fileID=2800000&guid=db686e3b61e13ea4984c4061be9790b7&type=3#WToI');
+    border-top-left-radius: 30px;
+    border-bottom-left-radius: 30px;
+    border-top-right-radius: 30px;
+    border-bottom-right-radius: 30px;
+    flex-direction: row-reverse;
+    align-items: flex-end;
+    -unity-background-image-tint-color: rgb(229, 229, 229);
+}
+
+.Programs_AdjustedTint2_Image:hover {
+    width: 188px;
+    height: 188px;
+    background-image: url('project://database/Assets/Jam54Launcher/Textures/WToI.png?fileID=2800000&guid=db686e3b61e13ea4984c4061be9790b7&type=3#WToI');
+    border-top-left-radius: 30px;
+    border-bottom-left-radius: 30px;
+    border-top-right-radius: 30px;
+    border-bottom-right-radius: 30px;
+    flex-direction: row-reverse;
+    align-items: flex-end;
+    -unity-background-image-tint-color: rgb(166, 166, 166);
 }
