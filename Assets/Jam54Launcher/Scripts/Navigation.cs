@@ -10,7 +10,7 @@ using UnityEngine.UIElements.Experimental;
 public class Navigation : MonoBehaviour
 {
     //UI Objects
-    public Button Programs_Unselected_Button, Games_Unselected_Button;
+    public Button Programs_Unselected_Button, Games_Unselected_Button, InstallLocation_Button;
     public VisualElement Games, Programs, SettingsBackgroundCircle, Settings, HomeBackgroundCircle;
 
     //Script variables
@@ -29,6 +29,7 @@ public class Navigation : MonoBehaviour
         //Find the object of type 'Button' with the name 'Programs_Unselected_Button' in the root visual element
         Programs_Unselected_Button = rootVisualElement.Q<Button>("Programs_Unselected_Button");
         Games_Unselected_Button = rootVisualElement.Q<Button>("Games_Unselected_Button");
+        InstallLocation_Button = rootVisualElement.Q<Button>("InstallLocation_Button");
         Games = rootVisualElement.Q<VisualElement>("Games");
         Programs = rootVisualElement.Q<VisualElement>("Programs");
         SettingsBackgroundCircle = rootVisualElement.Q<VisualElement>("SettingsBackgroundCircle");
@@ -41,6 +42,7 @@ public class Navigation : MonoBehaviour
         #region Add corresponding methods to the elements
         Programs_Unselected_Button.clicked += Programs_Unselected_Button_Clicked;
         Games_Unselected_Button.clicked += Games_Unselected_Button_Clicked;
+        InstallLocation_Button.clicked += InstallLocation_Button_Clicked;
         SettingsBackgroundCircle.RegisterCallback<MouseDownEvent>(SettingsBackgroundCircle_Clicked);
         HomeBackgroundCircle.RegisterCallback<MouseDownEvent>(HomeBackgroundCircle_Clicked);
         SettingsBackgroundCircle.RegisterCallback<MouseOverEvent>(SettingsBackgroundCircle_Over);

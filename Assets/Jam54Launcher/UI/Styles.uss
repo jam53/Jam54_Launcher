@@ -680,3 +680,111 @@
     padding-left: 5px;
     padding-right: 5px;
 }
+
+.InstallLocation_Button {
+    width: 172px;
+    height: 25px;
+    -unity-font-definition: url('project://database/Assets/Jam54Launcher/Other/Fonts/Roboto-Regular%20SDF.asset?fileID=11400000&guid=3425d65c12ac42647a4dfc5a05176cd2&type=2#Roboto-Regular SDF');
+    font-size: 14px;
+    color: rgb(255, 255, 255);
+    border-left-color: rgba(149, 149, 149, 0);
+    border-right-color: rgba(149, 149, 149, 0);
+    border-top-color: rgba(149, 149, 149, 0);
+    border-bottom-color: rgba(149, 149, 149, 0);
+    background-color: rgba(255, 255, 255, 0);
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+    -unity-text-align: middle-left;
+}
+
+.InstallLocation_Button:focus {
+    width: 172px;
+    height: 25px;
+    -unity-font-definition: url('project://database/Assets/Jam54Launcher/Other/Fonts/Roboto-Regular%20SDF.asset?fileID=11400000&guid=3425d65c12ac42647a4dfc5a05176cd2&type=2#Roboto-Regular SDF');
+    font-size: 14px;
+    color: rgb(255, 255, 255);
+    border-left-color: rgba(149, 149, 149, 0);
+    border-right-color: rgba(149, 149, 149, 0);
+    border-top-color: rgba(149, 149, 149, 0);
+    border-bottom-color: rgba(149, 149, 149, 0);
+    background-color: rgba(255, 255, 255, 0.1);
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+    -unity-text-align: middle-left;
+}
+
+.InstallLocation_Button:hover {
+    width: 172px;
+    height: 25px;
+    -unity-font-definition: url('project://database/Assets/Jam54Launcher/Other/Fonts/Roboto-Regular%20SDF.asset?fileID=11400000&guid=3425d65c12ac42647a4dfc5a05176cd2&type=2#Roboto-Regular SDF');
+    font-size: 14px;
+    color: rgb(255, 255, 255);
+    border-left-color: rgba(149, 149, 149, 0);
+    border-right-color: rgba(149, 149, 149, 0);
+    border-top-color: rgba(149, 149, 149, 0);
+    border-bottom-color: rgba(149, 149, 149, 0);
+    background-color: rgba(255, 255, 255, 0.1);
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+    -unity-text-align: middle-left;
+}
+
+.Language_Button {
+    width: 172px;
+    height: 25px;
+    -unity-font-definition: url('project://database/Assets/Jam54Launcher/Other/Fonts/Roboto-Regular%20SDF.asset?fileID=11400000&guid=3425d65c12ac42647a4dfc5a05176cd2&type=2#Roboto-Regular SDF');
+    font-size: 14px;
+    color: rgb(255, 255, 255);
+    border-left-color: rgba(149, 149, 149, 0);
+    border-right-color: rgba(149, 149, 149, 0);
+    border-top-color: rgba(149, 149, 149, 0);
+    border-bottom-color: rgba(149, 149, 149, 0);
+    background-color: rgba(255, 255, 255, 0);
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+    -unity-text-align: middle-left;
+}
+
+.Language_Button:focus {
+    width: 172px;
+    height: 25px;
+    -unity-font-definition: url('project://database/Assets/Jam54Launcher/Other/Fonts/Roboto-Regular%20SDF.asset?fileID=11400000&guid=3425d65c12ac42647a4dfc5a05176cd2&type=2#Roboto-Regular SDF');
+    font-size: 14px;
+    color: rgb(255, 255, 255);
+    border-left-color: rgba(149, 149, 149, 0);
+    border-right-color: rgba(149, 149, 149, 0);
+    border-top-color: rgba(149, 149, 149, 0);
+    border-bottom-color: rgba(149, 149, 149, 0);
+    background-color: rgba(255, 255, 255, 0.1);
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+    -unity-text-align: middle-left;
+}
+
+.Language_Button:hover {
+    width: 172px;
+    height: 25px;
+    -unity-font-definition: url('project://database/Assets/Jam54Launcher/Other/Fonts/Roboto-Regular%20SDF.asset?fileID=11400000&guid=3425d65c12ac42647a4dfc5a05176cd2&type=2#Roboto-Regular SDF');
+    font-size: 14px;
+    color: rgb(255, 255, 255);
+    border-left-color: rgba(149, 149, 149, 0);
+    border-right-color: rgba(149, 149, 149, 0);
+    border-top-color: rgba(149, 149, 149, 0);
+    border-bottom-color: rgba(149, 149, 149, 0);
+    background-color: rgba(255, 255, 255, 0.1);
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+    -unity-text-align: middle-left;
+}
