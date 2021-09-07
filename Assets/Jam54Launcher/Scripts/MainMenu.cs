@@ -20,9 +20,9 @@ public class MainMenu : MonoBehaviour
         AppHolder = rootVisualElement.Q<VisualElement>("AppHolder");
 
         #region Add corresponding methods to the elements
-        Games_Button.clicked += GamesButtonPressed;
+        //Games_Button.clicked += GamesButtonPressed;
 
-        AppHolder.RegisterCallback<MouseDownEvent>(test);//MouseOverEvent(hover), MouseOutEvent(mous moves away from element)
+        //AppHolder.RegisterCallback<MouseDownEvent>(test);//MouseOverEvent(hover), MouseOutEvent(mous moves away from element)
 
 
         #endregion
