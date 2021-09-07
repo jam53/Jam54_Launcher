@@ -364,3 +364,107 @@
     -unity-font-style: normal;
     scale: 1.07 1.07;
 }
+
+.SettingsBackgroundCircle {
+    background-image: none;
+    width: 43px;
+    height: 43px;
+    top: 30px;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(36, 38, 59, 0);
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+    border-top-left-radius: 30px;
+    border-bottom-left-radius: 30px;
+    border-top-right-radius: 30px;
+    border-bottom-right-radius: 30px;
+}
+
+.SettingsBackgroundCircle:hover {
+    background-image: none;
+    width: 43px;
+    height: 43px;
+    top: 30px;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(36, 38, 59);
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+    border-top-left-radius: 30px;
+    border-bottom-left-radius: 30px;
+    border-top-right-radius: 30px;
+    border-bottom-right-radius: 30px;
+}
+
+.HomeBackgroundCircle {
+    background-image: none;
+    width: 43px;
+    height: 43px;
+    top: 30px;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(36, 38, 59, 0);
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 18px;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+    border-top-left-radius: 30px;
+    border-bottom-left-radius: 30px;
+    border-top-right-radius: 30px;
+    border-bottom-right-radius: 30px;
+}
+
+.HomeBackgroundCircle:hover {
+    background-image: none;
+    width: 43px;
+    height: 43px;
+    top: 30px;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(36, 38, 59);
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 18px;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+    border-top-left-radius: 30px;
+    border-bottom-left-radius: 30px;
+    border-top-right-radius: 30px;
+    border-bottom-right-radius: 30px;
+}

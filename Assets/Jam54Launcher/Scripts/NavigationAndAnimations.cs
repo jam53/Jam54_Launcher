@@ -10,7 +10,6 @@ using UnityEngine.UIElements.Experimental;
 public class NavigationAndAnimations : MonoBehaviour
 {
     //UI Objects
-    public Button Games_Selected_Button;
 
     private void OnEnable()
     {
@@ -20,19 +19,17 @@ public class NavigationAndAnimations : MonoBehaviour
 
         #region Assign objects
         //Find the object of type 'Button' with the name 'Games_Button' in the root visual element
-        Games_Selected_Button = rootVisualElement.Q<Button>("Games_Selected_Button");
         #endregion
 
 
         #region Add corresponding methods to the elements
-        Games_Selected_Button.clicked += Games_Selected_ButtonPressed;
         #endregion
     }
 
     // Start is called before the first frame update
     void Start()
     {
-
+        
     }
 
     // Update is called once per frame
@@ -45,4 +42,14 @@ public class NavigationAndAnimations : MonoBehaviour
     {
 
     }
+
+    #region navigation
+    //doe da gwn in een nieuw script alst teveel is
+    #endregion
+
+    #region animations
+
+    #endregion
+
+
 }
