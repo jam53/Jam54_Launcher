@@ -468,3 +468,215 @@
     border-top-right-radius: 30px;
     border-bottom-right-radius: 30px;
 }
+
+.Options_Store_Button {
+    flex-grow: 0;
+    flex-direction: column;
+    width: 201px;
+    align-items: center;
+    height: 30px;
+    -unity-font-definition: url('project://database/Assets/Jam54Launcher/Other/Fonts/Roboto-Regular%20SDF.asset?fileID=11400000&guid=3425d65c12ac42647a4dfc5a05176cd2&type=2#Roboto-Regular SDF');
+    font-size: 13px;
+    color: rgb(255, 255, 255);
+    background-color: rgba(65, 82, 183, 0);
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    border-left-color: rgba(149, 149, 149, 0);
+    border-right-color: rgba(149, 149, 149, 0);
+    border-top-color: rgba(149, 149, 149, 0);
+    border-bottom-color: rgba(149, 149, 149, 0);
+    -unity-text-align: middle-left;
+    margin-left: 2px;
+    margin-right: 2px;
+    margin-top: 2px;
+    margin-bottom: 2px;
+    padding-left: 5px;
+}
+
+.Options_Store_Button:hover {
+    flex-grow: 0;
+    flex-direction: column;
+    width: 201px;
+    align-items: center;
+    height: 30px;
+    -unity-font-definition: url('project://database/Assets/Jam54Launcher/Other/Fonts/Roboto-Regular%20SDF.asset?fileID=11400000&guid=3425d65c12ac42647a4dfc5a05176cd2&type=2#Roboto-Regular SDF');
+    font-size: 13px;
+    color: rgb(255, 255, 255);
+    background-color: rgba(65, 82, 183, 0.5);
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    border-left-color: rgba(149, 149, 149, 0);
+    border-right-color: rgba(149, 149, 149, 0);
+    border-top-color: rgba(149, 149, 149, 0);
+    border-bottom-color: rgba(149, 149, 149, 0);
+    -unity-text-align: middle-left;
+    margin-left: 2px;
+    margin-right: 2px;
+    margin-top: 2px;
+    margin-bottom: 2px;
+    padding-left: 5px;
+}
+
+.Options_Verify_Button {
+    flex-grow: 0;
+    flex-direction: column;
+    width: 201px;
+    align-items: center;
+    height: 30px;
+    -unity-font-definition: url('project://database/Assets/Jam54Launcher/Other/Fonts/Roboto-Regular%20SDF.asset?fileID=11400000&guid=3425d65c12ac42647a4dfc5a05176cd2&type=2#Roboto-Regular SDF');
+    font-size: 13px;
+    color: rgb(255, 255, 255);
+    background-color: rgba(65, 82, 183, 0);
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    border-left-color: rgba(149, 149, 149, 0);
+    border-right-color: rgba(149, 149, 149, 0);
+    border-top-color: rgba(149, 149, 149, 0);
+    border-bottom-color: rgba(149, 149, 149, 0);
+    -unity-text-align: middle-left;
+    margin-left: 2px;
+    margin-right: 2px;
+    margin-top: 2px;
+    margin-bottom: 2px;
+    padding-left: 5px;
+}
+
+.Options_Verify_Button:hover {
+    flex-grow: 0;
+    flex-direction: column;
+    width: 201px;
+    align-items: center;
+    height: 30px;
+    -unity-font-definition: url('project://database/Assets/Jam54Launcher/Other/Fonts/Roboto-Regular%20SDF.asset?fileID=11400000&guid=3425d65c12ac42647a4dfc5a05176cd2&type=2#Roboto-Regular SDF');
+    font-size: 13px;
+    color: rgb(255, 255, 255);
+    background-color: rgba(65, 82, 183, 0.5);
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    border-left-color: rgba(149, 149, 149, 0);
+    border-right-color: rgba(149, 149, 149, 0);
+    border-top-color: rgba(149, 149, 149, 0);
+    border-bottom-color: rgba(149, 149, 149, 0);
+    -unity-text-align: middle-left;
+    margin-left: 2px;
+    margin-right: 2px;
+    margin-top: 2px;
+    margin-bottom: 2px;
+    padding-left: 5px;
+}
+
+.Options_Shortcut_Button {
+    flex-grow: 0;
+    flex-direction: column;
+    width: 201px;
+    align-items: center;
+    height: 30px;
+    -unity-font-definition: url('project://database/Assets/Jam54Launcher/Other/Fonts/Roboto-Regular%20SDF.asset?fileID=11400000&guid=3425d65c12ac42647a4dfc5a05176cd2&type=2#Roboto-Regular SDF');
+    font-size: 13px;
+    color: rgb(255, 255, 255);
+    background-color: rgba(65, 82, 183, 0);
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    border-left-color: rgba(149, 149, 149, 0);
+    border-right-color: rgba(149, 149, 149, 0);
+    border-top-color: rgba(149, 149, 149, 0);
+    border-bottom-color: rgba(149, 149, 149, 0);
+    -unity-text-align: middle-left;
+    margin-left: 2px;
+    margin-right: 2px;
+    margin-top: 2px;
+    margin-bottom: 2px;
+    padding-left: 5px;
+}
+
+.Options_Shortcut_Button:hover {
+    flex-grow: 0;
+    flex-direction: column;
+    width: 201px;
+    align-items: center;
+    height: 30px;
+    -unity-font-definition: url('project://database/Assets/Jam54Launcher/Other/Fonts/Roboto-Regular%20SDF.asset?fileID=11400000&guid=3425d65c12ac42647a4dfc5a05176cd2&type=2#Roboto-Regular SDF');
+    font-size: 13px;
+    color: rgb(255, 255, 255);
+    background-color: rgba(65, 82, 183, 0.5);
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    border-left-color: rgba(149, 149, 149, 0);
+    border-right-color: rgba(149, 149, 149, 0);
+    border-top-color: rgba(149, 149, 149, 0);
+    border-bottom-color: rgba(149, 149, 149, 0);
+    -unity-text-align: middle-left;
+    margin-left: 2px;
+    margin-right: 2px;
+    margin-top: 2px;
+    margin-bottom: 2px;
+    padding-left: 5px;
+}
+
+.Options_Uninstall_Button {
+    flex-grow: 0;
+    flex-direction: column;
+    width: 201px;
+    align-items: flex-end;
+    height: 30px;
+    -unity-font-definition: url('project://database/Assets/Jam54Launcher/Other/Fonts/Roboto-Regular%20SDF.asset?fileID=11400000&guid=3425d65c12ac42647a4dfc5a05176cd2&type=2#Roboto-Regular SDF');
+    font-size: 13px;
+    color: rgb(255, 255, 255);
+    background-color: rgba(65, 82, 183, 0);
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    border-left-color: rgba(149, 149, 149, 0);
+    border-right-color: rgba(149, 149, 149, 0);
+    border-top-color: rgba(149, 149, 149, 0);
+    border-bottom-color: rgba(149, 149, 149, 0);
+    -unity-text-align: middle-left;
+    justify-content: center;
+    margin-left: 2px;
+    margin-right: 2px;
+    margin-top: 2px;
+    margin-bottom: 0;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.Options_Uninstall_Button:hover {
+    flex-grow: 0;
+    flex-direction: column;
+    width: 201px;
+    align-items: flex-end;
+    height: 30px;
+    -unity-font-definition: url('project://database/Assets/Jam54Launcher/Other/Fonts/Roboto-Regular%20SDF.asset?fileID=11400000&guid=3425d65c12ac42647a4dfc5a05176cd2&type=2#Roboto-Regular SDF');
+    font-size: 13px;
+    color: rgb(255, 255, 255);
+    background-color: rgba(65, 82, 183, 0.5);
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    border-left-color: rgba(149, 149, 149, 0);
+    border-right-color: rgba(149, 149, 149, 0);
+    border-top-color: rgba(149, 149, 149, 0);
+    border-bottom-color: rgba(149, 149, 149, 0);
+    -unity-text-align: middle-left;
+    justify-content: center;
+    margin-left: 2px;
+    margin-right: 2px;
+    margin-top: 2px;
+    margin-bottom: 0;
+    padding-left: 5px;
+    padding-right: 5px;
+}

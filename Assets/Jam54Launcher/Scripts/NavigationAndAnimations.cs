@@ -48,7 +48,6 @@ public class NavigationAndAnimations : MonoBehaviour
     #endregion
 
     #region animations
-
     #endregion
 
 
