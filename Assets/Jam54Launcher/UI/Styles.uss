@@ -256,3 +256,111 @@
     align-items: flex-end;
     -unity-background-image-tint-color: rgb(166, 166, 166);
 }
+
+.Play_Button {
+    width: 50%;
+    margin-right: 0;
+    background-image: url('project://database/Assets/Jam54Launcher/Textures/Play.png?fileID=2800000&guid=e09a2af25a66aca45b715c31e3709d21&type=3#Play');
+    background-color: rgba(255, 255, 255, 0);
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+    -unity-font-definition: url('project://database/Assets/Jam54Launcher/Other/Fonts/Roboto-Regular%20SDF.asset?fileID=11400000&guid=3425d65c12ac42647a4dfc5a05176cd2&type=2#Roboto-Regular SDF');
+    font-size: 21px;
+    color: rgb(255, 255, 255);
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    border-top-left-radius: 9px;
+    border-bottom-left-radius: 9px;
+    border-top-right-radius: 9px;
+    border-bottom-right-radius: 9px;
+    flex-grow: 0;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-left: 28px;
+    margin-top: 0;
+    margin-bottom: 0;
+    flex-shrink: 1;
+    height: 100%;
+}
+
+.Play_Button:hover {
+    width: 50%;
+    margin-right: 0;
+    background-image: url('project://database/Assets/Jam54Launcher/Textures/Play.png?fileID=2800000&guid=e09a2af25a66aca45b715c31e3709d21&type=3#Play');
+    background-color: rgba(255, 255, 255, 0);
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+    -unity-font-definition: url('project://database/Assets/Jam54Launcher/Other/Fonts/Roboto-Regular%20SDF.asset?fileID=11400000&guid=3425d65c12ac42647a4dfc5a05176cd2&type=2#Roboto-Regular SDF');
+    font-size: 21px;
+    color: rgb(255, 255, 255);
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    border-top-left-radius: 9px;
+    border-bottom-left-radius: 9px;
+    border-top-right-radius: 9px;
+    border-bottom-right-radius: 9px;
+    flex-grow: 0;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-left: 28px;
+    margin-top: 0;
+    margin-bottom: 0;
+    flex-shrink: 1;
+    height: 100%;
+    scale: 1.07 1.07;
+}
+
+.Library_Button {
+    left: 40%;
+    background-image: url('project://database/Assets/Jam54Launcher/Textures/EdgeBigButton.png?fileID=2800000&guid=38e39b62c5996ec4d80e64d9eb59fe55&type=3#EdgeBigButton');
+    border-left-color: rgba(149, 149, 149, 0);
+    border-right-color: rgba(149, 149, 149, 0);
+    border-top-color: rgba(149, 149, 149, 0);
+    border-bottom-color: rgba(149, 149, 149, 0);
+    background-color: rgba(188, 188, 188, 0);
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+    -unity-background-scale-mode: scale-to-fit;
+    width: 194px;
+    height: 64px;
+    color: rgb(255, 255, 255);
+    -unity-font-definition: url('project://database/Assets/Jam54Launcher/Other/Fonts/BalooDa2-Regular%20SDF.asset?fileID=11400000&guid=22c9334beaad2444688d0e6089d93388&type=2#BalooDa2-Regular SDF');
+    font-size: 24px;
+    -unity-font-style: normal;
+}
+
+.Library_Button:hover {
+    left: 40%;
+    background-image: url('project://database/Assets/Jam54Launcher/Textures/EdgeBigButton.png?fileID=2800000&guid=38e39b62c5996ec4d80e64d9eb59fe55&type=3#EdgeBigButton');
+    border-left-color: rgba(149, 149, 149, 0);
+    border-right-color: rgba(149, 149, 149, 0);
+    border-top-color: rgba(149, 149, 149, 0);
+    border-bottom-color: rgba(149, 149, 149, 0);
+    background-color: rgba(188, 188, 188, 0);
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+    -unity-background-scale-mode: scale-to-fit;
+    width: 194px;
+    height: 64px;
+    color: rgb(255, 255, 255);
+    -unity-font-definition: url('project://database/Assets/Jam54Launcher/Other/Fonts/BalooDa2-Regular%20SDF.asset?fileID=11400000&guid=22c9334beaad2444688d0e6089d93388&type=2#BalooDa2-Regular SDF');
+    font-size: 24px;
+    -unity-font-style: normal;
+    scale: 1.07 1.07;
+}
