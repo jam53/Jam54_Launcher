@@ -10,7 +10,7 @@ using UnityEngine.UIElements.Experimental;
 public class Navigation : MonoBehaviour
 {
     //UI Objects
-    public Button Programs_Unselected_Button, Games_Unselected_Button, InstallLocation_Button;
+    public Button Programs_Unselected_Button, Games_Unselected_Button, InstallLocation_Button, Language_Button;
     public VisualElement Games, Programs, SettingsBackgroundCircle, Settings, HomeBackgroundCircle;
 
     //Script variables
@@ -30,6 +30,7 @@ public class Navigation : MonoBehaviour
         Programs_Unselected_Button = rootVisualElement.Q<Button>("Programs_Unselected_Button");
         Games_Unselected_Button = rootVisualElement.Q<Button>("Games_Unselected_Button");
         InstallLocation_Button = rootVisualElement.Q<Button>("InstallLocation_Button");
+        Language_Button = rootVisualElement.Q<Button>("Language_Button");
         Games = rootVisualElement.Q<VisualElement>("Games");
         Programs = rootVisualElement.Q<VisualElement>("Programs");
         SettingsBackgroundCircle = rootVisualElement.Q<VisualElement>("SettingsBackgroundCircle");
@@ -43,6 +44,7 @@ public class Navigation : MonoBehaviour
         Programs_Unselected_Button.clicked += Programs_Unselected_Button_Clicked;
         Games_Unselected_Button.clicked += Games_Unselected_Button_Clicked;
         InstallLocation_Button.clicked += InstallLocation_Button_Clicked;
+        Language_Button.clicked += Language_Button_Clicked;
         SettingsBackgroundCircle.RegisterCallback<MouseDownEvent>(SettingsBackgroundCircle_Clicked);
         HomeBackgroundCircle.RegisterCallback<MouseDownEvent>(HomeBackgroundCircle_Clicked);
         SettingsBackgroundCircle.RegisterCallback<MouseOverEvent>(SettingsBackgroundCircle_Over);
@@ -62,7 +64,7 @@ public class Navigation : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     #region navigation
@@ -128,6 +130,16 @@ public class Navigation : MonoBehaviour
 
         MainWindowSelected = true; //we do this to know whether or not the background of the icons in the sidebar can be disabled or not
         SettingsWindowSelected = false; //if the current window that's active is 'settings' for example, the background of the settingsicon should remain there
+    }
+
+    private void InstallLocation_Button_Clicked()
+    {
+
+    }
+
+    private void Language_Button_Clicked()
+    {
+        InstallLocation_Button.style.backgroundImage = null;//The backgroundimage on the 'Language_Button' button makes it look like it's selected on startup. Since it's the first button in the list. But once we click on the 'Language_Button' button. We no longer want the 'InstallLocation_Button' button to be selected. So we delete the backgroundimage that makes the 'Language_Button' button always look selected
     }
 
     #endregion
