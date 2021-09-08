@@ -788,3 +788,49 @@
     border-bottom-right-radius: 15px;
     -unity-text-align: middle-left;
 }
+
+.Discord {
+    width: 17px;
+    height: 17px;
+    background-image: url('project://database/Assets/Jam54Launcher/Textures/Discord-Logo.png?fileID=2800000&guid=b8b0d9ef388272747927206cf6825851&type=3#Discord-Logo');
+    margin-right: 9px;
+    -unity-background-image-tint-color: rgba(255, 255, 255, 0.5);
+}
+
+.Discord:hover {
+    width: 17px;
+    height: 17px;
+    background-image: url('project://database/Assets/Jam54Launcher/Textures/Discord-Logo.png?fileID=2800000&guid=b8b0d9ef388272747927206cf6825851&type=3#Discord-Logo');
+    margin-right: 9px;
+    -unity-background-image-tint-color: rgba(255, 255, 255, 0.75);
+}
+
+.YouTube {
+    width: 17px;
+    height: 17px;
+    background-image: url('project://database/Assets/Jam54Launcher/Textures/youtube-logo.png?fileID=2800000&guid=8ab6db7f3f3cb1a40904d115b44056a5&type=3#youtube-logo');
+    margin-right: 10px;
+    -unity-background-image-tint-color: rgba(255, 255, 255, 0.5);
+}
+
+.YouTube:hover {
+    width: 17px;
+    height: 17px;
+    background-image: url('project://database/Assets/Jam54Launcher/Textures/youtube-logo.png?fileID=2800000&guid=8ab6db7f3f3cb1a40904d115b44056a5&type=3#youtube-logo');
+    margin-right: 10px;
+    -unity-background-image-tint-color: rgba(255, 255, 255, 0.75);
+}
+
+.PlayStore {
+    width: 15px;
+    height: 15px;
+    background-image: url('project://database/Assets/Jam54Launcher/Textures/PlayStore-Icon.png?fileID=2800000&guid=7beb5fff043d617489d78078877826f7&type=3#PlayStore-Icon');
+    -unity-background-image-tint-color: rgba(255, 255, 255, 0.5);
+}
+
+.PlayStore:hover {
+    width: 15px;
+    height: 15px;
+    background-image: url('project://database/Assets/Jam54Launcher/Textures/PlayStore-Icon.png?fileID=2800000&guid=7beb5fff043d617489d78078877826f7&type=3#PlayStore-Icon');
+    -unity-background-image-tint-color: rgba(255, 255, 255, 0.75);
+}

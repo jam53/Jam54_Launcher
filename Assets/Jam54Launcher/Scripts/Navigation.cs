@@ -11,7 +11,7 @@ public class Navigation : MonoBehaviour
 {
     //UI Objects
     public Button Programs_Unselected_Button, Games_Unselected_Button, InstallLocation_Button, Language_Button;
-    public VisualElement Games, Programs, SettingsBackgroundCircle, Settings, HomeBackgroundCircle, InstallLocationPanel, LanguagePanel;
+    public VisualElement Games, Programs, SettingsBackgroundCircle, Settings, HomeBackgroundCircle, InstallLocationPanel, LanguagePanel, Discord, YouTube, PlayStore;
 
     //Script variables
     private bool LastWindowPrograms; //true means 'programs' is open - false means 'games' is open; on the 'main menu'
@@ -39,6 +39,9 @@ public class Navigation : MonoBehaviour
         HomeBackgroundCircle = rootVisualElement.Q<VisualElement>("HomeBackgroundCircle");
         InstallLocationPanel = rootVisualElement.Q<VisualElement>("InstallLocationPanel");
         LanguagePanel = rootVisualElement.Q<VisualElement>("LanguagePanel");
+        Discord = rootVisualElement.Q<VisualElement>("Discord");
+        YouTube = rootVisualElement.Q<VisualElement>("YouTube");
+        PlayStore = rootVisualElement.Q<VisualElement>("PlayStore");
 
         #endregion
 
@@ -54,6 +57,9 @@ public class Navigation : MonoBehaviour
         HomeBackgroundCircle.RegisterCallback<MouseOverEvent>(HomeBackgroundCircle_Over);
         SettingsBackgroundCircle.RegisterCallback<MouseOutEvent>(SettingsBackgroundCircle_Out);
         HomeBackgroundCircle.RegisterCallback<MouseOutEvent>(HomeBackgroundCircle_Out);
+        Discord.RegisterCallback<MouseDownEvent>(Discord_Clicked);
+        YouTube.RegisterCallback<MouseDownEvent>(YouTube_Clicked);
+        PlayStore.RegisterCallback<MouseDownEvent>(PlayStore_Clicked);
         #endregion
     }
 
@@ -156,6 +162,22 @@ public class Navigation : MonoBehaviour
 
         InstallLocationPanel.style.display = DisplayStyle.None;//Close install location menu
         LanguagePanel.style.display = DisplayStyle.Flex; //Open language panel menu
+    }
+
+
+    private void Discord_Clicked(MouseDownEvent evt)
+    {
+        Application.OpenURL("https://discord.gg/z6wEvv7");
+    }
+
+    private void YouTube_Clicked(MouseDownEvent evt)
+    {
+        Application.OpenURL("https://www.youtube.com/c/jam54/");
+    }
+
+    private void PlayStore_Clicked(MouseDownEvent evt)
+    {
+        Application.OpenURL("https://play.google.com/store/apps/details?id=com.jam54.AstroRun&hl=en");
     }
 
     #endregion

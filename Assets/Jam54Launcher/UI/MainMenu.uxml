@@ -155,9 +155,9 @@
                 <ui:Button text="Language" display-tooltip-when-elided="true" name="Language_Button" class="Language_Button" style="font-size: 15px; -unity-background-image-tint-color: rgba(255, 255, 255, 0.1);" />
                 <ui:Label text="V1.7.2" display-tooltip-when-elided="true" name="VersionNumber" style="-unity-font-definition: url(&apos;project://database/Assets/Jam54Launcher/Other/Fonts/Roboto-Regular%20SDF.asset?fileID=11400000&amp;guid=3425d65c12ac42647a4dfc5a05176cd2&amp;type=2#Roboto-Regular SDF&apos;); -unity-font-style: bold; font-size: 12px; color: rgba(255, 255, 255, 0.5); -unity-text-align: middle-left; position: absolute; transform-origin: bottom; bottom: 50px; left: 58px;" />
                 <ui:VisualElement name="SocialIconsHolder" style="flex-direction: row; justify-content: center; align-items: center; left: 61px; position: absolute; bottom: 34px;">
-                    <ui:VisualElement name="Discord" style="width: 17px; height: 17px; background-image: url(&apos;project://database/Assets/Jam54Launcher/Textures/Discord-Logo.png?fileID=2800000&amp;guid=b8b0d9ef388272747927206cf6825851&amp;type=3#Discord-Logo&apos;); margin-right: 9px; -unity-background-image-tint-color: rgba(255, 255, 255, 0.5);" />
-                    <ui:VisualElement name="YouTube" style="width: 17px; height: 17px; background-image: url(&apos;project://database/Assets/Jam54Launcher/Textures/youtube-logo.png?fileID=2800000&amp;guid=8ab6db7f3f3cb1a40904d115b44056a5&amp;type=3#youtube-logo&apos;); margin-right: 10px; -unity-background-image-tint-color: rgba(255, 255, 255, 0.5);" />
-                    <ui:VisualElement name="PlayStore" style="width: 15px; height: 15px; background-image: url(&apos;project://database/Assets/Jam54Launcher/Textures/PlayStore-Icon.png?fileID=2800000&amp;guid=7beb5fff043d617489d78078877826f7&amp;type=3#PlayStore-Icon&apos;); -unity-background-image-tint-color: rgba(255, 255, 255, 0.5);" />
+                    <ui:VisualElement name="Discord" class="Discord" />
+                    <ui:VisualElement name="YouTube" class="YouTube" />
+                    <ui:VisualElement name="PlayStore" class="PlayStore" />
                 </ui:VisualElement>
             </ui:VisualElement>
             <ui:VisualElement name="InstallLocationPanel" style="width: auto; background-color: rgba(231, 12, 12, 0); flex-grow: 1; height: 100%; align-items: flex-start; padding-left: 43px; padding-top: 40px; display: flex;">
