@@ -11,13 +11,14 @@ public class Navigation : MonoBehaviour
 {
     //UI Objects
     public Button Programs_Unselected_Button, Games_Unselected_Button, InstallLocation_Button, Language_Button;
-    public VisualElement Games, Programs, SettingsBackgroundCircle, Settings, HomeBackgroundCircle;
+    public VisualElement Games, Programs, SettingsBackgroundCircle, Settings, HomeBackgroundCircle, InstallLocationPanel, LanguagePanel;
 
     //Script variables
     private bool LastWindowPrograms; //true means 'programs' is open - false means 'games' is open; on the 'main menu'
     private Color SideBarIconsDefaultColor;
     private bool MainWindowSelected; //if 'MainWindowSelected' and 'SettingsWindow' selected are both false
     private bool SettingsWindowSelected; //it means that the product page is open
+    public Texture2D InstallLanguageButtonBackground;
 
     private void OnEnable()
     {
@@ -36,6 +37,8 @@ public class Navigation : MonoBehaviour
         SettingsBackgroundCircle = rootVisualElement.Q<VisualElement>("SettingsBackgroundCircle");
         Settings = rootVisualElement.Q<VisualElement>("Settings");
         HomeBackgroundCircle = rootVisualElement.Q<VisualElement>("HomeBackgroundCircle");
+        InstallLocationPanel = rootVisualElement.Q<VisualElement>("InstallLocationPanel");
+        LanguagePanel = rootVisualElement.Q<VisualElement>("LanguagePanel");
 
         #endregion
 
@@ -132,14 +135,27 @@ public class Navigation : MonoBehaviour
         SettingsWindowSelected = false; //if the current window that's active is 'settings' for example, the background of the settingsicon should remain there
     }
 
+    //If we click on the 'InstallLocation_Button', the Language settings tab should become unvisible and the Install settings tab should become visible
     private void InstallLocation_Button_Clicked()
     {
+        //We do this with a background image on top of a hover pseudo state in the USS classes
+        //Because if the user clicks on the button, and then clicks somewhere empty on the screen,
+        //The button will look unselected
+        Language_Button.style.backgroundImage = null;//Remove the background pic so it looks unselected
+        InstallLocation_Button.style.backgroundImage = InstallLanguageButtonBackground;//Add the background pic so it looks selected
 
+        LanguagePanel.style.display = DisplayStyle.None;//Close Language menu
+        InstallLocationPanel.style.display = DisplayStyle.Flex;//Open Install location menu
     }
 
+    //If we click on the 'Language_Button', the Install settings tab should become unvisible and the Language settings tab should become visible
     private void Language_Button_Clicked()
     {
         InstallLocation_Button.style.backgroundImage = null;//The backgroundimage on the 'Language_Button' button makes it look like it's selected on startup. Since it's the first button in the list. But once we click on the 'Language_Button' button. We no longer want the 'InstallLocation_Button' button to be selected. So we delete the backgroundimage that makes the 'Language_Button' button always look selected
+        Language_Button.style.backgroundImage = InstallLanguageButtonBackground;//Add the background pic so it looks selected
+
+        InstallLocationPanel.style.display = DisplayStyle.None;//Close install location menu
+        LanguagePanel.style.display = DisplayStyle.Flex; //Open language panel menu
     }
 
     #endregion
