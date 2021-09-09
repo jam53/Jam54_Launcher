@@ -44,6 +44,8 @@ Scroll a bit lower and add the click function like so:
 
 Go To the 'Store_Button_Clicked()' method lower in the script, and addd a couple new lines like this:
             case 2:
+                HomeBackgroundCircle.style.backgroundColor = Color.clear;
+
                 AppTitle_Label.text = SmashAndFly.Title;
                 ProductImage.style.backgroundImage = SmashAndFly.Image;
                 LatestUpdateDate1_Label.text = SmashAndFly.LatestUpdate;
@@ -64,4 +66,3 @@ Go To the 'Store_Button_Clicked()' method lower in the script, and addd a couple
                 break;
 
 
-s
