@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 259abec39bd4acd428a7bf282bbb6639, type: 3}
+  m_Name: ImageSearcher
+  m_EditorClassIdentifier: 
+  Title: ImageSearcher
+  Icon: {fileID: 2800000, guid: 87106e2db89180f4f875b722bd70fcd8, type: 3}
+  BackgroundColor: {r: 0.94117653, g: 0.94117653, b: 0.94117653, a: 1}
+  LatestUpdate: 18 April, 2020
+  ReleaseDate: 27 February, 2020
+  Android: 0
+  Windows: 1
+  description: ImageSearcher is written in C# and searches for a certain image inside
+    a video. Once the image is found, the program outputs the timestamps at which
+    the image was found.

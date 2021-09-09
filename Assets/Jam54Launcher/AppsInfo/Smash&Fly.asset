@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 259abec39bd4acd428a7bf282bbb6639, type: 3}
+  m_Name: Smash&Fly
+  m_EditorClassIdentifier: 
+  Title: Smash&Fly
+  Icon: {fileID: 2800000, guid: 679999c2f1bb9964aa0c080a80755460, type: 3}
+  LatestUpdate: 25 November, 2019
+  ReleaseDate: 9 September, 2019
+  Android: 1
+  Windows: 0
+  description: Smash&Fly is a game about flying an airship through different worlds
+    inspired by real world biomes. Where you must dotch and shoot your way through
+    the levels.

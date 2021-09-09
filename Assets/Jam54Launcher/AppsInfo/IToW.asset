@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 259abec39bd4acd428a7bf282bbb6639, type: 3}
+  m_Name: IToW
+  m_EditorClassIdentifier: 
+  Title: IToW
+  Icon: {fileID: 2800000, guid: 4f0774cad74d93447b84beb24556f892, type: 3}
+  BackgroundColor: {r: 0, g: 0, b: 0, a: 0}
+  LatestUpdate: 4 August, 2018
+  ReleaseDate: 4 August, 2018
+  Android: 0
+  Windows: 1
+  description: IToW is used to manipulate a string created by WToI, back to it's
+    original form.

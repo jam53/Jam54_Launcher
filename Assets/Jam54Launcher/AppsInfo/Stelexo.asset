@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 259abec39bd4acd428a7bf282bbb6639, type: 3}
+  m_Name: Stelexo
+  m_EditorClassIdentifier: 
+  Title: Stelexo
+  Icon: {fileID: 2800000, guid: 070a87886b8b492429e1679237fa7202, type: 3}
+  LatestUpdate: 2 January, 2021
+  ReleaseDate: 6 July, 2018
+  Android: 0
+  Windows: 1
+  description: "Stelexo is a free to play single player sandbox game. Featuring a
+    completely randomly generated world, which includes rocks, trees, animals, enemies
+    and much more! A world full of secrets and adventures awaits you!  \u200B  The
+    development of Stelexo started primarily in July of 2018 and was the first major
+    game I worked on.   The plan was to create a world that was procedurally generated,
+    augmented with creatures, objects and more.  I realised that this project's scope
+    was way behond what I could do on my own. So after a final update in December
+    2020, the development of Stelexo ended."
