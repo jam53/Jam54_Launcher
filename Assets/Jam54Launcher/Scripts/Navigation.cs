@@ -347,7 +347,7 @@ public class Navigation : MonoBehaviour
         OptionsOutsideClicksDetector.style.display = DisplayStyle.None;
     }
 
-    //Open the store page for this specific app
+    //Open the store page/product page for this specific app
     private void Store_Button_Clicked()
     {
         OptionsOutsideClicksDetector.style.display = DisplayStyle.None; //Close the options menu
@@ -356,6 +356,8 @@ public class Navigation : MonoBehaviour
         Programs.style.display = DisplayStyle.None;
 
         ProductPage.style.display = DisplayStyle.Flex; //Open the ProductPage
+
+        HomeBackgroundCircle.style.backgroundColor = Color.clear;
 
         switch (CurrentAppIndex)
         {
