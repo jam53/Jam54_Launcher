@@ -1,0 +1,67 @@
+Go to Assets > Jam54Launcher > UI > MainMenu.uxml
+
+Duplicate the one of the games/programs in the UIBuilder
+	For example if it's a game:
+		SideBarAndBackgroundHolder > Games > ProgramsAndGames > GamesAndPrograms_ScrollView > ... > AppsHolder > App1Holder
+		Duplicate App1Holder
+
+Rename App1holder to the a new index > App2Holder
+
+Set the Image component to accordingly (App2Holder > Image >> Background >> Image)
+
+Change the apps title (App2Holder > BottomBar > AppTitle_Label >> Text)
+
+Change the index of the options visualelement (App2Holder > BottomBar > AppOptions1 to AppOptions2)
+
+---
+
+Go to Assets > Jam54Launcher > AppsInfo
+
+Right click > Create > AppInfo
+
+Fill in this AppInfo form
+
+----
+
+Open Navigation.cs
+
+At the top, add a new visual element for the AppOptions2 like this:  'public VisualElement AppOptions1'
+
+Assign the VisualElement like so a bit lower: 'AppOptions1 = rootVisualElement.Q<VisualElement>("AppOptions1");'
+
+Add a onbuttondown/click event to this Visual Element like so a bit lower: 'AppOptions2.RegisterCallback<MouseDownEvent>(AppOptions2_Clicked);'
+
+Scroll a bit lower and add the click function like so:
+    private void AppOptions2_Clicked(MouseDownEvent evt)
+    {
+        CurrentAppIndex = 2;//Smash&Fly
+
+        OptionsHolder.style.left = RepositionOptionsMenu(AppOptions2.worldBound.x, AppOptions2.worldBound.y).x;
+        OptionsHolder.style.top = RepositionOptionsMenu(AppOptions2.worldBound.x, AppOptions2.worldBound.y).y;
+
+        OptionsOutsideClicksDetector.style.display = DisplayStyle.Flex;//This makes it so the options menu is visibile. The options menu is a child of this object
+    }
+
+Go To the 'Store_Button_Clicked()' method lower in the script, and addd a couple new lines like this:
+            case 2:
+                AppTitle_Label.text = SmashAndFly.Title;
+                ProductImage.style.backgroundImage = SmashAndFly.Image;
+                LatestUpdateDate1_Label.text = SmashAndFly.LatestUpdate;
+                ReleaseDateDate2_Label.text = SmashAndFly.ReleaseDate;
+
+                if (!SmashAndFly.Android)
+                {
+                    Android_Image.style.display = DisplayStyle.None;
+                }
+
+                if (!SmashAndFly.Windows)
+                {
+                    Windows_Image.style.display = DisplayStyle.None;
+                }
+
+                Description_Label.text = SmashAndFly.description;
+
+                break;
+
+
+s

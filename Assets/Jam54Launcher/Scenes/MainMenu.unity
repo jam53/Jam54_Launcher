@@ -317,6 +317,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   InstallLanguageButtonBackground: {fileID: 2800000, guid: 7ac76e3bf29bb58409f1f8e456e534c2, type: 3}
+  AstroRun: {fileID: 11400000, guid: d15dd4a6b115b214ca86dd490d8e1dd9, type: 2}
+  SmashAndFly: {fileID: 11400000, guid: 9ab04bb8339075940b8d6ea231495f63, type: 2}
+  Stelexo: {fileID: 11400000, guid: 357fc23c83d3b184bb674d843e094163, type: 2}
+  AutoEditor: {fileID: 11400000, guid: c2d3b663eb453754e8d3826e28379fc5, type: 2}
+  DGCTimer: {fileID: 11400000, guid: 3013fe4106226524980f76e0533afbac, type: 2}
+  ImageSearcher: {fileID: 11400000, guid: dd7b556093d18d1458cf9ebc6f30c74f, type: 2}
+  IToW: {fileID: 11400000, guid: fd6b4edfc40341d47a31e47c107dc9a0, type: 2}
+  WToI: {fileID: 11400000, guid: 6984f13b78a751f4f92ab06a002a85d8, type: 2}
 --- !u!114 &2068746143
 MonoBehaviour:
   m_ObjectHideFlags: 0
