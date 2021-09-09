@@ -12,6 +12,7 @@ public class Navigation : MonoBehaviour
     //UI Objects
     public Button Programs_Unselected_Button, Games_Unselected_Button, InstallLocation_Button, Language_Button, Library_Button;
     public VisualElement Games, Programs, SettingsBackgroundCircle, Settings, HomeBackgroundCircle, InstallLocationPanel, LanguagePanel, Discord, YouTube, PlayStore, ProductPage;
+    public VisualElement AppOptions1, AppOptions2, AppOptions3, AppOptions4, AppOptions5, AppOptions6, AppOptions7, AppOptions8, OptionsHolder, OptionsOutsideClicksDetector;
 
     //Script variables
     private bool LastWindowPrograms; //true means 'programs' is open - false means 'games' is open; on the 'main menu'
@@ -19,6 +20,7 @@ public class Navigation : MonoBehaviour
     private bool MainWindowSelected; //if 'MainWindowSelected' and 'SettingsWindow' selected are both false
     private bool SettingsWindowSelected; //it means that the product page is open
     public Texture2D InstallLanguageButtonBackground;
+    private int CurrentAppIndex;
 
     private void OnEnable()
     {
@@ -44,7 +46,16 @@ public class Navigation : MonoBehaviour
         YouTube = rootVisualElement.Q<VisualElement>("YouTube");
         PlayStore = rootVisualElement.Q<VisualElement>("PlayStore");
         ProductPage = rootVisualElement.Q<VisualElement>("ProductPage");
-
+        AppOptions1 = rootVisualElement.Q<VisualElement>("AppOptions1");
+        AppOptions2 = rootVisualElement.Q<VisualElement>("AppOptions2");
+        AppOptions3 = rootVisualElement.Q<VisualElement>("AppOptions3");
+        AppOptions4 = rootVisualElement.Q<VisualElement>("AppOptions4");
+        AppOptions5 = rootVisualElement.Q<VisualElement>("AppOptions5");
+        AppOptions6 = rootVisualElement.Q<VisualElement>("AppOptions6");
+        AppOptions7 = rootVisualElement.Q<VisualElement>("AppOptions7");
+        AppOptions8 = rootVisualElement.Q<VisualElement>("AppOptions8");
+        OptionsHolder = rootVisualElement.Q<VisualElement>("OptionsHolder");
+        OptionsOutsideClicksDetector = rootVisualElement.Q<VisualElement>("OptionsOutsideClicksDetector");
         #endregion
 
 
@@ -63,6 +74,15 @@ public class Navigation : MonoBehaviour
         Discord.RegisterCallback<MouseDownEvent>(Discord_Clicked);
         YouTube.RegisterCallback<MouseDownEvent>(YouTube_Clicked);
         PlayStore.RegisterCallback<MouseDownEvent>(PlayStore_Clicked);
+        AppOptions1.RegisterCallback<MouseDownEvent>(AppOptions1_Clicked);
+        AppOptions2.RegisterCallback<MouseDownEvent>(AppOptions2_Clicked);
+        AppOptions3.RegisterCallback<MouseDownEvent>(AppOptions3_Clicked);
+        AppOptions4.RegisterCallback<MouseDownEvent>(AppOptions4_Clicked);
+        AppOptions5.RegisterCallback<MouseDownEvent>(AppOptions5_Clicked);
+        AppOptions6.RegisterCallback<MouseDownEvent>(AppOptions6_Clicked);
+        AppOptions7.RegisterCallback<MouseDownEvent>(AppOptions7_Clicked);
+        AppOptions8.RegisterCallback<MouseDownEvent>(AppOptions8_Clicked);
+        OptionsOutsideClicksDetector.RegisterCallback<MouseDownEvent>(OptionsOutsideClicksDetector_Clicked);
         #endregion
     }
 
@@ -202,6 +222,117 @@ public class Navigation : MonoBehaviour
     private void PlayStore_Clicked(MouseDownEvent evt)
     {
         Application.OpenURL("https://play.google.com/store/apps/details?id=com.jam54.AstroRun&hl=en");
+    }
+
+    private Vector2 RepositionOptionsMenu(float mouseX, float mouseY)
+    {
+        //Als we hebben geklikt linksboven in het scherm, dan positioneren we het settings menu zodanig dat het niet buiten ons canvas/window wordt gerenderd
+        if (mouseX <= Screen.width / 2 && mouseY <= Screen.height / 2)
+        {
+            return new Vector2(mouseX, mouseY);
+        }
+
+        //Als we hebben geklikt rechtsboven in het scherm, dan positioneren we het settings menu zodanig dat het niet buiten ons canvas/window wordt gerenderd
+        else if (mouseX >= Screen.width / 2 && mouseY <= Screen.height / 2)
+        {
+            return new Vector2(mouseX - OptionsHolder.resolvedStyle.width, mouseY);
+        }
+
+        //Als we hebben geklikt linksonder in het scherm, dan positioneren we het settings menu zodanig dat het niet buiten ons canvas/window wordt gerenderd
+        else if (mouseX <= Screen.width / 2 && mouseY >= Screen.height / 2)
+        {
+            return new Vector2(mouseX, mouseY - OptionsHolder.resolvedStyle.height);
+        }
+
+        //Als we hebben geklikt rechtsonder in het scherm, dan positioneren we het settings menu zodanig dat het niet buiten ons canvas/window wordt gerenderd
+        else if (mouseX >= Screen.width / 2 && mouseY >= Screen.height / 2)
+        {
+            return new Vector2(mouseX - OptionsHolder.resolvedStyle.width, mouseY - OptionsHolder.resolvedStyle.height);
+        }
+
+        else
+        {
+            Debug.LogError("Couldn't return coordinates");
+            return new Vector2(0, 0);
+        }
+    }
+
+    private void AppOptions1_Clicked (MouseDownEvent evt)
+    {
+        CurrentAppIndex = 1;
+
+        OptionsHolder.style.left = RepositionOptionsMenu(AppOptions1.worldBound.x, AppOptions1.worldBound.y).x;
+        OptionsHolder.style.top = RepositionOptionsMenu(AppOptions1.worldBound.x, AppOptions1.worldBound.y).y;
+
+        OptionsOutsideClicksDetector.style.display = DisplayStyle.Flex;//This makes it so the options menu is visibile. The options menu is a child of this object
+    }
+    private void AppOptions2_Clicked(MouseDownEvent evt)
+    {
+        CurrentAppIndex = 2;
+
+        OptionsHolder.style.left = RepositionOptionsMenu(AppOptions2.worldBound.x, AppOptions2.worldBound.y).x;
+        OptionsHolder.style.top = RepositionOptionsMenu(AppOptions2.worldBound.x, AppOptions2.worldBound.y).y;
+
+        OptionsOutsideClicksDetector.style.display = DisplayStyle.Flex;//This makes it so the options menu is visibile. The options menu is a child of this object
+    }
+    private void AppOptions3_Clicked(MouseDownEvent evt)
+    {
+        CurrentAppIndex = 3;
+
+        OptionsHolder.style.left = RepositionOptionsMenu(AppOptions3.worldBound.x, AppOptions3.worldBound.y).x;
+        OptionsHolder.style.top = RepositionOptionsMenu(AppOptions3.worldBound.x, AppOptions3.worldBound.y).y;
+
+        OptionsOutsideClicksDetector.style.display = DisplayStyle.Flex;//This makes it so the options menu is visibile. The options menu is a child of this object
+    }
+    private void AppOptions4_Clicked(MouseDownEvent evt)
+    {
+        CurrentAppIndex = 4;
+
+        OptionsHolder.style.left = RepositionOptionsMenu(AppOptions4.worldBound.x, AppOptions4.worldBound.y).x;
+        OptionsHolder.style.top = RepositionOptionsMenu(AppOptions4.worldBound.x, AppOptions4.worldBound.y).y;
+
+        OptionsOutsideClicksDetector.style.display = DisplayStyle.Flex;//This makes it so the options menu is visibile. The options menu is a child of this object
+    }
+    private void AppOptions5_Clicked(MouseDownEvent evt)
+    {
+        CurrentAppIndex = 5;
+
+        OptionsHolder.style.left = RepositionOptionsMenu(AppOptions5.worldBound.x, AppOptions5.worldBound.y).x;
+        OptionsHolder.style.top = RepositionOptionsMenu(AppOptions5.worldBound.x, AppOptions5.worldBound.y).y;
+
+        OptionsOutsideClicksDetector.style.display = DisplayStyle.Flex;//This makes it so the options menu is visibile. The options menu is a child of this object
+    }
+    private void AppOptions6_Clicked(MouseDownEvent evt)
+    {
+        CurrentAppIndex = 6;
+
+        OptionsHolder.style.left = RepositionOptionsMenu(AppOptions6.worldBound.x, AppOptions6.worldBound.y).x;
+        OptionsHolder.style.top = RepositionOptionsMenu(AppOptions6.worldBound.x, AppOptions6.worldBound.y).y;
+
+        OptionsOutsideClicksDetector.style.display = DisplayStyle.Flex;//This makes it so the options menu is visibile. The options menu is a child of this object
+    }
+    private void AppOptions7_Clicked(MouseDownEvent evt)
+    {
+        CurrentAppIndex = 7;
+
+        OptionsHolder.style.left = RepositionOptionsMenu(AppOptions7.worldBound.x, AppOptions7.worldBound.y).x;
+        OptionsHolder.style.top = RepositionOptionsMenu(AppOptions7.worldBound.x, AppOptions7.worldBound.y).y;
+
+        OptionsOutsideClicksDetector.style.display = DisplayStyle.Flex;//This makes it so the options menu is visibile. The options menu is a child of this object
+    }
+    private void AppOptions8_Clicked(MouseDownEvent evt)
+    {
+        CurrentAppIndex = 8;
+
+        OptionsHolder.style.left = RepositionOptionsMenu(AppOptions8.worldBound.x, AppOptions8.worldBound.y).x;
+        OptionsHolder.style.top = RepositionOptionsMenu(AppOptions8.worldBound.x, AppOptions8.worldBound.y).y;
+
+        OptionsOutsideClicksDetector.style.display = DisplayStyle.Flex;//This makes it so the options menu is visibile. The options menu is a child of this object
+    }
+
+    private void OptionsOutsideClicksDetector_Clicked(MouseDownEvent evt)
+    {
+        OptionsOutsideClicksDetector.style.display = DisplayStyle.None;
     }
 
     #endregion
