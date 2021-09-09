@@ -7,7 +7,7 @@ public class AppsInfo : ScriptableObject
 {
     public string Title;
 
-    public Texture2D Icon;
+    public Texture2D Image;
 
     public Color BackgroundColor;
 

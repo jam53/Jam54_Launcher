@@ -10,9 +10,11 @@ using UnityEngine.UIElements.Experimental;
 public class Navigation : MonoBehaviour
 {
     //UI Objects
-    public Button Programs_Unselected_Button, Games_Unselected_Button, InstallLocation_Button, Language_Button, Library_Button;
+    public Button Programs_Unselected_Button, Games_Unselected_Button, InstallLocation_Button, Language_Button, Library_Button, Store_Button;
     public VisualElement Games, Programs, SettingsBackgroundCircle, Settings, HomeBackgroundCircle, InstallLocationPanel, LanguagePanel, Discord, YouTube, PlayStore, ProductPage;
     public VisualElement AppOptions1, AppOptions2, AppOptions3, AppOptions4, AppOptions5, AppOptions6, AppOptions7, AppOptions8, OptionsHolder, OptionsOutsideClicksDetector;
+    public VisualElement ProductImage, Android_Image, Windows_Image;
+    public Label AppTitle_Label, LatestUpdateDate1_Label, ReleaseDateDate2_Label, Description_Label;
 
     //Script variables
     private bool LastWindowPrograms; //true means 'programs' is open - false means 'games' is open; on the 'main menu'
@@ -21,6 +23,7 @@ public class Navigation : MonoBehaviour
     private bool SettingsWindowSelected; //it means that the product page is open
     public Texture2D InstallLanguageButtonBackground;
     private int CurrentAppIndex;
+    public AppsInfo AstroRun, SmashAndFly, Stelexo, AutoEditor, DGCTimer, ImageSearcher, IToW, WToI;
 
     private void OnEnable()
     {
@@ -35,6 +38,7 @@ public class Navigation : MonoBehaviour
         InstallLocation_Button = rootVisualElement.Q<Button>("InstallLocation_Button");
         Language_Button = rootVisualElement.Q<Button>("Language_Button");
         Library_Button = rootVisualElement.Q<Button>("Library_Button");
+        Store_Button = rootVisualElement.Q<Button>("Store_Button");
         Games = rootVisualElement.Q<VisualElement>("Games");
         Programs = rootVisualElement.Q<VisualElement>("Programs");
         SettingsBackgroundCircle = rootVisualElement.Q<VisualElement>("SettingsBackgroundCircle");
@@ -56,6 +60,13 @@ public class Navigation : MonoBehaviour
         AppOptions8 = rootVisualElement.Q<VisualElement>("AppOptions8");
         OptionsHolder = rootVisualElement.Q<VisualElement>("OptionsHolder");
         OptionsOutsideClicksDetector = rootVisualElement.Q<VisualElement>("OptionsOutsideClicksDetector");
+        ProductImage = rootVisualElement.Q<VisualElement>("ProductImage");
+        Android_Image = rootVisualElement.Q<VisualElement>("Android_Image");
+        Windows_Image = rootVisualElement.Q<VisualElement>("Windows_Image");
+        AppTitle_Label = rootVisualElement.Q<Label>("AppTitle_Label");
+        LatestUpdateDate1_Label = rootVisualElement.Q<Label>("LatestUpdateDate1_Label");
+        ReleaseDateDate2_Label = rootVisualElement.Q<Label>("ReleaseDateDate2_Label");
+        Description_Label = rootVisualElement.Q<Label>("Description_Label");
         #endregion
 
 
@@ -65,6 +76,7 @@ public class Navigation : MonoBehaviour
         InstallLocation_Button.clicked += InstallLocation_Button_Clicked;
         Language_Button.clicked += Language_Button_Clicked;
         Library_Button.clicked += Library_Button_Clicked;
+        Store_Button.clicked += Store_Button_Clicked;
         SettingsBackgroundCircle.RegisterCallback<MouseDownEvent>(SettingsBackgroundCircle_Clicked);
         HomeBackgroundCircle.RegisterCallback<MouseDownEvent>(HomeBackgroundCircle_Clicked);
         SettingsBackgroundCircle.RegisterCallback<MouseOverEvent>(SettingsBackgroundCircle_Over);
@@ -259,7 +271,7 @@ public class Navigation : MonoBehaviour
 
     private void AppOptions1_Clicked (MouseDownEvent evt)
     {
-        CurrentAppIndex = 1;
+        CurrentAppIndex = 1;//AstroRun
 
         OptionsHolder.style.left = RepositionOptionsMenu(AppOptions1.worldBound.x, AppOptions1.worldBound.y).x;
         OptionsHolder.style.top = RepositionOptionsMenu(AppOptions1.worldBound.x, AppOptions1.worldBound.y).y;
@@ -268,7 +280,7 @@ public class Navigation : MonoBehaviour
     }
     private void AppOptions2_Clicked(MouseDownEvent evt)
     {
-        CurrentAppIndex = 2;
+        CurrentAppIndex = 2;//Smash&Fly
 
         OptionsHolder.style.left = RepositionOptionsMenu(AppOptions2.worldBound.x, AppOptions2.worldBound.y).x;
         OptionsHolder.style.top = RepositionOptionsMenu(AppOptions2.worldBound.x, AppOptions2.worldBound.y).y;
@@ -277,7 +289,7 @@ public class Navigation : MonoBehaviour
     }
     private void AppOptions3_Clicked(MouseDownEvent evt)
     {
-        CurrentAppIndex = 3;
+        CurrentAppIndex = 3;//Stelexo
 
         OptionsHolder.style.left = RepositionOptionsMenu(AppOptions3.worldBound.x, AppOptions3.worldBound.y).x;
         OptionsHolder.style.top = RepositionOptionsMenu(AppOptions3.worldBound.x, AppOptions3.worldBound.y).y;
@@ -286,7 +298,7 @@ public class Navigation : MonoBehaviour
     }
     private void AppOptions4_Clicked(MouseDownEvent evt)
     {
-        CurrentAppIndex = 4;
+        CurrentAppIndex = 4;//AutoEditor
 
         OptionsHolder.style.left = RepositionOptionsMenu(AppOptions4.worldBound.x, AppOptions4.worldBound.y).x;
         OptionsHolder.style.top = RepositionOptionsMenu(AppOptions4.worldBound.x, AppOptions4.worldBound.y).y;
@@ -295,7 +307,7 @@ public class Navigation : MonoBehaviour
     }
     private void AppOptions5_Clicked(MouseDownEvent evt)
     {
-        CurrentAppIndex = 5;
+        CurrentAppIndex = 5;//DGCTimer
 
         OptionsHolder.style.left = RepositionOptionsMenu(AppOptions5.worldBound.x, AppOptions5.worldBound.y).x;
         OptionsHolder.style.top = RepositionOptionsMenu(AppOptions5.worldBound.x, AppOptions5.worldBound.y).y;
@@ -304,7 +316,7 @@ public class Navigation : MonoBehaviour
     }
     private void AppOptions6_Clicked(MouseDownEvent evt)
     {
-        CurrentAppIndex = 6;
+        CurrentAppIndex = 6;//ImageSearcher
 
         OptionsHolder.style.left = RepositionOptionsMenu(AppOptions6.worldBound.x, AppOptions6.worldBound.y).x;
         OptionsHolder.style.top = RepositionOptionsMenu(AppOptions6.worldBound.x, AppOptions6.worldBound.y).y;
@@ -313,7 +325,7 @@ public class Navigation : MonoBehaviour
     }
     private void AppOptions7_Clicked(MouseDownEvent evt)
     {
-        CurrentAppIndex = 7;
+        CurrentAppIndex = 7;//IToW
 
         OptionsHolder.style.left = RepositionOptionsMenu(AppOptions7.worldBound.x, AppOptions7.worldBound.y).x;
         OptionsHolder.style.top = RepositionOptionsMenu(AppOptions7.worldBound.x, AppOptions7.worldBound.y).y;
@@ -322,7 +334,7 @@ public class Navigation : MonoBehaviour
     }
     private void AppOptions8_Clicked(MouseDownEvent evt)
     {
-        CurrentAppIndex = 8;
+        CurrentAppIndex = 8;//WtoI
 
         OptionsHolder.style.left = RepositionOptionsMenu(AppOptions8.worldBound.x, AppOptions8.worldBound.y).x;
         OptionsHolder.style.top = RepositionOptionsMenu(AppOptions8.worldBound.x, AppOptions8.worldBound.y).y;
@@ -333,6 +345,193 @@ public class Navigation : MonoBehaviour
     private void OptionsOutsideClicksDetector_Clicked(MouseDownEvent evt)
     {
         OptionsOutsideClicksDetector.style.display = DisplayStyle.None;
+    }
+
+    //Open the store page for this specific app
+    private void Store_Button_Clicked()
+    {
+        OptionsOutsideClicksDetector.style.display = DisplayStyle.None; //Close the options menu
+
+        Games.style.display = DisplayStyle.None; //Close the Games And Programs Windows
+        Programs.style.display = DisplayStyle.None;
+
+        ProductPage.style.display = DisplayStyle.Flex; //Open the ProductPage
+
+        switch (CurrentAppIndex)
+        {
+            case 1:
+                AppTitle_Label.text = AstroRun.Title;
+                ProductImage.style.backgroundImage = AstroRun.Image;
+                LatestUpdateDate1_Label.text = AstroRun.LatestUpdate;
+                ReleaseDateDate2_Label.text = AstroRun.ReleaseDate;
+
+                if (!AstroRun.Android)
+                {
+                    Android_Image.style.display = DisplayStyle.None;
+                }
+
+                if (!AstroRun.Windows)
+                {
+                    Windows_Image.style.display = DisplayStyle.None;
+                }
+
+                Description_Label.text = AstroRun.description;
+
+                break;
+
+
+            case 2:
+                AppTitle_Label.text = SmashAndFly.Title;
+                ProductImage.style.backgroundImage = SmashAndFly.Image;
+                LatestUpdateDate1_Label.text = SmashAndFly.LatestUpdate;
+                ReleaseDateDate2_Label.text = SmashAndFly.ReleaseDate;
+
+                if (!SmashAndFly.Android)
+                {
+                    Android_Image.style.display = DisplayStyle.None;
+                }
+
+                if (!SmashAndFly.Windows)
+                {
+                    Windows_Image.style.display = DisplayStyle.None;
+                }
+
+                Description_Label.text = SmashAndFly.description;
+
+                break;
+
+
+            case 3:
+                AppTitle_Label.text = Stelexo.Title;
+                ProductImage.style.backgroundImage = Stelexo.Image;
+                LatestUpdateDate1_Label.text = Stelexo.LatestUpdate;
+                ReleaseDateDate2_Label.text = Stelexo.ReleaseDate;
+
+                if (!Stelexo.Android)
+                {
+                    Android_Image.style.display = DisplayStyle.None;
+                }
+
+                if (!Stelexo.Windows)
+                {
+                    Windows_Image.style.display = DisplayStyle.None;
+                }
+
+                Description_Label.text = Stelexo.description;
+
+                break;
+
+
+            case 4:
+                AppTitle_Label.text = AutoEditor.Title;
+                ProductImage.style.backgroundImage = AutoEditor.Image;
+                LatestUpdateDate1_Label.text = AutoEditor.LatestUpdate;
+                ReleaseDateDate2_Label.text = AutoEditor.ReleaseDate;
+
+                if (!AutoEditor.Android)
+                {
+                    Android_Image.style.display = DisplayStyle.None;
+                }
+
+                if (!AutoEditor.Windows)
+                {
+                    Windows_Image.style.display = DisplayStyle.None;
+                }
+
+                Description_Label.text = AutoEditor.description;
+
+                break;
+
+
+            case 5:
+                AppTitle_Label.text = DGCTimer.Title;
+                ProductImage.style.backgroundImage = DGCTimer.Image;
+                LatestUpdateDate1_Label.text = DGCTimer.LatestUpdate;
+                ReleaseDateDate2_Label.text = DGCTimer.ReleaseDate;
+
+                if (!DGCTimer.Android)
+                {
+                    Android_Image.style.display = DisplayStyle.None;
+                }
+
+                if (!DGCTimer.Windows)
+                {
+                    Windows_Image.style.display = DisplayStyle.None;
+                }
+
+                Description_Label.text = DGCTimer.description;
+
+                break;
+
+
+            case 6:
+                AppTitle_Label.text = ImageSearcher.Title;
+                ProductImage.style.backgroundImage = ImageSearcher.Image;
+                ProductImage.style.backgroundColor = ImageSearcher.BackgroundColor;
+                LatestUpdateDate1_Label.text = ImageSearcher.LatestUpdate;
+                ReleaseDateDate2_Label.text = ImageSearcher.ReleaseDate;
+
+                if (!ImageSearcher.Android)
+                {
+                    Android_Image.style.display = DisplayStyle.None;
+                }
+
+                if (!ImageSearcher.Windows)
+                {
+                    Windows_Image.style.display = DisplayStyle.None;
+                }
+
+                Description_Label.text = ImageSearcher.description;
+
+                break;
+
+
+            case 7:
+                AppTitle_Label.text = IToW.Title;
+                ProductImage.style.backgroundImage = IToW.Image;
+                LatestUpdateDate1_Label.text = IToW.LatestUpdate;
+                ReleaseDateDate2_Label.text = IToW.ReleaseDate;
+
+                if (!IToW.Android)
+                {
+                    Android_Image.style.display = DisplayStyle.None;
+                }
+
+                if (!IToW.Windows)
+                {
+                    Windows_Image.style.display = DisplayStyle.None;
+                }
+
+                Description_Label.text = IToW.description;
+
+                break;
+
+
+            case 8:
+                AppTitle_Label.text = WToI.Title;
+                ProductImage.style.backgroundImage = WToI.Image;
+                LatestUpdateDate1_Label.text = WToI.LatestUpdate;
+                ReleaseDateDate2_Label.text = WToI.ReleaseDate;
+
+                if (!WToI.Android)
+                {
+                    Android_Image.style.display = DisplayStyle.None;
+                }
+
+                if (!WToI.Windows)
+                {
+                    Windows_Image.style.display = DisplayStyle.None;
+                }
+
+                Description_Label.text = WToI.description;
+
+                break;
+
+            default:
+                Debug.LogError("Couldn't open Product page correctly - from OptionsMenu");
+                break;
+        }
+
     }
 
     #endregion
