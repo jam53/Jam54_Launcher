@@ -10,8 +10,8 @@ using UnityEngine.UIElements.Experimental;
 public class Navigation : MonoBehaviour
 {
     //UI Objects
-    public Button Programs_Unselected_Button, Games_Unselected_Button, InstallLocation_Button, Language_Button;
-    public VisualElement Games, Programs, SettingsBackgroundCircle, Settings, HomeBackgroundCircle, InstallLocationPanel, LanguagePanel, Discord, YouTube, PlayStore;
+    public Button Programs_Unselected_Button, Games_Unselected_Button, InstallLocation_Button, Language_Button, Library_Button;
+    public VisualElement Games, Programs, SettingsBackgroundCircle, Settings, HomeBackgroundCircle, InstallLocationPanel, LanguagePanel, Discord, YouTube, PlayStore, ProductPage;
 
     //Script variables
     private bool LastWindowPrograms; //true means 'programs' is open - false means 'games' is open; on the 'main menu'
@@ -32,6 +32,7 @@ public class Navigation : MonoBehaviour
         Games_Unselected_Button = rootVisualElement.Q<Button>("Games_Unselected_Button");
         InstallLocation_Button = rootVisualElement.Q<Button>("InstallLocation_Button");
         Language_Button = rootVisualElement.Q<Button>("Language_Button");
+        Library_Button = rootVisualElement.Q<Button>("Library_Button");
         Games = rootVisualElement.Q<VisualElement>("Games");
         Programs = rootVisualElement.Q<VisualElement>("Programs");
         SettingsBackgroundCircle = rootVisualElement.Q<VisualElement>("SettingsBackgroundCircle");
@@ -42,6 +43,7 @@ public class Navigation : MonoBehaviour
         Discord = rootVisualElement.Q<VisualElement>("Discord");
         YouTube = rootVisualElement.Q<VisualElement>("YouTube");
         PlayStore = rootVisualElement.Q<VisualElement>("PlayStore");
+        ProductPage = rootVisualElement.Q<VisualElement>("ProductPage");
 
         #endregion
 
@@ -51,6 +53,7 @@ public class Navigation : MonoBehaviour
         Games_Unselected_Button.clicked += Games_Unselected_Button_Clicked;
         InstallLocation_Button.clicked += InstallLocation_Button_Clicked;
         Language_Button.clicked += Language_Button_Clicked;
+        Library_Button.clicked += Library_Button_Clicked;
         SettingsBackgroundCircle.RegisterCallback<MouseDownEvent>(SettingsBackgroundCircle_Clicked);
         HomeBackgroundCircle.RegisterCallback<MouseDownEvent>(HomeBackgroundCircle_Clicked);
         SettingsBackgroundCircle.RegisterCallback<MouseOverEvent>(SettingsBackgroundCircle_Over);
@@ -110,6 +113,7 @@ public class Navigation : MonoBehaviour
             Settings.style.display = DisplayStyle.Flex;
         }
 
+        ProductPage.style.display = DisplayStyle.None;
 
         SettingsBackgroundCircle.style.backgroundColor = SideBarIconsDefaultColor; //'Enable' the background so it looks selected
         HomeBackgroundCircle.style.backgroundColor = Color.clear; //Make the background transparent so it looks unselected
@@ -133,6 +137,8 @@ public class Navigation : MonoBehaviour
             Settings.style.display = DisplayStyle.None;
             Programs.style.display = DisplayStyle.Flex;
         }
+
+        ProductPage.style.display = DisplayStyle.None;
 
         HomeBackgroundCircle.style.backgroundColor = SideBarIconsDefaultColor; //'Enable' the background so it looks selected
         SettingsBackgroundCircle.style.backgroundColor = Color.clear; //Make the background transparent so it looks unselected
@@ -162,6 +168,24 @@ public class Navigation : MonoBehaviour
 
         InstallLocationPanel.style.display = DisplayStyle.None;//Close install location menu
         LanguagePanel.style.display = DisplayStyle.Flex; //Open language panel menu
+    }
+
+    private void Library_Button_Clicked()
+    {
+        if (!LastWindowPrograms)
+        {
+            ProductPage.style.display = DisplayStyle.None;
+            Games.style.display = DisplayStyle.Flex;
+        }
+
+        else if (LastWindowPrograms)
+        {
+            ProductPage.style.display = DisplayStyle.None;
+            Programs.style.display = DisplayStyle.Flex;
+        }
+
+        HomeBackgroundCircle.style.backgroundColor = SideBarIconsDefaultColor; //'Enable' the background so it looks selected
+        SettingsBackgroundCircle.style.backgroundColor = Color.clear; //Make the background transparent so it looks unselected
     }
 
 
