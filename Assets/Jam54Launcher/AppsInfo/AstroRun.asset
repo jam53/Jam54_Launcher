@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 259abec39bd4acd428a7bf282bbb6639, type: 3}
+  m_Name: AstroRun
+  m_EditorClassIdentifier: 
+  Title: AstroRun
+  Icon: {fileID: 2800000, guid: 39933fd16f00e774d920b730f9ba3ca0, type: 3}
+  LatestUpdate: 12 July, 2021
+  ReleaseDate: 15 May, 2020
+  Android: 1
+  Windows: 0
+  description: AstroRun is an indie game developed by a small team of three people.
+    It's about a lost adventurer in space, who must complete various levels that
+    are all part of a diverse collection of worlds. Each world is based around a
+    certain theme and has its own unique intractable objects such as trampolines,
+    falling spikes, enemies, turrets and much more. Along the way, the adventurer
+    can collect various items which can be used to purchase new packages and accessories.
