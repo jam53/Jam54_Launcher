@@ -88,6 +88,7 @@ When that command has been completed, Delete everything in the Jam54LauncherStar
 Also Delete the Jam54Launcher.0.1.0.nupkg in the rootfolder of the project
 
 Open the newly created Releases folder in the rootfolder of the project
+Do not delete this Releases folder, leave it for the next update. So a delta package can be created
 
 //TODO [copy this to github or something]
 

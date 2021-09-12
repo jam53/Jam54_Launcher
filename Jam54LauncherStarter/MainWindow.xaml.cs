@@ -29,6 +29,11 @@ namespace Jam54LauncherStarter
             await CheckForUpdates();
             await RemoveUnderscoreInFileNames();
             await CreateRegistryUninstallKey();
+
+            //Als we dit niet doen, wordt de value DisplayName aangemaakt in de registry, maar is de waarde, zijnde Jam54Launcher er niet
+            RegistryKey key = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Jam54Launcher", true);
+            key.SetValue("DisplayName", "Jam54Launcher");
+
             await LaunchJam54LauncherMain();
         }
 
@@ -70,12 +75,20 @@ namespace Jam54LauncherStarter
 
             if (key == null)
             {
+                key = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Jam54Launcher", true);
+
                 key.SetValue("DisplayName", "Jam54Launcher");
                 key.SetValue("Publisher", "Jam54");
-                key.SetValue("DisplayIcon", Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\Local\Jam54Launcher\Jam54Launcher.exe");
+
+                //System.Drawing.Icon icon = System.Drawing.Icon.ExtractAssociatedIcon(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\Local\Jam54Launcher\Jam54Launcher.exe");
+                //FileStream fileStream = new FileStream(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\Local\Jam54Launcher\Jam54Launcher.ico", FileMode.Create);
+                //icon.Save(fileStream);
+                //key.SetValue("DisplayIcon", Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\Local\Jam54Launcher\Jam54Launcher.ico");
+                
                 Assembly assembly = Assembly.GetExecutingAssembly();
                 FileVersionInfo AppVersion = FileVersionInfo.GetVersionInfo(assembly.Location);
                 key.SetValue("DisplayVersion", AppVersion.FileVersion);
+                
                 key.SetValue("Contact", "jam54.help@outlook.com");
                 key.SetValue("InstallDate", DateTime.Now.ToString("yyyyMMdd"));
                 key.SetValue("InstallLocation", Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\Local\Jam54Launcher");
@@ -90,7 +103,11 @@ namespace Jam54LauncherStarter
 
             else if (key != null)
             {
+                Assembly assembly = Assembly.GetExecutingAssembly();
+                FileVersionInfo AppVersion = FileVersionInfo.GetVersionInfo(assembly.Location);
+                key.SetValue("DisplayVersion", AppVersion.FileVersion);
 
+                key.Close();
             }
         }
 
