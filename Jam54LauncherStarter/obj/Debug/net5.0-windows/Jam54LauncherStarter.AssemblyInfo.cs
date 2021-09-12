@@ -13,11 +13,11 @@ using System.Reflection;
 
 [assembly: System.Reflection.AssemblyCompanyAttribute("Jam54Launcher")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
-[assembly: System.Reflection.AssemblyFileVersionAttribute("0.5.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("0.5.0")]
+[assembly: System.Reflection.AssemblyFileVersionAttribute("0.7.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("0.7.0")]
 [assembly: System.Reflection.AssemblyProductAttribute("Jam54Launcher")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Jam54Launcher")]
-[assembly: System.Reflection.AssemblyVersionAttribute("0.5.0.0")]
+[assembly: System.Reflection.AssemblyVersionAttribute("0.7.0.0")]
 [assembly: System.Runtime.Versioning.TargetPlatformAttribute("Windows7.0")]
 [assembly: System.Runtime.Versioning.SupportedOSPlatformAttribute("Windows7.0")]
 

@@ -41,4 +41,5 @@ Icon?
 ehthumbs.db
 Thumbs.db
 
-!Jam54LauncherStarter/**
+!Jam54LauncherStarter/
+/Jam54LauncherStarter/bin
