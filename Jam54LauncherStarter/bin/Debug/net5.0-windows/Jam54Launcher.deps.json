@@ -6,7 +6,7 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v5.0": {
-      "Jam54Launcher/0.4.0": {
+      "Jam54Launcher/0.7.0": {
         "dependencies": {
           "System.Drawing.Common": "5.0.2",
           "System.IO.Packaging": "5.0.0",
@@ -789,7 +789,7 @@
     }
   },
   "libraries": {
-    "Jam54Launcher/0.4.0": {
+    "Jam54Launcher/0.7.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
