@@ -37,6 +37,8 @@ Open the **MainMenu scene**, and hit **play.**
 
 Inside the Unity project's rootfolder, there is a Visual Studio C# WPF project located under the folder Jam54LauncherStarter. This instanciates Squirrel and therefore updates the Jam54Launcher. Once the Jam54Launcher has succesfully been updated, the Jam54LauncherStarter will launch the Jam54Launcher.
 
+Besides the Jam54LauncherStarter, there is another Visual Studio project called HashesCreator. This is a console application made using .NET core. It's purpose is to create a textfile that contains the name + the hash of all the files in folder selected by the developer. Using this textfile we can easily figure out what part of a certian program/game has been changed. And therefore only update those specific files when there is an update. Instead of having to download the whole application.
+
 ## Development of the Jam54 Launcher
 
 The main reason behind the development  of the launcher, was to create one unified place for people to download all the games/programs that have been developed by jam54. Instead of having to search for download links on that are scattered all around the [official website.](https://jam-54.wixsite.com/jam54)
