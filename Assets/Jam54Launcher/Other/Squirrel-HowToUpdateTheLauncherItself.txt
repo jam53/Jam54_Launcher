@@ -82,7 +82,7 @@ Close The NuGet Explorer
 
 Back to Visual studio
 View > Other Windows > Package Manager Console
-Run the following command: Squirrel --releasify Jam54Launcher.0.1.0.nupkg
+Run the following command: Squirrel --releasify Jam54Launcher.1.0.0.nupkg
 
 When that command has been completed, Delete everything in the Jam54LauncherStarter\bin\Release\net5.0 folder
 Also Delete the Jam54Launcher.0.1.0.nupkg in the rootfolder of the project
@@ -90,6 +90,14 @@ Also Delete the Jam54Launcher.0.1.0.nupkg in the rootfolder of the project
 Open the newly created Releases folder in the rootfolder of the project
 Do not delete this Releases folder, leave it for the next update. So a delta package can be created
 
-//TODO [copy this to github or something]
 
+login to jamhorn's github
 
+Make atleast one commit since the last release, so that GitHub marks the release as latest. Update readme for example.
+
+Create a new GitHub release in your repository matching your current release version (e.g., 1.0.0).
+
+Upload all of the files from Releases as assets of the GitHub release, not the folder itself
+	You don't really need to upload the .msi file, since we will only be using the .exe
+
+Publish the release
