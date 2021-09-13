@@ -14,7 +14,7 @@ public class Navigation : MonoBehaviour
     public VisualElement Games, Programs, SettingsBackgroundCircle, Settings, HomeBackgroundCircle, InstallLocationPanel, LanguagePanel, Discord, YouTube, PlayStore, ProductPage;
     public VisualElement AppOptions1, AppOptions2, AppOptions3, AppOptions4, AppOptions5, AppOptions6, AppOptions7, AppOptions8, OptionsHolder, OptionsOutsideClicksDetector;
     public VisualElement ProductImage, Android_Image, Windows_Image;
-    public Label AppTitle_Label, LatestUpdateDate1_Label, ReleaseDateDate2_Label, Description_Label;
+    public Label AppTitle_Label, LatestUpdateDate1_Label, ReleaseDateDate2_Label, Description_Label, VersionNumber;
 
     //Script variables
     private bool LastWindowPrograms; //true means 'programs' is open - false means 'games' is open; on the 'main menu'
@@ -67,6 +67,7 @@ public class Navigation : MonoBehaviour
         LatestUpdateDate1_Label = rootVisualElement.Q<Label>("LatestUpdateDate1_Label");
         ReleaseDateDate2_Label = rootVisualElement.Q<Label>("ReleaseDateDate2_Label");
         Description_Label = rootVisualElement.Q<Label>("Description_Label");
+        VersionNumber = rootVisualElement.Q<Label>("VersionNumber");
         #endregion
 
 
@@ -103,6 +104,7 @@ public class Navigation : MonoBehaviour
     {
         SideBarIconsDefaultColor.r = 0.1411765f; SideBarIconsDefaultColor.g = 0.1490196f; SideBarIconsDefaultColor.b = 0.2313726f; SideBarIconsDefaultColor.a = 1f;
         MainWindowSelected = true;
+        VersionNumber.text = Application.version;
     }
 
     // Update is called once per frame
