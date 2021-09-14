@@ -41,9 +41,13 @@ Icon?
 ehthumbs.db
 Thumbs.db
 
+!Jam54LauncherStarter/**
+
 Jam54LauncherStarter/bin
 Jam54LauncherStarter/obj
 Jam54LauncherStarter/Releases
+
+!HashesCreator/**
 
 HashesCreator/bin
 HashesCreator/obj
