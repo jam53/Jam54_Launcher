@@ -66,3 +66,10 @@ Go To the 'Store_Button_Clicked()' method lower in the script, and addd a couple
                 break;
 
 
+-----
+
+Open MenuData.cs
+
+Add the neceassary variables
+
+
