@@ -14,7 +14,7 @@ The programs/games available within the launcher can either be updated manually 
 Furthermore, the launcher can be used in a variety of languages and the user can choose a specific install location.
 
 ## Downloading the launcher
-You can download the launcher from [here]().
+You can download the launcher from [here](https://jam-54.wixsite.com/jam54/download).
 
 ---
 
