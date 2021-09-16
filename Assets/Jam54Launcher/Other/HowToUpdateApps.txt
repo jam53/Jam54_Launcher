@@ -1,0 +1,7 @@
+Open the HashesCreator visual studio project
+
+In the solutions explorer > rightclick > publish > hit Publish at the top
+
+now go to HashesCreator\bin\Publish
+
+Delete the .pdb file
