@@ -72,4 +72,6 @@ Open MenuData.cs
 
 Add the neceassary variables
 
+In SaveLoadManager.cs > LoadSaveFile() > # region load default values, nieuwe values toevoegen
+
 
