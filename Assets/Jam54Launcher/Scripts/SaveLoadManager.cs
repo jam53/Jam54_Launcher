@@ -9,7 +9,7 @@ public class SaveLoadManager : MonoBehaviour
 
     private void Awake()
     {
-        QualitySettings.vSyncCount = 0;
+        QualitySettings.vSyncCount = 0; //If we don't disable vsync, the fps would be locked to the monitors refreshrate. E.g. 144fps, which is wayyy higher then what we aim for (30 fps)
         Application.targetFrameRate = 30;
 
         if (SaveLoadManagerr == null)
@@ -68,13 +68,13 @@ public class SaveLoadManager : MonoBehaviour
         menuData.Language = 0; //The language the launcher displays it's content in. This is an index that corresponds with a certain language, depending on the dropdown in the settings menu
         #endregion
 
-        if (File.Exists(Application.persistentDataPath + @"/Jam54Launcher.json"))
+        if (File.Exists(Application.persistentDataPath + @"/Jam54Launcher.json"))//Check if the savefile exists, before trying to load it in
         {
-            string json = File.ReadAllText(Application.persistentDataPath + @"/Jam54Launcher.json"); //Load user's save file and overwrite default values. Leave new default values that aren't present in the user's save file untouched
-            JsonUtility.FromJsonOverwrite(json, menuData);
+            string json = File.ReadAllText(Application.persistentDataPath + @"/Jam54Launcher.json"); //Load the save file into a string
+            JsonUtility.FromJsonOverwrite(json, menuData); //Load user's save file and use it to overwrite the default values defined above, with the users data. Leave new default values that aren't present in the user's save file untouched
         }
 
-        SaveJSONToDisk();
+        SaveJSONToDisk(); //Normally we would just save the exact same json that's already saved to the drive. The only exception to this is when there are new default values, then we will actually write new stuff to the save file in this line
     }
 
     public void SaveJSONToDisk()
