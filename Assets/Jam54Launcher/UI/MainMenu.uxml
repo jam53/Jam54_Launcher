@@ -25,7 +25,7 @@
                 <ui:ScrollView scroll-deceleration-rate="0,135" elasticity="0,1" name="GamesAndPrograms_ScrollView">
                     <ui:VisualElement name="AppsHolder" style="flex-direction: row; flex-wrap: wrap;">
                         <ui:VisualElement name="App1Holder" style="background-color: rgba(0, 255, 218, 0); width: 188px; height: 234px; margin-left: 24px; margin-right: 24px; margin-top: 24px; margin-bottom: 24px; left: 35px; top: 0;">
-                            <ui:VisualElement name="Image" class="App_Image" style="-unity-background-image-tint-color: rgba(255, 255, 255, 255);">
+                            <ui:VisualElement name="Image1" class="App_Image">
                                 <ui:VisualElement name="UpdateDownloadIcon" style="background-image: url(&apos;project://database/Assets/Jam54Launcher/Textures/Update.png?fileID=2800000&amp;guid=c0af1200e8526be41976bc5418a3caa3&amp;type=3#Update&apos;); width: 23px; height: 23px; margin-left: 13px; margin-right: 13px; margin-top: 13px; margin-bottom: 13px;" />
                             </ui:VisualElement>
                             <ui:VisualElement name="BottomBar1" style="flex-grow: 1; align-items: center; justify-content: center; margin-top: 6px;">
@@ -38,7 +38,7 @@
                             </ui:VisualElement>
                         </ui:VisualElement>
                         <ui:VisualElement name="App2Holder" style="background-color: rgba(0, 255, 218, 0); width: 188px; height: 234px; margin-left: 24px; margin-right: 24px; margin-top: 24px; margin-bottom: 24px; left: 35px; top: 0;">
-                            <ui:VisualElement name="Image" class="App_Image" style="width: 188px; height: 188px; background-image: url(&apos;project://database/Assets/Jam54Launcher/Textures/Smash&amp;Fly.png?fileID=2800000&amp;guid=679999c2f1bb9964aa0c080a80755460&amp;type=3#Smash&amp;Fly&apos;); border-top-left-radius: 30px; border-bottom-left-radius: 30px; border-top-right-radius: 30px; border-bottom-right-radius: 30px; flex-direction: row-reverse; align-items: flex-end;">
+                            <ui:VisualElement name="Image2" class="App_Image" style="width: 188px; height: 188px; background-image: url(&apos;project://database/Assets/Jam54Launcher/Textures/Smash&amp;Fly.png?fileID=2800000&amp;guid=679999c2f1bb9964aa0c080a80755460&amp;type=3#Smash&amp;Fly&apos;); border-top-left-radius: 30px; border-bottom-left-radius: 30px; border-top-right-radius: 30px; border-bottom-right-radius: 30px; flex-direction: row-reverse; align-items: flex-end;">
                                 <ui:VisualElement name="UpdateDownloadIcon" style="background-image: url(&apos;project://database/Assets/Jam54Launcher/Textures/Update.png?fileID=2800000&amp;guid=c0af1200e8526be41976bc5418a3caa3&amp;type=3#Update&apos;); width: 23px; height: 23px; margin-left: 13px; margin-right: 13px; margin-top: 13px; margin-bottom: 13px;" />
                             </ui:VisualElement>
                             <ui:VisualElement name="BottomBar" style="flex-grow: 1; align-items: center; justify-content: center; margin-top: 6px;">
@@ -51,7 +51,7 @@
                             </ui:VisualElement>
                         </ui:VisualElement>
                         <ui:VisualElement name="App3Holder" style="background-color: rgba(0, 255, 218, 0); width: 188px; height: 234px; margin-left: 24px; margin-right: 24px; margin-top: 24px; margin-bottom: 24px; left: 35px; top: 0;">
-                            <ui:VisualElement name="Image" class="App_Image" style="width: 188px; height: 188px; background-image: url(&apos;project://database/Assets/Jam54Launcher/Textures/Stelexo.png?fileID=2800000&amp;guid=070a87886b8b492429e1679237fa7202&amp;type=3#Stelexo&apos;); border-top-left-radius: 30px; border-bottom-left-radius: 30px; border-top-right-radius: 30px; border-bottom-right-radius: 30px; flex-direction: row-reverse; align-items: flex-end;">
+                            <ui:VisualElement name="Image3" class="App_Image" style="width: 188px; height: 188px; background-image: url(&apos;project://database/Assets/Jam54Launcher/Textures/Stelexo.png?fileID=2800000&amp;guid=070a87886b8b492429e1679237fa7202&amp;type=3#Stelexo&apos;); border-top-left-radius: 30px; border-bottom-left-radius: 30px; border-top-right-radius: 30px; border-bottom-right-radius: 30px; flex-direction: row-reverse; align-items: flex-end;">
                                 <ui:VisualElement name="UpdateDownloadIcon" style="background-image: url(&apos;project://database/Assets/Jam54Launcher/Textures/Update.png?fileID=2800000&amp;guid=c0af1200e8526be41976bc5418a3caa3&amp;type=3#Update&apos;); width: 23px; height: 23px; margin-left: 13px; margin-right: 13px; margin-top: 13px; margin-bottom: 13px;" />
                             </ui:VisualElement>
                             <ui:VisualElement name="BottomBar" style="flex-grow: 1; align-items: center; justify-content: center; margin-top: 6px;">
@@ -77,7 +77,7 @@
                 <ui:ScrollView scroll-deceleration-rate="0,135" elasticity="0,1" name="GamesAndPrograms_ScrollView">
                     <ui:VisualElement name="AppsHolder" style="flex-wrap: wrap; flex-direction: row;">
                         <ui:VisualElement name="App1Holder" style="background-color: rgba(0, 255, 218, 0); width: 188px; height: 234px; margin-left: 24px; margin-right: 24px; margin-top: 24px; margin-bottom: 24px; left: 35px; top: 0; display: flex;">
-                            <ui:VisualElement name="Image" class="Programs_Image">
+                            <ui:VisualElement name="Image4" class="Programs_Image">
                                 <ui:VisualElement name="UpdateDownloadIcon" style="background-image: url(&apos;project://database/Assets/Jam54Launcher/Textures/Update.png?fileID=2800000&amp;guid=c0af1200e8526be41976bc5418a3caa3&amp;type=3#Update&apos;); width: 23px; height: 23px; margin-left: 13px; margin-right: 13px; margin-top: 13px; margin-bottom: 13px;" />
                             </ui:VisualElement>
                             <ui:VisualElement name="BottomBar" style="flex-grow: 1; align-items: center; justify-content: center; margin-top: 6px;">
@@ -90,7 +90,7 @@
                             </ui:VisualElement>
                         </ui:VisualElement>
                         <ui:VisualElement name="App2Holder" style="background-color: rgba(0, 255, 218, 0); width: 188px; height: 234px; margin-left: 24px; margin-right: 24px; margin-top: 24px; margin-bottom: 24px; left: 35px; top: 0; display: flex;">
-                            <ui:VisualElement name="Image" class="Programs_Image" style="width: 188px; height: 188px; background-image: url(&apos;project://database/Assets/Jam54Launcher/Textures/DGCTimer.png?fileID=2800000&amp;guid=d7e39fe4535235245a2f0c665146a39b&amp;type=3#DGCTimer&apos;); border-top-left-radius: 30px; border-bottom-left-radius: 30px; border-top-right-radius: 30px; border-bottom-right-radius: 30px; flex-direction: row-reverse; align-items: flex-end;">
+                            <ui:VisualElement name="Image5" class="Programs_Image" style="width: 188px; height: 188px; background-image: url(&apos;project://database/Assets/Jam54Launcher/Textures/DGCTimer.png?fileID=2800000&amp;guid=d7e39fe4535235245a2f0c665146a39b&amp;type=3#DGCTimer&apos;); border-top-left-radius: 30px; border-bottom-left-radius: 30px; border-top-right-radius: 30px; border-bottom-right-radius: 30px; flex-direction: row-reverse; align-items: flex-end;">
                                 <ui:VisualElement name="UpdateDownloadIcon" style="background-image: url(&apos;project://database/Assets/Jam54Launcher/Textures/Update.png?fileID=2800000&amp;guid=c0af1200e8526be41976bc5418a3caa3&amp;type=3#Update&apos;); width: 23px; height: 23px; margin-left: 13px; margin-right: 13px; margin-top: 13px; margin-bottom: 13px;" />
                             </ui:VisualElement>
                             <ui:VisualElement name="BottomBar" style="flex-grow: 1; align-items: center; justify-content: center; margin-top: 6px;">
@@ -103,7 +103,7 @@
                             </ui:VisualElement>
                         </ui:VisualElement>
                         <ui:VisualElement name="App3Holder" style="background-color: rgba(0, 255, 218, 0); width: 188px; height: 234px; margin-left: 24px; margin-right: 24px; margin-top: 24px; margin-bottom: 24px; left: 35px; top: 0; display: flex;">
-                            <ui:VisualElement name="Image" class="Programs_AdjustedBackground_Image">
+                            <ui:VisualElement name="Image6" class="Programs_AdjustedBackground_Image">
                                 <ui:VisualElement name="UpdateDownloadIcon" style="background-image: url(&apos;project://database/Assets/Jam54Launcher/Textures/Update.png?fileID=2800000&amp;guid=c0af1200e8526be41976bc5418a3caa3&amp;type=3#Update&apos;); width: 23px; height: 23px; margin-left: 13px; margin-right: 13px; margin-top: 13px; margin-bottom: 13px;" />
                             </ui:VisualElement>
                             <ui:VisualElement name="BottomBar" style="flex-grow: 1; align-items: center; justify-content: center; margin-top: 6px;">
@@ -116,7 +116,7 @@
                             </ui:VisualElement>
                         </ui:VisualElement>
                         <ui:VisualElement name="App4Holder" style="background-color: rgba(0, 255, 218, 0); width: 188px; height: 234px; margin-left: 24px; margin-right: 24px; margin-top: 24px; margin-bottom: 24px; left: 35px; top: 0; display: flex;">
-                            <ui:VisualElement name="Image" class="Programs_AdjustedTint_Image">
+                            <ui:VisualElement name="Image7" class="Programs_AdjustedTint_Image">
                                 <ui:VisualElement name="UpdateDownloadIcon" style="background-image: url(&apos;project://database/Assets/Jam54Launcher/Textures/Update.png?fileID=2800000&amp;guid=c0af1200e8526be41976bc5418a3caa3&amp;type=3#Update&apos;); width: 23px; height: 23px; margin-left: 13px; margin-right: 13px; margin-top: 13px; margin-bottom: 13px;" />
                             </ui:VisualElement>
                             <ui:VisualElement name="BottomBar" style="flex-grow: 1; align-items: center; justify-content: center; margin-top: 6px;">
@@ -129,7 +129,7 @@
                             </ui:VisualElement>
                         </ui:VisualElement>
                         <ui:VisualElement name="App5Holder" style="background-color: rgba(0, 255, 218, 0); width: 188px; height: 234px; margin-left: 24px; margin-right: 24px; margin-top: 24px; margin-bottom: 24px; left: 35px; top: 0; display: flex;">
-                            <ui:VisualElement name="Image" class="Programs_AdjustedTint2_Image">
+                            <ui:VisualElement name="Image8" class="Programs_AdjustedTint2_Image">
                                 <ui:VisualElement name="UpdateDownloadIcon" style="background-image: url(&apos;project://database/Assets/Jam54Launcher/Textures/Update.png?fileID=2800000&amp;guid=c0af1200e8526be41976bc5418a3caa3&amp;type=3#Update&apos;); width: 23px; height: 23px; margin-left: 13px; margin-right: 13px; margin-top: 13px; margin-bottom: 13px;" />
                             </ui:VisualElement>
                             <ui:VisualElement name="BottomBar" style="flex-grow: 1; align-items: center; justify-content: center; margin-top: 6px;">
