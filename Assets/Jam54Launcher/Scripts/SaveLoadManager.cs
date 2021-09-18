@@ -83,14 +83,14 @@ public class SaveLoadManager : MonoBehaviour
         File.WriteAllText(Application.persistentDataPath + @"/Jam54Launcher.json", json);
     }
 
-    public void Save()
+    private void Save()
     {
         //use this
         // SaveLoadManager.SaveLoadManagerr.menuData.<variable name> = <value>; SaveLoadManager.SaveLoadManagerr.SaveJSONToDisk();
         //to save values from other scripts
     }
 
-    public void Load()
+    private void Load()
     {
         //use this
         // SaveLoadManager.SaveLoadManagerr.menuData.<variable name>>;

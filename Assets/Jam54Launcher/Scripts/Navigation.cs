@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,7 +15,7 @@ public class Navigation : MonoBehaviour
     public VisualElement Games, Programs, SettingsBackgroundCircle, Settings, HomeBackgroundCircle, InstallLocationPanel, LanguagePanel, Discord, YouTube, PlayStore, ProductPage;
     public VisualElement AppOptions1, AppOptions2, AppOptions3, AppOptions4, AppOptions5, AppOptions6, AppOptions7, AppOptions8, OptionsHolder, OptionsOutsideClicksDetector;
     public VisualElement ProductImage, Android_Image, Windows_Image, PathBackground;
-    public Label AppTitle_Label, LatestUpdateDate1_Label, ReleaseDateDate2_Label, Description_Label, VersionNumber;
+    public Label AppTitle_Label, LatestUpdateDate1_Label, ReleaseDateDate2_Label, Description_Label, VersionNumber, Path_Label;
 
     //Script variables
     private bool LastWindowPrograms; //true means 'programs' is open - false means 'games' is open; on the 'main menu'
@@ -69,6 +70,7 @@ public class Navigation : MonoBehaviour
         ReleaseDateDate2_Label = rootVisualElement.Q<Label>("ReleaseDateDate2_Label");
         Description_Label = rootVisualElement.Q<Label>("Description_Label");
         VersionNumber = rootVisualElement.Q<Label>("VersionNumber");
+        Path_Label = rootVisualElement.Q<Label>("Path_Label");
         #endregion
 
 
@@ -107,6 +109,7 @@ public class Navigation : MonoBehaviour
         SideBarIconsDefaultColor.r = 0.1411765f; SideBarIconsDefaultColor.g = 0.1490196f; SideBarIconsDefaultColor.b = 0.2313726f; SideBarIconsDefaultColor.a = 1f;
         MainWindowSelected = true;
         VersionNumber.text = Application.version;
+        Path_Label.text = SaveLoadManager.SaveLoadManagerr.menuData.path.Replace(@"\", @"\\");
     }
 
     // Update is called once per frame
@@ -542,14 +545,39 @@ public class Navigation : MonoBehaviour
 
     public void PathBackground_Clicked(MouseDownEvent evt)
     {//This opens a windows explorer window, to select a path
-        using (var fbd = new System.Windows.Forms.FolderBrowserDialog())
-        {
-            System.Windows.Forms.DialogResult result = fbd.ShowDialog();
+        SaveLoadManager.SaveLoadManagerr.menuData.path = OpenFileDialog(SaveLoadManager.SaveLoadManagerr.menuData.path);//This calls the method that displays a Folder Dialog from the System.Windows.Forms dll
+        SaveLoadManager.SaveLoadManagerr.SaveJSONToDisk(); //Save the chosen path to the disk
 
-            if (result == System.Windows.Forms.DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
+        Path_Label.text = SaveLoadManager.SaveLoadManagerr.menuData.path.Replace(@"\", @"\\"); //Update the path in the UI
+    }
+
+    public string OpenFileDialog(string currentPath)
+    {//This method  displays a Folder Dialog from the System.Windows.Forms dll
+     //The currentPath string is returned when the folder chosen by the user wasn't usable. Most likely because the Jam54Launcher doesn't have admins perms, and therefor can't write to the folder the user selected
+        using (var fbd = new System.Windows.Forms.FolderBrowserDialog()) //Create a new Folder Browser Dialog
+        {
+            System.Windows.Forms.DialogResult result = fbd.ShowDialog(); //Show the dialog
+
+            if (result == System.Windows.Forms.DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath)) //If the user selected a path that exists, proceed
             {
-                print(fbd.SelectedPath);
+                try//We know the user may have selected a folder that needs admin perms to write to, so we check that with an try catch statement
+                {
+                    System.IO.File.WriteAllText(fbd.SelectedPath + @"\Jam54LauncherFiles", "uwu");//Try to write a temp file to see if we can write to the selected folder
+                    
+                    if (System.IO.File.Exists(fbd.SelectedPath + @"\Jam54LauncherFiles"))
+                    {//If we did manage to create the temp file, delete it
+                        System.IO.File.Delete(fbd.SelectedPath + @"\Jam54LauncherFiles");
+                    }
+
+                    return fbd.SelectedPath + @"\Jam54LauncherFiles"; //Return the path selected by the user
+                }
+                catch (Exception e)//The user selected a folder that (most likely) needs admin perms to write to (could also be another error/exception)
+                {
+                    System.Windows.Forms.MessageBox.Show(e.Message + " Select another folder that doesn't require administrative privileges.");
+                }
             }
+
+            return currentPath; //Return the old path, since the path that the user selected can not be used
         }
     }
 
