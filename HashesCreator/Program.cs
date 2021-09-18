@@ -30,7 +30,7 @@ namespace HashesCreator
 
                 else //If it isn't this program itself, complete the array with the file hash
                 {
-                    allFiles[i] = allFiles[i] + " | " + fileHash; //Adds a seperator character, between the file name and adds the filehash after the seperator
+                    allFiles[i] = allFiles[i] + "|" + fileHash; //Adds a seperator character, between the file name and adds the filehash after the seperator
                 }
             }
 

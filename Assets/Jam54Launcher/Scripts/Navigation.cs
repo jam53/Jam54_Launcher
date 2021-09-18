@@ -542,7 +542,15 @@ public class Navigation : MonoBehaviour
 
     public void PathBackground_Clicked(MouseDownEvent evt)
     {//This opens a windows explorer window, to select a path
+        using (var fbd = new System.Windows.Forms.FolderBrowserDialog())
+        {
+            System.Windows.Forms.DialogResult result = fbd.ShowDialog();
 
+            if (result == System.Windows.Forms.DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
+            {
+                print(fbd.SelectedPath);
+            }
+        }
     }
 
     #endregion
