@@ -108,8 +108,6 @@ public class Navigation : MonoBehaviour
     {
         SideBarIconsDefaultColor.r = 0.1411765f; SideBarIconsDefaultColor.g = 0.1490196f; SideBarIconsDefaultColor.b = 0.2313726f; SideBarIconsDefaultColor.a = 1f;
         MainWindowSelected = true;
-        VersionNumber.text = Application.version;
-        Path_Label.text = SaveLoadManager.SaveLoadManagerr.menuData.path.Replace(@"\", @"\\");
     }
 
     // Update is called once per frame
@@ -548,10 +546,17 @@ public class Navigation : MonoBehaviour
         SaveLoadManager.SaveLoadManagerr.menuData.path = OpenFileDialog(SaveLoadManager.SaveLoadManagerr.menuData.path);//This calls the method that displays a Folder Dialog from the System.Windows.Forms dll
         SaveLoadManager.SaveLoadManagerr.SaveJSONToDisk(); //Save the chosen path to the disk
 
-        Path_Label.text = SaveLoadManager.SaveLoadManagerr.menuData.path.Replace(@"\", @"\\"); //Update the path in the UI
+        Path_Label.text = SaveLoadManager.SaveLoadManagerr.menuData.path; //Update the path in the UI
     }
 
-    public string OpenFileDialog(string currentPath)
+
+
+    #endregion
+
+
+
+    #region functionality
+    private string OpenFileDialog(string currentPath)
     {//This method  displays a Folder Dialog from the System.Windows.Forms dll
      //The currentPath string is returned when the folder chosen by the user wasn't usable. Most likely because the Jam54Launcher doesn't have admins perms, and therefor can't write to the folder the user selected
         using (var fbd = new System.Windows.Forms.FolderBrowserDialog()) //Create a new Folder Browser Dialog
@@ -563,13 +568,13 @@ public class Navigation : MonoBehaviour
                 try//We know the user may have selected a folder that needs admin perms to write to, so we check that with an try catch statement
                 {
                     System.IO.File.WriteAllText(fbd.SelectedPath + @"\Jam54LauncherFiles", "uwu");//Try to write a temp file to see if we can write to the selected folder
-                    
+
                     if (System.IO.File.Exists(fbd.SelectedPath + @"\Jam54LauncherFiles"))
                     {//If we did manage to create the temp file, delete it
                         System.IO.File.Delete(fbd.SelectedPath + @"\Jam54LauncherFiles");
                     }
 
-                    return fbd.SelectedPath + @"\Jam54LauncherFiles"; //Return the path selected by the user
+                    return fbd.SelectedPath.Replace("\\", "/") + "/Jam54LauncherFiles"; //Return the path selected by the user. Unity uses forward slashes, while this dll (System.Windows.Forms) uses windows' default backslashes. So convert it to forward slashes to be used in unity
                 }
                 catch (Exception e)//The user selected a folder that (most likely) needs admin perms to write to (could also be another error/exception)
                 {
@@ -580,8 +585,9 @@ public class Navigation : MonoBehaviour
             return currentPath; //Return the old path, since the path that the user selected can not be used
         }
     }
-
     #endregion
+
+
 
     #region animations
     //When the user hovers over the element, enable the background color to make it look like it's hovered over/selected
