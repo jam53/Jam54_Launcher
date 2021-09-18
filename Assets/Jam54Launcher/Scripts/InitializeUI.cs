@@ -6,10 +6,10 @@ using UnityEngine.UIElements;
 public class InitializeUI : MonoBehaviour
 {
     //UI Objects
+    public VisualElement Image1, Image2, Image3;
     public Label VersionNumber, Path_Label;
 
     //Script variables
-
 
 
     private void OnEnable()
@@ -20,6 +20,9 @@ public class InitializeUI : MonoBehaviour
 
         #region Assign objects
         //Find the object of type 'Button' with the name 'Programs_Unselected_Button' in the root visual element
+        Image1 = rootVisualElement.Q<VisualElement>("Image1");
+        Image2 = rootVisualElement.Q<VisualElement>("Image2");
+        Image3 = rootVisualElement.Q<VisualElement>("Image3");
         VersionNumber = rootVisualElement.Q<Label>("VersionNumber");
         Path_Label = rootVisualElement.Q<Label>("Path_Label");
         #endregion
@@ -35,30 +38,43 @@ public class InitializeUI : MonoBehaviour
     {
         VersionNumber.text = Application.version;
         Path_Label.text = SaveLoadManager.SaveLoadManagerr.menuData.path;
-        //UpdateAppsImage();
+        UpdateAppsImages();
     }
 
-
-    public Texture2D MakeGrayscale(Texture2D originalColored)
+    private void UpdateAppsImages()
     {
-        Color32[] pixels = originalColored.GetPixels32();
-        for (int x = 0; x < originalColored.width; x++)
+        //VersionAstroRun, VersionSmashAndFly, VersionStelexo, VersionAutoEditor, VersionDGCTimer, VersionImageSearcher, VersionIToW, VersionWToI
+        Texture2D testtt = Image3.resolvedStyle.backgroundImage.texture;
+        Image1.style.backgroundImage = testtt;
+        Image1.style.backgroundImage = MakeGrayscale(testtt);
+    }
+
+    private Texture2D MakeGrayscale(Texture2D originalColored)
+    {
+        float r, g, b;
+        float average;
+        Color grayScale = Color.white;
+        Texture2D neww = originalColored;
+
+        for (int x = 0; x < neww.width; x++)
         {
-            for (int y = 0; y < originalColored.height; y++)
+            for (int y = 0; y < neww.height; y++)
             {
-                Color32 pixel = pixels[x + y * originalColored.width];
-                int p = ((256 * 256 + pixel.r) * 256 + pixel.b) * 256 + pixel.g;
-                int b = p % 256;
-                p = Mathf.FloorToInt(p / 256);
-                int g = p % 256;
-                p = Mathf.FloorToInt(p / 256);
-                int r = p % 256;
-                float l = (0.2126f * r / 255f) + 0.7152f * (g / 255f) + 0.0722f * (b / 255f);
-                Color c = new Color(l, l, l, 1);
-                originalColored.SetPixel(x, y, c);
+                r = neww.GetPixel(x, y).r;
+                g = neww.GetPixel(x, y).g;
+                b = neww.GetPixel(x, y).b;
+
+                average = (r + g + b) / 3;
+
+                grayScale.r = grayScale.g = grayScale.b = average;
+
+                neww.SetPixel(x, y, grayScale);
             }
         }
-        originalColored.Apply(false);
-        return originalColored;
+
+        neww.Apply();
+        System.Drawing.Bitmap;
+    https://discord.com/channels/@me/511139666825838592/888860114159808552
+        return neww;
     }
 }
