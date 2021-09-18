@@ -22,13 +22,15 @@ public class SaveLoadManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        LoadSaveFile();
     }
 
 
     // Start is called before the first frame update
     void Start()
     {
-        LoadSaveFile();
+
     }
 
     // Update is called once per frame
@@ -63,7 +65,7 @@ public class SaveLoadManager : MonoBehaviour
         menuData.VersionIToW = "0.0.0";
         menuData.VersionWToI = "0.0.0";
 
-        menuData.path = Application.persistentDataPath; //This is the path to where all of the launcher's games and programs will be installed
+        menuData.path = Application.persistentDataPath + "/Jam54LauncherFiles"; //This is the path to where all of the launcher's games and programs will be installed
 
         menuData.Language = 0; //The language the launcher displays it's content in. This is an index that corresponds with a certain language, depending on the dropdown in the settings menu
         #endregion

@@ -152,6 +152,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a13b6bdfee33aa7438ebdad50e24e54d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  menuData:
+    isAstroRunRunning: 0
+    isSmashAndFlyRunning: 0
+    isStelexoRunning: 0
+    isAutoEditorRunning: 0
+    isDGCTimerRunning: 0
+    isImageSearcherRunning: 0
+    isIToWRunning: 0
+    isWToIRunning: 0
+    AutoUpdateAstroRun: 0
+    AutoUpdateSmashAndFly: 0
+    AutoUpdateStelexo: 0
+    AutoUpdateAutoEditor: 0
+    AutoUpdateDGCTimer: 0
+    AutoUpdateImageSearcher: 0
+    AutoUpdateIToW: 0
+    AutoUpdateWToI: 0
+    VersionAstroRun: 
+    VersionSmashAndFly: 
+    VersionStelexo: 
+    VersionAutoEditor: 
+    VersionDGCTimer: 
+    VersionImageSearcher: 
+    VersionIToW: 
+    VersionWToI: 
+    path: 
+    Language: 0
 --- !u!4 &720732247
 Transform:
   m_ObjectHideFlags: 0
@@ -296,6 +323,7 @@ GameObject:
   - component: {fileID: 2068746140}
   - component: {fileID: 2068746139}
   - component: {fileID: 2068746142}
+  - component: {fileID: 2068746143}
   m_Layer: 5
   m_Name: UIDocument
   m_TagString: Untagged
@@ -355,3 +383,15 @@ MonoBehaviour:
   ImageSearcher: {fileID: 11400000, guid: dd7b556093d18d1458cf9ebc6f30c74f, type: 2}
   IToW: {fileID: 11400000, guid: fd6b4edfc40341d47a31e47c107dc9a0, type: 2}
   WToI: {fileID: 11400000, guid: 6984f13b78a751f4f92ab06a002a85d8, type: 2}
+--- !u!114 &2068746143
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2068746138}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32c03907fcd57fb45b8ceaea749d4d05, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

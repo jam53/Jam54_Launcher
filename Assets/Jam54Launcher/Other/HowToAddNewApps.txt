@@ -74,4 +74,4 @@ Add the neceassary variables
 
 In SaveLoadManager.cs > LoadSaveFile() > # region load default values, nieuwe values toevoegen
 
-
+OpenInitializUI.cs and add the new app
