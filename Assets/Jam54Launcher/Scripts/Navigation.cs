@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.UIElements.Experimental;
+using Microsoft.WindowsAPICodePack.Dialogs;
 
 //This script handles all the animations when clicking on certain elements and makes it possible to navigate in the app.
 //In other words, the logic behind clicking on a button in order to open a new tab and close the current one is handled here.
@@ -13,7 +14,7 @@ public class Navigation : MonoBehaviour
     public Button Programs_Unselected_Button, Games_Unselected_Button, InstallLocation_Button, Language_Button, Library_Button, Store_Button;
     public VisualElement Games, Programs, SettingsBackgroundCircle, Settings, HomeBackgroundCircle, InstallLocationPanel, LanguagePanel, Discord, YouTube, PlayStore, ProductPage;
     public VisualElement AppOptions1, AppOptions2, AppOptions3, AppOptions4, AppOptions5, AppOptions6, AppOptions7, AppOptions8, OptionsHolder, OptionsOutsideClicksDetector;
-    public VisualElement ProductImage, Android_Image, Windows_Image;
+    public VisualElement ProductImage, Android_Image, Windows_Image, PathBackground;
     public Label AppTitle_Label, LatestUpdateDate1_Label, ReleaseDateDate2_Label, Description_Label, VersionNumber;
 
     //Script variables
@@ -63,6 +64,7 @@ public class Navigation : MonoBehaviour
         ProductImage = rootVisualElement.Q<VisualElement>("ProductImage");
         Android_Image = rootVisualElement.Q<VisualElement>("Android_Image");
         Windows_Image = rootVisualElement.Q<VisualElement>("Windows_Image");
+        PathBackground = rootVisualElement.Q<VisualElement>("PathBackground");
         AppTitle_Label = rootVisualElement.Q<Label>("AppTitle_Label");
         LatestUpdateDate1_Label = rootVisualElement.Q<Label>("LatestUpdateDate1_Label");
         ReleaseDateDate2_Label = rootVisualElement.Q<Label>("ReleaseDateDate2_Label");
@@ -96,6 +98,7 @@ public class Navigation : MonoBehaviour
         AppOptions7.RegisterCallback<MouseDownEvent>(AppOptions7_Clicked);
         AppOptions8.RegisterCallback<MouseDownEvent>(AppOptions8_Clicked);
         OptionsOutsideClicksDetector.RegisterCallback<MouseDownEvent>(OptionsOutsideClicksDetector_Clicked);
+        PathBackground.RegisterCallback<MouseDownEvent>(PathBackground_Clicked);
         #endregion
     }
 
@@ -536,6 +539,20 @@ public class Navigation : MonoBehaviour
                 break;
         }
 
+    }
+
+    public void PathBackground_Clicked(MouseDownEvent evt)
+    {//This opens a windows explorer window, to select a path
+        print("hmm");
+        CommonOpenFileDialog dialog = new CommonOpenFileDialog();
+        print(dialog);
+        dialog.IsFolderPicker = true;
+        print(dialog.IsFolderPicker); qsfqsdffqd
+        if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
+        {
+            print("You selected: " + dialog.FileName);
+        }
+        print("clickckckck"); 
     }
 
     #endregion
