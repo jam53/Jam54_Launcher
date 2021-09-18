@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.UIElements.Experimental;
-using Microsoft.WindowsAPICodePack.Dialogs;
 
 //This script handles all the animations when clicking on certain elements and makes it possible to navigate in the app.
 //In other words, the logic behind clicking on a button in order to open a new tab and close the current one is handled here.
@@ -543,16 +542,7 @@ public class Navigation : MonoBehaviour
 
     public void PathBackground_Clicked(MouseDownEvent evt)
     {//This opens a windows explorer window, to select a path
-        print("hmm");
-        CommonOpenFileDialog dialog = new CommonOpenFileDialog();
-        print(dialog);
-        dialog.IsFolderPicker = true;
-        print(dialog.IsFolderPicker); qsfqsdffqd
-        if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
-        {
-            print("You selected: " + dialog.FileName);
-        }
-        print("clickckckck"); 
+
     }
 
     #endregion
