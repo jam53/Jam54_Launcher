@@ -15,8 +15,9 @@ public class Navigation : MonoBehaviour
     public VisualElement Games, Programs, SettingsBackgroundCircle, Settings, HomeBackgroundCircle, InstallLocationPanel, LanguagePanel, Discord, YouTube, PlayStore, ProductPage;
     public VisualElement AppOptions1, AppOptions2, AppOptions3, AppOptions4, AppOptions5, AppOptions6, AppOptions7, AppOptions8, OptionsHolder, OptionsOutsideClicksDetector;
     public VisualElement ProductImage, Android_Image, Windows_Image, PathBackground;
-    public Label AppTitle_Label, LatestUpdateDate1_Label, ReleaseDateDate2_Label, Description_Label, VersionNumber, Path_Label;
+    public Label ProductTitle_Label, LatestUpdateDate1_Label, ReleaseDateDate2_Label, Description_Label, VersionNumber, Path_Label;
     public DropdownField LanguageSelector_Dropdown;
+    public VisualElement Image1, Image2, Image3, Image4, Image5, Image6, Image7, Image8;
 
     //Script variables
     private bool LastWindowPrograms; //true means 'programs' is open - false means 'games' is open; on the 'main menu'
@@ -66,13 +67,21 @@ public class Navigation : MonoBehaviour
         Android_Image = rootVisualElement.Q<VisualElement>("Android_Image");
         Windows_Image = rootVisualElement.Q<VisualElement>("Windows_Image");
         PathBackground = rootVisualElement.Q<VisualElement>("PathBackground");
-        AppTitle_Label = rootVisualElement.Q<Label>("AppTitle_Label");
+        ProductTitle_Label = rootVisualElement.Q<Label>("ProductTitle_Label");
         LatestUpdateDate1_Label = rootVisualElement.Q<Label>("LatestUpdateDate1_Label");
         ReleaseDateDate2_Label = rootVisualElement.Q<Label>("ReleaseDateDate2_Label");
         Description_Label = rootVisualElement.Q<Label>("Description_Label");
         VersionNumber = rootVisualElement.Q<Label>("VersionNumber");
         Path_Label = rootVisualElement.Q<Label>("Path_Label");
         LanguageSelector_Dropdown = rootVisualElement.Q<DropdownField>("LanguageSelector_Dropdown");
+        Image1 = rootVisualElement.Q<VisualElement>("Image1");
+        Image2 = rootVisualElement.Q<VisualElement>("Image2");
+        Image3 = rootVisualElement.Q<VisualElement>("Image3");
+        Image4 = rootVisualElement.Q<VisualElement>("Image4");
+        Image5 = rootVisualElement.Q<VisualElement>("Image5");
+        Image6 = rootVisualElement.Q<VisualElement>("Image6");
+        Image7 = rootVisualElement.Q<VisualElement>("Image7");
+        Image8 = rootVisualElement.Q<VisualElement>("Image8");
         #endregion
 
 
@@ -103,6 +112,14 @@ public class Navigation : MonoBehaviour
         OptionsOutsideClicksDetector.RegisterCallback<MouseDownEvent>(OptionsOutsideClicksDetector_Clicked);
         PathBackground.RegisterCallback<MouseDownEvent>(PathBackground_Clicked);
         LanguageSelector_Dropdown.RegisterCallback<ChangeEvent<string>>(LanguageSelector_Dropdown_ValueChanged);
+        Image1.RegisterCallback<MouseDownEvent>(Image1_Clicked);
+        Image2.RegisterCallback<MouseDownEvent>(Image2_Clicked);
+        Image3.RegisterCallback<MouseDownEvent>(Image3_Clicked);
+        Image4.RegisterCallback<MouseDownEvent>(Image4_Clicked);
+        Image5.RegisterCallback<MouseDownEvent>(Image5_Clicked);
+        Image6.RegisterCallback<MouseDownEvent>(Image6_Clicked);
+        Image7.RegisterCallback<MouseDownEvent>(Image7_Clicked);
+        Image8.RegisterCallback<MouseDownEvent>(Image8_Clicked);
         #endregion
     }
 
@@ -360,6 +377,11 @@ public class Navigation : MonoBehaviour
     {
         OptionsOutsideClicksDetector.style.display = DisplayStyle.None; //Close the options menu
 
+        OpenProductPage(CurrentAppIndex);
+    }
+
+    private void OpenProductPage(int appIndex)
+    {
         Games.style.display = DisplayStyle.None; //Close the Games And Programs Windows
         Programs.style.display = DisplayStyle.None;
 
@@ -367,10 +389,10 @@ public class Navigation : MonoBehaviour
 
         HomeBackgroundCircle.style.backgroundColor = Color.clear;
 
-        switch (CurrentAppIndex)
+        switch (appIndex)
         {
             case 1:
-                AppTitle_Label.text = AstroRun.Title;
+                ProductTitle_Label.text = AstroRun.Title;
                 ProductImage.style.backgroundImage = AstroRun.Image;
                 LatestUpdateDate1_Label.text = AstroRun.LatestUpdate;
                 ReleaseDateDate2_Label.text = AstroRun.ReleaseDate;
@@ -378,11 +400,13 @@ public class Navigation : MonoBehaviour
                 if (!AstroRun.Android)
                 {
                     Android_Image.style.display = DisplayStyle.None;
+                    Windows_Image.style.display = DisplayStyle.Flex;
                 }
 
                 if (!AstroRun.Windows)
                 {
                     Windows_Image.style.display = DisplayStyle.None;
+                    Android_Image.style.display = DisplayStyle.Flex;
                 }
 
                 Description_Label.text = AstroRun.description;
@@ -391,7 +415,7 @@ public class Navigation : MonoBehaviour
 
 
             case 2:
-                AppTitle_Label.text = SmashAndFly.Title;
+                ProductTitle_Label.text = SmashAndFly.Title;
                 ProductImage.style.backgroundImage = SmashAndFly.Image;
                 LatestUpdateDate1_Label.text = SmashAndFly.LatestUpdate;
                 ReleaseDateDate2_Label.text = SmashAndFly.ReleaseDate;
@@ -399,11 +423,13 @@ public class Navigation : MonoBehaviour
                 if (!SmashAndFly.Android)
                 {
                     Android_Image.style.display = DisplayStyle.None;
+                    Windows_Image.style.display = DisplayStyle.Flex;
                 }
 
                 if (!SmashAndFly.Windows)
                 {
                     Windows_Image.style.display = DisplayStyle.None;
+                    Android_Image.style.display = DisplayStyle.Flex;
                 }
 
                 Description_Label.text = SmashAndFly.description;
@@ -412,7 +438,7 @@ public class Navigation : MonoBehaviour
 
 
             case 3:
-                AppTitle_Label.text = Stelexo.Title;
+                ProductTitle_Label.text = Stelexo.Title;
                 ProductImage.style.backgroundImage = Stelexo.Image;
                 LatestUpdateDate1_Label.text = Stelexo.LatestUpdate;
                 ReleaseDateDate2_Label.text = Stelexo.ReleaseDate;
@@ -420,11 +446,13 @@ public class Navigation : MonoBehaviour
                 if (!Stelexo.Android)
                 {
                     Android_Image.style.display = DisplayStyle.None;
+                    Windows_Image.style.display = DisplayStyle.Flex;
                 }
 
                 if (!Stelexo.Windows)
                 {
                     Windows_Image.style.display = DisplayStyle.None;
+                    Android_Image.style.display = DisplayStyle.Flex;
                 }
 
                 Description_Label.text = Stelexo.description;
@@ -433,7 +461,7 @@ public class Navigation : MonoBehaviour
 
 
             case 4:
-                AppTitle_Label.text = AutoEditor.Title;
+                ProductTitle_Label.text = AutoEditor.Title;
                 ProductImage.style.backgroundImage = AutoEditor.Image;
                 LatestUpdateDate1_Label.text = AutoEditor.LatestUpdate;
                 ReleaseDateDate2_Label.text = AutoEditor.ReleaseDate;
@@ -441,11 +469,13 @@ public class Navigation : MonoBehaviour
                 if (!AutoEditor.Android)
                 {
                     Android_Image.style.display = DisplayStyle.None;
+                    Windows_Image.style.display = DisplayStyle.Flex;
                 }
 
                 if (!AutoEditor.Windows)
                 {
                     Windows_Image.style.display = DisplayStyle.None;
+                    Android_Image.style.display = DisplayStyle.Flex;
                 }
 
                 Description_Label.text = AutoEditor.description;
@@ -454,7 +484,7 @@ public class Navigation : MonoBehaviour
 
 
             case 5:
-                AppTitle_Label.text = DGCTimer.Title;
+                ProductTitle_Label.text = DGCTimer.Title;
                 ProductImage.style.backgroundImage = DGCTimer.Image;
                 LatestUpdateDate1_Label.text = DGCTimer.LatestUpdate;
                 ReleaseDateDate2_Label.text = DGCTimer.ReleaseDate;
@@ -462,11 +492,13 @@ public class Navigation : MonoBehaviour
                 if (!DGCTimer.Android)
                 {
                     Android_Image.style.display = DisplayStyle.None;
+                    Windows_Image.style.display = DisplayStyle.Flex;
                 }
 
                 if (!DGCTimer.Windows)
                 {
                     Windows_Image.style.display = DisplayStyle.None;
+                    Android_Image.style.display = DisplayStyle.Flex;
                 }
 
                 Description_Label.text = DGCTimer.description;
@@ -475,7 +507,7 @@ public class Navigation : MonoBehaviour
 
 
             case 6:
-                AppTitle_Label.text = ImageSearcher.Title;
+                ProductTitle_Label.text = ImageSearcher.Title;
                 ProductImage.style.backgroundImage = ImageSearcher.Image;
                 ProductImage.style.backgroundColor = ImageSearcher.BackgroundColor;
                 LatestUpdateDate1_Label.text = ImageSearcher.LatestUpdate;
@@ -484,11 +516,13 @@ public class Navigation : MonoBehaviour
                 if (!ImageSearcher.Android)
                 {
                     Android_Image.style.display = DisplayStyle.None;
+                    Windows_Image.style.display = DisplayStyle.Flex;
                 }
 
                 if (!ImageSearcher.Windows)
                 {
                     Windows_Image.style.display = DisplayStyle.None;
+                    Android_Image.style.display = DisplayStyle.Flex;
                 }
 
                 Description_Label.text = ImageSearcher.description;
@@ -497,7 +531,7 @@ public class Navigation : MonoBehaviour
 
 
             case 7:
-                AppTitle_Label.text = IToW.Title;
+                ProductTitle_Label.text = IToW.Title;
                 ProductImage.style.backgroundImage = IToW.Image;
                 LatestUpdateDate1_Label.text = IToW.LatestUpdate;
                 ReleaseDateDate2_Label.text = IToW.ReleaseDate;
@@ -505,11 +539,13 @@ public class Navigation : MonoBehaviour
                 if (!IToW.Android)
                 {
                     Android_Image.style.display = DisplayStyle.None;
+                    Windows_Image.style.display = DisplayStyle.Flex;
                 }
 
                 if (!IToW.Windows)
                 {
                     Windows_Image.style.display = DisplayStyle.None;
+                    Android_Image.style.display = DisplayStyle.Flex;
                 }
 
                 Description_Label.text = IToW.description;
@@ -518,7 +554,7 @@ public class Navigation : MonoBehaviour
 
 
             case 8:
-                AppTitle_Label.text = WToI.Title;
+                ProductTitle_Label.text = WToI.Title;
                 ProductImage.style.backgroundImage = WToI.Image;
                 LatestUpdateDate1_Label.text = WToI.LatestUpdate;
                 ReleaseDateDate2_Label.text = WToI.ReleaseDate;
@@ -526,11 +562,13 @@ public class Navigation : MonoBehaviour
                 if (!WToI.Android)
                 {
                     Android_Image.style.display = DisplayStyle.None;
+                    Windows_Image.style.display = DisplayStyle.Flex;
                 }
 
                 if (!WToI.Windows)
                 {
                     Windows_Image.style.display = DisplayStyle.None;
+                    Android_Image.style.display = DisplayStyle.Flex;
                 }
 
                 Description_Label.text = WToI.description;
@@ -541,7 +579,46 @@ public class Navigation : MonoBehaviour
                 Debug.LogError("Couldn't open Product page correctly - from OptionsMenu");
                 break;
         }
+    }
 
+    private void Image1_Clicked(MouseDownEvent evt)
+    {
+        OpenProductPage(1);
+    }
+
+    private void Image2_Clicked(MouseDownEvent evt)
+    {
+        OpenProductPage(2);
+    }
+
+    private void Image3_Clicked(MouseDownEvent evt)
+    {
+        OpenProductPage(3);
+    }
+
+    private void Image4_Clicked(MouseDownEvent evt)
+    {
+        OpenProductPage(4);
+    }
+
+    private void Image5_Clicked(MouseDownEvent evt)
+    {
+        OpenProductPage(5);
+    }
+
+    private void Image6_Clicked(MouseDownEvent evt)
+    {
+        OpenProductPage(6);
+    }
+
+    private void Image7_Clicked(MouseDownEvent evt)
+    {
+        OpenProductPage(7);
+    }
+
+    private void Image8_Clicked(MouseDownEvent evt)
+    {
+        OpenProductPage(8);
     }
 
     public void PathBackground_Clicked(MouseDownEvent evt)
