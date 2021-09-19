@@ -8,6 +8,7 @@ public class InitializeUI : MonoBehaviour
     //UI Objects
     public VisualElement Image1, Image2, Image3, Image4, Image5, Image6, Image7, Image8;
     public Label VersionNumber, Path_Label;
+    public DropdownField LanguageSelector_Dropdown;
 
     //Script variables
     [Header("GrayScale Images")]
@@ -38,6 +39,7 @@ public class InitializeUI : MonoBehaviour
         Image8 = rootVisualElement.Q<VisualElement>("Image8");
         VersionNumber = rootVisualElement.Q<Label>("VersionNumber");
         Path_Label = rootVisualElement.Q<Label>("Path_Label");
+        LanguageSelector_Dropdown = rootVisualElement.Q<DropdownField>("LanguageSelector_Dropdown");
         #endregion
 
 
@@ -49,9 +51,10 @@ public class InitializeUI : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        VersionNumber.text = Application.version;
-        Path_Label.text = SaveLoadManager.SaveLoadManagerr.menuData.path;
-        UpdateAppsImages();
+        VersionNumber.text = Application.version; //Load in the current version of the launcher into the label in the setttings panel
+        Path_Label.text = SaveLoadManager.SaveLoadManagerr.menuData.path; //Load in the path where the launcher stores the downloaded apps
+        UpdateAppsImages(); //If An app isn't installed, make it's image on the main menu grey
+        LanguageSelector_Dropdown.index = SaveLoadManager.SaveLoadManagerr.menuData.Language;//Load in the correct index of the dropdown in the language dropdown under the  settings > language panel
     }
 
     private void UpdateAppsImages()

@@ -16,6 +16,7 @@ public class Navigation : MonoBehaviour
     public VisualElement AppOptions1, AppOptions2, AppOptions3, AppOptions4, AppOptions5, AppOptions6, AppOptions7, AppOptions8, OptionsHolder, OptionsOutsideClicksDetector;
     public VisualElement ProductImage, Android_Image, Windows_Image, PathBackground;
     public Label AppTitle_Label, LatestUpdateDate1_Label, ReleaseDateDate2_Label, Description_Label, VersionNumber, Path_Label;
+    public DropdownField LanguageSelector_Dropdown;
 
     //Script variables
     private bool LastWindowPrograms; //true means 'programs' is open - false means 'games' is open; on the 'main menu'
@@ -71,6 +72,7 @@ public class Navigation : MonoBehaviour
         Description_Label = rootVisualElement.Q<Label>("Description_Label");
         VersionNumber = rootVisualElement.Q<Label>("VersionNumber");
         Path_Label = rootVisualElement.Q<Label>("Path_Label");
+        LanguageSelector_Dropdown = rootVisualElement.Q<DropdownField>("LanguageSelector_Dropdown");
         #endregion
 
 
@@ -100,6 +102,7 @@ public class Navigation : MonoBehaviour
         AppOptions8.RegisterCallback<MouseDownEvent>(AppOptions8_Clicked);
         OptionsOutsideClicksDetector.RegisterCallback<MouseDownEvent>(OptionsOutsideClicksDetector_Clicked);
         PathBackground.RegisterCallback<MouseDownEvent>(PathBackground_Clicked);
+        LanguageSelector_Dropdown.RegisterCallback<ChangeEvent<string>>(LanguageSelector_Dropdown_ValueChanged);
         #endregion
     }
 
@@ -547,6 +550,13 @@ public class Navigation : MonoBehaviour
         SaveLoadManager.SaveLoadManagerr.SaveJSONToDisk(); //Save the chosen path to the disk
 
         Path_Label.text = SaveLoadManager.SaveLoadManagerr.menuData.path; //Update the path in the UI
+    }
+
+    public void LanguageSelector_Dropdown_ValueChanged(ChangeEvent<string> evt)
+    {
+        //Debug.Log(evt.newValue); //Returns the actual value 'Nederlands' for example
+        //Debug.Log(LanguageSelector_Dropdown.index); //Returns what index has been selected, starting from 0
+        SaveLoadManager.SaveLoadManagerr.menuData.Language = LanguageSelector_Dropdown.index; SaveLoadManager.SaveLoadManagerr.SaveJSONToDisk();
     }
 
 
