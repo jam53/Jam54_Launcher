@@ -53,6 +53,12 @@ HashesCreator/bin
 HashesCreator/obj
 HashesCreator/Releases
 
+!MakePNGGrayScale/**
+
+MakePNGGrayScale/bin
+MakePNGGrayScale/obj
+MakePNGGrayScale/Releases
+
 !.vsconfig
 !Assembly-CSharp.csproj
 !Jam54Launcher.sln
