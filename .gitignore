@@ -52,3 +52,7 @@ Jam54LauncherStarter/Releases
 HashesCreator/bin
 HashesCreator/obj
 HashesCreator/Releases
+
+!.vsconfig
+!Assembly-CSharp.csproj
+!Jam54Launcher.sln
