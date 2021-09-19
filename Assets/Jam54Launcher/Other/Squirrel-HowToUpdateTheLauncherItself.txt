@@ -22,7 +22,7 @@ zie da script
 Build the Jam54Launcher in Unity:
 Product name: Jam54LauncherMain
 Player settings - Change Version
-Scripting backend - IL2CPP
+Scripting backend - Mono
 API Compatibility Level - .NET Standard
 C++ Compiler Configuratioin - Release
 Managed Stripping Level - High
