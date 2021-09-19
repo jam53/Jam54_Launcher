@@ -18,6 +18,7 @@ public class Navigation : MonoBehaviour
     public Label ProductTitle_Label, LatestUpdateDate1_Label, ReleaseDateDate2_Label, Description_Label, VersionNumber, Path_Label;
     public DropdownField LanguageSelector_Dropdown;
     public VisualElement Image1, Image2, Image3, Image4, Image5, Image6, Image7, Image8;
+    public Button Install_Button, Uninstall_Button, Play_Button;
 
     //Script variables
     private bool LastWindowPrograms; //true means 'programs' is open - false means 'games' is open; on the 'main menu'
@@ -82,6 +83,9 @@ public class Navigation : MonoBehaviour
         Image6 = rootVisualElement.Q<VisualElement>("Image6");
         Image7 = rootVisualElement.Q<VisualElement>("Image7");
         Image8 = rootVisualElement.Q<VisualElement>("Image8");
+        Install_Button = rootVisualElement.Q<Button>("Install_Button");
+        Uninstall_Button = rootVisualElement.Q<Button>("Uninstall_Button");
+        Play_Button = rootVisualElement.Q<Button>("Play_Button");
         #endregion
 
 
@@ -411,6 +415,18 @@ public class Navigation : MonoBehaviour
 
                 Description_Label.text = AstroRun.description;
 
+                if (SaveLoadManager.SaveLoadManagerr.menuData.VersionAstroRun == "0.0.0")
+                {//Als het niet geinstalleerd is, zet de uninstall + play button uit en zet de install button aan
+                 //Moest de game wel geinstalleerd zijn, wordt deze functie niet geroepen want het versie nummer zal niet gelijk zijn aan "0.0.0"
+                 //Bij default staat de install button onzichtbaar, en de uninstall + play buttons zichtbaar
+                 //Dus als de game geinstalleerd is, moeten we niks doen en kunnen we het laten zoals het is, en zullen de juiste buttons zichtbaar zijn (uninstall en play)
+
+                    Uninstall_Button.style.display = DisplayStyle.None;
+                    Play_Button.style.display = DisplayStyle.None;
+                    
+                    Install_Button.style.display = DisplayStyle.Flex;
+                }
+
                 break;
 
 
@@ -433,6 +449,18 @@ public class Navigation : MonoBehaviour
                 }
 
                 Description_Label.text = SmashAndFly.description;
+
+                if (SaveLoadManager.SaveLoadManagerr.menuData.VersionSmashAndFly == "0.0.0")
+                {//Als het niet geinstalleerd is, zet de uninstall + play button uit en zet de install button aan
+                 //Moest de game wel geinstalleerd zijn, wordt deze functie niet geroepen want het versie nummer zal niet gelijk zijn aan "0.0.0"
+                 //Bij default staat de install button onzichtbaar, en de uninstall + play buttons zichtbaar
+                 //Dus als de game geinstalleerd is, moeten we niks doen en kunnen we het laten zoals het is, en zullen de juiste buttons zichtbaar zijn (uninstall en play)
+
+                    Uninstall_Button.style.display = DisplayStyle.None;
+                    Play_Button.style.display = DisplayStyle.None;
+
+                    Install_Button.style.display = DisplayStyle.Flex;
+                }
 
                 break;
 
@@ -457,6 +485,18 @@ public class Navigation : MonoBehaviour
 
                 Description_Label.text = Stelexo.description;
 
+                if (SaveLoadManager.SaveLoadManagerr.menuData.VersionStelexo == "0.0.0")
+                {//Als het niet geinstalleerd is, zet de uninstall + play button uit en zet de install button aan
+                 //Moest de game wel geinstalleerd zijn, wordt deze functie niet geroepen want het versie nummer zal niet gelijk zijn aan "0.0.0"
+                 //Bij default staat de install button onzichtbaar, en de uninstall + play buttons zichtbaar
+                 //Dus als de game geinstalleerd is, moeten we niks doen en kunnen we het laten zoals het is, en zullen de juiste buttons zichtbaar zijn (uninstall en play)
+
+                    Uninstall_Button.style.display = DisplayStyle.None;
+                    Play_Button.style.display = DisplayStyle.None;
+
+                    Install_Button.style.display = DisplayStyle.Flex;
+                }
+
                 break;
 
 
@@ -480,6 +520,18 @@ public class Navigation : MonoBehaviour
 
                 Description_Label.text = AutoEditor.description;
 
+                if (SaveLoadManager.SaveLoadManagerr.menuData.VersionAutoEditor == "0.0.0")
+                {//Als het niet geinstalleerd is, zet de uninstall + play button uit en zet de install button aan
+                 //Moest de game wel geinstalleerd zijn, wordt deze functie niet geroepen want het versie nummer zal niet gelijk zijn aan "0.0.0"
+                 //Bij default staat de install button onzichtbaar, en de uninstall + play buttons zichtbaar
+                 //Dus als de game geinstalleerd is, moeten we niks doen en kunnen we het laten zoals het is, en zullen de juiste buttons zichtbaar zijn (uninstall en play)
+
+                    Uninstall_Button.style.display = DisplayStyle.None;
+                    Play_Button.style.display = DisplayStyle.None;
+
+                    Install_Button.style.display = DisplayStyle.Flex;
+                }
+
                 break;
 
 
@@ -502,6 +554,18 @@ public class Navigation : MonoBehaviour
                 }
 
                 Description_Label.text = DGCTimer.description;
+
+                if (SaveLoadManager.SaveLoadManagerr.menuData.VersionDGCTimer == "0.0.0")
+                {//Als het niet geinstalleerd is, zet de uninstall + play button uit en zet de install button aan
+                 //Moest de game wel geinstalleerd zijn, wordt deze functie niet geroepen want het versie nummer zal niet gelijk zijn aan "0.0.0"
+                 //Bij default staat de install button onzichtbaar, en de uninstall + play buttons zichtbaar
+                 //Dus als de game geinstalleerd is, moeten we niks doen en kunnen we het laten zoals het is, en zullen de juiste buttons zichtbaar zijn (uninstall en play)
+
+                    Uninstall_Button.style.display = DisplayStyle.None;
+                    Play_Button.style.display = DisplayStyle.None;
+
+                    Install_Button.style.display = DisplayStyle.Flex;
+                }
 
                 break;
 
@@ -527,6 +591,18 @@ public class Navigation : MonoBehaviour
 
                 Description_Label.text = ImageSearcher.description;
 
+                if (SaveLoadManager.SaveLoadManagerr.menuData.VersionImageSearcher == "0.0.0")
+                {//Als het niet geinstalleerd is, zet de uninstall + play button uit en zet de install button aan
+                 //Moest de game wel geinstalleerd zijn, wordt deze functie niet geroepen want het versie nummer zal niet gelijk zijn aan "0.0.0"
+                 //Bij default staat de install button onzichtbaar, en de uninstall + play buttons zichtbaar
+                 //Dus als de game geinstalleerd is, moeten we niks doen en kunnen we het laten zoals het is, en zullen de juiste buttons zichtbaar zijn (uninstall en play)
+
+                    Uninstall_Button.style.display = DisplayStyle.None;
+                    Play_Button.style.display = DisplayStyle.None;
+
+                    Install_Button.style.display = DisplayStyle.Flex;
+                }
+
                 break;
 
 
@@ -550,6 +626,18 @@ public class Navigation : MonoBehaviour
 
                 Description_Label.text = IToW.description;
 
+                if (SaveLoadManager.SaveLoadManagerr.menuData.VersionIToW == "0.0.0")
+                {//Als het niet geinstalleerd is, zet de uninstall + play button uit en zet de install button aan
+                 //Moest de game wel geinstalleerd zijn, wordt deze functie niet geroepen want het versie nummer zal niet gelijk zijn aan "0.0.0"
+                 //Bij default staat de install button onzichtbaar, en de uninstall + play buttons zichtbaar
+                 //Dus als de game geinstalleerd is, moeten we niks doen en kunnen we het laten zoals het is, en zullen de juiste buttons zichtbaar zijn (uninstall en play)
+
+                    Uninstall_Button.style.display = DisplayStyle.None;
+                    Play_Button.style.display = DisplayStyle.None;
+
+                    Install_Button.style.display = DisplayStyle.Flex;
+                }
+
                 break;
 
 
@@ -572,6 +660,18 @@ public class Navigation : MonoBehaviour
                 }
 
                 Description_Label.text = WToI.description;
+
+                if (SaveLoadManager.SaveLoadManagerr.menuData.VersionWToI == "0.0.0")
+                {//Als het niet geinstalleerd is, zet de uninstall + play button uit en zet de install button aan
+                 //Moest de game wel geinstalleerd zijn, wordt deze functie niet geroepen want het versie nummer zal niet gelijk zijn aan "0.0.0"
+                 //Bij default staat de install button onzichtbaar, en de uninstall + play buttons zichtbaar
+                 //Dus als de game geinstalleerd is, moeten we niks doen en kunnen we het laten zoals het is, en zullen de juiste buttons zichtbaar zijn (uninstall en play)
+
+                    Uninstall_Button.style.display = DisplayStyle.None;
+                    Play_Button.style.display = DisplayStyle.None;
+
+                    Install_Button.style.display = DisplayStyle.Flex;
+                }
 
                 break;
 
