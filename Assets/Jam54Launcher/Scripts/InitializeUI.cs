@@ -6,11 +6,19 @@ using UnityEngine.UIElements;
 public class InitializeUI : MonoBehaviour
 {
     //UI Objects
-    public VisualElement Image1, Image2, Image3;
+    public VisualElement Image1, Image2, Image3, Image4, Image5, Image6, Image7, Image8;
     public Label VersionNumber, Path_Label;
 
     //Script variables
-
+    [Header("GrayScale Images")]
+    public Texture2D AstroRunGrey;
+    public Texture2D SmashAndFlyGrey;
+    public Texture2D StelexoGrey;
+    public Texture2D AutoEditorGrey;
+    public Texture2D DGCTimerGrey;
+    public Texture2D ImageSearcherGrey;
+    public Texture2D IToWGrey;
+    public Texture2D WToIGrey;
 
     private void OnEnable()
     {
@@ -23,6 +31,11 @@ public class InitializeUI : MonoBehaviour
         Image1 = rootVisualElement.Q<VisualElement>("Image1");
         Image2 = rootVisualElement.Q<VisualElement>("Image2");
         Image3 = rootVisualElement.Q<VisualElement>("Image3");
+        Image4 = rootVisualElement.Q<VisualElement>("Image4");
+        Image5 = rootVisualElement.Q<VisualElement>("Image5");
+        Image6 = rootVisualElement.Q<VisualElement>("Image6");
+        Image7 = rootVisualElement.Q<VisualElement>("Image7");
+        Image8 = rootVisualElement.Q<VisualElement>("Image8");
         VersionNumber = rootVisualElement.Q<Label>("VersionNumber");
         Path_Label = rootVisualElement.Q<Label>("Path_Label");
         #endregion
@@ -43,38 +56,45 @@ public class InitializeUI : MonoBehaviour
 
     private void UpdateAppsImages()
     {
-        //VersionAstroRun, VersionSmashAndFly, VersionStelexo, VersionAutoEditor, VersionDGCTimer, VersionImageSearcher, VersionIToW, VersionWToI
-        Texture2D testtt = Image3.resolvedStyle.backgroundImage.texture;
-        Image1.style.backgroundImage = testtt;
-        Image1.style.backgroundImage = MakeGrayscale(testtt);
-    }
-
-    private Texture2D MakeGrayscale(Texture2D originalColored)
-    {
-        float r, g, b;
-        float average;
-        Color grayScale = Color.white;
-        Texture2D neww = originalColored;
-
-        for (int x = 0; x < neww.width; x++)
+        //VersionDGCTimer, VersionImageSearcher, VersionIToW, VersionWToI
+        if (SaveLoadManager.SaveLoadManagerr.menuData.VersionAstroRun == "0.0.0") //version number '0.0.0' means it's not installed
         {
-            for (int y = 0; y < neww.height; y++)
-            {
-                r = neww.GetPixel(x, y).r;
-                g = neww.GetPixel(x, y).g;
-                b = neww.GetPixel(x, y).b;
-
-                average = (r + g + b) / 3;
-
-                grayScale.r = grayScale.g = grayScale.b = average;
-
-                neww.SetPixel(x, y, grayScale);
-            }
+            Image1.style.backgroundImage = AstroRunGrey;// Since it's not installed make it appear grey
         }
 
-        neww.Apply();
-        System.Drawing.Bitmap;
-    https://discord.com/channels/@me/511139666825838592/888860114159808552
-        return neww;
+        if (SaveLoadManager.SaveLoadManagerr.menuData.VersionSmashAndFly == "0.0.0") //version number '0.0.0' means it's not installed
+        {
+            Image2.style.backgroundImage = SmashAndFlyGrey;// Since it's not installed make it appear grey
+        }
+
+        if (SaveLoadManager.SaveLoadManagerr.menuData.VersionStelexo == "0.0.0") //version number '0.0.0' means it's not installed
+        {
+            Image3.style.backgroundImage = StelexoGrey;// Since it's not installed make it appear grey
+        }
+
+        if (SaveLoadManager.SaveLoadManagerr.menuData.VersionAutoEditor == "0.0.0") //version number '0.0.0' means it's not installed
+        {
+            Image4.style.backgroundImage = AutoEditorGrey;// Since it's not installed make it appear grey
+        }
+
+        if (SaveLoadManager.SaveLoadManagerr.menuData.VersionDGCTimer == "0.0.0") //version number '0.0.0' means it's not installed
+        {
+            Image5.style.backgroundImage = DGCTimerGrey;// Since it's not installed make it appear grey
+        }
+
+        if (SaveLoadManager.SaveLoadManagerr.menuData.VersionImageSearcher == "0.0.0") //version number '0.0.0' means it's not installed
+        {
+            Image6.style.backgroundImage = ImageSearcherGrey;// Since it's not installed make it appear grey
+        }
+
+        if (SaveLoadManager.SaveLoadManagerr.menuData.VersionIToW == "0.0.0") //version number '0.0.0' means it's not installed
+        {
+            Image7.style.backgroundImage = IToWGrey;// Since it's not installed make it appear grey
+        }
+
+        if (SaveLoadManager.SaveLoadManagerr.menuData.VersionWToI == "0.0.0") //version number '0.0.0' means it's not installed
+        {
+            Image8.style.backgroundImage = WToIGrey;// Since it's not installed make it appear grey
+        }
     }
 }
