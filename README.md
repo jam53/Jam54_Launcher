@@ -37,7 +37,11 @@ Open the **MainMenu scene**, and hit **play.**
 
 Inside the Unity project's rootfolder, there is a Visual Studio C# WPF project located under the folder Jam54LauncherStarter. This instanciates Squirrel and therefore updates the Jam54Launcher. Once the Jam54Launcher has succesfully been updated, the Jam54LauncherStarter will launch the Jam54Launcher.
 
-Besides the Jam54LauncherStarter, there is another Visual Studio project called HashesCreator. This is a console application made using .NET core. It's purpose is to create a textfile that contains the name + the hash of all the files in folder selected by the developer. Using this textfile we can easily figure out what part of a certian program/game has been changed. And therefore only update those specific files when there is an update. Instead of having to download the whole application.
+Besides the Jam54LauncherStarter, there is another Visual Studio project called HashesCreator. This is a console application made using .NET core. It's purpose is to create a textfile that contains the name + the hash of all the files in folder selected by the developer. Using this textfile we can easily figure out what part of a certian program/game has been changed. And therefore only update those specific files when there is an update. Instead of having to download the whole application. 
+*Make sure to 'Publish' this application in Visual Studio when you want to create the final executable. This can be achieved by right-clicking the project > properties > Publish > Publish. This will create a single exe that contains all the necessary files.*
+
+Furthermore, there is a Visual Studio, C# console .NET core project called MakePNGGrayScale. This takes the .png files in the current directory + all subdirectories, and creates a grayscale variant. This grayscale is placed in the folder the MakePNGGrayScale executable is running from.
+*Make sure to 'Publish' this application in Visual Studio when you want to create the final executable. This can be achieved by right-clicking the project > properties > Publish > Publish. This will create a single exe that contains all the necessary files.*
 
 ## Development of the Jam54 Launcher
 
