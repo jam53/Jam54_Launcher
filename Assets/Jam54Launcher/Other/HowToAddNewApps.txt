@@ -65,6 +65,8 @@ Go To the 'Store_Button_Clicked()' method lower in the script, and addd a couple
 
                 break;
 
+Just look through the entire Navigation.cs script and add variables/methods where needed
+
 
 -----
 
