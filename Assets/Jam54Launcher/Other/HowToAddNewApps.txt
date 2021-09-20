@@ -77,3 +77,7 @@ Add the neceassary variables
 In SaveLoadManager.cs > LoadSaveFile() > # region load default values, nieuwe values toevoegen
 
 OpenInitializUI.cs and add the new app
+
+
+
+In Assets/Localization/Tables/UI Text > Open en voeg nieuwe description, release date etc voor game toe

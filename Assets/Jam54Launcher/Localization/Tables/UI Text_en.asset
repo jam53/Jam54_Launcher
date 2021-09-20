@@ -1,0 +1,206 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: UI Text_en
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: en
+  m_SharedData: {fileID: 11400000, guid: 5980cf4fe9926c9499919844e15cd377, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 189987815424
+    m_Localized: Games
+    m_Metadata:
+      m_Items: []
+  - m_Id: 14991703408640
+    m_Localized: Launch
+    m_Metadata:
+      m_Items: []
+  - m_Id: 39673458589696
+    m_Localized: Programs
+    m_Metadata:
+      m_Items: []
+  - m_Id: 40663813455872
+    m_Localized: Settings
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41067364220928
+    m_Localized: OTHER
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41857189412864
+    m_Localized: Installation Location
+    m_Metadata:
+      m_Items: []
+  - m_Id: 42746159562752
+    m_Localized: Language
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43004298002432
+    m_Localized: Games & Programs installation path
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43781242486784
+    m_Localized: Latest Update
+    m_Metadata:
+      m_Items: []
+  - m_Id: 44104023539712
+    m_Localized: Release Date
+    m_Metadata:
+      m_Items: []
+  - m_Id: 44497566695424
+    m_Localized: Platform
+    m_Metadata:
+      m_Items: []
+  - m_Id: 44779532976128
+    m_Localized: UNINSTALL
+    m_Metadata:
+      m_Items: []
+  - m_Id: 45643966447616
+    m_Localized: Back To Library
+    m_Metadata:
+      m_Items: []
+  - m_Id: 46531468591104
+    m_Localized: PLAY
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47067978792960
+    m_Localized: INSTALL
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47955074088960
+    m_Localized: AstroRun is an indie game developed by a small team of three people.
+      It's about a lost adventurer in space, who must complete various levels that
+      are all part of a diverse collection of worlds. Each world is based around
+      a certain theme and has its own unique intractable objects such as trampolines,
+      falling spikes, enemies, turrets and much more. Along the way, the adventurer
+      can collect various items which can be used to purchase new packages and accessories.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 68755105775616
+    m_Localized: 12 July, 2021
+    m_Metadata:
+      m_Items: []
+  - m_Id: 69421857505280
+    m_Localized: 15 May, 2020
+    m_Metadata:
+      m_Items: []
+  - m_Id: 70516956725248
+    m_Localized: AutoEditor, is written in C# and automatically edits videos, using
+      image detection.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71315568984064
+    m_Localized: 18 March, 2021
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71488969900032
+    m_Localized: 4 August, 2019
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71914968580096
+    m_Localized: DGCTimer, is written in C# and counts down from a given amount of
+      minutes and seconds. It is also able to play a sound when the timer ends.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 72148968800256
+    m_Localized: 15 August, 2018
+    m_Metadata:
+      m_Items: []
+  - m_Id: 72377285738496
+    m_Localized: 13 August, 2018
+    m_Metadata:
+      m_Items: []
+  - m_Id: 72594923978752
+    m_Localized: ImageSearcher is written in C# and searches for a certain image
+      inside a video. Once the image is found, the program outputs the timestamps
+      at which the image was found.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73011468697600
+    m_Localized: 18 April, 2020
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73246026760192
+    m_Localized: 27 February, 2020
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73504421052416
+    m_Localized: IToW is used to manipulate a string created by the program WToI,
+      back to it's original form.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74116873322496
+    m_Localized: 4 August, 2018
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74307105980416
+    m_Localized: Smash&Fly is a game in which you fly an airship through different
+      worlds. These are inspired by biomes in the real world. The goal is to shoot
+      your way to the next world.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78369255849984
+    m_Localized: 25 November, 2019
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78879551651840
+    m_Localized: 9 September, 2019
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79363607887872
+    m_Localized: "Stelexo is a free to play single player game. Featuring a completely
+      randomly generated world, which includes rocks, trees, animals, enemies and
+      much more! A world full of secrets and adventures awaits you! \r\n\r\nThe development
+      of Stelexo started primarily in July of 2018 and was the first game I worked
+      on.\r\n\r\nThe plan was to create a world that was procedurally generated,
+      augmented with creatures, objects and more.  I realised that this project's
+      scope was way behond what I could do on my own. So after a final update in
+      January 2021, the development of Stelexo ended."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81285505089536
+    m_Localized: 2 January, 2021
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81605073305600
+    m_Localized: 6 July, 2018
+    m_Metadata:
+      m_Items: []
+  - m_Id: 83225538461696
+    m_Localized: Go To Store Page
+    m_Metadata:
+      m_Items: []
+  - m_Id: 83559027572736
+    m_Localized: Verify Installation
+    m_Metadata:
+      m_Items: []
+  - m_Id: 84060897017856
+    m_Localized: Create A Shortcut
+    m_Metadata:
+      m_Items: []
+  - m_Id: 84352455671808
+    m_Localized: Auto Update
+    m_Metadata:
+      m_Items: []
+  - m_Id: 84563785678848
+    m_Localized: Uninstall
+    m_Metadata:
+      m_Items: []
+  - m_Id: 85487950233600
+    m_Localized: Version
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []

@@ -15,10 +15,10 @@ MonoBehaviour:
   Title: Smash&Fly
   Image: {fileID: 2800000, guid: 679999c2f1bb9964aa0c080a80755460, type: 3}
   BackgroundColor: {r: 0, g: 0, b: 0, a: 0}
-  LatestUpdate: 25 November, 2019
-  ReleaseDate: 9 September, 2019
+  LatestUpdate: '#25 November, 2019'
+  ReleaseDate: '#9 September, 2019'
   Android: 1
   Windows: 0
-  description: Smash&Fly is a game about flying an airship through different worlds
+  description: '#Smash&Fly is a game about flying an airship through different worlds
     inspired by real world biomes. Where you must dotch and shoot your way through
-    the levels.
+    the levels.'

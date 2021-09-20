@@ -1,0 +1,207 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: UI Text_et
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: et
+  m_SharedData: {fileID: 11400000, guid: 5980cf4fe9926c9499919844e15cd377, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 189987815424
+    m_Localized: "M\xE4ngud"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 14991703408640
+    m_Localized: "K\xE4ivitamine"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 39673458589696
+    m_Localized: Programmid
+    m_Metadata:
+      m_Items: []
+  - m_Id: 40663813455872
+    m_Localized: Seaded
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41067364220928
+    m_Localized: MUUD
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41857189412864
+    m_Localized: Paigaldamise asukoht
+    m_Metadata:
+      m_Items: []
+  - m_Id: 42746159562752
+    m_Localized: Keel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43004298002432
+    m_Localized: "M\xE4ngude ja programmide paigaldamise tee"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43781242486784
+    m_Localized: Viimane uuendus
+    m_Metadata:
+      m_Items: []
+  - m_Id: 44104023539712
+    m_Localized: "V\xE4ljaandmise kuup\xE4ev"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 44497566695424
+    m_Localized: Platvorm
+    m_Metadata:
+      m_Items: []
+  - m_Id: 44779532976128
+    m_Localized: Desinstallige
+    m_Metadata:
+      m_Items: []
+  - m_Id: 45643966447616
+    m_Localized: "Tagasi peamen\xFC\xFCsse"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 46531468591104
+    m_Localized: "M\xC4NGI"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47067978792960
+    m_Localized: INSTALLEERIMINE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47955074088960
+    m_Localized: "AstroRun on indie-m\xE4ng, mille on v\xE4lja t\xF6\xF6tanud v\xE4ike
+      kolmest inimesest koosnev meeskond. See r\xE4\xE4gib kosmosesse eksinud seiklejast,
+      kes peab l\xE4bima erinevaid tasandeid, mis k\xF5ik on osa mitmekesisest maailmakogumikust.
+      Iga maailm p\xF5hineb kindlal teemal ja sellel on oma unikaalsed raskesti lahendatavad
+      objektid, nagu batuudid, langevad piigid, vaenlased, tornid ja palju muud.
+      Teel saab seikleja koguda erinevaid esemeid, mida saab kasutada uute pakettide
+      ja tarvikute ostmiseks.\r"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 68755105775616
+    m_Localized: 12 juuli, 2021
+    m_Metadata:
+      m_Items: []
+  - m_Id: 69421857505280
+    m_Localized: 15 mai, 2020
+    m_Metadata:
+      m_Items: []
+  - m_Id: 70516956725248
+    m_Localized: AutoEditor on kirjutatud C# keeles ja redigeerib automaatselt videoid,
+      kasutades pildi tuvastamist.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71315568984064
+    m_Localized: "18 m\xE4rts, 2021"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71488969900032
+    m_Localized: 4 august, 2019
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71914968580096
+    m_Localized: "DGCTimer, on kirjutatud C# keeles ja loeb alla antud minutite ja
+      sekundite arvu. Taimer suudab ka heli m\xE4ngida, kui taimer l\xF5peb."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 72148968800256
+    m_Localized: 15 august, 2018
+    m_Metadata:
+      m_Items: []
+  - m_Id: 72377285738496
+    m_Localized: 13 august, 2018
+    m_Metadata:
+      m_Items: []
+  - m_Id: 72594923978752
+    m_Localized: "ImageSearcher on kirjutatud C# keeles ja otsib teatud pilti video
+      sees. Kui pilt on leitud, annab programm v\xE4lja ajam\xE4rgid, millal pilt
+      leiti."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73011468697600
+    m_Localized: 18 aprill, 2020
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73246026760192
+    m_Localized: 27 veebruar, 2020
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73504421052416
+    m_Localized: "IToW kasutatakse programmi WToI poolt loodud s\xF5na manipuleerimiseks
+      tagasi selle algsesse vormi."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74116873322496
+    m_Localized: 4 august, 2018
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74307105980416
+    m_Localized: "Smash&Fly on m\xE4ng, kus sa lendad \xF5hulaevaga l\xE4bi erinevate
+      maailmade. Need on inspireeritud tegeliku maailma biomeenidest. Eesm\xE4rgiks
+      on tulistada oma tee j\xE4rgmisesse maailma."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78369255849984
+    m_Localized: 25 november, 2019
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78879551651840
+    m_Localized: 9 september, 2019
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79363607887872
+    m_Localized: "Stelexo on tasuta m\xE4ngitav \xFChe m\xE4ngija m\xE4ng. M\xE4ngus
+      on t\xE4iesti juhuslikult genereeritud maailm, mis sisaldab kive, puid, loomi,
+      vaenlasi ja palju muud! Sind ootab maailm t\xE4is saladusi ja seiklusi! \r\n\r\nStelexo
+      arendamine algas peamiselt 2018. aasta juulis ja see oli esimene m\xE4ng, mille
+      kallal ma t\xF6\xF6tasin.\r\n\r\nPlaan oli luua protseduuriliselt genereeritud
+      maailm, mis on t\xE4iendatud olendite, objektide ja muuga.  Sain aru, et selle
+      projekti maht \xFCletas kaugelt seda, mida ma ise teha saaksin. Nii et p\xE4rast
+      viimast uuendust 2021. aasta jaanuaris l\xF5ppes Stelexo arendamine."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81285505089536
+    m_Localized: 2 jaanuar, 2021
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81605073305600
+    m_Localized: 6 juuli, 2018
+    m_Metadata:
+      m_Items: []
+  - m_Id: 83225538461696
+    m_Localized: Mine poe lehele
+    m_Metadata:
+      m_Items: []
+  - m_Id: 83559027572736
+    m_Localized: Kontrollida paigaldamist
+    m_Metadata:
+      m_Items: []
+  - m_Id: 84060897017856
+    m_Localized: Loo otsetee
+    m_Metadata:
+      m_Items: []
+  - m_Id: 84352455671808
+    m_Localized: "Automaatne v\xE4rskendamine"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 84563785678848
+    m_Localized: Desinstallige
+    m_Metadata:
+      m_Items: []
+  - m_Id: 85487950233600
+    m_Localized: Versioon
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []

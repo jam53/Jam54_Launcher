@@ -15,9 +15,9 @@ MonoBehaviour:
   Title: DGCTimer
   Image: {fileID: 2800000, guid: d7e39fe4535235245a2f0c665146a39b, type: 3}
   BackgroundColor: {r: 0, g: 0, b: 0, a: 0}
-  LatestUpdate: 15 August, 2018
-  ReleaseDate: 13 August, 2018
+  LatestUpdate: '#15 August, 2018'
+  ReleaseDate: '#13 August, 2018'
   Android: 0
   Windows: 1
-  description: DGCTimer, is written in C# and counts down from a given amount of
-    minutes and seconds. It is also able to play a sound when the timer ends.
+  description: '#DGCTimer, is written in C# and counts down from a given amount of
+    minutes and seconds. It is also able to play a sound when the timer ends.'

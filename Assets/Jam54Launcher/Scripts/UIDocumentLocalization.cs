@@ -22,6 +22,7 @@ public class UIDocumentLocalization : MonoBehaviour
 
 	public InitializeUI InitializeUI;
 	public Navigation Navigation;
+	public static StringTable currentStringTable;
 
 	void OnEnable()
 	{
@@ -55,8 +56,20 @@ public class UIDocumentLocalization : MonoBehaviour
 		Navigation.OnEnable();
 		Navigation.Start();
 
-		Navigation.OpenSettingsMenu();//Open Settings menu
-		Navigation.OpenLanguageSettings(); //Open the language panel
+        if (Navigation.SettingsWindowSelected) //Don't open the settings menu unless we actually want to open it because we were on the settings panel/had opened the settings panel
+			//If we had opened the settings panel, the 'SettingsWindowSelected' variable should be true
+			//Other wise (if we don't put this if statement) the settings panel will be opened when we launch the launcher. Because when we launch the launcher we
+			//set the language (loading from the savefile what the last selected language was),
+			//That means this function 'OnTableChanged' will be called, since we changed/loaded in the correct language from the savefile
+			//Therefore this function would run and open the settings panel. Which we don't want the first time AKA when we launch the launcher
+			//Then It should display the main menu. So the below 2 methods should only be ran to open the settings panel if the user actually
+			//clicked on the settings button
+        {
+			Navigation.OpenSettingsMenu();//Open Settings menu
+			Navigation.OpenLanguageSettings(); //Open the language panel
+		}
+
+		currentStringTable = table;
 	}
 
 	void OnTableLoaded(AsyncOperationHandle<StringTable> op)
@@ -86,6 +99,8 @@ public class UIDocumentLocalization : MonoBehaviour
 					Debug.LogWarning($"No {table.LocaleIdentifier.Code} translation for key: '{key}'");
 			}
 		}
+
+		currentStringTable = table;
 	}
 
 	void LocalizeChildrenRecursively(VisualElement element, StringTable table)
@@ -105,6 +120,8 @@ public class UIDocumentLocalization : MonoBehaviour
 			if (numGrandChildren != 0)
 				LocalizeChildrenRecursively(child, table);
 		}
+
+		currentStringTable = table;
 	}
 
 }

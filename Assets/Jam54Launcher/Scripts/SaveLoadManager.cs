@@ -67,7 +67,7 @@ public class SaveLoadManager : MonoBehaviour
 
         menuData.path = Application.persistentDataPath + "/Jam54LauncherFiles"; //This is the path to where all of the launcher's games and programs will be installed
 
-        menuData.Language = 0; //The language the launcher displays it's content in. This is an index that corresponds with a certain language, depending on the dropdown in the settings menu
+        menuData.Language = 1; //The language the launcher displays it's content in. This is an index that corresponds with a certain language, depending on the dropdown in the settings menu //Index = 1 being the defualt being English being the second item in the dropdown
         #endregion
 
         if (File.Exists(Application.persistentDataPath + @"/Jam54Launcher.json"))//Check if the savefile exists, before trying to load it in
