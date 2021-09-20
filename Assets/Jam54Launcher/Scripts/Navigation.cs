@@ -13,6 +13,7 @@ using UnityEngine.UIElements.Experimental;
 public class Navigation : MonoBehaviour
 {
     //UI Objects
+    private VisualElement rootVisualElement;
     public Button Programs_Unselected_Button, Games_Unselected_Button, InstallLocation_Button, Language_Button, Library_Button, Store_Button;
     public VisualElement Games, Programs, SettingsBackgroundCircle, Settings, HomeBackgroundCircle, InstallLocationPanel, LanguagePanel, Discord, YouTube, PlayStore, ProductPage;
     public VisualElement AppOptions1, AppOptions2, AppOptions3, AppOptions4, AppOptions5, AppOptions6, AppOptions7, AppOptions8, OptionsHolder, OptionsHolderExactCopy,  OptionsOutsideClicksDetector;
@@ -34,7 +35,7 @@ public class Navigation : MonoBehaviour
     public void OnEnable()
     {
         //Get the root visual element that contains all the objects we need
-        VisualElement rootVisualElement = GetComponent<UIDocument>().rootVisualElement;
+        rootVisualElement = GetComponent<UIDocument>().rootVisualElement;
 
 
         #region Assign objects
@@ -273,25 +274,25 @@ public class Navigation : MonoBehaviour
         //-----
 
         //Als we hebben geklikt linksboven in het scherm, dan positioneren we het settings menu zodanig dat het niet buiten ons canvas/window wordt gerenderd
-        if (mouseX <= Screen.width / 2 && mouseY <= Screen.height / 2)
+        if (mouseX <= rootVisualElement.worldBound.width / 2 && mouseY <= rootVisualElement.worldBound.height * 0.75)
         {
             return new Vector2(mouseX, mouseY);
         }
 
         //Als we hebben geklikt rechtsboven in het scherm, dan positioneren we het settings menu zodanig dat het niet buiten ons canvas/window wordt gerenderd
-        else if (mouseX >= Screen.width / 2 && mouseY <= Screen.height / 2)
+        else if (mouseX >= rootVisualElement.worldBound.width / 2 && mouseY <= rootVisualElement.worldBound.height * 0.75)
         {
             return new Vector2(mouseX - OptionsHolderExactCopy.resolvedStyle.width, mouseY);
         }
 
         //Als we hebben geklikt linksonder in het scherm, dan positioneren we het settings menu zodanig dat het niet buiten ons canvas/window wordt gerenderd
-        else if (mouseX <= Screen.width / 2 && mouseY >= Screen.height / 2)
+        else if (mouseX <= rootVisualElement.worldBound.width / 2 && mouseY >= rootVisualElement.worldBound.height * 0.75)
         {
             return new Vector2(mouseX, mouseY - OptionsHolderExactCopy.resolvedStyle.height);
         }
 
         //Als we hebben geklikt rechtsonder in het scherm, dan positioneren we het settings menu zodanig dat het niet buiten ons canvas/window wordt gerenderd
-        else if (mouseX >= Screen.width / 2 && mouseY >= Screen.height / 2)
+        else if (mouseX >= rootVisualElement.worldBound.width / 2 && mouseY >= rootVisualElement.worldBound.height * 0.75)
         {
             return new Vector2(mouseX - OptionsHolderExactCopy.resolvedStyle.width, mouseY - OptionsHolderExactCopy.resolvedStyle.height);
         }
