@@ -1,0 +1,212 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: UI Text_fr
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: fr
+  m_SharedData: {fileID: 11400000, guid: 5980cf4fe9926c9499919844e15cd377, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 189987815424
+    m_Localized: Jeux
+    m_Metadata:
+      m_Items: []
+  - m_Id: 14991703408640
+    m_Localized: Lancer
+    m_Metadata:
+      m_Items: []
+  - m_Id: 39673458589696
+    m_Localized: Programmes
+    m_Metadata:
+      m_Items: []
+  - m_Id: 40663813455872
+    m_Localized: "Param\xE8tres"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41067364220928
+    m_Localized: AUTRE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41857189412864
+    m_Localized: Lieu d'installation
+    m_Metadata:
+      m_Items: []
+  - m_Id: 42746159562752
+    m_Localized: Langue
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43004298002432
+    m_Localized: Lieu d'installation des jeux et programmes
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43781242486784
+    m_Localized: "Derni\xE8re mise \xE0 jour"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 44104023539712
+    m_Localized: Date de sortie
+    m_Metadata:
+      m_Items: []
+  - m_Id: 44497566695424
+    m_Localized: Plate-forme
+    m_Metadata:
+      m_Items: []
+  - m_Id: 44779532976128
+    m_Localized: "D\xC9SINSTALLER"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 45643966447616
+    m_Localized: Retourner au menu principal
+    m_Metadata:
+      m_Items: []
+  - m_Id: 46531468591104
+    m_Localized: JOUER
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47067978792960
+    m_Localized: INSTALLER
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47955074088960
+    m_Localized: "AstroRun est un jeu ind\xE9pendant d\xE9velopp\xE9 par une petite
+      \xE9quipe de trois personnes. Il s'agit d'un aventurier perdu dans l'espace,
+      qui doit franchir diff\xE9rents niveaux qui font tous partie d'une collection
+      de mondes divers. Chaque monde s'articule autour d'un certain th\xE8me et poss\xE8de
+      ses propres objets insolubles tels que des trampolines, des pics, des ennemis,
+      des tourelles et bien plus encore. En cours de route, l'aventurier peut collecter
+      divers objets qui peuvent \xEAtre utilis\xE9s pour acheter de nouveaux ensembles
+      et accessoires.\r"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 68755105775616
+    m_Localized: 12 juillet 2021
+    m_Metadata:
+      m_Items: []
+  - m_Id: 69421857505280
+    m_Localized: 15 mai 2020
+    m_Metadata:
+      m_Items: []
+  - m_Id: 70516956725248
+    m_Localized: "AutoEditor, \xE9crit en C#, \xE9dite automatiquement les vid\xE9os
+      en utilisant la d\xE9tection d'images."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71315568984064
+    m_Localized: 18 mars, 2021
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71488969900032
+    m_Localized: "4 ao\xFBt 2019"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71914968580096
+    m_Localized: "DGCTimer, \xE9crit en C#, effectue un compte \xE0 rebours \xE0
+      partir d'un nombre donn\xE9 de minutes et de secondes. Il est \xE9galement
+      capable de jouer un son \xE0 la fin du compte \xE0 rebours."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 72148968800256
+    m_Localized: "15 ao\xFBt 2018"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 72377285738496
+    m_Localized: "13 ao\xFBt 2018"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 72594923978752
+    m_Localized: "ImageSearcher est \xE9crit en C# et recherche une certaine image
+      dans une vid\xE9o. Une fois l'image trouv\xE9e, le programme affiche les horodatages
+      auxquels l'image a \xE9t\xE9 trouv\xE9e."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73011468697600
+    m_Localized: 18 avril 2020
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73246026760192
+    m_Localized: "27 f\xE9vrier 2020"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73504421052416
+    m_Localized: "IToW est utilis\xE9 pour manipuler un mot cr\xE9\xE9 par le programme
+      WToI, pour le ramener \xE0 sa forme originale."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74116873322496
+    m_Localized: "4 ao\xFBt 2018"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74307105980416
+    m_Localized: "Smash&Fly est un jeu dans lequel vous volez avec un dirigeable
+      \xE0 travers diff\xE9rents mondes. Ceux-ci sont inspir\xE9s des biomes du monde
+      r\xE9el. Le but est de tirer sur votre chemin vers le prochain monde."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78369255849984
+    m_Localized: 25 novembre 2019
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78879551651840
+    m_Localized: 9 septembre 2019
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79363607887872
+    m_Localized: "Stelexo est un jeu gratuit pour un seul joueur. Il pr\xE9sente
+      un monde g\xE9n\xE9r\xE9 de mani\xE8re totalement al\xE9atoire, qui comprend
+      des rochers, des arbres, des animaux, des ennemis et bien plus encore ! Un
+      monde plein de secrets et d'aventures vous attend ! \r\n\r\nLe d\xE9veloppement
+      de Stelexo a commenc\xE9 principalement en juillet 2018 et a \xE9t\xE9 le premier
+      jeu sur lequel j'ai travaill\xE9.\r\n\r\nLe plan \xE9tait de cr\xE9er un monde
+      g\xE9n\xE9r\xE9 de mani\xE8re proc\xE9durale, augment\xE9 de cr\xE9atures,
+      d'objets et plus encore.  J'ai r\xE9alis\xE9 que la port\xE9e de ce projet
+      d\xE9passait largement ce que je pouvais faire par moi-m\xEAme. Ainsi, apr\xE8s
+      une derni\xE8re mise \xE0 jour en janvier 2021, le d\xE9veloppement de Stelexo
+      a pris fin."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81285505089536
+    m_Localized: 2 janvier 2021
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81605073305600
+    m_Localized: 6 juillet 2018
+    m_Metadata:
+      m_Items: []
+  - m_Id: 83225538461696
+    m_Localized: "Aller \xE0 la page du magasin"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 83559027572736
+    m_Localized: "V\xE9rifier l'installation"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 84060897017856
+    m_Localized: "Cr\xE9er un raccourci"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 84352455671808
+    m_Localized: "Mise \xE0 jour automatique"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 84563785678848
+    m_Localized: "D\xE9sinstaller"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 85487950233600
+    m_Localized: Version
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []

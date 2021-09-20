@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Localization.Settings;
+using UnityEngine.Localization.Tables;
 using UnityEngine.UIElements;
 using UnityEngine.UIElements.Experimental;
 
@@ -24,7 +26,7 @@ public class Navigation : MonoBehaviour
     private bool LastWindowPrograms; //true means 'programs' is open - false means 'games' is open; on the 'main menu'
     private Color SideBarIconsDefaultColor;
     private bool MainWindowSelected; //if 'MainWindowSelected' and 'SettingsWindow' selected are both false
-    private bool SettingsWindowSelected; //it means that the product page is open
+    public bool SettingsWindowSelected; //it means that the product page is open
     public Texture2D InstallLanguageButtonBackground;
     private int CurrentAppIndex;
     public AppsInfo AstroRun, SmashAndFly, Stelexo, AutoEditor, DGCTimer, ImageSearcher, IToW, WToI;
@@ -161,17 +163,9 @@ public class Navigation : MonoBehaviour
 
     public void OpenSettingsMenu()
     {
-        if (!LastWindowPrograms)
-        {
-            Games.style.display = DisplayStyle.None;
-            Settings.style.display = DisplayStyle.Flex;
-        }
-
-        else if (LastWindowPrograms)
-        {
-            Programs.style.display = DisplayStyle.None;
-            Settings.style.display = DisplayStyle.Flex;
-        }
+        Games.style.display = DisplayStyle.None;
+        Programs.style.display = DisplayStyle.None;
+        Settings.style.display = DisplayStyle.Flex;
 
         ProductPage.style.display = DisplayStyle.None;
 
@@ -683,6 +677,42 @@ public class Navigation : MonoBehaviour
                 Debug.LogError("Couldn't open Product page correctly - from OptionsMenu");
                 break;
         }
+
+        string key = Description_Label.text;
+        StringTable table = UIDocumentLocalization.currentStringTable;
+        if (!string.IsNullOrEmpty(key) && key[0] == '#')
+        {
+            key = key.TrimStart('#');
+            StringTableEntry entry = table[key];
+            if (entry != null)
+                Description_Label.text = entry.LocalizedValue;
+            else
+                Debug.LogWarning($"No {table.LocaleIdentifier.Code} translation for key: '{key}'");
+        }
+
+        key = LatestUpdateDate1_Label.text;
+        table = UIDocumentLocalization.currentStringTable;
+        if (!string.IsNullOrEmpty(key) && key[0] == '#')
+        {
+            key = key.TrimStart('#');
+            StringTableEntry entry = table[key];
+            if (entry != null)
+                LatestUpdateDate1_Label.text = entry.LocalizedValue;
+            else
+                Debug.LogWarning($"No {table.LocaleIdentifier.Code} translation for key: '{key}'");
+        }
+
+        key = ReleaseDateDate2_Label.text;
+        table = UIDocumentLocalization.currentStringTable;
+        if (!string.IsNullOrEmpty(key) && key[0] == '#')
+        {
+            key = key.TrimStart('#');
+            StringTableEntry entry = table[key];
+            if (entry != null)
+                ReleaseDateDate2_Label.text = entry.LocalizedValue;
+            else
+                Debug.LogWarning($"No {table.LocaleIdentifier.Code} translation for key: '{key}'");
+        }
     }
 
     private void Image1_Clicked(MouseDownEvent evt)
@@ -738,6 +768,9 @@ public class Navigation : MonoBehaviour
         //Debug.Log(evt.newValue); //Returns the actual value 'Nederlands' for example
         //Debug.Log(LanguageSelector_Dropdown.index); //Returns what index has been selected, starting from 0
         SaveLoadManager.SaveLoadManagerr.menuData.Language = LanguageSelector_Dropdown.index; SaveLoadManager.SaveLoadManagerr.SaveJSONToDisk();
+
+        LanguageSelector_Dropdown.index = SaveLoadManager.SaveLoadManagerr.menuData.Language;//Load in the correct index of the dropdown in the language dropdown under the  settings > language panel
+        LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[SaveLoadManager.SaveLoadManagerr.menuData.Language]; //Load in the current correct language
     }
 
 
