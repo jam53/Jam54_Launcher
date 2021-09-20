@@ -21,7 +21,7 @@ public class InitializeUI : MonoBehaviour
     public Texture2D IToWGrey;
     public Texture2D WToIGrey;
 
-    private void OnEnable()
+    public void OnEnable()
     {
         //Get the root visual element that contains all the objects we need
         VisualElement rootVisualElement = GetComponent<UIDocument>().rootVisualElement;
@@ -49,7 +49,7 @@ public class InitializeUI : MonoBehaviour
     }
 
     // Start is called before the first frame update
-    void Start()
+    public void Start()
     {
         VersionNumber.text = Application.version; //Load in the current version of the launcher into the label in the setttings panel
         Path_Label.text = SaveLoadManager.SaveLoadManagerr.menuData.path; //Load in the path where the launcher stores the downloaded apps
