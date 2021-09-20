@@ -15,7 +15,7 @@ public class Navigation : MonoBehaviour
     //UI Objects
     public Button Programs_Unselected_Button, Games_Unselected_Button, InstallLocation_Button, Language_Button, Library_Button, Store_Button;
     public VisualElement Games, Programs, SettingsBackgroundCircle, Settings, HomeBackgroundCircle, InstallLocationPanel, LanguagePanel, Discord, YouTube, PlayStore, ProductPage;
-    public VisualElement AppOptions1, AppOptions2, AppOptions3, AppOptions4, AppOptions5, AppOptions6, AppOptions7, AppOptions8, OptionsHolder, OptionsOutsideClicksDetector;
+    public VisualElement AppOptions1, AppOptions2, AppOptions3, AppOptions4, AppOptions5, AppOptions6, AppOptions7, AppOptions8, OptionsHolder, OptionsHolderExactCopy,  OptionsOutsideClicksDetector;
     public VisualElement ProductImage, Android_Image, Windows_Image, PathBackground;
     public Label ProductTitle_Label, LatestUpdateDate1_Label, ReleaseDateDate2_Label, Description_Label, VersionNumber, Path_Label;
     public DropdownField LanguageSelector_Dropdown;
@@ -65,6 +65,7 @@ public class Navigation : MonoBehaviour
         AppOptions7 = rootVisualElement.Q<VisualElement>("AppOptions7");
         AppOptions8 = rootVisualElement.Q<VisualElement>("AppOptions8");
         OptionsHolder = rootVisualElement.Q<VisualElement>("OptionsHolder");
+        OptionsHolderExactCopy = rootVisualElement.Q<VisualElement>("OptionsHolderExactCopy");
         OptionsOutsideClicksDetector = rootVisualElement.Q<VisualElement>("OptionsOutsideClicksDetector");
         ProductImage = rootVisualElement.Q<VisualElement>("ProductImage");
         Android_Image = rootVisualElement.Q<VisualElement>("Android_Image");
@@ -265,6 +266,12 @@ public class Navigation : MonoBehaviour
 
     private Vector2 RepositionOptionsMenu(float mouseX, float mouseY)
     {
+        //-----
+        //We gebruiken hierronder 'OptionsHolderExactCopy' om de breedte en hoogte te verkrijgen, want
+        //'OptionsHolder' is een child van een ander VisualElement, en daardoor returned
+        // OptionsHolder.resolvedStyle.widht/height altijd 0 inplaats van de werkelijke waarde
+        //-----
+
         //Als we hebben geklikt linksboven in het scherm, dan positioneren we het settings menu zodanig dat het niet buiten ons canvas/window wordt gerenderd
         if (mouseX <= Screen.width / 2 && mouseY <= Screen.height / 2)
         {
@@ -274,19 +281,19 @@ public class Navigation : MonoBehaviour
         //Als we hebben geklikt rechtsboven in het scherm, dan positioneren we het settings menu zodanig dat het niet buiten ons canvas/window wordt gerenderd
         else if (mouseX >= Screen.width / 2 && mouseY <= Screen.height / 2)
         {
-            return new Vector2(mouseX - OptionsHolder.resolvedStyle.width, mouseY);
+            return new Vector2(mouseX - OptionsHolderExactCopy.resolvedStyle.width, mouseY);
         }
 
         //Als we hebben geklikt linksonder in het scherm, dan positioneren we het settings menu zodanig dat het niet buiten ons canvas/window wordt gerenderd
         else if (mouseX <= Screen.width / 2 && mouseY >= Screen.height / 2)
         {
-            return new Vector2(mouseX, mouseY - OptionsHolder.resolvedStyle.height);
+            return new Vector2(mouseX, mouseY - OptionsHolderExactCopy.resolvedStyle.height);
         }
 
         //Als we hebben geklikt rechtsonder in het scherm, dan positioneren we het settings menu zodanig dat het niet buiten ons canvas/window wordt gerenderd
         else if (mouseX >= Screen.width / 2 && mouseY >= Screen.height / 2)
         {
-            return new Vector2(mouseX - OptionsHolder.resolvedStyle.width, mouseY - OptionsHolder.resolvedStyle.height);
+            return new Vector2(mouseX - OptionsHolderExactCopy.resolvedStyle.width, mouseY - OptionsHolderExactCopy.resolvedStyle.height);
         }
 
         else
