@@ -65,6 +65,7 @@
                         </ui:VisualElement>
                     </ui:VisualElement>
                 </ui:ScrollView>
+                <ui:Label text="#baguette" display-tooltip-when-elided="true" style="color: rgba(236, 61, 61, 255);" />
             </ui:VisualElement>
         </ui:VisualElement>
         <ui:VisualElement name="Programs" style="-unity-background-image-tint-color: rgb(255, 255, 255); background-color: rgba(0, 0, 0, 0); flex-grow: 1; background-image: url(&apos;project://database/Assets/Jam54Launcher/Textures/Background.png?fileID=2800000&amp;guid=fb56a08e0edb3b74fb0db8a064f66abe&amp;type=3#Background&apos;); -unity-background-scale-mode: stretch-to-fill; display: none; visibility: visible;">

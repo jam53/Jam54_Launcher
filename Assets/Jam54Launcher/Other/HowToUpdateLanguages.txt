@@ -1,0 +1,23 @@
+Import the UIDocumentLocalization script from https://gist.github.com/andrew-raphael-lukasik/72a4d3d14dd547a1d61ae9dc4c4513da
+
+Add the UIDocumentLocalization as a component to the same gameobject the UIDocument is on
+
+
+Import the Localization package
+
+Make a folder Assets > Localization
+
+Project settings > Localization > Locale Generator. Put it under Assters > Localization > Locales
+
+Specific Locale Selector | select the default language
+
+On a gameobject > add component > localize string > create table collection > Give it a name and place it under Assets/Localization/Tables. Now delete the localize string component you added to that gameobject
+
+
+In labels, buttons etc, go to the 'Text' property. Add a # before all of the text and copy the text
+
+Now go to Assets/Localization/Tables/UIText > Open In Table Editor
+
+Paste everything in the 'text' property into the key area, and remove the #
+
+Add the translation and hit ctrl+s

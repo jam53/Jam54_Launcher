@@ -29,7 +29,7 @@ public class Navigation : MonoBehaviour
     private int CurrentAppIndex;
     public AppsInfo AstroRun, SmashAndFly, Stelexo, AutoEditor, DGCTimer, ImageSearcher, IToW, WToI;
 
-    private void OnEnable()
+    public void OnEnable()
     {
         //Get the root visual element that contains all the objects we need
         VisualElement rootVisualElement = GetComponent<UIDocument>().rootVisualElement;
@@ -128,16 +128,10 @@ public class Navigation : MonoBehaviour
     }
 
     // Start is called before the first frame update
-    void Start()
+    public void Start()
     {
         SideBarIconsDefaultColor.r = 0.1411765f; SideBarIconsDefaultColor.g = 0.1490196f; SideBarIconsDefaultColor.b = 0.2313726f; SideBarIconsDefaultColor.a = 1f;
         MainWindowSelected = true;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 
     #region navigation
@@ -161,6 +155,11 @@ public class Navigation : MonoBehaviour
 
     //Clicking on this button should bring the user to the settings page.
     private void SettingsBackgroundCircle_Clicked(MouseDownEvent evt)
+    {
+        OpenSettingsMenu();
+    }
+
+    public void OpenSettingsMenu()
     {
         if (!LastWindowPrograms)
         {
@@ -223,6 +222,11 @@ public class Navigation : MonoBehaviour
 
     //If we click on the 'Language_Button', the Install settings tab should become unvisible and the Language settings tab should become visible
     private void Language_Button_Clicked()
+    {
+        OpenLanguageSettings();
+    }
+
+    public void OpenLanguageSettings()
     {
         InstallLocation_Button.style.backgroundImage = null;//The backgroundimage on the 'Language_Button' button makes it look like it's selected on startup. Since it's the first button in the list. But once we click on the 'Language_Button' button. We no longer want the 'InstallLocation_Button' button to be selected. So we delete the backgroundimage that makes the 'Language_Button' button always look selected
         Language_Button.style.backgroundImage = InstallLanguageButtonBackground;//Add the background pic so it looks selected
