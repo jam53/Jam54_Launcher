@@ -225,6 +225,18 @@ MonoBehaviour:
     m_Localized: "Uyar\u0131"
     m_Metadata:
       m_Items: []
+  - m_Id: 587204168650752
+    m_Localized: Google Play'den indir
+    m_Metadata:
+      m_Items: []
+  - m_Id: 589898585346048
+    m_Localized: "Alfa s\xFCr\xFCm\xFC i\xE7in kaydol"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 591490097221632
+    m_Localized: "SmashAndFly'\u0131n alfa testine kat\u0131lmak istiyorum"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

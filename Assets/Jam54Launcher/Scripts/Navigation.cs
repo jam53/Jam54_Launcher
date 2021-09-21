@@ -24,6 +24,7 @@ public class Navigation : MonoBehaviour
     public DropdownField LanguageSelector_Dropdown;
     public VisualElement Image1, Image2, Image3, Image4, Image5, Image6, Image7, Image8, ProgressBar;
     public Button Install_Button, Uninstall_Button, Play_Button, Cancel_Button, Downloading_Button;
+    public Label Install_Label;
 
     //Script variables
     private bool LastWindowPrograms; //true means 'programs' is open - false means 'games' is open; on the 'main menu'
@@ -83,6 +84,7 @@ public class Navigation : MonoBehaviour
         VersionNumber = rootVisualElement.Q<Label>("VersionNumber");
         Path_Label = rootVisualElement.Q<Label>("Path_Label");
         Downloading_Label = rootVisualElement.Q<Label>("Downloading_Label");
+        Install_Label = rootVisualElement.Q<Label>("Install_Label");
         LanguageSelector_Dropdown = rootVisualElement.Q<DropdownField>("LanguageSelector_Dropdown");
         Image1 = rootVisualElement.Q<VisualElement>("Image1");
         Image2 = rootVisualElement.Q<VisualElement>("Image2");
@@ -431,11 +433,13 @@ public class Navigation : MonoBehaviour
 
         switch (appIndex)
         {
-            case 1:
+            case 1: //AstroRun
                 ProductTitle_Label.text = AstroRun.Title;
                 ProductImage.style.backgroundImage = AstroRun.Image;
                 LatestUpdateDate1_Label.text = AstroRun.LatestUpdate;
                 ReleaseDateDate2_Label.text = AstroRun.ReleaseDate;
+
+                Install_Label.text = LocalizeString("#Get it on Google Play");
 
                 if (!AstroRun.Android)
                 {
@@ -474,11 +478,13 @@ public class Navigation : MonoBehaviour
                 break;
 
 
-            case 2:
+            case 2: //Smash&Fly
                 ProductTitle_Label.text = SmashAndFly.Title;
                 ProductImage.style.backgroundImage = SmashAndFly.Image;
                 LatestUpdateDate1_Label.text = SmashAndFly.LatestUpdate;
                 ReleaseDateDate2_Label.text = SmashAndFly.ReleaseDate;
+
+                Install_Label.text = LocalizeString("#Sign up for the alpha version");
 
                 if (!SmashAndFly.Android)
                 {
@@ -517,11 +523,13 @@ public class Navigation : MonoBehaviour
                 break;
 
 
-            case 3:
+            case 3: //Stelexo
                 ProductTitle_Label.text = Stelexo.Title;
                 ProductImage.style.backgroundImage = Stelexo.Image;
                 LatestUpdateDate1_Label.text = Stelexo.LatestUpdate;
                 ReleaseDateDate2_Label.text = Stelexo.ReleaseDate;
+
+                Install_Label.text = LocalizeString("#INSTALL");
 
                 if (!Stelexo.Android)
                 {
@@ -560,11 +568,13 @@ public class Navigation : MonoBehaviour
                 break;
 
 
-            case 4:
+            case 4: //AutoEditor
                 ProductTitle_Label.text = AutoEditor.Title;
                 ProductImage.style.backgroundImage = AutoEditor.Image;
                 LatestUpdateDate1_Label.text = AutoEditor.LatestUpdate;
                 ReleaseDateDate2_Label.text = AutoEditor.ReleaseDate;
+
+                Install_Label.text = LocalizeString("#INSTALL");
 
                 if (!AutoEditor.Android)
                 {
@@ -603,11 +613,13 @@ public class Navigation : MonoBehaviour
                 break;
 
 
-            case 5:
+            case 5: //DGCTimer
                 ProductTitle_Label.text = DGCTimer.Title;
                 ProductImage.style.backgroundImage = DGCTimer.Image;
                 LatestUpdateDate1_Label.text = DGCTimer.LatestUpdate;
                 ReleaseDateDate2_Label.text = DGCTimer.ReleaseDate;
+
+                Install_Label.text = LocalizeString("#INSTALL");
 
                 if (!DGCTimer.Android)
                 {
@@ -646,12 +658,14 @@ public class Navigation : MonoBehaviour
                 break;
 
 
-            case 6:
+            case 6: //ImageSearcher
                 ProductTitle_Label.text = ImageSearcher.Title;
                 ProductImage.style.backgroundImage = ImageSearcher.Image;
                 ProductImage.style.backgroundColor = ImageSearcher.BackgroundColor;
                 LatestUpdateDate1_Label.text = ImageSearcher.LatestUpdate;
                 ReleaseDateDate2_Label.text = ImageSearcher.ReleaseDate;
+
+                Install_Label.text = LocalizeString("#INSTALL");
 
                 if (!ImageSearcher.Android)
                 {
@@ -690,11 +704,13 @@ public class Navigation : MonoBehaviour
                 break;
 
 
-            case 7:
+            case 7: //IToW
                 ProductTitle_Label.text = IToW.Title;
                 ProductImage.style.backgroundImage = IToW.Image;
                 LatestUpdateDate1_Label.text = IToW.LatestUpdate;
                 ReleaseDateDate2_Label.text = IToW.ReleaseDate;
+
+                Install_Label.text = LocalizeString("#INSTALL");
 
                 if (!IToW.Android)
                 {
@@ -733,11 +749,13 @@ public class Navigation : MonoBehaviour
                 break;
 
 
-            case 8:
+            case 8: //WToI
                 ProductTitle_Label.text = WToI.Title;
                 ProductImage.style.backgroundImage = WToI.Image;
                 LatestUpdateDate1_Label.text = WToI.LatestUpdate;
                 ReleaseDateDate2_Label.text = WToI.ReleaseDate;
+
+                Install_Label.text = LocalizeString("#INSTALL");
 
                 if (!WToI.Android)
                 {
@@ -1073,13 +1091,26 @@ public class Navigation : MonoBehaviour
 
     public void Install_Button_Clicked()
     {
-        AppsUpdater.AppsUpdaterr.DownloadApp(currentAppIndex); //Begin downloading/installing the app
-        currentlyUpdatingAppIndex = currentAppIndex;
+        if (currentAppIndex == 1) //This means we are on AstroRun's product page
+        {
+            Application.OpenURL("https://play.google.com/store/apps/details?id=com.jam54.AstroRun&hl=en"); //Open the Google PlayStore
+        }
 
-        Install_Button.style.display = DisplayStyle.None; //Disable the install button
+        else if (currentAppIndex == 2)
+        {
+            Application.OpenURL("mailto:" + "jam54.help@outlook.com" + "?subject=" + LocalizeString("#I would like to participate in the closed alpha test of Smash&Fly") + "&body=" + "");//Open the default mail app
+        }
 
-        Cancel_Button.style.display = DisplayStyle.Flex;//Enable the cancel button + progress bar/button
-        Downloading_Button.style.display = DisplayStyle.Flex;
+        else
+        {
+            AppsUpdater.AppsUpdaterr.DownloadApp(currentAppIndex); //Begin downloading/installing the app
+            currentlyUpdatingAppIndex = currentAppIndex;
+
+            Install_Button.style.display = DisplayStyle.None; //Disable the install button
+
+            Cancel_Button.style.display = DisplayStyle.Flex;//Enable the cancel button + progress bar/button
+            Downloading_Button.style.display = DisplayStyle.Flex;
+        }
     }
 
     public void Cancel_Button_Clicked()
