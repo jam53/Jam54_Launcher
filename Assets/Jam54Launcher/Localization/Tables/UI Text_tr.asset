@@ -211,6 +211,11 @@ MonoBehaviour:
     m_Localized: KURULUM YAPILIYOR...
     m_Metadata:
       m_Items: []
+  - m_Id: 479462368088064
+    m_Localized: "Kurulum yolunun de\u011Fi\u015Ftirilmesi, Jam54Launcher taraf\u0131ndan
+      o anda a\xE7\u0131k olan t\xFCm uygulamalar\u0131 kapatacakt\u0131r."
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

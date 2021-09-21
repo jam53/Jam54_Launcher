@@ -206,6 +206,11 @@ MonoBehaviour:
     m_Localized: "H\xD5IVATUD PAIGALDAMINE..."
     m_Metadata:
       m_Items: []
+  - m_Id: 479462368088064
+    m_Localized: "Paigaldusraja muutmine sulgeb k\xF5ik praegu Jam54Launcheris avatud
+      rakendused."
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
