@@ -972,6 +972,27 @@ public class Navigation : MonoBehaviour
     //stop downloading op true als cancel button clicked is
 
 
+    public string LocalizeString(string text)
+    {
+        string key = text;
+        StringTable table = UIDocumentLocalization.currentStringTable;
+        if (!string.IsNullOrEmpty(key) && key[0] == '#')
+        {
+            key = key.TrimStart('#');
+            StringTableEntry entry = table[key];
+            if (entry != null)
+                return entry.LocalizedValue;
+            else
+                return $"No {table.LocaleIdentifier.Code} translation for key: '{key}'";
+        }
+
+        else
+        {
+            return "Couldn't get translation for key: " + key;
+        }
+    }
+
+
     #endregion
 
 

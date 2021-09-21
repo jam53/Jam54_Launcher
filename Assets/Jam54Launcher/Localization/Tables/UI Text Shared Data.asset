@@ -197,6 +197,10 @@ MonoBehaviour:
     m_Key: Version
     m_Metadata:
       m_Items: []
+  - m_Id: 447021284724736
+    m_Key: INSTALLING
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

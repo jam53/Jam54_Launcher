@@ -207,6 +207,10 @@ MonoBehaviour:
     m_Localized: Versiyon
     m_Metadata:
       m_Items: []
+  - m_Id: 447021284724736
+    m_Localized: KURULUM YAPILIYOR...
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

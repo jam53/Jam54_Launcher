@@ -202,6 +202,10 @@ MonoBehaviour:
     m_Localized: Versioon
     m_Metadata:
       m_Items: []
+  - m_Id: 447021284724736
+    m_Localized: "H\xD5IVATUD PAIGALDAMINE..."
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

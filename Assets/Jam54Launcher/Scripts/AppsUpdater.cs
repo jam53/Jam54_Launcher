@@ -5,6 +5,8 @@ using System.IO.Compression;
 using System.Net;
 using System.ComponentModel;
 using System.IO;
+using UnityEngine.UIElements;
+using System;
 
 public class AppsUpdater : MonoBehaviour
 {
@@ -59,26 +61,50 @@ public class AppsUpdater : MonoBehaviour
                 break;
 
             case 3: //Stelexo
+                if (File.Exists(SaveLoadManager.SaveLoadManagerr.menuData.path + @"/Stelexo.zip"))
+                {
+                    File.Delete(SaveLoadManager.SaveLoadManagerr.menuData.path + @"/Stelexo.zip");
+                }
                 webClient.DownloadFileAsync(new System.Uri("https://github.com/jamhorn/Apps/releases/latest/download/Stelexo.zip"), SaveLoadManager.SaveLoadManagerr.menuData.path + @"/Stelexo.zip");
                 break;
 
             case 4: //AutoEditor
+                if (File.Exists(SaveLoadManager.SaveLoadManagerr.menuData.path + @"/AutoEditor.zip"))
+                {
+                    File.Delete(SaveLoadManager.SaveLoadManagerr.menuData.path + @"/AutoEditor.zip");
+                }
                 webClient.DownloadFileAsync(new System.Uri("https://github.com/jamhorn/Apps/releases/latest/download/AutoEditor.zip"), SaveLoadManager.SaveLoadManagerr.menuData.path + @"/AutoEditor.zip");
                 break;
 
             case 5: //DGCTimer
+                if (File.Exists(SaveLoadManager.SaveLoadManagerr.menuData.path + @"/DGCTimer.zip"))
+                {
+                    File.Delete(SaveLoadManager.SaveLoadManagerr.menuData.path + @"/DGCTimer.zip");
+                }
                 webClient.DownloadFileAsync(new System.Uri("https://github.com/jamhorn/Apps/releases/latest/download/DGCTimer.zip"), SaveLoadManager.SaveLoadManagerr.menuData.path + @"/DGCTimer.zip");
                 break;
 
             case 6: //ImageSearcher
+                if (File.Exists(SaveLoadManager.SaveLoadManagerr.menuData.path + @"/ImageSearcher.zip"))
+                {
+                    File.Delete(SaveLoadManager.SaveLoadManagerr.menuData.path + @"/ImageSearcher.zip");
+                }
                 webClient.DownloadFileAsync(new System.Uri("https://github.com/jamhorn/Apps/releases/latest/download/ImageSearcher.zip"), SaveLoadManager.SaveLoadManagerr.menuData.path + @"/ImageSearcher.zip");
                 break;
 
             case 7: //IToW
+                if (File.Exists(SaveLoadManager.SaveLoadManagerr.menuData.path + @"/IToW.zip"))
+                {
+                    File.Delete(SaveLoadManager.SaveLoadManagerr.menuData.path + @"/IToW.zip");
+                }
                 webClient.DownloadFileAsync(new System.Uri("https://github.com/jamhorn/Apps/releases/latest/download/IToW.zip"), SaveLoadManager.SaveLoadManagerr.menuData.path + @"/IToW.zip");
                 break;
 
             case 8: //WToI
+                if (File.Exists(SaveLoadManager.SaveLoadManagerr.menuData.path + @"/WToI.zip"))
+                {
+                    File.Delete(SaveLoadManager.SaveLoadManagerr.menuData.path + @"/WToI.zip");
+                }
                 webClient.DownloadFileAsync(new System.Uri("https://github.com/jamhorn/Apps/releases/latest/download/WToI.zip"), SaveLoadManager.SaveLoadManagerr.menuData.path + @"/WToI.zip");
                 break;
 
@@ -175,9 +201,9 @@ public class AppsUpdater : MonoBehaviour
 
         if (!e.Cancelled) //If the download was not cancelled. It means it completed (or some exception was thrown because something went wrong, but we will just assume the download was succesful)
         {
+            navigation.Cancel_Button.style.display = DisplayStyle.None; //We won't allow the user to abort, during unzipping
+            navigation.Downloading_Label.text = navigation.LocalizeString("#INSTALLING"); //Updat the text inside the progress bar
             Install(); //When the download is complete, move on to install the app
-            //unzip and delete the zip
-            //when installing/unpacking zip and removing zip is complete, set currenupdatingappindex in Navigation.cs to 0
         }
     }
 
@@ -305,18 +331,182 @@ public class AppsUpdater : MonoBehaviour
         {
             System.IO.Compression.ZipFile.ExtractToDirectory(zipPath, SaveLoadManager.SaveLoadManagerr.menuData.path, true); //Extract the zip to the following directory and overwrite files
 
-            CleanUpInstallation();
+            RemoveDownloadedZip();
+        }
+    }
+
+    public void RemoveDownloadedZip()
+    {
+
+        switch (navigation.currentlyUpdatingAppIndex)
+        {//Delete the downloaded zip file after we unzipped it
+
+            case 1: //AstroRun
+                    //We don't install AstroRun with the Launcher, since it's on Google Play, so we don't need to deleting anything. Besides, this part of the switch statement should never get called
+                break;
+
+            case 2: //Smash&Fly
+                    // We don't install Smash&Fly with the launchers since it's on Google Play, so we don't need to deleting anything. Besides, this part of the switch statement should never get called
+                break;
+
+            case 3: //Stelexo
+                if (File.Exists(SaveLoadManager.SaveLoadManagerr.menuData.path + @"/Stelexo.zip"))
+                {
+                    File.Delete(SaveLoadManager.SaveLoadManagerr.menuData.path + @"/Stelexo.zip");
+                }
+                break;
+
+            case 4: //AutoEditor
+                if (File.Exists(SaveLoadManager.SaveLoadManagerr.menuData.path + @"/AutoEditor.zip"))
+                {
+                    File.Delete(SaveLoadManager.SaveLoadManagerr.menuData.path + @"/AutoEditor.zip");
+                }
+                break;
+
+            case 5: //DGCTimer
+                if (File.Exists(SaveLoadManager.SaveLoadManagerr.menuData.path + @"/DGCTimer.zip"))
+                {
+                    File.Delete(SaveLoadManager.SaveLoadManagerr.menuData.path + @"/DGCTimer.zip");
+                }
+                break;
+
+            case 6: //ImageSearcher
+                if (File.Exists(SaveLoadManager.SaveLoadManagerr.menuData.path + @"/ImageSearcher.zip"))
+                {
+                    File.Delete(SaveLoadManager.SaveLoadManagerr.menuData.path + @"/ImageSearcher.zip");
+                }
+                break;
+
+            case 7: //IToW
+                if (File.Exists(SaveLoadManager.SaveLoadManagerr.menuData.path + @"/IToW.zip"))
+                {
+                    File.Delete(SaveLoadManager.SaveLoadManagerr.menuData.path + @"/IToW.zip");
+                }
+                break;
+
+            case 8: //WToI
+                if (File.Exists(SaveLoadManager.SaveLoadManagerr.menuData.path + @"/WToI.zip"))
+                {
+                    File.Delete(SaveLoadManager.SaveLoadManagerr.menuData.path + @"/WToI.zip");
+                }
+                break;
+
+            default:
+                Debug.LogError("Couldn't delete the downloaded zipfile after unzipping it");
+                break;
         }
 
 
-
-
+        CreateShortcut();
     }
 
-    public void CleanUpInstallation()
-    {//Delete the zipfile, update the currentlyUpdatingApp
-     //        currentlyUpdatingAppIndex op nul
-     // create shortcut
-        Debug.Log("Actually managed ot make it here wth");
+    public void CreateShortcut()
+    {//Create a shortcut to the installed app on the users desktop
+        string deskDir = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
+
+
+
+        switch (navigation.currentlyUpdatingAppIndex)
+        {//Delete the downloaded zip file after we unzipped it
+
+            case 1: //AstroRun
+                    //We don't install AstroRun with the Launcher, since it's on Google Play, so we don't need to create a shortcut. Besides, this part of the switch statement should never get called
+                break;
+
+            case 2: //Smash&Fly
+                    // We don't install Smash&Fly with the launchers since it's on Google Play, so we don't need to create a shortcut. Besides, this part of the switch statement should never get called
+                break;
+
+            case 3: //Stelexo
+                using (StreamWriter writer = new StreamWriter(deskDir + "\\" + "Stelexo" + ".url"))//Get the desktop directory and create the shorcut file
+                {
+                    string app = SaveLoadManager.SaveLoadManagerr.menuData.path + @"/Stelexo/Stelexo.exe"; //Get the path to the executable
+                    writer.WriteLine("[InternetShortcut]"); //The type of shorcute
+                    writer.WriteLine("URL=file:///" + app); //Write the path to the executable to the shorcut
+                    writer.WriteLine("IconIndex=0");
+                    //string icon = app.Replace('\\', '/');
+                    writer.WriteLine("IconFile=" + app); //Get the icon for the shorcut, from the executable
+                }
+                break;
+
+            case 4: //AutoEditor
+                using (StreamWriter writer = new StreamWriter(deskDir + "\\" + "AutoEditor" + ".url"))//Get the desktop directory and create the shorcut file
+                {
+                    string app = SaveLoadManager.SaveLoadManagerr.menuData.path + @"/AutoEditor/AutoEditor.exe"; //Get the path to the executable
+                    writer.WriteLine("[InternetShortcut]"); //The type of shorcute
+                    writer.WriteLine("URL=file:///" + app); //Write the path to the executable to the shorcut
+                    writer.WriteLine("IconIndex=0");
+                    //string icon = app.Replace('\\', '/');
+                    writer.WriteLine("IconFile=" + app); //Get the icon for the shorcut, from the executable
+                }
+                break;
+
+            case 5: //DGCTimer
+                using (StreamWriter writer = new StreamWriter(deskDir + "\\" + "DGCTimer" + ".url"))//Get the desktop directory and create the shorcut file
+                {
+                    string app = SaveLoadManager.SaveLoadManagerr.menuData.path + @"/DGCTimer/Timer.exe"; //Get the path to the executable
+                    writer.WriteLine("[InternetShortcut]"); //The type of shorcute
+                    writer.WriteLine("URL=file:///" + app); //Write the path to the executable to the shorcut
+                    writer.WriteLine("IconIndex=0");
+                    //string icon = app.Replace('\\', '/');
+                    writer.WriteLine("IconFile=" + app); //Get the icon for the shorcut, from the executable
+                }
+                break;
+
+            case 6: //ImageSearcher
+                using (StreamWriter writer = new StreamWriter(deskDir + "\\" + "ImageSearcher" + ".url"))//Get the desktop directory and create the shorcut file
+                {
+                    string app = SaveLoadManager.SaveLoadManagerr.menuData.path + @"/ImageSearcher/ReclameCutter.exe"; //Get the path to the executable
+                    writer.WriteLine("[InternetShortcut]"); //The type of shorcute
+                    writer.WriteLine("URL=file:///" + app); //Write the path to the executable to the shorcut
+                    writer.WriteLine("IconIndex=0");
+                    //string icon = app.Replace('\\', '/');
+                    writer.WriteLine("IconFile=" + app); //Get the icon for the shorcut, from the executable
+                }
+                break;
+
+            case 7: //IToW
+                using (StreamWriter writer = new StreamWriter(deskDir + "\\" + "IToW" + ".url"))//Get the desktop directory and create the shorcut file
+                {
+                    string app = SaveLoadManager.SaveLoadManagerr.menuData.path + @"/IToW/IToW.exe"; //Get the path to the executable
+                    writer.WriteLine("[InternetShortcut]"); //The type of shorcute
+                    writer.WriteLine("URL=file:///" + app); //Write the path to the executable to the shorcut
+                    writer.WriteLine("IconIndex=0");
+                    //string icon = app.Replace('\\', '/');
+                    writer.WriteLine("IconFile=" + app); //Get the icon for the shorcut, from the executable
+                }
+                break;
+
+            case 8: //WToI
+                using (StreamWriter writer = new StreamWriter(deskDir + "\\" + "WToI" + ".url"))//Get the desktop directory and create the shorcut file
+                {
+                    string app = SaveLoadManager.SaveLoadManagerr.menuData.path + @"/WToI/WToI.exe"; //Get the path to the executable
+                    writer.WriteLine("[InternetShortcut]"); //The type of shorcute
+                    writer.WriteLine("URL=file:///" + app); //Write the path to the executable to the shorcut
+                    writer.WriteLine("IconIndex=0");
+                    //string icon = app.Replace('\\', '/');
+                    writer.WriteLine("IconFile=" + app); //Get the icon for the shorcut, from the executable
+                }
+                break;
+
+            default:
+                Debug.LogError("Couldn't delete the downloaded zipfile after unzipping it");
+                break;
+        }
+
+        //downloadprogress button vervangen door play en unistall
+        //of gewoon teruggaan naar main menu en versie nummer vervangen.
+        //het zal dan automatisch play en unistall daar zetten
+        //kleurvolle foto inladen
+
+        //play button path + folder name + exe name
+        //play button set running to true
+        //uninstall delete path if not running
+        //unisntall, give message box if still running and trying to delete
+        //uninstall, delete shortcute, if it exists
+        //update automatisch met remoteconfig
+
+        navigation.currentlyUpdatingAppIndex = 0; //Everything, from downloading to installing and creating a shortcut has been done, so we put this
+        //to 0. This means nothing is updating. There for the user can updat/download other apps again
     }
 }
