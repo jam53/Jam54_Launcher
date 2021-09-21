@@ -521,27 +521,6 @@ public class AppsUpdater : MonoBehaviour
                 break;
         }
 
-
-        //does the version number get saved?
-
-        //downloadprogress button vervangen door play en unistall
-        //of gewoon teruggaan naar main menu en versie nummer vervangen.
-        //het zal dan automatisch play en unistall daar zetten
-        //kleurvolle foto inladen
-
-        //play button path + folder name + exe name
-        //play button set running to true
-        //uninstall delete path if not running
-        //unisntall, give message box if still running and trying to delete
-        //uninstall, delete shortcute, if it exists
-        //uninstall, zet versie nummer op 0
-
-        //updaten doen
-        //als er een hogere remote config is
-        //alles hier verwijderen en opnieuw downloaden. 
-        //Gewoon vorige functies hergebruiken? Uninstall functie en install functie
-        //update automatisch met remoteconfig
-
         navigation.currentlyUpdatingAppIndex = 0; //Everything, from downloading to installing and creating a shortcut has been done, so we put this
         //to 0. This means nothing is updating. There for the user can updat/download other apps again
 

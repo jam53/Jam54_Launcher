@@ -7,6 +7,7 @@ using UnityEngine.Localization.Tables;
 using UnityEngine.UIElements;
 using UnityEngine.UIElements.Experimental;
 using System.IO;
+using System.Linq;
 
 //This script handles all the animations when clicking on certain elements and makes it possible to navigate in the app.
 //In other words, the logic behind clicking on a button in order to open a new tab and close the current one is handled here.
@@ -33,6 +34,7 @@ public class Navigation : MonoBehaviour
     private static int currentAppIndex; //The app that's currently open on the product page
     public AppsInfo AstroRun, SmashAndFly, Stelexo, AutoEditor, DGCTimer, ImageSearcher, IToW, WToI;
     public int currentlyUpdatingAppIndex; //The app that is currently updating, if the variable is 0. It means that there isn't any app currently downloding/installing/updating
+    private bool thereIsAnAppRunning; //Will be checked if the user wants to choose a new path, if there is an app running. There will be a messagebox saying they can't change it
 
     public void OnEnable()
     {
@@ -108,6 +110,7 @@ public class Navigation : MonoBehaviour
         Store_Button.clicked += Store_Button_Clicked;
         Install_Button.clicked += Install_Button_Clicked;
         Cancel_Button.clicked += Cancel_Button_Clicked;
+        Play_Button.clicked += Play_Button_Clicked;
         SettingsBackgroundCircle.RegisterCallback<MouseDownEvent>(SettingsBackgroundCircle_Clicked);
         HomeBackgroundCircle.RegisterCallback<MouseDownEvent>(HomeBackgroundCircle_Clicked);
         SettingsBackgroundCircle.RegisterCallback<MouseOverEvent>(SettingsBackgroundCircle_Over);
@@ -969,7 +972,91 @@ public class Navigation : MonoBehaviour
         Downloading_Label.text = percentComplete + "%";
     }
 
-    //stop downloading op true als cancel button clicked is
+    private void Play_Button_Clicked()
+    {
+        switch (currentAppIndex)
+        {
+            case 1:
+                //We don't install AstroRun with this launcher, since it's on the google playstore. So because we never isntall it, we will never will be able to see the play button, therefore call this case block
+                break;
+
+            case 2:
+                //We don't install Smash&Fly with this launcher, since it's on the google playstore. So because we never isntall it, we will never will be able to see the play button, therefore call this case block
+                break;
+
+            case 3://Stelexo
+                thereIsAnAppRunning = true;
+                if (System.Diagnostics.Process.GetProcessesByName(@"Stelexo").Count() == 0)
+                {//Only launch it, if it isn't already running
+                    System.Diagnostics.Process.Start(SaveLoadManager.SaveLoadManagerr.menuData.path + @"/Stelexo/Stelexo.exe"); //Start the app
+                }
+                break;
+
+            case 4://AutoEditor
+                thereIsAnAppRunning = true;
+                if (System.Diagnostics.Process.GetProcessesByName(@"AutoEditor").Count() == 0)
+                {//Only launch it, if it isn't already running
+                    System.Diagnostics.Process.Start(SaveLoadManager.SaveLoadManagerr.menuData.path + @"/AutoEditor/AutoEditor.exe"); //Start the app
+                }
+                break;
+
+            case 5://DGCTimer
+                thereIsAnAppRunning = true;
+                if (System.Diagnostics.Process.GetProcessesByName(@"Timer").Count() == 0)
+                {//Only launch it, if it isn't already running
+                    System.Diagnostics.Process.Start(SaveLoadManager.SaveLoadManagerr.menuData.path + @"/DGCTimer/Timer.exe"); //Start the app
+                }
+                break;
+
+            case 6://ImageSearcher
+                thereIsAnAppRunning = true;
+                if (System.Diagnostics.Process.GetProcessesByName(@"ReclameCutter").Count() == 0)
+                {//Only launch it, if it isn't already running
+                    System.Diagnostics.Process.Start(SaveLoadManager.SaveLoadManagerr.menuData.path + @"/ImageSearcher/ReclameCutter.exe"); //Start the app
+                }
+                break;
+
+            case 7://IToW
+                thereIsAnAppRunning = true;
+                if (System.Diagnostics.Process.GetProcessesByName(@"IToW").Count() == 0)
+                {//Only launch it, if it isn't already running
+                    System.Diagnostics.Process.Start(SaveLoadManager.SaveLoadManagerr.menuData.path + @"/IToW/IToW.exe"); //Start the app
+                }
+                break;
+
+            case 8://WToI
+                thereIsAnAppRunning = true;
+                if (System.Diagnostics.Process.GetProcessesByName(@"WToI").Count() == 0)
+                {//Only launch it, if it isn't already running
+                    System.Diagnostics.Process.Start(SaveLoadManager.SaveLoadManagerr.menuData.path + @"/WToI/WToI.exe"); //Start the app
+                }
+                break;
+
+            default:
+                break;
+        }
+
+
+        //tell user continuing, therefore changing the path will force close all the open apps,(only if therisanapprunning is true)
+        // kill it
+        //if (System.Diagnostics.Process.GetProcessesByName(System.IO.Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetEntryAssembly().Location)).Count() > 1) System.Diagnostics.Process.GetCurrentProcess().Kill();
+        //set the thereisanapprunning to false
+        //open path selector
+        //play button path + folder name + exe name
+        //play button set running to true
+        //install button astrorun google play openen + tekst anders + play store icoon
+        //install button smash&fly mail openen + sign up for closed alpha + mail icoon
+        //uninstall delete path if not running
+        //unisntall, give message box if still running and trying to delete
+        //uninstall, delete shortcute, if it exists
+        //uninstall, zet versie nummer op 0.0.0
+
+        //updaten doen
+        //als er een hogere remote config is
+        //alles hier verwijderen en opnieuw downloaden. 
+        //Gewoon vorige functies hergebruiken? Uninstall functie en install functie
+        //update automatisch met remoteconfig
+    }
 
 
     public string LocalizeString(string text)
