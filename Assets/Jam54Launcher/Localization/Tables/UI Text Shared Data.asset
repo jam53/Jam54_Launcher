@@ -206,6 +206,14 @@ MonoBehaviour:
       the Jam54Launcher.
     m_Metadata:
       m_Items: []
+  - m_Id: 489107484708864
+    m_Key: Select another folder that doesn't require administrative privileges.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 577186631389184
+    m_Key: Warning
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

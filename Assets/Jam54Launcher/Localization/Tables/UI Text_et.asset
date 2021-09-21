@@ -211,6 +211,14 @@ MonoBehaviour:
       rakendused."
     m_Metadata:
       m_Items: []
+  - m_Id: 489107484708864
+    m_Localized: "Valige teine kaust, mis ei n\xF5ua administraatori\xF5igusi."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 577186631389184
+    m_Localized: Hoiatus
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

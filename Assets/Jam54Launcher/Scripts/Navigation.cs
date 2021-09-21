@@ -884,33 +884,121 @@ public class Navigation : MonoBehaviour
     {
         if (thereIsAnAppRunning)
         {
-            System.Windows.Forms.MessageBox.Show(LocalizeString("#Changing the installation path will close all apps currently opened by the Jam54Launcher."));
+            System.Windows.Forms.DialogResult dialogResult = System.Windows.Forms.MessageBox.Show(LocalizeString("#Changing the installation path will close all apps currently opened by the Jam54Launcher."), LocalizeString("#Warning"), System.Windows.Forms.MessageBoxButtons.OKCancel);
 
 
+            if (dialogResult == System.Windows.Forms.DialogResult.OK)
+            {//Close all the apps that are currently running
 
+                if (System.Diagnostics.Process.GetProcessesByName(@"Stelexo").Count() > 0) //Check if the app is running
+                {
+                    System.Diagnostics.Process[] processes = System.Diagnostics.Process.GetProcessesByName(@"Stelexo"); //Find all the open instances of the app
+                    foreach (var proces in processes)//Loop over every open instance of the app
+                    {
+                        proces.Kill(); //Close that instance of the app
+                    }
 
+                    if (processes != null) //Should there still be some instances we missed
+                    {
+                        foreach (var process in processes)
+                        {
+                            process.Dispose(); //Dispose their resources and stuff
+                        }
+                    }
+                }
 
-            //select another folder that doesn't require adminastrative priveleges, ook in andere talen
-                //localize da message ding bericht
-                //na het killen hier voor path, dan thereisanapprunning = false
-                //tell user continuing, therefore changing the path will force close all the open apps,(only if therisanapprunning is true)
-                // kill it
-                //if (System.Diagnostics.Process.GetProcessesByName(System.IO.Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetEntryAssembly().Location)).Count() > 1) System.Diagnostics.Process.GetCurrentProcess().Kill();
-                //set the thereisanapprunning to false
-                //open path selector
-                //install button astrorun google play openen + tekst anders + play store icoon
-                //install button smash&fly mail openen + sign up for closed alpha + mail icoon
-                //uninstall, kill the application that needs to be uninstalled, if it's running
-                //uninstall delete path if not running
-                //unisntall, give message box if still running and trying to delete
-                //uninstall, delete shortcute, if it exists
-                //uninstall, zet versie nummer op 0.0.0
+                if (System.Diagnostics.Process.GetProcessesByName(@"AutoEditor").Count() > 0) //Check if the app is running
+                {
+                    System.Diagnostics.Process[] processes = System.Diagnostics.Process.GetProcessesByName(@"AutoEditor"); //Find all the open instances of the app
+                    foreach (var proces in processes)//Loop over every open instance of the app
+                    {
+                        proces.Kill(); //Close that instance of the app
+                    }
 
-            //updaten doen
-            //als er een hogere remote config is
-            //alles hier verwijderen en opnieuw downloaden. 
-            //Gewoon vorige functies hergebruiken? Uninstall functie en install functie
-            //update automatisch met remoteconfig
+                    if (processes != null) //Should there still be some instances we missed
+                    {
+                        foreach (var process in processes)
+                        {
+                            process.Dispose(); //Dispose their resources and stuff
+                        }
+                    }
+                }
+
+                if (System.Diagnostics.Process.GetProcessesByName(@"Timer").Count() > 0) //Check if the app is running
+                {
+                    System.Diagnostics.Process[] processes = System.Diagnostics.Process.GetProcessesByName(@"Timer"); //Find all the open instances of the app
+                    foreach (var proces in processes)//Loop over every open instance of the app
+                    {
+                        proces.Kill(); //Close that instance of the app
+                    }
+
+                    if (processes != null) //Should there still be some instances we missed
+                    {
+                        foreach (var process in processes)
+                        {
+                            process.Dispose(); //Dispose their resources and stuff
+                        }
+                    }
+                }
+
+                if (System.Diagnostics.Process.GetProcessesByName(@"ReclameCutter").Count() > 0) //Check if the app is running
+                {
+                    System.Diagnostics.Process[] processes = System.Diagnostics.Process.GetProcessesByName(@"ReclameCutter"); //Find all the open instances of the app
+                    foreach (var proces in processes)//Loop over every open instance of the app
+                    {
+                        proces.Kill(); //Close that instance of the app
+                    }
+
+                    if (processes != null) //Should there still be some instances we missed
+                    {
+                        foreach (var process in processes)
+                        {
+                            process.Dispose(); //Dispose their resources and stuff
+                        }
+                    }
+                }
+
+                if (System.Diagnostics.Process.GetProcessesByName(@"IToW").Count() > 0) //Check if the app is running
+                {
+                    System.Diagnostics.Process[] processes = System.Diagnostics.Process.GetProcessesByName(@"IToW"); //Find all the open instances of the app
+                    foreach (var proces in processes)//Loop over every open instance of the app
+                    {
+                        proces.Kill(); //Close that instance of the app
+                    }
+
+                    if (processes != null) //Should there still be some instances we missed
+                    {
+                        foreach (var process in processes)
+                        {
+                            process.Dispose(); //Dispose their resources and stuff
+                        }
+                    }
+                }
+
+                if (System.Diagnostics.Process.GetProcessesByName(@"WToI").Count() > 0) //Check if the app is running
+                {
+                    System.Diagnostics.Process[] processes = System.Diagnostics.Process.GetProcessesByName(@"WToI"); //Find all the open instances of the app
+                    foreach (var proces in processes)//Loop over every open instance of the app
+                    {
+                        proces.Kill(); //Close that instance of the app
+                    }
+
+                    if (processes != null) //Should there still be some instances we missed
+                    {
+                        foreach (var process in processes)
+                        {
+                            process.Dispose(); //Dispose their resources and stuff
+                        }
+                    }
+                }
+
+                thereIsAnAppRunning = false;
+            }
+
+            else if (dialogResult == System.Windows.Forms.DialogResult.Cancel)
+            {
+                //Do nothing
+            }
         }
 
         if (!thereIsAnAppRunning)
@@ -1122,7 +1210,7 @@ public class Navigation : MonoBehaviour
                 }
                 catch (Exception e)//The user selected a folder that (most likely) needs admin perms to write to (could also be another error/exception)
                 {
-                    System.Windows.Forms.MessageBox.Show(e.Message + " Select another folder that doesn't require administrative privileges.");
+                    System.Windows.Forms.MessageBox.Show(e.Message + " " + LocalizeString("#Select another folder that doesn't require administrative privileges."));
                 }
             }
 

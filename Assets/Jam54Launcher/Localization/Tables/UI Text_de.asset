@@ -214,6 +214,15 @@ MonoBehaviour:
       Jam54Launcher ge\xF6ffneten Anwendungen geschlossen."
     m_Metadata:
       m_Items: []
+  - m_Id: 489107484708864
+    m_Localized: "W\xE4hlen Sie einen anderen Ordner, f\xFCr den keine Administratorrechte
+      erforderlich sind."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 577186631389184
+    m_Localized: Warnung
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
