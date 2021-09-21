@@ -27,3 +27,7 @@ Tag & title don't really matter, but to be consisten just use the Jam54Launcher'
 It doesn't matter because always take the latest release, not a specific release
 
 After you made the new release, do at least one commit so it updates
+
+
+
+Add/Update version number in remote config

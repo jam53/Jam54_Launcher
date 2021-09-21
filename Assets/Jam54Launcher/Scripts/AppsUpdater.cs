@@ -7,13 +7,20 @@ using System.ComponentModel;
 using System.IO;
 using UnityEngine.UIElements;
 using System;
+using Unity.RemoteConfig;
 
 public class AppsUpdater : MonoBehaviour
 {
     public static AppsUpdater AppsUpdaterr; //Zodat we het gemakkelijk vanuit andere scripts kunnen oproepen om te saven/loaden
     public bool stopDownloading;
     public Navigation navigation;
+    public InitializeUI initializeUI;
     public int ZipToRemoveBasedOnAppIndexBecauseDownloadGotCanceled;
+
+    public struct userAttributes { }
+    public struct appAttributes { }
+
+
 
     private void Awake()
     {
@@ -27,12 +34,14 @@ public class AppsUpdater : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        ConfigManager.FetchConfigs<userAttributes, appAttributes>(new userAttributes(), new appAttributes());
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -427,6 +436,9 @@ public class AppsUpdater : MonoBehaviour
                     //string icon = app.Replace('\\', '/');
                     writer.WriteLine("IconFile=" + app); //Get the icon for the shorcut, from the executable
                 }
+
+                SaveLoadManager.SaveLoadManagerr.menuData.VersionStelexo = ConfigManager.appConfig.GetString("StelexoVersion"); //Get the current most up to date version number of the app, and save it.
+                SaveLoadManager.SaveLoadManagerr.SaveJSONToDisk();
                 break;
 
             case 4: //AutoEditor
@@ -439,6 +451,9 @@ public class AppsUpdater : MonoBehaviour
                     //string icon = app.Replace('\\', '/');
                     writer.WriteLine("IconFile=" + app); //Get the icon for the shorcut, from the executable
                 }
+
+                SaveLoadManager.SaveLoadManagerr.menuData.VersionAutoEditor = ConfigManager.appConfig.GetString("AutoEditorVersion"); //Get the current most up to date version number of the app, and save it.
+                SaveLoadManager.SaveLoadManagerr.SaveJSONToDisk();
                 break;
 
             case 5: //DGCTimer
@@ -451,6 +466,9 @@ public class AppsUpdater : MonoBehaviour
                     //string icon = app.Replace('\\', '/');
                     writer.WriteLine("IconFile=" + app); //Get the icon for the shorcut, from the executable
                 }
+
+                SaveLoadManager.SaveLoadManagerr.menuData.VersionDGCTimer = ConfigManager.appConfig.GetString("DGCTimerVersion"); //Get the current most up to date version number of the app, and save it.
+                SaveLoadManager.SaveLoadManagerr.SaveJSONToDisk();
                 break;
 
             case 6: //ImageSearcher
@@ -463,6 +481,9 @@ public class AppsUpdater : MonoBehaviour
                     //string icon = app.Replace('\\', '/');
                     writer.WriteLine("IconFile=" + app); //Get the icon for the shorcut, from the executable
                 }
+
+                SaveLoadManager.SaveLoadManagerr.menuData.VersionImageSearcher = ConfigManager.appConfig.GetString("ImageSearcherVersion"); //Get the current most up to date version number of the app, and save it.
+                SaveLoadManager.SaveLoadManagerr.SaveJSONToDisk();
                 break;
 
             case 7: //IToW
@@ -475,6 +496,9 @@ public class AppsUpdater : MonoBehaviour
                     //string icon = app.Replace('\\', '/');
                     writer.WriteLine("IconFile=" + app); //Get the icon for the shorcut, from the executable
                 }
+
+                SaveLoadManager.SaveLoadManagerr.menuData.VersionIToW = ConfigManager.appConfig.GetString("IToWVersion"); //Get the current most up to date version number of the app, and save it.
+                SaveLoadManager.SaveLoadManagerr.SaveJSONToDisk();
                 break;
 
             case 8: //WToI
@@ -487,12 +511,18 @@ public class AppsUpdater : MonoBehaviour
                     //string icon = app.Replace('\\', '/');
                     writer.WriteLine("IconFile=" + app); //Get the icon for the shorcut, from the executable
                 }
+
+                SaveLoadManager.SaveLoadManagerr.menuData.VersionWToI = ConfigManager.appConfig.GetString("WToIVersion"); //Get the current most up to date version number of the app, and save it.
+                SaveLoadManager.SaveLoadManagerr.SaveJSONToDisk();
                 break;
 
             default:
                 Debug.LogError("Couldn't delete the downloaded zipfile after unzipping it");
                 break;
         }
+
+
+        //does the version number get saved?
 
         //downloadprogress button vervangen door play en unistall
         //of gewoon teruggaan naar main menu en versie nummer vervangen.
@@ -504,9 +534,19 @@ public class AppsUpdater : MonoBehaviour
         //uninstall delete path if not running
         //unisntall, give message box if still running and trying to delete
         //uninstall, delete shortcute, if it exists
+        //uninstall, zet versie nummer op 0
+
+        //updaten doen
+        //als er een hogere remote config is
+        //alles hier verwijderen en opnieuw downloaden. 
+        //Gewoon vorige functies hergebruiken? Uninstall functie en install functie
         //update automatisch met remoteconfig
 
         navigation.currentlyUpdatingAppIndex = 0; //Everything, from downloading to installing and creating a shortcut has been done, so we put this
         //to 0. This means nothing is updating. There for the user can updat/download other apps again
+
+        initializeUI.Start(); //Check opnieuw de versienummers van de apps, om te bepalen als het gekleurde fotojes moet ingeladen worden. Want daarnet was
+        //het nog niet geinstalleerd en dus was het fototje grijs, maar nu zou het kleur moeten worden
+        navigation.OpenMainMenu(); //Open the main menu
     }
 }

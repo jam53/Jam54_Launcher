@@ -85,3 +85,5 @@ In Assets/Localization/Tables/UI Text > Open en voeg nieuwe description, release
 
 ---
 AppsUpdater.cs
+---
+Add/Update version number in remote config
