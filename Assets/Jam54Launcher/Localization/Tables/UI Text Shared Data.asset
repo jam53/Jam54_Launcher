@@ -201,6 +201,11 @@ MonoBehaviour:
     m_Key: INSTALLING
     m_Metadata:
       m_Items: []
+  - m_Id: 479462368088064
+    m_Key: Changing the installation path will close all apps currently opened by
+      the Jam54Launcher.
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

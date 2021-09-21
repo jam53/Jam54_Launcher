@@ -209,6 +209,11 @@ MonoBehaviour:
     m_Localized: "MIT DER INSTALLATION BESCH\xC4FTIGT..."
     m_Metadata:
       m_Items: []
+  - m_Id: 479462368088064
+    m_Localized: "Wenn Sie den Installationspfad \xE4ndern, werden alle derzeit vom
+      Jam54Launcher ge\xF6ffneten Anwendungen geschlossen."
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

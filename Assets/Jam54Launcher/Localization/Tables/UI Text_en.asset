@@ -205,6 +205,11 @@ MonoBehaviour:
     m_Localized: INSTALLING...
     m_Metadata:
       m_Items: []
+  - m_Id: 479462368088064
+    m_Localized: Changing the installation path will close all apps currently opened
+      by the Jam54Launcher.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

@@ -209,6 +209,11 @@ MonoBehaviour:
     m_Localized: BEZIG MET INSTALLEREN...
     m_Metadata:
       m_Items: []
+  - m_Id: 479462368088064
+    m_Localized: Als u het installatiepad wijzigt, worden alle apps gesloten die
+      momenteel zijn geopend door de Jam54Launcher.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

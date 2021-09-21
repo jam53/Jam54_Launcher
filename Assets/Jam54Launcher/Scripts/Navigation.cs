@@ -882,58 +882,94 @@ public class Navigation : MonoBehaviour
 
     public void PathBackground_Clicked(MouseDownEvent evt)
     {
-        string oldPath = SaveLoadManager.SaveLoadManagerr.menuData.path;
+        if (thereIsAnAppRunning)
+        {
+            System.Windows.Forms.MessageBox.Show(LocalizeString("#Changing the installation path will close all apps currently opened by the Jam54Launcher."));
 
-        SaveLoadManager.SaveLoadManagerr.menuData.path = OpenFileDialog(SaveLoadManager.SaveLoadManagerr.menuData.path);//This calls the method that displays a Folder Dialog from the System.Windows.Forms dll, to select a path
-        SaveLoadManager.SaveLoadManagerr.SaveJSONToDisk(); //Save the chosen path to the disk
 
-        Path_Label.text = SaveLoadManager.SaveLoadManagerr.menuData.path; //Update the path in the UI
 
-        //Only move new files and subfolders to new path, if the user chose a new path. If it's the same path, don't do anything
-        if (!(oldPath == SaveLoadManager.SaveLoadManagerr.menuData.path))
+
+
+            //select another folder that doesn't require adminastrative priveleges, ook in andere talen
+                //localize da message ding bericht
+                //na het killen hier voor path, dan thereisanapprunning = false
+                //tell user continuing, therefore changing the path will force close all the open apps,(only if therisanapprunning is true)
+                // kill it
+                //if (System.Diagnostics.Process.GetProcessesByName(System.IO.Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetEntryAssembly().Location)).Count() > 1) System.Diagnostics.Process.GetCurrentProcess().Kill();
+                //set the thereisanapprunning to false
+                //open path selector
+                //install button astrorun google play openen + tekst anders + play store icoon
+                //install button smash&fly mail openen + sign up for closed alpha + mail icoon
+                //uninstall, kill the application that needs to be uninstalled, if it's running
+                //uninstall delete path if not running
+                //unisntall, give message box if still running and trying to delete
+                //uninstall, delete shortcute, if it exists
+                //uninstall, zet versie nummer op 0.0.0
+
+            //updaten doen
+            //als er een hogere remote config is
+            //alles hier verwijderen en opnieuw downloaden. 
+            //Gewoon vorige functies hergebruiken? Uninstall functie en install functie
+            //update automatisch met remoteconfig
+        }
+
+        if (!thereIsAnAppRunning)
         {
 
 
+            string oldPath = SaveLoadManager.SaveLoadManagerr.menuData.path;
 
-            //Move the save directory + files over to the new location
-            if (Directory.Exists(SaveLoadManager.SaveLoadManagerr.menuData.path)) //If the directory already exist, try to delete it and it's files first
+            SaveLoadManager.SaveLoadManagerr.menuData.path = OpenFileDialog(SaveLoadManager.SaveLoadManagerr.menuData.path);//This calls the method that displays a Folder Dialog from the System.Windows.Forms dll, to select a path
+            SaveLoadManager.SaveLoadManagerr.SaveJSONToDisk(); //Save the chosen path to the disk
+
+            Path_Label.text = SaveLoadManager.SaveLoadManagerr.menuData.path; //Update the path in the UI
+
+            //Only move new files and subfolders to new path, if the user chose a new path. If it's the same path, don't do anything
+            if (!(oldPath == SaveLoadManager.SaveLoadManagerr.menuData.path))
             {
-                try
+
+
+
+                //Move the save directory + files over to the new location
+                if (Directory.Exists(SaveLoadManager.SaveLoadManagerr.menuData.path)) //If the directory already exist, try to delete it and it's files first
                 {
-                    Directory.Delete(SaveLoadManager.SaveLoadManagerr.menuData.path, true); //Delete all files and subfolders recursivly + delete the directory itself 
+                    try
+                    {
+                        Directory.Delete(SaveLoadManager.SaveLoadManagerr.menuData.path, true); //Delete all files and subfolders recursivly + delete the directory itself 
+                    }
+                    catch (Exception e)
+                    {//We might not permissions/files could be in use, so just try/catch
+                        Debug.LogError(e.Message);
+                    }
+
+
+                    if (Directory.Exists(SaveLoadManager.SaveLoadManagerr.menuData.path))
+                    {//Let's say we tried to delete the folder but it still exists, then just create a subfolder inside the path
+                     //Don't actually create the subdirecotory yet on the disk though, we will do that after this if block
+
+                        SaveLoadManager.SaveLoadManagerr.menuData.path = SaveLoadManager.SaveLoadManagerr.menuData.path + @"/Jam54LauncherFiles";
+                        SaveLoadManager.SaveLoadManagerr.SaveJSONToDisk();
+                    }
                 }
-                catch (Exception e)
-                {//We might not permissions/files could be in use, so just try/catch
-                    Debug.LogError(e.Message);
+
+
+                //This code will throw an error if the target directory already exists
+                //Now Create all of the directories
+                foreach (string dirPath in Directory.GetDirectories(oldPath, "*", SearchOption.AllDirectories))
+                {
+                    Directory.CreateDirectory(dirPath.Replace(oldPath, SaveLoadManager.SaveLoadManagerr.menuData.path));
+                }
+
+                //Copy all the files & Replaces any files with the same name
+                foreach (string newPath in Directory.GetFiles(oldPath, "*.*", SearchOption.AllDirectories))
+                {
+                    File.Copy(newPath, newPath.Replace(oldPath, SaveLoadManager.SaveLoadManagerr.menuData.path), true);
                 }
 
 
-                if (Directory.Exists(SaveLoadManager.SaveLoadManagerr.menuData.path))
-                {//Let's say we tried to delete the folder but it still exists, then just create a subfolder inside the path
-                 //Don't actually create the subdirecotory yet on the disk though, we will do that after this if block
-
-                    SaveLoadManager.SaveLoadManagerr.menuData.path = SaveLoadManager.SaveLoadManagerr.menuData.path + @"/Jam54LauncherFiles";
-                    SaveLoadManager.SaveLoadManagerr.SaveJSONToDisk();
-                }
+                Directory.Delete(oldPath, true); //Delete all files and subfolders recursivly + delete the directory itself 
+                                                 //del old direcotry
             }
-
-
-            //This code will throw an error if the target directory already exists
-            //Now Create all of the directories
-            foreach (string dirPath in Directory.GetDirectories(oldPath, "*", SearchOption.AllDirectories))
-            {
-                Directory.CreateDirectory(dirPath.Replace(oldPath, SaveLoadManager.SaveLoadManagerr.menuData.path));
-            }
-
-            //Copy all the files & Replaces any files with the same name
-            foreach (string newPath in Directory.GetFiles(oldPath, "*.*", SearchOption.AllDirectories))
-            {
-                File.Copy(newPath, newPath.Replace(oldPath, SaveLoadManager.SaveLoadManagerr.menuData.path), true);
-            }
-
-
-            Directory.Delete(oldPath, true); //Delete all files and subfolders recursivly + delete the directory itself 
-                                             //del old direcotry
         }
     }
 
@@ -1035,27 +1071,6 @@ public class Navigation : MonoBehaviour
             default:
                 break;
         }
-
-
-        //tell user continuing, therefore changing the path will force close all the open apps,(only if therisanapprunning is true)
-        // kill it
-        //if (System.Diagnostics.Process.GetProcessesByName(System.IO.Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetEntryAssembly().Location)).Count() > 1) System.Diagnostics.Process.GetCurrentProcess().Kill();
-        //set the thereisanapprunning to false
-        //open path selector
-        //play button path + folder name + exe name
-        //play button set running to true
-        //install button astrorun google play openen + tekst anders + play store icoon
-        //install button smash&fly mail openen + sign up for closed alpha + mail icoon
-        //uninstall delete path if not running
-        //unisntall, give message box if still running and trying to delete
-        //uninstall, delete shortcute, if it exists
-        //uninstall, zet versie nummer op 0.0.0
-
-        //updaten doen
-        //als er een hogere remote config is
-        //alles hier verwijderen en opnieuw downloaden. 
-        //Gewoon vorige functies hergebruiken? Uninstall functie en install functie
-        //update automatisch met remoteconfig
     }
 
 

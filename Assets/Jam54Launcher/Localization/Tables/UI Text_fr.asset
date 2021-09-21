@@ -211,6 +211,11 @@ MonoBehaviour:
     m_Localized: "OCCUP\xC9 \xC0 INSTALLER..."
     m_Metadata:
       m_Items: []
+  - m_Id: 479462368088064
+    m_Localized: "La modification du chemin d'installation entra\xEEne la fermeture
+      de toutes les applications actuellement ouvertes par le Jam54Launcher."
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
