@@ -19,7 +19,7 @@ public class Navigation : MonoBehaviour
     public VisualElement Games, Programs, SettingsBackgroundCircle, Settings, HomeBackgroundCircle, InstallLocationPanel, LanguagePanel, Discord, YouTube, PlayStore, ProductPage;
     public VisualElement AppOptions1, AppOptions2, AppOptions3, AppOptions4, AppOptions5, AppOptions6, AppOptions7, AppOptions8, OptionsHolder, OptionsHolderExactCopy,  OptionsOutsideClicksDetector;
     public VisualElement ProductImage, Android_Image, Windows_Image, PathBackground;
-    public Label ProductTitle_Label, LatestUpdateDate1_Label, ReleaseDateDate2_Label, Description_Label, VersionNumber, Path_Label;
+    public Label ProductTitle_Label, LatestUpdateDate1_Label, ReleaseDateDate2_Label, Description_Label, VersionNumber, Path_Label, Downloading_Label;
     public DropdownField LanguageSelector_Dropdown;
     public VisualElement Image1, Image2, Image3, Image4, Image5, Image6, Image7, Image8, ProgressBar;
     public Button Install_Button, Uninstall_Button, Play_Button, Cancel_Button, Downloading_Button;
@@ -32,6 +32,7 @@ public class Navigation : MonoBehaviour
     public Texture2D InstallLanguageButtonBackground;
     private static int currentAppIndex; //The app that's currently open on the product page
     public AppsInfo AstroRun, SmashAndFly, Stelexo, AutoEditor, DGCTimer, ImageSearcher, IToW, WToI;
+    public int currentlyUpdatingAppIndex; //The app that is currently updating, if the variable is 0. It means that there isn't any app currently downloding/installing/updating
 
     public void OnEnable()
     {
@@ -79,6 +80,7 @@ public class Navigation : MonoBehaviour
         Description_Label = rootVisualElement.Q<Label>("Description_Label");
         VersionNumber = rootVisualElement.Q<Label>("VersionNumber");
         Path_Label = rootVisualElement.Q<Label>("Path_Label");
+        Downloading_Label = rootVisualElement.Q<Label>("Downloading_Label");
         LanguageSelector_Dropdown = rootVisualElement.Q<DropdownField>("LanguageSelector_Dropdown");
         Image1 = rootVisualElement.Q<VisualElement>("Image1");
         Image2 = rootVisualElement.Q<VisualElement>("Image2");
@@ -105,7 +107,7 @@ public class Navigation : MonoBehaviour
         Library_Button.clicked += Library_Button_Clicked;
         Store_Button.clicked += Store_Button_Clicked;
         Install_Button.clicked += Install_Button_Clicked;
-        //////////////////////////////////////////////Cancel_Button.clicked += Cancel_Button_Clicked;
+        Cancel_Button.clicked += Cancel_Button_Clicked;
         SettingsBackgroundCircle.RegisterCallback<MouseDownEvent>(SettingsBackgroundCircle_Clicked);
         HomeBackgroundCircle.RegisterCallback<MouseDownEvent>(HomeBackgroundCircle_Clicked);
         SettingsBackgroundCircle.RegisterCallback<MouseOverEvent>(SettingsBackgroundCircle_Over);
@@ -182,11 +184,26 @@ public class Navigation : MonoBehaviour
 
         MainWindowSelected = false; //we do this to know whether or not the background of the icons in the sidebar can be disabled or not
         SettingsWindowSelected = true; //if the current window that's active is 'settings' for example, the background of the settingsicon should remain there
+
+        if (currentlyUpdatingAppIndex == 0)
+        {//If there isn't an apps updating currentlly, the user can chose a different path
+            PathBackground.style.display = DisplayStyle.Flex;
+        }
+
+        else
+        {//If there is an app updating, the path selector is disabled, and the user can't select a new path
+            PathBackground.style.display = DisplayStyle.None;
+        }
     }
 
 
     //Clicking on this button should bring the user back to either the games/programs page. Depending on where they left off
     private void HomeBackgroundCircle_Clicked(MouseDownEvent evt)
+    {
+        OpenMainMenu();
+    }
+
+    public void OpenMainMenu()
     {
         if (!LastWindowPrograms)
         {
@@ -208,6 +225,8 @@ public class Navigation : MonoBehaviour
         MainWindowSelected = true; //we do this to know whether or not the background of the icons in the sidebar can be disabled or not
         SettingsWindowSelected = false; //if the current window that's active is 'settings' for example, the background of the settingsicon should remain there
     }
+
+
 
     //If we click on the 'InstallLocation_Button', the Language settings tab should become unvisible and the Install settings tab should become visible
     private void InstallLocation_Button_Clicked()
@@ -441,6 +460,14 @@ public class Navigation : MonoBehaviour
                     Install_Button.style.display = DisplayStyle.Flex;
                 }
 
+                else //Als de game wel is geinstalleerd, zet de Play en uninstall buttons aan. En de install button uit
+                {
+                    Uninstall_Button.style.display = DisplayStyle.Flex;
+                    Play_Button.style.display = DisplayStyle.Flex;
+
+                    Install_Button.style.display = DisplayStyle.None;
+                }
+
                 break;
 
 
@@ -474,6 +501,14 @@ public class Navigation : MonoBehaviour
                     Play_Button.style.display = DisplayStyle.None;
 
                     Install_Button.style.display = DisplayStyle.Flex;
+                }
+
+                else //Als de game wel is geinstalleerd, zet de Play en uninstall buttons aan. En de install button uit
+                {
+                    Uninstall_Button.style.display = DisplayStyle.Flex;
+                    Play_Button.style.display = DisplayStyle.Flex;
+
+                    Install_Button.style.display = DisplayStyle.None;
                 }
 
                 break;
@@ -511,6 +546,14 @@ public class Navigation : MonoBehaviour
                     Install_Button.style.display = DisplayStyle.Flex;
                 }
 
+                else //Als de game wel is geinstalleerd, zet de Play en uninstall buttons aan. En de install button uit
+                {
+                    Uninstall_Button.style.display = DisplayStyle.Flex;
+                    Play_Button.style.display = DisplayStyle.Flex;
+
+                    Install_Button.style.display = DisplayStyle.None;
+                }
+
                 break;
 
 
@@ -546,6 +589,14 @@ public class Navigation : MonoBehaviour
                     Install_Button.style.display = DisplayStyle.Flex;
                 }
 
+                else //Als de game wel is geinstalleerd, zet de Play en uninstall buttons aan. En de install button uit
+                {
+                    Uninstall_Button.style.display = DisplayStyle.Flex;
+                    Play_Button.style.display = DisplayStyle.Flex;
+
+                    Install_Button.style.display = DisplayStyle.None;
+                }
+
                 break;
 
 
@@ -579,6 +630,14 @@ public class Navigation : MonoBehaviour
                     Play_Button.style.display = DisplayStyle.None;
 
                     Install_Button.style.display = DisplayStyle.Flex;
+                }
+
+                else //Als de game wel is geinstalleerd, zet de Play en uninstall buttons aan. En de install button uit
+                {
+                    Uninstall_Button.style.display = DisplayStyle.Flex;
+                    Play_Button.style.display = DisplayStyle.Flex;
+
+                    Install_Button.style.display = DisplayStyle.None;
                 }
 
                 break;
@@ -617,6 +676,14 @@ public class Navigation : MonoBehaviour
                     Install_Button.style.display = DisplayStyle.Flex;
                 }
 
+                else //Als de game wel is geinstalleerd, zet de Play en uninstall buttons aan. En de install button uit
+                {
+                    Uninstall_Button.style.display = DisplayStyle.Flex;
+                    Play_Button.style.display = DisplayStyle.Flex;
+
+                    Install_Button.style.display = DisplayStyle.None;
+                }
+
                 break;
 
 
@@ -652,6 +719,14 @@ public class Navigation : MonoBehaviour
                     Install_Button.style.display = DisplayStyle.Flex;
                 }
 
+                else //Als de game wel is geinstalleerd, zet de Play en uninstall buttons aan. En de install button uit
+                {
+                    Uninstall_Button.style.display = DisplayStyle.Flex;
+                    Play_Button.style.display = DisplayStyle.Flex;
+
+                    Install_Button.style.display = DisplayStyle.None;
+                }
+
                 break;
 
 
@@ -685,6 +760,14 @@ public class Navigation : MonoBehaviour
                     Play_Button.style.display = DisplayStyle.None;
 
                     Install_Button.style.display = DisplayStyle.Flex;
+                }
+
+                else //Als de game wel is geinstalleerd, zet de Play en uninstall buttons aan. En de install button uit
+                {
+                    Uninstall_Button.style.display = DisplayStyle.Flex;
+                    Play_Button.style.display = DisplayStyle.Flex;
+
+                    Install_Button.style.display = DisplayStyle.None;
                 }
 
                 break;
@@ -728,6 +811,29 @@ public class Navigation : MonoBehaviour
                 ReleaseDateDate2_Label.text = entry.LocalizedValue;
             else
                 Debug.LogWarning($"No {table.LocaleIdentifier.Code} translation for key: '{key}'");
+        }
+
+        if (currentlyUpdatingAppIndex != 0)
+        {//This means there is currently another app updating, so we wont allow the user to update/download a second app
+            Install_Button.style.display = DisplayStyle.None; //Disable the button which allows the user to download a second app
+
+            if (currentlyUpdatingAppIndex != currentAppIndex) //If the app the user opened on the product page, isn't the app that's currently updating
+            {// Then disable the progress bar and the cancel button
+                Downloading_Button.style.display = DisplayStyle.None;
+                Cancel_Button.style.display = DisplayStyle.None;
+            }
+
+            else if (currentlyUpdatingAppIndex == currentAppIndex)//If the app the user opened on the product page, is the app that's currently updating
+            {//Enable the progress bar and cancel button
+                Downloading_Button.style.display = DisplayStyle.Flex;
+                Cancel_Button.style.display = DisplayStyle.Flex;
+            }
+        }
+
+        if (currentlyUpdatingAppIndex == 0)
+        {//If there isn't anything updating, disable the progress bar and cancel buttons
+            Downloading_Button.style.display = DisplayStyle.None;
+            Cancel_Button.style.display = DisplayStyle.None;
         }
     }
 
@@ -840,7 +946,8 @@ public class Navigation : MonoBehaviour
 
     public void Install_Button_Clicked()
     {
-        AppsUpdater.AppsUpdaterr.InstallApp(currentAppIndex); //Begin downloading/installing the app
+        AppsUpdater.AppsUpdaterr.DownloadApp(currentAppIndex); //Begin downloading/installing the app
+        currentlyUpdatingAppIndex = currentAppIndex;
 
         Install_Button.style.display = DisplayStyle.None; //Disable the install button
 
@@ -848,12 +955,21 @@ public class Navigation : MonoBehaviour
         Downloading_Button.style.display = DisplayStyle.Flex;
     }
 
+    public void Cancel_Button_Clicked()
+    {
+        AppsUpdater.AppsUpdaterr.CancelDownload();
+        AppsUpdater.AppsUpdaterr.ZipToRemoveBasedOnAppIndexBecauseDownloadGotCanceled = currentlyUpdatingAppIndex;
+
+        currentlyUpdatingAppIndex = 0;
+    }
+
     public void UpdateDownloadingButtonProgress(float percentComplete)
     {//Decrease the margin of the download button, this way it grows in size. Which make it looks like a progress bar
         ProgressBar.style.marginRight = Length.Percent(100 - percentComplete); //Margin 100 means the progress bar isn't visible at all, Margin 0 means it's fully visible
+        Downloading_Label.text = percentComplete + "%";
     }
 
-    /////////////////////////////////////////////////////////////////////////////////////////////////stop //downloading op true als cancel button clicked is
+    //stop downloading op true als cancel button clicked is
 
 
     #endregion

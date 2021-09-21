@@ -5,3 +5,25 @@ In the solutions explorer > rightclick > publish > hit Publish at the top
 now go to HashesCreator\bin\Publish
 
 Delete the .pdb file
+Copy the HashesCreator.exe
+
+
+Go to jamhorn's github
+
+Create a new repo called, Apps
+
+(if the builds of certain apps didn't change, just copy their zip's frm OneDrive\Documenten\Scripts\Jam54Launcher\AppBuildZips
+Take the latest build of Stelexo (OneDrive\Documenten\Scripts\Unity\Builds\Stelexo\Stelexo0.3.0)
+Copy all the files to an empty directory called 'Stelexo'
+Also Copy the HashesCreator.exe in there and run it
+When it's finished, delete the HashesCreator.exe executable
+Zip the Stelexo folder, when it's zipped, delete the Stelexo folder
+
+Do this for all the remaining apps
+
+Go to the repo called 'Apps' > Create a new release
+
+Tag & title don't really matter, but to be consisten just use the Jam54Launcher's version number.
+It doesn't matter because always take the latest release, not a specific release
+
+After you made the new release, do at least one commit so it updates
