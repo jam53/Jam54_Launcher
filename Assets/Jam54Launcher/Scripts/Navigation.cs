@@ -6,6 +6,7 @@ using UnityEngine.Localization.Settings;
 using UnityEngine.Localization.Tables;
 using UnityEngine.UIElements;
 using UnityEngine.UIElements.Experimental;
+using System.IO;
 
 //This script handles all the animations when clicking on certain elements and makes it possible to navigate in the app.
 //In other words, the logic behind clicking on a button in order to open a new tab and close the current one is handled here.
@@ -20,8 +21,8 @@ public class Navigation : MonoBehaviour
     public VisualElement ProductImage, Android_Image, Windows_Image, PathBackground;
     public Label ProductTitle_Label, LatestUpdateDate1_Label, ReleaseDateDate2_Label, Description_Label, VersionNumber, Path_Label;
     public DropdownField LanguageSelector_Dropdown;
-    public VisualElement Image1, Image2, Image3, Image4, Image5, Image6, Image7, Image8;
-    public Button Install_Button, Uninstall_Button, Play_Button;
+    public VisualElement Image1, Image2, Image3, Image4, Image5, Image6, Image7, Image8, ProgressBar;
+    public Button Install_Button, Uninstall_Button, Play_Button, Cancel_Button, Downloading_Button;
 
     //Script variables
     private bool LastWindowPrograms; //true means 'programs' is open - false means 'games' is open; on the 'main menu'
@@ -29,7 +30,7 @@ public class Navigation : MonoBehaviour
     private bool MainWindowSelected; //if 'MainWindowSelected' and 'SettingsWindow' selected are both false
     public bool SettingsWindowSelected; //it means that the product page is open
     public Texture2D InstallLanguageButtonBackground;
-    private int CurrentAppIndex;
+    private static int currentAppIndex; //The app that's currently open on the product page
     public AppsInfo AstroRun, SmashAndFly, Stelexo, AutoEditor, DGCTimer, ImageSearcher, IToW, WToI;
 
     public void OnEnable()
@@ -87,9 +88,12 @@ public class Navigation : MonoBehaviour
         Image6 = rootVisualElement.Q<VisualElement>("Image6");
         Image7 = rootVisualElement.Q<VisualElement>("Image7");
         Image8 = rootVisualElement.Q<VisualElement>("Image8");
+        ProgressBar = rootVisualElement.Q<VisualElement>("ProgressBar");
         Install_Button = rootVisualElement.Q<Button>("Install_Button");
         Uninstall_Button = rootVisualElement.Q<Button>("Uninstall_Button");
         Play_Button = rootVisualElement.Q<Button>("Play_Button");
+        Cancel_Button = rootVisualElement.Q<Button>("Cancel_Button");
+        Downloading_Button = rootVisualElement.Q<Button>("Downloading_Button");
         #endregion
 
 
@@ -100,6 +104,8 @@ public class Navigation : MonoBehaviour
         Language_Button.clicked += Language_Button_Clicked;
         Library_Button.clicked += Library_Button_Clicked;
         Store_Button.clicked += Store_Button_Clicked;
+        Install_Button.clicked += Install_Button_Clicked;
+        //////////////////////////////////////////////Cancel_Button.clicked += Cancel_Button_Clicked;
         SettingsBackgroundCircle.RegisterCallback<MouseDownEvent>(SettingsBackgroundCircle_Clicked);
         HomeBackgroundCircle.RegisterCallback<MouseDownEvent>(HomeBackgroundCircle_Clicked);
         SettingsBackgroundCircle.RegisterCallback<MouseOverEvent>(SettingsBackgroundCircle_Over);
@@ -306,7 +312,7 @@ public class Navigation : MonoBehaviour
 
     private void AppOptions1_Clicked (MouseDownEvent evt)
     {
-        CurrentAppIndex = 1;//AstroRun
+        currentAppIndex = 1;//AstroRun
 
         OptionsHolder.style.left = RepositionOptionsMenu(AppOptions1.worldBound.x, AppOptions1.worldBound.y).x;
         OptionsHolder.style.top = RepositionOptionsMenu(AppOptions1.worldBound.x, AppOptions1.worldBound.y).y;
@@ -315,7 +321,7 @@ public class Navigation : MonoBehaviour
     }
     private void AppOptions2_Clicked(MouseDownEvent evt)
     {
-        CurrentAppIndex = 2;//Smash&Fly
+        currentAppIndex = 2;//Smash&Fly
 
         OptionsHolder.style.left = RepositionOptionsMenu(AppOptions2.worldBound.x, AppOptions2.worldBound.y).x;
         OptionsHolder.style.top = RepositionOptionsMenu(AppOptions2.worldBound.x, AppOptions2.worldBound.y).y;
@@ -324,7 +330,7 @@ public class Navigation : MonoBehaviour
     }
     private void AppOptions3_Clicked(MouseDownEvent evt)
     {
-        CurrentAppIndex = 3;//Stelexo
+        currentAppIndex = 3;//Stelexo
 
         OptionsHolder.style.left = RepositionOptionsMenu(AppOptions3.worldBound.x, AppOptions3.worldBound.y).x;
         OptionsHolder.style.top = RepositionOptionsMenu(AppOptions3.worldBound.x, AppOptions3.worldBound.y).y;
@@ -333,7 +339,7 @@ public class Navigation : MonoBehaviour
     }
     private void AppOptions4_Clicked(MouseDownEvent evt)
     {
-        CurrentAppIndex = 4;//AutoEditor
+        currentAppIndex = 4;//AutoEditor
 
         OptionsHolder.style.left = RepositionOptionsMenu(AppOptions4.worldBound.x, AppOptions4.worldBound.y).x;
         OptionsHolder.style.top = RepositionOptionsMenu(AppOptions4.worldBound.x, AppOptions4.worldBound.y).y;
@@ -342,7 +348,7 @@ public class Navigation : MonoBehaviour
     }
     private void AppOptions5_Clicked(MouseDownEvent evt)
     {
-        CurrentAppIndex = 5;//DGCTimer
+        currentAppIndex = 5;//DGCTimer
 
         OptionsHolder.style.left = RepositionOptionsMenu(AppOptions5.worldBound.x, AppOptions5.worldBound.y).x;
         OptionsHolder.style.top = RepositionOptionsMenu(AppOptions5.worldBound.x, AppOptions5.worldBound.y).y;
@@ -351,7 +357,7 @@ public class Navigation : MonoBehaviour
     }
     private void AppOptions6_Clicked(MouseDownEvent evt)
     {
-        CurrentAppIndex = 6;//ImageSearcher
+        currentAppIndex = 6;//ImageSearcher
 
         OptionsHolder.style.left = RepositionOptionsMenu(AppOptions6.worldBound.x, AppOptions6.worldBound.y).x;
         OptionsHolder.style.top = RepositionOptionsMenu(AppOptions6.worldBound.x, AppOptions6.worldBound.y).y;
@@ -360,7 +366,7 @@ public class Navigation : MonoBehaviour
     }
     private void AppOptions7_Clicked(MouseDownEvent evt)
     {
-        CurrentAppIndex = 7;//IToW
+        currentAppIndex = 7;//IToW
 
         OptionsHolder.style.left = RepositionOptionsMenu(AppOptions7.worldBound.x, AppOptions7.worldBound.y).x;
         OptionsHolder.style.top = RepositionOptionsMenu(AppOptions7.worldBound.x, AppOptions7.worldBound.y).y;
@@ -369,7 +375,7 @@ public class Navigation : MonoBehaviour
     }
     private void AppOptions8_Clicked(MouseDownEvent evt)
     {
-        CurrentAppIndex = 8;//WtoI
+        currentAppIndex = 8;//WtoI
 
         OptionsHolder.style.left = RepositionOptionsMenu(AppOptions8.worldBound.x, AppOptions8.worldBound.y).x;
         OptionsHolder.style.top = RepositionOptionsMenu(AppOptions8.worldBound.x, AppOptions8.worldBound.y).y;
@@ -387,11 +393,13 @@ public class Navigation : MonoBehaviour
     {
         OptionsOutsideClicksDetector.style.display = DisplayStyle.None; //Close the options menu
 
-        OpenProductPage(CurrentAppIndex);
+        OpenProductPage(currentAppIndex);
     }
 
     private void OpenProductPage(int appIndex)
     {
+        currentAppIndex = appIndex;
+
         Games.style.display = DisplayStyle.None; //Close the Games And Programs Windows
         Programs.style.display = DisplayStyle.None;
 
@@ -764,11 +772,60 @@ public class Navigation : MonoBehaviour
     }
 
     public void PathBackground_Clicked(MouseDownEvent evt)
-    {//This opens a windows explorer window, to select a path
-        SaveLoadManager.SaveLoadManagerr.menuData.path = OpenFileDialog(SaveLoadManager.SaveLoadManagerr.menuData.path);//This calls the method that displays a Folder Dialog from the System.Windows.Forms dll
+    {
+        string oldPath = SaveLoadManager.SaveLoadManagerr.menuData.path;
+
+        SaveLoadManager.SaveLoadManagerr.menuData.path = OpenFileDialog(SaveLoadManager.SaveLoadManagerr.menuData.path);//This calls the method that displays a Folder Dialog from the System.Windows.Forms dll, to select a path
         SaveLoadManager.SaveLoadManagerr.SaveJSONToDisk(); //Save the chosen path to the disk
 
         Path_Label.text = SaveLoadManager.SaveLoadManagerr.menuData.path; //Update the path in the UI
+
+        //Only move new files and subfolders to new path, if the user chose a new path. If it's the same path, don't do anything
+        if (!(oldPath == SaveLoadManager.SaveLoadManagerr.menuData.path))
+        {
+
+
+
+            //Move the save directory + files over to the new location
+            if (Directory.Exists(SaveLoadManager.SaveLoadManagerr.menuData.path)) //If the directory already exist, try to delete it and it's files first
+            {
+                try
+                {
+                    Directory.Delete(SaveLoadManager.SaveLoadManagerr.menuData.path, true); //Delete all files and subfolders recursivly + delete the directory itself 
+                }
+                catch (Exception e)
+                {//We might not permissions/files could be in use, so just try/catch
+                    Debug.LogError(e.Message);
+                }
+
+
+                if (Directory.Exists(SaveLoadManager.SaveLoadManagerr.menuData.path))
+                {//Let's say we tried to delete the folder but it still exists, then just create a subfolder inside the path
+                 //Don't actually create the subdirecotory yet on the disk though, we will do that after this if block
+
+                    SaveLoadManager.SaveLoadManagerr.menuData.path = SaveLoadManager.SaveLoadManagerr.menuData.path + @"/Jam54LauncherFiles";
+                    SaveLoadManager.SaveLoadManagerr.SaveJSONToDisk();
+                }
+            }
+
+
+            //This code will throw an error if the target directory already exists
+            //Now Create all of the directories
+            foreach (string dirPath in Directory.GetDirectories(oldPath, "*", SearchOption.AllDirectories))
+            {
+                Directory.CreateDirectory(dirPath.Replace(oldPath, SaveLoadManager.SaveLoadManagerr.menuData.path));
+            }
+
+            //Copy all the files & Replaces any files with the same name
+            foreach (string newPath in Directory.GetFiles(oldPath, "*.*", SearchOption.AllDirectories))
+            {
+                File.Copy(newPath, newPath.Replace(oldPath, SaveLoadManager.SaveLoadManagerr.menuData.path), true);
+            }
+
+
+            Directory.Delete(oldPath, true); //Delete all files and subfolders recursivly + delete the directory itself 
+                                             //del old direcotry
+        }
     }
 
     public void LanguageSelector_Dropdown_ValueChanged(ChangeEvent<string> evt)
@@ -781,6 +838,22 @@ public class Navigation : MonoBehaviour
         LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[SaveLoadManager.SaveLoadManagerr.menuData.Language]; //Load in the current correct language
     }
 
+    public void Install_Button_Clicked()
+    {
+        AppsUpdater.AppsUpdaterr.InstallApp(currentAppIndex); //Begin downloading/installing the app
+
+        Install_Button.style.display = DisplayStyle.None; //Disable the install button
+
+        Cancel_Button.style.display = DisplayStyle.Flex;//Enable the cancel button + progress bar/button
+        Downloading_Button.style.display = DisplayStyle.Flex;
+    }
+
+    public void UpdateDownloadingButtonProgress(float percentComplete)
+    {//Decrease the margin of the download button, this way it grows in size. Which make it looks like a progress bar
+        ProgressBar.style.marginRight = Length.Percent(100 - percentComplete); //Margin 100 means the progress bar isn't visible at all, Margin 0 means it's fully visible
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////stop //downloading op true als cancel button clicked is
 
 
     #endregion

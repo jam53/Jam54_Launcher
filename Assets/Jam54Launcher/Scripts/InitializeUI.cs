@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Localization.Settings;
 using UnityEngine.UIElements;
+using System.IO;
 
 public class InitializeUI : MonoBehaviour
 {
@@ -57,6 +58,11 @@ public class InitializeUI : MonoBehaviour
         UpdateAppsImages(); //If An app isn't installed, make it's image on the main menu grey
         LanguageSelector_Dropdown.index = SaveLoadManager.SaveLoadManagerr.menuData.Language;//Load in the correct index of the dropdown in the language dropdown under the  settings > language panel
         LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[SaveLoadManager.SaveLoadManagerr.menuData.Language]; //Load in the current correct language
+
+        if (!Directory.Exists(SaveLoadManager.SaveLoadManagerr.menuData.path))
+        {//Check if the save folder already exists, if not create it. If we launch the launcher for the first time, it won't be there.
+            Directory.CreateDirectory(SaveLoadManager.SaveLoadManagerr.menuData.path);
+        }
     }
 
     private void UpdateAppsImages()
