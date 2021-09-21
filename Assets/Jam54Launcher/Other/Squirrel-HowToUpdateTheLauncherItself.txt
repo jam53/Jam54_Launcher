@@ -101,3 +101,6 @@ Upload all of the files from Releases as assets of the GitHub release, not the f
 	You don't really need to upload the .msi file, since we will only be using the .exe
 
 Publish the release
+
+
+Update the values in unity remote config, if we updated one of the apps

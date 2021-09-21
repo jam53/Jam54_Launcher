@@ -225,6 +225,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stopDownloading: 0
   navigation: {fileID: 2068746142}
+  initializeUI: {fileID: 2068746145}
+  ZipToRemoveBasedOnAppIndexBecauseDownloadGotCanceled: 0
 --- !u!4 &1027065523
 Transform:
   m_ObjectHideFlags: 0
@@ -431,6 +433,7 @@ MonoBehaviour:
   ImageSearcher: {fileID: 11400000, guid: dd7b556093d18d1458cf9ebc6f30c74f, type: 2}
   IToW: {fileID: 11400000, guid: fd6b4edfc40341d47a31e47c107dc9a0, type: 2}
   WToI: {fileID: 11400000, guid: 6984f13b78a751f4f92ab06a002a85d8, type: 2}
+  currentlyUpdatingAppIndex: 0
 --- !u!114 &2068746144
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -460,6 +463,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32c03907fcd57fb45b8ceaea749d4d05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AstroRun: {fileID: 2800000, guid: 39933fd16f00e774d920b730f9ba3ca0, type: 3}
+  SmashAndFly: {fileID: 2800000, guid: 679999c2f1bb9964aa0c080a80755460, type: 3}
+  Stelexo: {fileID: 2800000, guid: 070a87886b8b492429e1679237fa7202, type: 3}
+  AutoEditor: {fileID: 2800000, guid: 550de9583e2ecb54898e568a0101bea1, type: 3}
+  DGCTimer: {fileID: 2800000, guid: d7e39fe4535235245a2f0c665146a39b, type: 3}
+  ImageSearcher: {fileID: 2800000, guid: 87106e2db89180f4f875b722bd70fcd8, type: 3}
+  IToW: {fileID: 2800000, guid: 4f0774cad74d93447b84beb24556f892, type: 3}
+  WToI: {fileID: 2800000, guid: db686e3b61e13ea4984c4061be9790b7, type: 3}
   AstroRunGrey: {fileID: 2800000, guid: c264732a1b50bb7428f4fa21d5243738, type: 3}
   SmashAndFlyGrey: {fileID: 2800000, guid: ec3b0417eff3bb640a660c957e59736e, type: 3}
   StelexoGrey: {fileID: 2800000, guid: 2625ddb696eff1b4496cebd9225ea8a3, type: 3}

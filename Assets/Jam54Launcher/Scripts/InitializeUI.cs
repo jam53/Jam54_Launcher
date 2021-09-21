@@ -13,6 +13,16 @@ public class InitializeUI : MonoBehaviour
     public DropdownField LanguageSelector_Dropdown;
 
     //Script variables
+    [Header("Colored Images")]
+    public Texture2D AstroRun;
+    public Texture2D SmashAndFly;
+    public Texture2D Stelexo;
+    public Texture2D AutoEditor;
+    public Texture2D DGCTimer;
+    public Texture2D ImageSearcher;
+    public Texture2D IToW;
+    public Texture2D WToI;
+
     [Header("GrayScale Images")]
     public Texture2D AstroRunGrey;
     public Texture2D SmashAndFlyGrey;
@@ -72,40 +82,72 @@ public class InitializeUI : MonoBehaviour
         {
             Image1.style.backgroundImage = AstroRunGrey;// Since it's not installed make it appear grey
         }
+        else
+        {
+            Image1.style.backgroundImage = AstroRun; //Since it's installed, make it appear colored (aka the original picture)
+        }
 
         if (SaveLoadManager.SaveLoadManagerr.menuData.VersionSmashAndFly == "0.0.0") //version number '0.0.0' means it's not installed
         {
             Image2.style.backgroundImage = SmashAndFlyGrey;// Since it's not installed make it appear grey
+        }
+        else
+        {
+            Image2.style.backgroundImage = SmashAndFly; //Since it's installed, make it appear colored (aka the original picture)
         }
 
         if (SaveLoadManager.SaveLoadManagerr.menuData.VersionStelexo == "0.0.0") //version number '0.0.0' means it's not installed
         {
             Image3.style.backgroundImage = StelexoGrey;// Since it's not installed make it appear grey
         }
+        else
+        {
+            Image3.style.backgroundImage = Stelexo; //Since it's installed, make it appear colored (aka the original picture)
+        }
 
         if (SaveLoadManager.SaveLoadManagerr.menuData.VersionAutoEditor == "0.0.0") //version number '0.0.0' means it's not installed
         {
             Image4.style.backgroundImage = AutoEditorGrey;// Since it's not installed make it appear grey
+        }
+        else
+        {
+            Image4.style.backgroundImage = AutoEditor; //Since it's installed, make it appear colored (aka the original picture)
         }
 
         if (SaveLoadManager.SaveLoadManagerr.menuData.VersionDGCTimer == "0.0.0") //version number '0.0.0' means it's not installed
         {
             Image5.style.backgroundImage = DGCTimerGrey;// Since it's not installed make it appear grey
         }
+        else
+        {
+            Image5.style.backgroundImage = DGCTimer; //Since it's installed, make it appear colored (aka the original picture)
+        }
 
         if (SaveLoadManager.SaveLoadManagerr.menuData.VersionImageSearcher == "0.0.0") //version number '0.0.0' means it's not installed
         {
             Image6.style.backgroundImage = ImageSearcherGrey;// Since it's not installed make it appear grey
+        }
+        else
+        {
+            Image6.style.backgroundImage = ImageSearcher; //Since it's installed, make it appear colored (aka the original picture)
         }
 
         if (SaveLoadManager.SaveLoadManagerr.menuData.VersionIToW == "0.0.0") //version number '0.0.0' means it's not installed
         {
             Image7.style.backgroundImage = IToWGrey;// Since it's not installed make it appear grey
         }
+        else
+        {
+            Image7.style.backgroundImage = IToW; //Since it's installed, make it appear colored (aka the original picture)
+        }
 
         if (SaveLoadManager.SaveLoadManagerr.menuData.VersionWToI == "0.0.0") //version number '0.0.0' means it's not installed
         {
             Image8.style.backgroundImage = WToIGrey;// Since it's not installed make it appear grey
+        }
+        else
+        {
+            Image8.style.backgroundImage = WToI; //Since it's installed, make it appear colored (aka the original picture)
         }
     }
 }
