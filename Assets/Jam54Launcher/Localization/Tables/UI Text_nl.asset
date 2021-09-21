@@ -214,6 +214,14 @@ MonoBehaviour:
       momenteel zijn geopend door de Jam54Launcher.
     m_Metadata:
       m_Items: []
+  - m_Id: 489107484708864
+    m_Localized: Selecteer een andere map waarvoor geen beheerdersrechten nodig zijn.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 577186631389184
+    m_Localized: Waarschuwing
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

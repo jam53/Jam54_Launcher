@@ -216,6 +216,15 @@ MonoBehaviour:
       o anda a\xE7\u0131k olan t\xFCm uygulamalar\u0131 kapatacakt\u0131r."
     m_Metadata:
       m_Items: []
+  - m_Id: 489107484708864
+    m_Localized: "Y\xF6netici ayr\u0131cal\u0131klar\u0131 gerektirmeyen ba\u015Fka
+      bir dosya se\xE7in."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 577186631389184
+    m_Localized: "Uyar\u0131"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

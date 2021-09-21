@@ -210,6 +210,14 @@ MonoBehaviour:
       by the Jam54Launcher.
     m_Metadata:
       m_Items: []
+  - m_Id: 489107484708864
+    m_Localized: Select another folder that doesn't require administrative privileges.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 577186631389184
+    m_Localized: Warning
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

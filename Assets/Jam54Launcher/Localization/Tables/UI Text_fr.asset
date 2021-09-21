@@ -216,6 +216,15 @@ MonoBehaviour:
       de toutes les applications actuellement ouvertes par le Jam54Launcher."
     m_Metadata:
       m_Items: []
+  - m_Id: 489107484708864
+    m_Localized: "S\xE9lectionnez un autre dossier qui ne n\xE9cessite pas de privil\xE8ges
+      administratifs."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 577186631389184
+    m_Localized: Attention
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
