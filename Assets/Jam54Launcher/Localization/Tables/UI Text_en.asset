@@ -218,6 +218,18 @@ MonoBehaviour:
     m_Localized: Warning
     m_Metadata:
       m_Items: []
+  - m_Id: 587204168650752
+    m_Localized: Get it on Google Play
+    m_Metadata:
+      m_Items: []
+  - m_Id: 589898585346048
+    m_Localized: Sign up for the alpha version
+    m_Metadata:
+      m_Items: []
+  - m_Id: 591490097221632
+    m_Localized: I would like to participate in the closed alpha test of SmashAndFly
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

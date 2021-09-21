@@ -222,6 +222,18 @@ MonoBehaviour:
     m_Localized: Waarschuwing
     m_Metadata:
       m_Items: []
+  - m_Id: 587204168650752
+    m_Localized: Download het op Google Play
+    m_Metadata:
+      m_Items: []
+  - m_Id: 589898585346048
+    m_Localized: Meld je aan voor de alfaversie
+    m_Metadata:
+      m_Items: []
+  - m_Id: 591490097221632
+    m_Localized: Ik wil graag meedoen aan de alpha test van SmashAndFly
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
