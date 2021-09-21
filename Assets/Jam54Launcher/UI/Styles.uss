@@ -905,3 +905,64 @@
     height: 100%;
     scale: 1.05 1.05;
 }
+
+.Cancel_Button {
+    display: flex;
+    flex-shrink: 1;
+    flex-grow: 0;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    border-top-left-radius: 9px;
+    border-bottom-left-radius: 9px;
+    border-top-right-radius: 9px;
+    border-bottom-right-radius: 9px;
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+    background-image: url('project://database/Assets/Jam54Launcher/Textures/Cancel.png?fileID=2800000&guid=9949d30cd954c854591983dbbb9bf95f&type=3#Cancel');
+    -unity-font-definition: url('project://database/Assets/Jam54Launcher/Other/Fonts/Roboto-Regular%20SDF.asset?fileID=11400000&guid=3425d65c12ac42647a4dfc5a05176cd2&type=2#Roboto-Regular SDF');
+    font-size: 21px;
+    margin-left: 0;
+    margin-right: 33px;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    height: 63px;
+    padding-left: 0;
+    width: 63px;
+}
+
+.Cancel_Button:hover {
+    display: flex;
+    flex-shrink: 1;
+    flex-grow: 0;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    border-top-left-radius: 9px;
+    border-bottom-left-radius: 9px;
+    border-top-right-radius: 9px;
+    border-bottom-right-radius: 9px;
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+    background-image: url('project://database/Assets/Jam54Launcher/Textures/Cancel.png?fileID=2800000&guid=9949d30cd954c854591983dbbb9bf95f&type=3#Cancel');
+    -unity-font-definition: url('project://database/Assets/Jam54Launcher/Other/Fonts/Roboto-Regular%20SDF.asset?fileID=11400000&guid=3425d65c12ac42647a4dfc5a05176cd2&type=2#Roboto-Regular SDF');
+    font-size: 21px;
+    margin-left: 0;
+    margin-right: 33px;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    height: 63px;
+    padding-left: 0;
+    width: 63px;
+    scale: 1.07 1.07;
+}
