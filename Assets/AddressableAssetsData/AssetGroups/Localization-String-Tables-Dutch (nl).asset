@@ -15,7 +15,7 @@ MonoBehaviour:
   m_GroupName: Localization-String-Tables-Dutch (nl)
   m_Data:
     m_SerializedData: []
-  m_GUID: 2335b7bd2cd45a649b69b78571a1c8d4
+  m_GUID: 8c4ee6d912b8fb7459143be87cde8cba
   m_SerializeEntries:
   - m_GUID: 31d66153625886444b2b1acb60d1c5d1
     m_Address: UI Text_nl
