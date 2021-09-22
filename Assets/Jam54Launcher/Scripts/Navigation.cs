@@ -24,7 +24,7 @@ public class Navigation : MonoBehaviour
     public DropdownField LanguageSelector_Dropdown;
     public VisualElement Image1, Image2, Image3, Image4, Image5, Image6, Image7, Image8, ProgressBar;
     public Button Install_Button, Uninstall_Button, Play_Button, Cancel_Button, Downloading_Button, Shortcut_Button;
-    public Label Install_Label;
+    public Label Install_Label, Version_Label;
 
     //Script variables
     private bool LastWindowPrograms; //true means 'programs' is open - false means 'games' is open; on the 'main menu'
@@ -87,6 +87,7 @@ public class Navigation : MonoBehaviour
         Path_Label = rootVisualElement.Q<Label>("Path_Label");
         Downloading_Label = rootVisualElement.Q<Label>("Downloading_Label");
         Install_Label = rootVisualElement.Q<Label>("Install_Label");
+        Version_Label = rootVisualElement.Q<Label>("Version_Label");
         LanguageSelector_Dropdown = rootVisualElement.Q<DropdownField>("LanguageSelector_Dropdown");
         Image1 = rootVisualElement.Q<VisualElement>("Image1");
         Image2 = rootVisualElement.Q<VisualElement>("Image2");
@@ -347,6 +348,15 @@ public class Navigation : MonoBehaviour
         OptionsHolder.style.top = RepositionOptionsMenu(AppOptions1.worldBound.x, AppOptions1.worldBound.y).y;
 
         OptionsOutsideClicksDetector.style.display = DisplayStyle.Flex;//This makes it so the options menu is visibile. The options menu is a child of this object
+
+        if (SaveLoadManager.SaveLoadManagerr.menuData.VersionAstroRun == "0.0.0") //Check if the app is installed
+        {
+            Version_Label.text = LocalizeString("#Not installed"); //If it isn't installed, let the user know in the version label
+        }
+        else
+        {
+            Version_Label.text = SaveLoadManager.SaveLoadManagerr.menuData.VersionAstroRun; //If it is installed, put the version number in the label
+        }
     }
     private void AppOptions2_Clicked(MouseDownEvent evt)
     {
@@ -356,6 +366,15 @@ public class Navigation : MonoBehaviour
         OptionsHolder.style.top = RepositionOptionsMenu(AppOptions2.worldBound.x, AppOptions2.worldBound.y).y;
 
         OptionsOutsideClicksDetector.style.display = DisplayStyle.Flex;//This makes it so the options menu is visibile. The options menu is a child of this object
+
+        if (SaveLoadManager.SaveLoadManagerr.menuData.VersionSmashAndFly == "0.0.0") //Check if the app is installed
+        {
+            Version_Label.text = LocalizeString("#Not installed"); //If it isn't installed, let the user know in the version label
+        }
+        else
+        {
+            Version_Label.text = SaveLoadManager.SaveLoadManagerr.menuData.VersionSmashAndFly; //If it is installed, put the version number in the label
+        }
     }
     private void AppOptions3_Clicked(MouseDownEvent evt)
     {
@@ -365,6 +384,15 @@ public class Navigation : MonoBehaviour
         OptionsHolder.style.top = RepositionOptionsMenu(AppOptions3.worldBound.x, AppOptions3.worldBound.y).y;
 
         OptionsOutsideClicksDetector.style.display = DisplayStyle.Flex;//This makes it so the options menu is visibile. The options menu is a child of this object
+
+        if (SaveLoadManager.SaveLoadManagerr.menuData.VersionStelexo == "0.0.0") //Check if the app is installed
+        {
+            Version_Label.text = LocalizeString("#Not installed"); //If it isn't installed, let the user know in the version label
+        }
+        else
+        {
+            Version_Label.text = SaveLoadManager.SaveLoadManagerr.menuData.VersionStelexo; //If it is installed, put the version number in the label
+        }
     }
     private void AppOptions4_Clicked(MouseDownEvent evt)
     {
@@ -374,6 +402,15 @@ public class Navigation : MonoBehaviour
         OptionsHolder.style.top = RepositionOptionsMenu(AppOptions4.worldBound.x, AppOptions4.worldBound.y).y;
 
         OptionsOutsideClicksDetector.style.display = DisplayStyle.Flex;//This makes it so the options menu is visibile. The options menu is a child of this object
+
+        if (SaveLoadManager.SaveLoadManagerr.menuData.VersionAutoEditor == "0.0.0") //Check if the app is installed
+        {
+            Version_Label.text = LocalizeString("#Not installed"); //If it isn't installed, let the user know in the version label
+        }
+        else
+        {
+            Version_Label.text = SaveLoadManager.SaveLoadManagerr.menuData.VersionAutoEditor; //If it is installed, put the version number in the label
+        }
     }
     private void AppOptions5_Clicked(MouseDownEvent evt)
     {
@@ -383,6 +420,15 @@ public class Navigation : MonoBehaviour
         OptionsHolder.style.top = RepositionOptionsMenu(AppOptions5.worldBound.x, AppOptions5.worldBound.y).y;
 
         OptionsOutsideClicksDetector.style.display = DisplayStyle.Flex;//This makes it so the options menu is visibile. The options menu is a child of this object
+
+        if (SaveLoadManager.SaveLoadManagerr.menuData.VersionDGCTimer == "0.0.0") //Check if the app is installed
+        {
+            Version_Label.text = LocalizeString("#Not installed"); //If it isn't installed, let the user know in the version label
+        }
+        else
+        {
+            Version_Label.text = SaveLoadManager.SaveLoadManagerr.menuData.VersionDGCTimer; //If it is installed, put the version number in the label
+        }
     }
     private void AppOptions6_Clicked(MouseDownEvent evt)
     {
@@ -392,6 +438,15 @@ public class Navigation : MonoBehaviour
         OptionsHolder.style.top = RepositionOptionsMenu(AppOptions6.worldBound.x, AppOptions6.worldBound.y).y;
 
         OptionsOutsideClicksDetector.style.display = DisplayStyle.Flex;//This makes it so the options menu is visibile. The options menu is a child of this object
+
+        if (SaveLoadManager.SaveLoadManagerr.menuData.VersionImageSearcher == "0.0.0") //Check if the app is installed
+        {
+            Version_Label.text = LocalizeString("#Not installed"); //If it isn't installed, let the user know in the version label
+        }
+        else
+        {
+            Version_Label.text = SaveLoadManager.SaveLoadManagerr.menuData.VersionImageSearcher; //If it is installed, put the version number in the label
+        }
     }
     private void AppOptions7_Clicked(MouseDownEvent evt)
     {
@@ -401,6 +456,15 @@ public class Navigation : MonoBehaviour
         OptionsHolder.style.top = RepositionOptionsMenu(AppOptions7.worldBound.x, AppOptions7.worldBound.y).y;
 
         OptionsOutsideClicksDetector.style.display = DisplayStyle.Flex;//This makes it so the options menu is visibile. The options menu is a child of this object
+
+        if (SaveLoadManager.SaveLoadManagerr.menuData.VersionIToW == "0.0.0") //Check if the app is installed
+        {
+            Version_Label.text = LocalizeString("#Not installed"); //If it isn't installed, let the user know in the version label
+        }
+        else
+        {
+            Version_Label.text = SaveLoadManager.SaveLoadManagerr.menuData.VersionIToW; //If it is installed, put the version number in the label
+        }
     }
     private void AppOptions8_Clicked(MouseDownEvent evt)
     {
@@ -410,6 +474,15 @@ public class Navigation : MonoBehaviour
         OptionsHolder.style.top = RepositionOptionsMenu(AppOptions8.worldBound.x, AppOptions8.worldBound.y).y;
 
         OptionsOutsideClicksDetector.style.display = DisplayStyle.Flex;//This makes it so the options menu is visibile. The options menu is a child of this object
+
+        if (SaveLoadManager.SaveLoadManagerr.menuData.VersionWToI == "0.0.0") //Check if the app is installed
+        {
+            Version_Label.text = LocalizeString("#Not installed"); //If it isn't installed, let the user know in the version label
+        }
+        else
+        {
+            Version_Label.text = SaveLoadManager.SaveLoadManagerr.menuData.VersionWToI; //If it is installed, put the version number in the label
+        }
     }
 
     private void OptionsOutsideClicksDetector_Clicked(MouseDownEvent evt)
