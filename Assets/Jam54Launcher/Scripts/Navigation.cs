@@ -23,7 +23,7 @@ public class Navigation : MonoBehaviour
     public Label ProductTitle_Label, LatestUpdateDate1_Label, ReleaseDateDate2_Label, Description_Label, VersionNumber, Path_Label, Downloading_Label;
     public DropdownField LanguageSelector_Dropdown;
     public VisualElement Image1, Image2, Image3, Image4, Image5, Image6, Image7, Image8, ProgressBar;
-    public Button Install_Button, Uninstall_Button, Play_Button, Cancel_Button, Downloading_Button, Shortcut_Button;
+    public Button Install_Button, Uninstall_Button, Play_Button, Cancel_Button, Downloading_Button, Shortcut_Button, Uninstall_Button_Options;
     public Label Install_Label, Version_Label, Size_Label, Path_Size_Label;
 
     //Script variables
@@ -106,6 +106,7 @@ public class Navigation : MonoBehaviour
         Cancel_Button = rootVisualElement.Q<Button>("Cancel_Button");
         Downloading_Button = rootVisualElement.Q<Button>("Downloading_Button");
         Shortcut_Button = rootVisualElement.Q<Button>("Shortcut_Button");
+        Uninstall_Button_Options = rootVisualElement.Q<Button>("Uninstall_Button_Options");
         #endregion
 
 
@@ -121,6 +122,7 @@ public class Navigation : MonoBehaviour
         Play_Button.clicked += Play_Button_Clicked;
         Uninstall_Button.clicked += Uninstall_Button_Clicked;
         Shortcut_Button.clicked += Shortcut_Button_Clicked;
+        Uninstall_Button_Options.clicked += Uninstall_Button_Options_Clicked;
         SettingsBackgroundCircle.RegisterCallback<MouseDownEvent>(SettingsBackgroundCircle_Clicked);
         HomeBackgroundCircle.RegisterCallback<MouseDownEvent>(HomeBackgroundCircle_Clicked);
         SettingsBackgroundCircle.RegisterCallback<MouseOverEvent>(SettingsBackgroundCircle_Over);
@@ -1704,6 +1706,15 @@ public class Navigation : MonoBehaviour
     }
 
 
+    public void Uninstall_Button_Options_Clicked()
+    {
+        Uninstalll(-1); //Uninstall the app. If the app isn't installed, running this function won't change anything
+    }
+    #endregion
+
+
+
+    #region functionality
     public string LocalizeString(string text)
     {
         string key = text;
@@ -1725,11 +1736,6 @@ public class Navigation : MonoBehaviour
     }
 
 
-    #endregion
-
-
-
-    #region functionality
     private string OpenFileDialog(string currentPath)
     {//This method  displays a Folder Dialog from the System.Windows.Forms dll
      //The currentPath string is returned when the folder chosen by the user wasn't usable. Most likely because the Jam54Launcher doesn't have admins perms, and therefor can't write to the folder the user selected
