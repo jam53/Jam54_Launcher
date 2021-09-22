@@ -235,6 +235,10 @@ MonoBehaviour:
     m_Localized: "Ich w\xFCrde gerne am Alpha-Test von SmashAndFly teilnehmen"
     m_Metadata:
       m_Items: []
+  - m_Id: 596250015698944
+    m_Localized: Installieren
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

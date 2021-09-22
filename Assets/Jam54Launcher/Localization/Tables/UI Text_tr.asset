@@ -237,6 +237,10 @@ MonoBehaviour:
     m_Localized: "SmashAndFly'\u0131n alfa testine kat\u0131lmak istiyorum"
     m_Metadata:
       m_Items: []
+  - m_Id: 596250015698944
+    m_Localized: Indir
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
