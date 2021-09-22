@@ -41,7 +41,7 @@ public class AppsUpdater : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        CheckAndInstallUpdates();
     }
 
     // Update is called once per frame
@@ -121,11 +121,6 @@ public class AppsUpdater : MonoBehaviour
                 Debug.LogError("Couldn't figure out which app should be downloaded");
                 break;
         }
-
-        //InstallApp button clicked
-        //    cancle button clicked
-        //    updatedownloadingbutton(percenatge);
-        //if we start updating, disable the path selection button, then when it's done, enable it agian uwu
     }
 
     public void CancelDownload()
@@ -527,5 +522,41 @@ public class AppsUpdater : MonoBehaviour
         initializeUI.Start(); //Check opnieuw de versienummers van de apps, om te bepalen als het gekleurde fotojes moet ingeladen worden. Want daarnet was
         //het nog niet geinstalleerd en dus was het fototje grijs, maar nu zou het kleur moeten worden
         navigation.OpenMainMenu(); //Open the main menu
+    }
+
+
+
+
+    public void CheckAndInstallUpdates()
+    {
+        if (ConfigManager.appConfig.GetString("StelexoVersion") != SaveLoadManager.SaveLoadManagerr.menuData.VersionStelexo && SaveLoadManager.SaveLoadManagerr.menuData.VersionStelexo != "0.0.0")
+        {//If the app is installed (meaning it's version number locally isn't "0.0.0") AND the version number of the app locally is different from in the cloud (unity remote config). Then it means there is an update 
+            navigation.Uninstalll(3); //the index of the app that needs to be uninstalled
+        }
+
+        if (ConfigManager.appConfig.GetString("AutoEditorVersion") != SaveLoadManager.SaveLoadManagerr.menuData.VersionAutoEditor && SaveLoadManager.SaveLoadManagerr.menuData.VersionAutoEditor != "0.0.0")
+        {//If the app is installed (meaning it's version number locally isn't "0.0.0") AND the version number of the app locally is different from in the cloud (unity remote config). Then it means there is an update 
+            navigation.Uninstalll(4); //the index of the app that needs to be uninstalled
+        }
+
+        if (ConfigManager.appConfig.GetString("DGCTimerVersion") != SaveLoadManager.SaveLoadManagerr.menuData.VersionDGCTimer && SaveLoadManager.SaveLoadManagerr.menuData.VersionDGCTimer != "0.0.0")
+        {//If the app is installed (meaning it's version number locally isn't "0.0.0") AND the version number of the app locally is different from in the cloud (unity remote config). Then it means there is an update 
+            navigation.Uninstalll(5); //the index of the app that needs to be uninstalled
+        }
+
+        if (ConfigManager.appConfig.GetString("ImageSearcherVersion") != SaveLoadManager.SaveLoadManagerr.menuData.VersionImageSearcher && SaveLoadManager.SaveLoadManagerr.menuData.VersionImageSearcher != "0.0.0")
+        {//If the app is installed (meaning it's version number locally isn't "0.0.0") AND the version number of the app locally is different from in the cloud (unity remote config). Then it means there is an update 
+            navigation.Uninstalll(6); //the index of the app that needs to be uninstalled
+        }
+
+        if (ConfigManager.appConfig.GetString("IToWVersion") != SaveLoadManager.SaveLoadManagerr.menuData.VersionIToW && SaveLoadManager.SaveLoadManagerr.menuData.VersionIToW != "0.0.0")
+        {//If the app is installed (meaning it's version number locally isn't "0.0.0") AND the version number of the app locally is different from in the cloud (unity remote config). Then it means there is an update 
+            navigation.Uninstalll(7); //the index of the app that needs to be uninstalled
+        }
+
+        if (ConfigManager.appConfig.GetString("WToIVersion") != SaveLoadManager.SaveLoadManagerr.menuData.VersionWToI && SaveLoadManager.SaveLoadManagerr.menuData.VersionWToI != "0.0.0")
+        {//If the app is installed (meaning it's version number locally isn't "0.0.0") AND the version number of the app locally is different from in the cloud (unity remote config). Then it means there is an update 
+            navigation.Uninstalll(8); //the index of the app that needs to be uninstalled
+        }
     }
 }
