@@ -36,6 +36,7 @@ public class Navigation : MonoBehaviour
     public AppsInfo AstroRun, SmashAndFly, Stelexo, AutoEditor, DGCTimer, ImageSearcher, IToW, WToI;
     public int currentlyUpdatingAppIndex; //The app that is currently updating, if the variable is 0. It means that there isn't any app currently downloding/installing/updating
     private bool thereIsAnAppRunning; //Will be checked if the user wants to choose a new path, if there is an app running. There will be a messagebox saying they can't change it
+    public InitializeUI initializeUI;
 
     public void OnEnable()
     {
@@ -113,6 +114,7 @@ public class Navigation : MonoBehaviour
         Install_Button.clicked += Install_Button_Clicked;
         Cancel_Button.clicked += Cancel_Button_Clicked;
         Play_Button.clicked += Play_Button_Clicked;
+        Uninstall_Button.clicked += Uninstall_Button_Clicked;
         SettingsBackgroundCircle.RegisterCallback<MouseDownEvent>(SettingsBackgroundCircle_Clicked);
         HomeBackgroundCircle.RegisterCallback<MouseDownEvent>(HomeBackgroundCircle_Clicked);
         SettingsBackgroundCircle.RegisterCallback<MouseOverEvent>(SettingsBackgroundCircle_Over);
@@ -1189,6 +1191,135 @@ public class Navigation : MonoBehaviour
 
             default:
                 break;
+        }
+    }
+
+
+    private void Uninstall_Button_Clicked()
+    {
+        Uninstalll(-1);
+    }
+
+    public void Uninstalll(int appToUninstall)
+    {
+        int oldCurrentAppIndex = currentAppIndex;
+        if (appToUninstall != -1)
+        {
+            currentAppIndex = appToUninstall;
+        }
+
+        string processName;
+        string shortcut;
+        switch (currentAppIndex)
+        {
+            case 1:
+                processName = "";
+                shortcut = "";
+                //We don't install AstroRun with this launcher, since it's on the google playstore. So because we never isntall it, we will never will be able to see the uninstall button, therefore call this case block
+                break;
+
+            case 2:
+                processName = "";
+                shortcut = "";
+                //We don't install Smash&Fly with this launcher, since it's on the google playstore. So because we never isntall it, we will never will be able to see the uninstall button, therefore call this case block
+                break;
+
+            case 3://Stelexo
+                processName = "Stelexo";
+                shortcut = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + "\\" + "Stelexo" + ".url"; //Path to the shortcut
+                SaveLoadManager.SaveLoadManagerr.menuData.VersionStelexo = "0.0.0"; SaveLoadManager.SaveLoadManagerr.SaveJSONToDisk(); //We uninstalled the app, so we put the version back to 0.0.0. An app with version 0.0.0, means it's not installed
+                break;
+
+            case 4://AutoEditor
+                processName = "AutoEditor";
+                shortcut = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + "\\" + "AutoEditor" + ".url"; //Path to the shortcut
+                SaveLoadManager.SaveLoadManagerr.menuData.VersionAutoEditor = "0.0.0"; SaveLoadManager.SaveLoadManagerr.SaveJSONToDisk(); //We uninstalled the app, so we put the version back to 0.0.0. An app with version 0.0.0, means it's not installed
+                break;
+
+            case 5://DGCTimer
+                processName = "Timer";
+                shortcut = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + "\\" + "DGCTimer" + ".url"; //Path to the shortcut
+                SaveLoadManager.SaveLoadManagerr.menuData.VersionDGCTimer = "0.0.0"; SaveLoadManager.SaveLoadManagerr.SaveJSONToDisk(); //We uninstalled the app, so we put the version back to 0.0.0. An app with version 0.0.0, means it's not installed
+                break;
+
+            case 6://ImageSearcher
+                processName = "ReclameCutter";
+                shortcut = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + "\\" + "ImageSearcher" + ".url"; //Path to the shortcut
+                SaveLoadManager.SaveLoadManagerr.menuData.VersionImageSearcher = "0.0.0"; SaveLoadManager.SaveLoadManagerr.SaveJSONToDisk(); //We uninstalled the app, so we put the version back to 0.0.0. An app with version 0.0.0, means it's not installed
+                break;
+
+            case 7://IToW
+                processName = "IToW";
+                shortcut = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + "\\" + "IToW" + ".url"; //Path to the shortcut
+                SaveLoadManager.SaveLoadManagerr.menuData.VersionIToW = "0.0.0"; SaveLoadManager.SaveLoadManagerr.SaveJSONToDisk(); //We uninstalled the app, so we put the version back to 0.0.0. An app with version 0.0.0, means it's not installed
+                break;
+
+            case 8://WToI
+                processName = "WToI";
+                shortcut = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + "\\" + "WToI" + ".url"; //Path to the shortcut
+                SaveLoadManager.SaveLoadManagerr.menuData.VersionWToI = "0.0.0"; SaveLoadManager.SaveLoadManagerr.SaveJSONToDisk(); //We uninstalled the app, so we put the version back to 0.0.0. An app with version 0.0.0, means it's not installed
+                break;
+
+            default:
+                processName = "";
+                shortcut = "";
+                break;
+        }
+
+
+
+        if (System.Diagnostics.Process.GetProcessesByName(processName).Count() > 0) //Check if the app is running
+        {
+            System.Diagnostics.Process[] processes = System.Diagnostics.Process.GetProcessesByName(processName); //Find all the open instances of the app
+            foreach (var proces in processes)//Loop over every open instance of the app
+            {
+                proces.Kill(); //Close that instance of the app
+            }
+
+            if (processes != null) //Should there still be some instances we missed
+            {
+                foreach (var process in processes)
+                {
+                    process.Dispose(); //Dispose their resources and stuff
+                }
+            }
+        }
+
+
+        //Delete the directory the app is in
+        if (Directory.Exists(SaveLoadManager.SaveLoadManagerr.menuData.path + @"/" + processName)) //If the directory already exist, try to delete it and it's files first
+        {
+            try
+            {
+                Directory.Delete(SaveLoadManager.SaveLoadManagerr.menuData.path + @"/" + processName, true); //Delete all files and subfolders recursivly + delete the directory itself 
+            }
+            catch (Exception e)
+            {//We might not permissions/files could be in use, so just try/catch
+                Debug.LogError(e.Message);
+            }
+        }
+
+
+        //Delete the shortcut
+        if (File.Exists(shortcut))
+        {
+            File.Delete(shortcut); //Delete the shortcut
+        }
+
+        currentAppIndex = oldCurrentAppIndex;
+
+        initializeUI.Start(); //Update the images of the apps on the main menu. Now it has been uninstalled, it's image on the main menu should become grey
+        OpenMainMenu(); //After it has been uninstalled, take the user back to the main menu
+
+        if (appToUninstall != -1)
+        {
+            AppsUpdater.AppsUpdaterr.DownloadApp(appToUninstall); //Begin downloading/installing the app
+            currentlyUpdatingAppIndex = appToUninstall;
+
+            Install_Button.style.display = DisplayStyle.None; //Disable the install button
+
+            Cancel_Button.style.display = DisplayStyle.Flex;//Enable the cancel button + progress bar/button
+            Downloading_Button.style.display = DisplayStyle.Flex;
         }
     }
 
