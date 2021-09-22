@@ -24,7 +24,7 @@ public class Navigation : MonoBehaviour
     public DropdownField LanguageSelector_Dropdown;
     public VisualElement Image1, Image2, Image3, Image4, Image5, Image6, Image7, Image8, ProgressBar;
     public Button Install_Button, Uninstall_Button, Play_Button, Cancel_Button, Downloading_Button, Shortcut_Button;
-    public Label Install_Label, Version_Label, Size_Label;
+    public Label Install_Label, Version_Label, Size_Label, Path_Size_Label;
 
     //Script variables
     private bool LastWindowPrograms; //true means 'programs' is open - false means 'games' is open; on the 'main menu'
@@ -89,6 +89,7 @@ public class Navigation : MonoBehaviour
         Install_Label = rootVisualElement.Q<Label>("Install_Label");
         Version_Label = rootVisualElement.Q<Label>("Version_Label");
         Size_Label = rootVisualElement.Q<Label>("Size_Label");
+        Path_Size_Label = rootVisualElement.Q<Label>("Path_Size_Label");
         LanguageSelector_Dropdown = rootVisualElement.Q<DropdownField>("LanguageSelector_Dropdown");
         Image1 = rootVisualElement.Q<VisualElement>("Image1");
         Image2 = rootVisualElement.Q<VisualElement>("Image2");
@@ -205,6 +206,28 @@ public class Navigation : MonoBehaviour
         else
         {//If there is an app updating, the path selector is disabled, and the user can't select a new path
             PathBackground.style.display = DisplayStyle.None;
+        }
+
+
+        //Calculate the size of the Jam54LauncherFiles directory. This directory includes all the installe apps and programs
+        if (Directory.Exists(SaveLoadManager.SaveLoadManagerr.menuData.path))
+        {
+            long appDirectorySize = GetDirectorySize(new DirectoryInfo(SaveLoadManager.SaveLoadManagerr.menuData.path)); //Get the size of the directory in bytes
+            appDirectorySize = appDirectorySize / 1024 / 1024; //Get the size in megabytes instead of bytes
+
+            if (appDirectorySize > 1024) //If the directory is bigger then 1 gigabyte
+            {
+                appDirectorySize = appDirectorySize / 1024; //Convert it to gigabytes
+                Path_Size_Label.text = appDirectorySize + " " + "GB";
+            }
+            else
+            {
+                Path_Size_Label.text = appDirectorySize + " " + "MB";
+            }
+        }
+        else
+        {//if the directory doesn't exist, AKA if the app isn't installed
+            Path_Size_Label.text = "";
         }
     }
 
