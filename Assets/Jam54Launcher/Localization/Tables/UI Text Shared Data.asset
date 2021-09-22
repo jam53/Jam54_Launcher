@@ -238,6 +238,10 @@ MonoBehaviour:
     m_Key: Not installed
     m_Metadata:
       m_Items: []
+  - m_Id: 804168233259008
+    m_Key: LAUNCH
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
