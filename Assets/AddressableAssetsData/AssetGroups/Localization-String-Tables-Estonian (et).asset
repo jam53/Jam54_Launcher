@@ -15,7 +15,7 @@ MonoBehaviour:
   m_GroupName: Localization-String-Tables-Estonian (et)
   m_Data:
     m_SerializedData: []
-  m_GUID: 836a871dc4ced3d4b96d30e6fc1b1c62
+  m_GUID: 0b1a98fee5fadfd45ad933b0e90b2cb4
   m_SerializeEntries:
   - m_GUID: b7bd17de75c387443bf32f972ad7c519
     m_Address: UI Text_et

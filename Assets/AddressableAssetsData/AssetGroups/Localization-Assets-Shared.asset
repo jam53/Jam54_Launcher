@@ -15,10 +15,10 @@ MonoBehaviour:
   m_GroupName: Localization-Assets-Shared
   m_Data:
     m_SerializedData: []
-  m_GUID: cb9a1053df4591847b5287da6ede4646
+  m_GUID: b4e2ee8c4ccf58e45a53ad7f31bfa2b0
   m_SerializeEntries:
   - m_GUID: 5980cf4fe9926c9499919844e15cd377
-    m_Address: Assets/Localization/Tables/UI Text Shared Data.asset
+    m_Address: Assets/Jam54Launcher/Localization/Tables/UI Text Shared Data.asset
     m_ReadOnly: 1
     m_SerializedLabels: []
   m_ReadOnly: 1

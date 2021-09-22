@@ -15,10 +15,10 @@ MonoBehaviour:
   m_GroupName: Localization-Locales
   m_Data:
     m_SerializedData: []
-  m_GUID: f67d54e2299a6ed46893607120b39f8c
+  m_GUID: d3f280e1e07e6b64399f6168a45cbe16
   m_SerializeEntries:
-  - m_GUID: 320727cffdb4f3d4eb8f1787808a8e81
-    m_Address: German (de)
+  - m_GUID: 7881c145e33850c4cb3ae049e02f39ff
+    m_Address: Dutch (nl)
     m_ReadOnly: 1
     m_SerializedLabels:
     - Locale
@@ -27,13 +27,18 @@ MonoBehaviour:
     m_ReadOnly: 1
     m_SerializedLabels:
     - Locale
+  - m_GUID: 27a67204b4a23f846a588558d3d087fd
+    m_Address: Estonian (et)
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale
   - m_GUID: 63cc8792d50ab8e49ba35426f45773e7
     m_Address: French (fr)
     m_ReadOnly: 1
     m_SerializedLabels:
     - Locale
-  - m_GUID: 7881c145e33850c4cb3ae049e02f39ff
-    m_Address: Dutch (nl)
+  - m_GUID: 320727cffdb4f3d4eb8f1787808a8e81
+    m_Address: German (de)
     m_ReadOnly: 1
     m_SerializedLabels:
     - Locale
@@ -44,11 +49,6 @@ MonoBehaviour:
     - Locale
   - m_GUID: 5b07a5d2684842442b3b10169397cf0d
     m_Address: Turkish (tr)
-    m_ReadOnly: 1
-    m_SerializedLabels:
-    - Locale
-  - m_GUID: 27a67204b4a23f846a588558d3d087fd
-    m_Address: Estonian (et)
     m_ReadOnly: 1
     m_SerializedLabels:
     - Locale
