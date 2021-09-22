@@ -435,6 +435,7 @@ MonoBehaviour:
   WToI: {fileID: 11400000, guid: 6984f13b78a751f4f92ab06a002a85d8, type: 2}
   currentlyUpdatingAppIndex: 0
   initializeUI: {fileID: 2068746145}
+  appsUpdater: {fileID: 1027065522}
 --- !u!114 &2068746144
 MonoBehaviour:
   m_ObjectHideFlags: 0

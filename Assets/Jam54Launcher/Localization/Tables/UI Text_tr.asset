@@ -241,6 +241,10 @@ MonoBehaviour:
     m_Localized: Indir
     m_Metadata:
       m_Items: []
+  - m_Id: 782311169855488
+    m_Localized: "\xD6nce uygulamay\u0131 indirin"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

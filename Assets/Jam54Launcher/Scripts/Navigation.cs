@@ -23,7 +23,7 @@ public class Navigation : MonoBehaviour
     public Label ProductTitle_Label, LatestUpdateDate1_Label, ReleaseDateDate2_Label, Description_Label, VersionNumber, Path_Label, Downloading_Label;
     public DropdownField LanguageSelector_Dropdown;
     public VisualElement Image1, Image2, Image3, Image4, Image5, Image6, Image7, Image8, ProgressBar;
-    public Button Install_Button, Uninstall_Button, Play_Button, Cancel_Button, Downloading_Button;
+    public Button Install_Button, Uninstall_Button, Play_Button, Cancel_Button, Downloading_Button, Shortcut_Button;
     public Label Install_Label;
 
     //Script variables
@@ -37,6 +37,7 @@ public class Navigation : MonoBehaviour
     public int currentlyUpdatingAppIndex; //The app that is currently updating, if the variable is 0. It means that there isn't any app currently downloding/installing/updating
     private bool thereIsAnAppRunning; //Will be checked if the user wants to choose a new path, if there is an app running. There will be a messagebox saying they can't change it
     public InitializeUI initializeUI;
+    public AppsUpdater appsUpdater;
 
     public void OnEnable()
     {
@@ -101,6 +102,7 @@ public class Navigation : MonoBehaviour
         Play_Button = rootVisualElement.Q<Button>("Play_Button");
         Cancel_Button = rootVisualElement.Q<Button>("Cancel_Button");
         Downloading_Button = rootVisualElement.Q<Button>("Downloading_Button");
+        Shortcut_Button = rootVisualElement.Q<Button>("Shortcut_Button");
         #endregion
 
 
@@ -115,6 +117,7 @@ public class Navigation : MonoBehaviour
         Cancel_Button.clicked += Cancel_Button_Clicked;
         Play_Button.clicked += Play_Button_Clicked;
         Uninstall_Button.clicked += Uninstall_Button_Clicked;
+        Shortcut_Button.clicked += Shortcut_Button_Clicked;
         SettingsBackgroundCircle.RegisterCallback<MouseDownEvent>(SettingsBackgroundCircle_Clicked);
         HomeBackgroundCircle.RegisterCallback<MouseDownEvent>(HomeBackgroundCircle_Clicked);
         SettingsBackgroundCircle.RegisterCallback<MouseOverEvent>(SettingsBackgroundCircle_Over);
@@ -1321,6 +1324,113 @@ public class Navigation : MonoBehaviour
             Cancel_Button.style.display = DisplayStyle.Flex;//Enable the cancel button + progress bar/button
             Downloading_Button.style.display = DisplayStyle.Flex;
         }
+    }
+
+    public void Shortcut_Button_Clicked()
+    {
+        switch (currentAppIndex)
+        {
+            case 1:
+                if (SaveLoadManager.SaveLoadManagerr.menuData.VersionAstroRun == "0.0.0") //Check if the app is installed
+                {
+                    System.Windows.Forms.MessageBox.Show(LocalizeString("#Install the application first")); //if it isn't installed, inform the user they need to install it first, before creating a shortcut
+                }
+                else
+                {
+                    currentlyUpdatingAppIndex = currentAppIndex;
+                    appsUpdater.CreateShortcut(); //Create the shortcut
+                }
+                break;
+
+            case 2:
+                if (SaveLoadManager.SaveLoadManagerr.menuData.VersionSmashAndFly == "0.0.0") //Check if the app is installed
+                {
+                    System.Windows.Forms.MessageBox.Show(LocalizeString("#Install the application first")); //if it isn't installed, inform the user they need to install it first, before creating a shortcut
+                }
+                else
+                {
+                    currentlyUpdatingAppIndex = currentAppIndex;
+                    appsUpdater.CreateShortcut(); //Create the shortcut
+                }
+                break;
+
+            case 3:
+                if (SaveLoadManager.SaveLoadManagerr.menuData.VersionStelexo == "0.0.0") //Check if the app is installed
+                {
+                    System.Windows.Forms.MessageBox.Show(LocalizeString("#Install the application first")); //if it isn't installed, inform the user they need to install it first, before creating a shortcut
+                }
+                else
+                {
+                    currentlyUpdatingAppIndex = currentAppIndex;
+                    appsUpdater.CreateShortcut(); //Create the shortcut
+                }
+                break;
+
+            case 4:
+                if (SaveLoadManager.SaveLoadManagerr.menuData.VersionAutoEditor == "0.0.0") //Check if the app is installed
+                {
+                    System.Windows.Forms.MessageBox.Show(LocalizeString("#Install the application first")); //if it isn't installed, inform the user they need to install it first, before creating a shortcut
+                }
+                else
+                {
+                    currentlyUpdatingAppIndex = currentAppIndex;
+                    appsUpdater.CreateShortcut(); //Create the shortcut
+                }
+                break;
+
+            case 5:
+                if (SaveLoadManager.SaveLoadManagerr.menuData.VersionDGCTimer == "0.0.0") //Check if the app is installed
+                {
+                    System.Windows.Forms.MessageBox.Show(LocalizeString("#Install the application first")); //if it isn't installed, inform the user they need to install it first, before creating a shortcut
+                }
+                else
+                {
+                    currentlyUpdatingAppIndex = currentAppIndex;
+                    appsUpdater.CreateShortcut(); //Create the shortcut
+                }
+                break;
+
+            case 6:
+                if (SaveLoadManager.SaveLoadManagerr.menuData.VersionImageSearcher == "0.0.0") //Check if the app is installed
+                {
+                    System.Windows.Forms.MessageBox.Show(LocalizeString("#Install the application first")); //if it isn't installed, inform the user they need to install it first, before creating a shortcut
+                }
+                else
+                {
+                    currentlyUpdatingAppIndex = currentAppIndex;
+                    appsUpdater.CreateShortcut(); //Create the shortcut
+                }
+                break;
+
+            case 7:
+                if (SaveLoadManager.SaveLoadManagerr.menuData.VersionIToW == "0.0.0") //Check if the app is installed
+                {
+                    System.Windows.Forms.MessageBox.Show(LocalizeString("#Install the application first")); //if it isn't installed, inform the user they need to install it first, before creating a shortcut
+                }
+                else
+                {
+                    currentlyUpdatingAppIndex = currentAppIndex;
+                    appsUpdater.CreateShortcut(); //Create the shortcut
+                }
+                break;
+
+            case 8:
+                if (SaveLoadManager.SaveLoadManagerr.menuData.VersionWToI == "0.0.0") //Check if the app is installed
+                {
+                    System.Windows.Forms.MessageBox.Show(LocalizeString("#Install the application first")); //if it isn't installed, inform the user they need to install it first, before creating a shortcut
+                }
+                else
+                {
+                    currentlyUpdatingAppIndex = currentAppIndex;
+                    appsUpdater.CreateShortcut(); //Create the shortcut
+                }
+                break;
+
+            default:
+                break;
+        }
+
+        OptionsOutsideClicksDetector.style.display = DisplayStyle.None; //Close the options menu
     }
 
 
