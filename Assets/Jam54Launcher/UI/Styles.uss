@@ -31,7 +31,7 @@
     border-bottom-width: 0;
     -unity-background-scale-mode: stretch-to-fill;
     width: 175px;
-    height: 70px;
+    height: 75px;
     color: rgb(255, 255, 255);
     -unity-font-definition: url('project://database/Assets/Jam54Launcher/Other/Fonts/BalooDa2-Regular%20SDF.asset?fileID=11400000&guid=22c9334beaad2444688d0e6089d93388&type=2#BalooDa2-Regular SDF');
     font-size: 24px;
@@ -53,7 +53,7 @@
     border-bottom-width: 0;
     -unity-background-scale-mode: stretch-to-fill;
     width: 175px;
-    height: 70px;
+    height: 75px;
     color: rgb(255, 255, 255);
     -unity-font-definition: url('project://database/Assets/Jam54Launcher/Other/Fonts/BalooDa2-Regular%20SDF.asset?fileID=11400000&guid=22c9334beaad2444688d0e6089d93388&type=2#BalooDa2-Regular SDF');
     font-size: 24px;
@@ -125,7 +125,7 @@
     border-bottom-width: 0;
     -unity-background-scale-mode: stretch-to-fill;
     width: 175px;
-    height: 70px;
+    height: 75px;
     color: rgb(255, 255, 255);
     -unity-font-definition: url('project://database/Assets/Jam54Launcher/Other/Fonts/BalooDa2-Regular%20SDF.asset?fileID=11400000&guid=22c9334beaad2444688d0e6089d93388&type=2#BalooDa2-Regular SDF');
     font-size: 24px;
@@ -147,7 +147,7 @@
     border-bottom-width: 0;
     -unity-background-scale-mode: stretch-to-fill;
     width: 175px;
-    height: 70px;
+    height: 75px;
     color: rgb(255, 255, 255);
     -unity-font-definition: url('project://database/Assets/Jam54Launcher/Other/Fonts/BalooDa2-Regular%20SDF.asset?fileID=11400000&guid=22c9334beaad2444688d0e6089d93388&type=2#BalooDa2-Regular SDF');
     font-size: 24px;
