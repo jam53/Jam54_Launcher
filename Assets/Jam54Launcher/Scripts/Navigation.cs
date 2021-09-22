@@ -24,7 +24,7 @@ public class Navigation : MonoBehaviour
     public DropdownField LanguageSelector_Dropdown;
     public VisualElement Image1, Image2, Image3, Image4, Image5, Image6, Image7, Image8, ProgressBar;
     public Button Install_Button, Uninstall_Button, Play_Button, Cancel_Button, Downloading_Button, Shortcut_Button;
-    public Label Install_Label, Version_Label;
+    public Label Install_Label, Version_Label, Size_Label;
 
     //Script variables
     private bool LastWindowPrograms; //true means 'programs' is open - false means 'games' is open; on the 'main menu'
@@ -88,6 +88,7 @@ public class Navigation : MonoBehaviour
         Downloading_Label = rootVisualElement.Q<Label>("Downloading_Label");
         Install_Label = rootVisualElement.Q<Label>("Install_Label");
         Version_Label = rootVisualElement.Q<Label>("Version_Label");
+        Size_Label = rootVisualElement.Q<Label>("Size_Label");
         LanguageSelector_Dropdown = rootVisualElement.Q<DropdownField>("LanguageSelector_Dropdown");
         Image1 = rootVisualElement.Q<VisualElement>("Image1");
         Image2 = rootVisualElement.Q<VisualElement>("Image2");
@@ -357,6 +358,27 @@ public class Navigation : MonoBehaviour
         {
             Version_Label.text = SaveLoadManager.SaveLoadManagerr.menuData.VersionAstroRun; //If it is installed, put the version number in the label
         }
+
+
+        if (Directory.Exists(SaveLoadManager.SaveLoadManagerr.menuData.path + @"/AstroRun"))
+        {
+            long appDirectorySize = GetDirectorySize(new DirectoryInfo(SaveLoadManager.SaveLoadManagerr.menuData.path + @"/AstroRun")); //Get the size of the directory in bytes
+            appDirectorySize = appDirectorySize / 1024 / 1024 ; //Get the size in megabytes instead of bytes
+
+            if (appDirectorySize > 1024) //If the directory is bigger then 1 gigabyte
+            {
+                appDirectorySize = appDirectorySize / 1024; //Convert it to gigabytes
+                Size_Label.text = appDirectorySize + " " + "GB";
+            }
+            else
+            {
+                Size_Label.text = appDirectorySize + " " + "MB";
+            }
+        }
+        else
+        {//if the directory doesn't exist, AKA if the app isn't installed
+            Size_Label.text = "";
+        }
     }
     private void AppOptions2_Clicked(MouseDownEvent evt)
     {
@@ -375,7 +397,29 @@ public class Navigation : MonoBehaviour
         {
             Version_Label.text = SaveLoadManager.SaveLoadManagerr.menuData.VersionSmashAndFly; //If it is installed, put the version number in the label
         }
+
+
+        if (Directory.Exists(SaveLoadManager.SaveLoadManagerr.menuData.path + @"/SmashAndFly"))
+        {
+            long appDirectorySize = GetDirectorySize(new DirectoryInfo(SaveLoadManager.SaveLoadManagerr.menuData.path + @"/SmashAndFly")); //Get the size of the directory in bytes
+            appDirectorySize = appDirectorySize / 1024 / 1024; //Get the size in megabytes instead of bytes
+
+            if (appDirectorySize > 1024) //If the directory is bigger then 1 gigabyte
+            {
+                appDirectorySize = appDirectorySize / 1024; //Convert it to gigabytes
+                Size_Label.text = appDirectorySize + " " + "GB";
+            }
+            else
+            {
+                Size_Label.text = appDirectorySize + " " + "MB";
+            }
+        }
+        else
+        {//if the directory doesn't exist, AKA if the app isn't installed
+            Size_Label.text = "";
+        }
     }
+
     private void AppOptions3_Clicked(MouseDownEvent evt)
     {
         currentAppIndex = 3;//Stelexo
@@ -393,7 +437,29 @@ public class Navigation : MonoBehaviour
         {
             Version_Label.text = SaveLoadManager.SaveLoadManagerr.menuData.VersionStelexo; //If it is installed, put the version number in the label
         }
+
+
+        if (Directory.Exists(SaveLoadManager.SaveLoadManagerr.menuData.path + @"/Stelexo"))
+        {
+            long appDirectorySize = GetDirectorySize(new DirectoryInfo(SaveLoadManager.SaveLoadManagerr.menuData.path + @"/Stelexo")); //Get the size of the directory in bytes
+            appDirectorySize = appDirectorySize / 1024 / 1024; //Get the size in megabytes instead of bytes
+
+            if (appDirectorySize > 1024) //If the directory is bigger then 1 gigabyte
+            {
+                appDirectorySize = appDirectorySize / 1024; //Convert it to gigabytes
+                Size_Label.text = appDirectorySize + " " + "GB";
+            }
+            else
+            {
+                Size_Label.text = appDirectorySize + " " + "MB";
+            }
+        }
+        else
+        {//if the directory doesn't exist, AKA if the app isn't installed
+            Size_Label.text = "";
+        }
     }
+
     private void AppOptions4_Clicked(MouseDownEvent evt)
     {
         currentAppIndex = 4;//AutoEditor
@@ -411,7 +477,29 @@ public class Navigation : MonoBehaviour
         {
             Version_Label.text = SaveLoadManager.SaveLoadManagerr.menuData.VersionAutoEditor; //If it is installed, put the version number in the label
         }
+
+
+        if (Directory.Exists(SaveLoadManager.SaveLoadManagerr.menuData.path + @"/AutoEditor"))
+        {
+            long appDirectorySize = GetDirectorySize(new DirectoryInfo(SaveLoadManager.SaveLoadManagerr.menuData.path + @"/AutoEditor")); //Get the size of the directory in bytes
+            appDirectorySize = appDirectorySize / 1024 / 1024; //Get the size in megabytes instead of bytes
+
+            if (appDirectorySize > 1024) //If the directory is bigger then 1 gigabyte
+            {
+                appDirectorySize = appDirectorySize / 1024; //Convert it to gigabytes
+                Size_Label.text = appDirectorySize + " " + "GB";
+            }
+            else
+            {
+                Size_Label.text = appDirectorySize + " " + "MB";
+            }
+        }
+        else
+        {//if the directory doesn't exist, AKA if the app isn't installed
+            Size_Label.text = "";
+        }
     }
+
     private void AppOptions5_Clicked(MouseDownEvent evt)
     {
         currentAppIndex = 5;//DGCTimer
@@ -429,7 +517,29 @@ public class Navigation : MonoBehaviour
         {
             Version_Label.text = SaveLoadManager.SaveLoadManagerr.menuData.VersionDGCTimer; //If it is installed, put the version number in the label
         }
+
+
+        if (Directory.Exists(SaveLoadManager.SaveLoadManagerr.menuData.path + @"/DGCTimer"))
+        {
+            long appDirectorySize = GetDirectorySize(new DirectoryInfo(SaveLoadManager.SaveLoadManagerr.menuData.path + @"/DGCTimer")); //Get the size of the directory in bytes
+            appDirectorySize = appDirectorySize / 1024 / 1024; //Get the size in megabytes instead of bytes
+
+            if (appDirectorySize > 1024) //If the directory is bigger then 1 gigabyte
+            {
+                appDirectorySize = appDirectorySize / 1024; //Convert it to gigabytes
+                Size_Label.text = appDirectorySize + " " + "GB";
+            }
+            else
+            {
+                Size_Label.text = appDirectorySize + " " + "MB";
+            }
+        }
+        else
+        {//if the directory doesn't exist, AKA if the app isn't installed
+            Size_Label.text = "";
+        }
     }
+
     private void AppOptions6_Clicked(MouseDownEvent evt)
     {
         currentAppIndex = 6;//ImageSearcher
@@ -446,6 +556,27 @@ public class Navigation : MonoBehaviour
         else
         {
             Version_Label.text = SaveLoadManager.SaveLoadManagerr.menuData.VersionImageSearcher; //If it is installed, put the version number in the label
+        }
+
+
+        if (Directory.Exists(SaveLoadManager.SaveLoadManagerr.menuData.path + @"/ImageSearcher"))
+        {
+            long appDirectorySize = GetDirectorySize(new DirectoryInfo(SaveLoadManager.SaveLoadManagerr.menuData.path + @"/ImageSearcher")); //Get the size of the directory in bytes
+            appDirectorySize = appDirectorySize / 1024 / 1024; //Get the size in megabytes instead of bytes
+
+            if (appDirectorySize > 1024) //If the directory is bigger then 1 gigabyte
+            {
+                appDirectorySize = appDirectorySize / 1024; //Convert it to gigabytes
+                Size_Label.text = appDirectorySize + " " + "GB";
+            }
+            else
+            {
+                Size_Label.text = appDirectorySize + " " + "MB";
+            }
+        }
+        else
+        {//if the directory doesn't exist, AKA if the app isn't installed
+            Size_Label.text = "";
         }
     }
     private void AppOptions7_Clicked(MouseDownEvent evt)
@@ -465,7 +596,29 @@ public class Navigation : MonoBehaviour
         {
             Version_Label.text = SaveLoadManager.SaveLoadManagerr.menuData.VersionIToW; //If it is installed, put the version number in the label
         }
+
+
+        if (Directory.Exists(SaveLoadManager.SaveLoadManagerr.menuData.path + @"/IToW"))
+        {
+            long appDirectorySize = GetDirectorySize(new DirectoryInfo(SaveLoadManager.SaveLoadManagerr.menuData.path + @"/IToW")); //Get the size of the directory in bytes
+            appDirectorySize = appDirectorySize / 1024 / 1024; //Get the size in megabytes instead of bytes
+
+            if (appDirectorySize > 1024) //If the directory is bigger then 1 gigabyte
+            {
+                appDirectorySize = appDirectorySize / 1024; //Convert it to gigabytes
+                Size_Label.text = appDirectorySize + " " + "GB";
+            }
+            else
+            {
+                Size_Label.text = appDirectorySize + " " + "MB";
+            }
+        }
+        else
+        {//if the directory doesn't exist, AKA if the app isn't installed
+            Size_Label.text = "";
+        }
     }
+
     private void AppOptions8_Clicked(MouseDownEvent evt)
     {
         currentAppIndex = 8;//WtoI
@@ -482,6 +635,27 @@ public class Navigation : MonoBehaviour
         else
         {
             Version_Label.text = SaveLoadManager.SaveLoadManagerr.menuData.VersionWToI; //If it is installed, put the version number in the label
+        }
+
+
+        if (Directory.Exists(SaveLoadManager.SaveLoadManagerr.menuData.path + @"/WToI"))
+        {
+            long appDirectorySize = GetDirectorySize(new DirectoryInfo(SaveLoadManager.SaveLoadManagerr.menuData.path + @"/WToI")); //Get the size of the directory in bytes
+            appDirectorySize = appDirectorySize / 1024 / 1024; //Get the size in megabytes instead of bytes
+
+            if (appDirectorySize > 1024) //If the directory is bigger then 1 gigabyte
+            {
+                appDirectorySize = appDirectorySize / 1024; //Convert it to gigabytes
+                Size_Label.text = appDirectorySize + " " + "GB";
+            }
+            else
+            {
+                Size_Label.text = appDirectorySize + " " + "MB";
+            }
+        }
+        else
+        {//if the directory doesn't exist, AKA if the app isn't installed
+            Size_Label.text = "";
         }
     }
 
@@ -1561,6 +1735,26 @@ public class Navigation : MonoBehaviour
 
             return currentPath; //Return the old path, since the path that the user selected can not be used
         }
+    }
+
+
+
+    public static long GetDirectorySize(DirectoryInfo d)
+    {
+        long sizeBytes = 0;
+        // Add file sizes.
+        FileInfo[] fis = d.GetFiles();
+        foreach (FileInfo fi in fis)
+        {
+            sizeBytes += fi.Length;
+        }
+        // Add subdirectory sizes.
+        DirectoryInfo[] dis = d.GetDirectories();
+        foreach (DirectoryInfo di in dis)
+        {
+            sizeBytes += GetDirectorySize(di);
+        }
+        return sizeBytes;
     }
     #endregion
 
