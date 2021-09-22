@@ -23,7 +23,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 14991703408640
-    m_Localized: "Ba\u015Fla"
+    m_Localized: "Ba\u015Flat"
     m_Metadata:
       m_Items: []
   - m_Id: 39673458589696
@@ -247,6 +247,10 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 784985508417536
     m_Localized: "Y\xFCkl\xFC de\u011Fil"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 804168233259008
+    m_Localized: "BA\u015ELAT"
     m_Metadata:
       m_Items: []
   references:

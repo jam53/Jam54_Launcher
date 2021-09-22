@@ -228,7 +228,7 @@
                         <ui:Button display-tooltip-when-elided="true" name="Play_Button" class="Play_Button" style="display: flex;">
                             <ui:VisualElement name="InnerImage" style="background-image: url(&apos;project://database/Assets/Jam54Launcher/Textures/PlayInside.png?fileID=2800000&amp;guid=cfda1c65dfb6eb24496ec35dadc7474b&amp;type=3#PlayInside&apos;); border-top-left-radius: 7px; border-bottom-left-radius: 7px; border-top-right-radius: 7px; border-bottom-right-radius: 7px; visibility: visible; overflow: visible; display: flex; align-items: center; justify-content: center; width: 98%; height: 55px; opacity: 1; flex-direction: row; -unity-background-image-tint-color: rgba(255, 255, 255, 0);">
                                 <ui:VisualElement name="PlayIcon" style="width: 24px; height: 24px; background-color: rgba(255, 4, 4, 0); right: 0; background-image: url(&apos;project://database/Assets/Jam54Launcher/Textures/PlayButton.png?fileID=2800000&amp;guid=679762a485553c240854d688ad8149dc&amp;type=3#PlayButton&apos;); display: flex;" />
-                                <ui:Label text="#PLAY" display-tooltip-when-elided="true" name="Play_Label" />
+                                <ui:Label text="#LAUNCH" display-tooltip-when-elided="true" name="Play_Label" />
                             </ui:VisualElement>
                         </ui:Button>
                     </ui:VisualElement>
