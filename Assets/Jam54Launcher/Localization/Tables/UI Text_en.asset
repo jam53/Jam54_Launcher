@@ -230,6 +230,10 @@ MonoBehaviour:
     m_Localized: I would like to participate in the closed alpha test of SmashAndFly
     m_Metadata:
       m_Items: []
+  - m_Id: 596250015698944
+    m_Localized: Install
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

@@ -226,6 +226,10 @@ MonoBehaviour:
     m_Key: I would like to participate in the closed alpha test of Smash&Fly
     m_Metadata:
       m_Items: []
+  - m_Id: 596250015698944
+    m_Key: Install
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

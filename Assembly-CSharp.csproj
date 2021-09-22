@@ -58,11 +58,11 @@
   <ItemGroup>
     <Compile Include="Assets\Jam54Launcher\Scripts\AppsInfo.cs" />
     <Compile Include="Assets\Jam54Launcher\Scripts\Navigation.cs" />
+    <Compile Include="Assets\Jam54Launcher\Scripts\AppsUpdater.cs" />
     <Compile Include="Assets\Jam54Launcher\Scripts\UIDocumentLocalization.cs" />
     <Compile Include="Assets\Jam54Launcher\Scripts\MenuData.cs" />
     <Compile Include="Assets\Jam54Launcher\Scripts\InitializeUI.cs" />
     <Compile Include="Assets\Jam54Launcher\Scripts\SaveLoadManager.cs" />
-    <Compile Include="Assets\Jam54Launcher\Scripts\AppsUpdater.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

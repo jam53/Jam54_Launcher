@@ -11,6 +11,7 @@ public class InitializeUI : MonoBehaviour
     public VisualElement Image1, Image2, Image3, Image4, Image5, Image6, Image7, Image8;
     public Label VersionNumber, Path_Label;
     public DropdownField LanguageSelector_Dropdown;
+    public VisualElement UpdateDownloadIcon1, UpdateDownloadIcon2, UpdateDownloadIcon3, UpdateDownloadIcon4, UpdateDownloadIcon5, UpdateDownloadIcon6, UpdateDownloadIcon7, UpdateDownloadIcon8;
 
     //Script variables
     [Header("Colored Images")]
@@ -52,6 +53,14 @@ public class InitializeUI : MonoBehaviour
         VersionNumber = rootVisualElement.Q<Label>("VersionNumber");
         Path_Label = rootVisualElement.Q<Label>("Path_Label");
         LanguageSelector_Dropdown = rootVisualElement.Q<DropdownField>("LanguageSelector_Dropdown");
+        UpdateDownloadIcon1 = rootVisualElement.Q<VisualElement>("UpdateDownloadIcon1");
+        UpdateDownloadIcon2 = rootVisualElement.Q<VisualElement>("UpdateDownloadIcon2");
+        UpdateDownloadIcon3 = rootVisualElement.Q<VisualElement>("UpdateDownloadIcon3");
+        UpdateDownloadIcon4 = rootVisualElement.Q<VisualElement>("UpdateDownloadIcon4");
+        UpdateDownloadIcon5 = rootVisualElement.Q<VisualElement>("UpdateDownloadIcon5");
+        UpdateDownloadIcon6 = rootVisualElement.Q<VisualElement>("UpdateDownloadIcon6");
+        UpdateDownloadIcon7 = rootVisualElement.Q<VisualElement>("UpdateDownloadIcon7");
+        UpdateDownloadIcon8 = rootVisualElement.Q<VisualElement>("UpdateDownloadIcon8");
         #endregion
 
 
@@ -81,73 +90,89 @@ public class InitializeUI : MonoBehaviour
         if (SaveLoadManager.SaveLoadManagerr.menuData.VersionAstroRun == "0.0.0") //version number '0.0.0' means it's not installed
         {
             Image1.style.backgroundImage = AstroRunGrey;// Since it's not installed make it appear grey
+            UpdateDownloadIcon1.style.visibility = Visibility.Visible; //Since it's not installed, show the install button in the right bottom corner
         }
         else
         {
             Image1.style.backgroundImage = AstroRun; //Since it's installed, make it appear colored (aka the original picture)
+            UpdateDownloadIcon1.style.visibility = Visibility.Hidden; //Since it's already installed, don't the install button in the right bottom corner
         }
 
         if (SaveLoadManager.SaveLoadManagerr.menuData.VersionSmashAndFly == "0.0.0") //version number '0.0.0' means it's not installed
         {
             Image2.style.backgroundImage = SmashAndFlyGrey;// Since it's not installed make it appear grey
+            UpdateDownloadIcon2.style.visibility = Visibility.Visible; //Since it's not installed, show the install button in the right bottom corner
         }
         else
         {
             Image2.style.backgroundImage = SmashAndFly; //Since it's installed, make it appear colored (aka the original picture)
+            UpdateDownloadIcon2.style.visibility = Visibility.Hidden; //Since it's already installed, don't the install button in the right bottom corner
         }
 
         if (SaveLoadManager.SaveLoadManagerr.menuData.VersionStelexo == "0.0.0") //version number '0.0.0' means it's not installed
         {
             Image3.style.backgroundImage = StelexoGrey;// Since it's not installed make it appear grey
+            UpdateDownloadIcon3.style.visibility = Visibility.Visible; //Since it's not installed, show the install button in the right bottom corner
         }
         else
         {
             Image3.style.backgroundImage = Stelexo; //Since it's installed, make it appear colored (aka the original picture)
+            UpdateDownloadIcon3.style.visibility = Visibility.Hidden; //Since it's already installed, don't the install button in the right bottom corner
         }
 
         if (SaveLoadManager.SaveLoadManagerr.menuData.VersionAutoEditor == "0.0.0") //version number '0.0.0' means it's not installed
         {
             Image4.style.backgroundImage = AutoEditorGrey;// Since it's not installed make it appear grey
+            UpdateDownloadIcon4.style.visibility = Visibility.Visible; //Since it's not installed, show the install button in the right bottom corner
         }
         else
         {
             Image4.style.backgroundImage = AutoEditor; //Since it's installed, make it appear colored (aka the original picture)
+            UpdateDownloadIcon4.style.visibility = Visibility.Hidden; //Since it's already installed, don't the install button in the right bottom corner
         }
 
         if (SaveLoadManager.SaveLoadManagerr.menuData.VersionDGCTimer == "0.0.0") //version number '0.0.0' means it's not installed
         {
             Image5.style.backgroundImage = DGCTimerGrey;// Since it's not installed make it appear grey
+            UpdateDownloadIcon5.style.visibility = Visibility.Visible; //Since it's not installed, show the install button in the right bottom corner
         }
         else
         {
             Image5.style.backgroundImage = DGCTimer; //Since it's installed, make it appear colored (aka the original picture)
+            UpdateDownloadIcon5.style.visibility = Visibility.Hidden; //Since it's already installed, don't the install button in the right bottom corner
         }
 
         if (SaveLoadManager.SaveLoadManagerr.menuData.VersionImageSearcher == "0.0.0") //version number '0.0.0' means it's not installed
         {
             Image6.style.backgroundImage = ImageSearcherGrey;// Since it's not installed make it appear grey
+            UpdateDownloadIcon6.style.visibility = Visibility.Visible; //Since it's not installed, show the install button in the right bottom corner
         }
         else
         {
             Image6.style.backgroundImage = ImageSearcher; //Since it's installed, make it appear colored (aka the original picture)
+            UpdateDownloadIcon6.style.visibility = Visibility.Hidden; //Since it's already installed, don't the install button in the right bottom corner
         }
 
         if (SaveLoadManager.SaveLoadManagerr.menuData.VersionIToW == "0.0.0") //version number '0.0.0' means it's not installed
         {
             Image7.style.backgroundImage = IToWGrey;// Since it's not installed make it appear grey
+            UpdateDownloadIcon7.style.visibility = Visibility.Visible; //Since it's not installed, show the install button in the right bottom corner
         }
         else
         {
             Image7.style.backgroundImage = IToW; //Since it's installed, make it appear colored (aka the original picture)
+            UpdateDownloadIcon7.style.visibility = Visibility.Hidden; //Since it's already installed, don't the install button in the right bottom corner
         }
 
         if (SaveLoadManager.SaveLoadManagerr.menuData.VersionWToI == "0.0.0") //version number '0.0.0' means it's not installed
         {
             Image8.style.backgroundImage = WToIGrey;// Since it's not installed make it appear grey
+            UpdateDownloadIcon8.style.visibility = Visibility.Visible; //Since it's not installed, show the install button in the right bottom corner
         }
         else
         {
             Image8.style.backgroundImage = WToI; //Since it's installed, make it appear colored (aka the original picture)
+            UpdateDownloadIcon8.style.visibility = Visibility.Hidden; //Since it's already installed, don't the install button in the right bottom corner
         }
     }
 }
