@@ -1,5 +1,6 @@
 Unity Size Explorer
 
+--Rootfolder of the project--
 edit the .gitignore in the rootfolder
 add the following line !Jam54LauncherStarter/**
 
@@ -19,13 +20,19 @@ Search for System.IO.Packaging and install it
 Write in the program.cs:
 zie da script
 
+--Unity--
+Window > Asset Management > Addressables > Groups
+Right next to the search bar (at the left of it)
+Build > Clean Build > All
+Build > New Build > Default Build Script
+
 Build the Jam54Launcher in Unity:
 Product name: Jam54LauncherMain
 Player settings - Change Version
 Scripting backend - Mono
 API Compatibility Level - .NET Standard
 C++ Compiler Configuratioin - Release
-Managed Stripping Level - High
+Managed Stripping Level - Disabled
 
 Intel 64-bit
 Copy PDB files - false
@@ -34,7 +41,7 @@ Development build - false
 IL2CPP Code Generation - Faster runtime
 Compression Method - LZ4HC
 
-build to a folder with this name:Jam54LauncherApp
+build to a folder with this name: Jam54LauncherApp
 
 onnodige folder weg - Jam54LauncherMain_BackUpThisFolder_ButDontShipItWithYourGame
 onnodige dll weg - nvngx_dlss.dll
@@ -42,23 +49,26 @@ onnodige dll weg - nvngx_dlss.dll
 Ga naar de volgende subfolder: Jam54LauncherMain_Data\Resources
 en hernoem 'unity default resources' naar 'unity_default_resources'
 
-
+--Open the Jam54LauncherStarter Visual Studio Project--
 Right click project > properties > Application; change Assembly name to Jam54LauncherStarter > Jam54Launcher
 Right click project > properties > Application; change Default namespace to Jam54LauncherStarter > Jam54Launcher
 Right click project > properties > Application; change Output Type Console Application > Windows Application
+Right click project > properties > Application; Icon: Choose the jam54logo.ico file
 Right click project > properties > Package; change Product name to Jam54LauncherStarter > Jam54Launcher
-Icon: Choose the jam54logo.ico file
 
 Right click project > properties > Package
 Change package version
 
-Select Release instead of Debug
+
+Select Release instead of Debug as the build target
+Make sure the folder: Jam54LauncherStarter\bin\Release is empty
 Build > Rebuild Solution
 
 Now head to: Jam54LauncherStarter\bin\Release\net5.0
 Copy and paste the Unity build that we put in the Jam54LauncherApp folder in here, paste the entire Jam54LauncherApp folder, not just the stuff inside the folder
 Delete all the .pdb files
 
+--NuGet Package Explorer--
 Go to the Microsoft store
 Install the NuGet Package Explorer application
 
@@ -66,7 +76,7 @@ Once it's installed open it and select > Create a new package (Ctrl + N)
 In the left uppercorner, click on the icon with the pencil (Edit metadata Ctrl + K)
 Id: Jam54Launcher
 Version: whatever version it is
-Authors: Deniz Callens/Jam54
+Authors: Jam54 (legacy/deprecated: Deniz Callens)
 Description: The Jam54 Launcher is used to install and update all the software developed by Jam54. This ensures that everything stays up-to-date and makes it easier for the user by having all the programs in one unified place.
 Hit the green checkmark in the left upper corner (Save)
 
@@ -75,16 +85,18 @@ Add a folder called lib
 Add a subfolder called net45
 
 Now take everything in the Jam54LauncherStarter\bin\Release\net5.0 folder, and drag everything over to the net45 folder inside the NuGet Package Explorer
+Make sure the files in the subfolders are copied over as well, not just the subfolder itself
 Then go to File > Save as
 Don't change the file name
-Save it in the root directory of this VisualStudio project, so where the Jam54LauncherStarter.sln file is located
-Close The NuGet Explorer
+Save it in the root directory of this VisualStudio project(Jam54LauncherStarter), so where the Jam54LauncherStarter.sln file is located
+Close The NuGet Explorer when the NuGet file has been succesfully exported/build
 
 Back to Visual studio
 View > Other Windows > Package Manager Console
 Run the following command: Squirrel --releasify Jam54Launcher.1.0.0.nupkg
 
-When that command has been completed, Delete everything in the Jam54LauncherStarter\bin\Release\net5.0 folder
+When that command has been completed(completed means the very last line in the console is 'PM>')
+	, Delete everything in the Jam54LauncherStarter\bin\Release\net5.0 folder
 Also Delete the Jam54Launcher.0.1.0.nupkg in the rootfolder of the project
 
 Open the newly created Releases folder in the rootfolder of the project
@@ -93,14 +105,13 @@ Do not delete this Releases folder, leave it for the next update. So a delta pac
 
 login to jamhorn's github
 
-Make atleast one commit since the last release, so that GitHub marks the release as latest. Update readme for example.
-
-Create a new GitHub release in your repository matching your current release version (e.g., 1.0.0).
+Create a new GitHub release in your repository(vamos) matching your current release version (e.g., 1.0.0).
 
 Upload all of the files from Releases as assets of the GitHub release, not the folder itself
 	You don't really need to upload the .msi file, since we will only be using the .exe
 
 Publish the release
 
+Make atleast one commit since the last release, so that GitHub marks the release as latest. Update readme for example.
 
 Update the values in unity remote config, if we updated one of the apps

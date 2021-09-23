@@ -45,7 +45,7 @@ Thumbs.db
 
 Jam54LauncherStarter/bin
 Jam54LauncherStarter/obj
-Jam54LauncherStarter/Releases
+!Jam54LauncherStarter/Releases
 
 !HashesCreator/**
 
