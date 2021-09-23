@@ -1353,6 +1353,57 @@ public class Navigation : MonoBehaviour
                 Directory.Delete(oldPath, true); //Delete all files and subfolders recursivly + delete the directory itself 
                                                  //del old direcotry
             }
+
+
+
+            //Delete all the shortcuts on the desktop, since they won't work anymore because we changed the path of the executable
+            string shortcut;
+            switch (currentAppIndex)
+            {
+                case 1:
+                    shortcut = "";
+                    //We don't install AstroRun with this launcher, since it's on the google playstore. So because we never isntall it, we will never have a shortcut
+                    break;
+
+                case 2:
+                    shortcut = "";
+                    //We don't install Smash&Fly with this launcher, since it's on the google playstore. So because we never isntall it, we will never have a shortcut
+                    break;
+
+                case 3://Stelexo
+                    shortcut = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + "\\" + "Stelexo" + ".url"; //Path to the shortcut
+                    break;
+
+                case 4://AutoEditor
+                    shortcut = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + "\\" + "AutoEditor" + ".url"; //Path to the shortcut
+                    break;
+
+                case 5://DGCTimer
+                    shortcut = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + "\\" + "DGCTimer" + ".url"; //Path to the shortcut
+                    break;
+
+                case 6://ImageSearcher
+                    shortcut = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + "\\" + "ImageSearcher" + ".url"; //Path to the shortcut
+                    break;
+
+                case 7://IToW
+                    shortcut = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + "\\" + "IToW" + ".url"; //Path to the shortcut
+                    break;
+
+                case 8://WToI
+                    shortcut = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + "\\" + "WToI" + ".url"; //Path to the shortcut
+                    break;
+
+                default:
+                    shortcut = "";
+                    break;
+            }
+
+            //Delete the shortcut
+            if (File.Exists(shortcut))
+            {
+                File.Delete(shortcut); //Delete the shortcut
+            }
         }
     }
 
