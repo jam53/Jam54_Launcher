@@ -21,10 +21,11 @@ Write in the program.cs:
 zie da script
 
 --Unity--
-Window > Asset Management > Addressables > Groups
-Right next to the search bar (at the left of it)
-Build > Clean Build > All
-Build > New Build > Default Build Script
+@@@alleen nodig als de tekst niet correct wordt getoond in de build, als bv overal de # voor staat, ipv de tekst zelf@@@
+@@@Window > Asset Management > Addressables > Groups@@@
+@@@Right next to the search bar (at the left of it)@@@
+@@@Build > Clean Build > All@@@
+@@@Build > New Build > Default Build Script@@@
 
 Build the Jam54Launcher in Unity:
 Product name: Jam54LauncherMain
@@ -96,11 +97,13 @@ Close The NuGet Explorer when the NuGet file has been succesfully exported/build
 
 Back to Visual studio
 View > Other Windows > Package Manager Console
+Make sure all the nugget packages from the previous releases + the RELEASES file are in the Jam54Launcher/Jam54LauncherStarter/Releases folder. If not download all the files from the latest vamos github repo release into that folder. We don't push the content of the Jam54Launcher/Jam54LauncherStarter/Releases folder to github, since the files inside it are over 100mb.
 Run the following command: Squirrel --releasify Jam54Launcher.1.0.0.nupkg
+
 
 When that command has been completed(completed means the very last line in the console is 'PM>')
 	, Delete everything in the Jam54LauncherStarter\bin\Release\net5.0 folder
-	, Delete everything in the Jam54LauncherSTarter\bin\Pubilsh\net5.0 folder
+	, Delete everything in the Jam54LauncherSTarter\bin\Publish\net5.0 folder
 Also Delete the Jam54Launcher.0.1.0.nupkg in the rootfolder of the project
 
 Open the newly created Releases folder in the rootfolder of the project
