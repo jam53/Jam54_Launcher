@@ -59,10 +59,13 @@ Right click project > properties > Package; change Product name to Jam54Launcher
 Right click project > properties > Package
 Change package version
 
+---old---(doesn't include dependencies, so users are asked to install .NET)
+---old---Select Release instead of Debug as the build target
+---old---Make sure the folder: Jam54LauncherStarter\bin\Release is empty
+---old---Build > Rebuild Solution
 
-Select Release instead of Debug as the build target
-Make sure the folder: Jam54LauncherStarter\bin\Release is empty
-Build > Rebuild Solution
+Right click project > publish > click on the publish button
+Now head to the rootfolder Jam54Launcher then /Jam54LauncherStarter/bin/Publish
 
 Now head to: Jam54LauncherStarter\bin\Release\net5.0
 Copy and paste the Unity build that we put in the Jam54LauncherApp folder in here, paste the entire Jam54LauncherApp folder, not just the stuff inside the folder
@@ -97,10 +100,11 @@ Run the following command: Squirrel --releasify Jam54Launcher.1.0.0.nupkg
 
 When that command has been completed(completed means the very last line in the console is 'PM>')
 	, Delete everything in the Jam54LauncherStarter\bin\Release\net5.0 folder
+	, Delete everything in the Jam54LauncherSTarter\bin\Pubilsh\net5.0 folder
 Also Delete the Jam54Launcher.0.1.0.nupkg in the rootfolder of the project
 
 Open the newly created Releases folder in the rootfolder of the project
-Do not delete this Releases folder, leave it for the next update. So a delta package can be created
+Do not delete this Releases, leave it for the next update. So a delta package can be created
 
 
 login to jamhorn's github
