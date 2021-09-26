@@ -1535,59 +1535,69 @@ public class Navigation : MonoBehaviour
         }
 
         string processName;
+        string folderName;
         string shortcut;
         switch (currentAppIndex)
         {
             case 1:
                 processName = "";
+                folderName = "";
                 shortcut = "";
                 //We don't install AstroRun with this launcher, since it's on the google playstore. So because we never isntall it, we will never will be able to see the uninstall button, therefore call this case block
                 break;
 
             case 2:
                 processName = "";
+                folderName = "";
                 shortcut = "";
                 //We don't install Smash&Fly with this launcher, since it's on the google playstore. So because we never isntall it, we will never will be able to see the uninstall button, therefore call this case block
                 break;
 
             case 3://Stelexo
                 processName = "Stelexo";
+                folderName = "Stelexo";
                 shortcut = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + "\\" + "Stelexo" + ".url"; //Path to the shortcut
                 SaveLoadManager.SaveLoadManagerr.menuData.VersionStelexo = "0.0.0"; SaveLoadManager.SaveLoadManagerr.SaveJSONToDisk(); //We uninstalled the app, so we put the version back to 0.0.0. An app with version 0.0.0, means it's not installed
                 break;
 
             case 4://AutoEditor
                 processName = "AutoEditor";
+                folderName = "AutoEditor";
                 shortcut = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + "\\" + "AutoEditor" + ".url"; //Path to the shortcut
                 SaveLoadManager.SaveLoadManagerr.menuData.VersionAutoEditor = "0.0.0"; SaveLoadManager.SaveLoadManagerr.SaveJSONToDisk(); //We uninstalled the app, so we put the version back to 0.0.0. An app with version 0.0.0, means it's not installed
                 break;
 
             case 5://DGCTimer
                 processName = "Timer";
+                folderName = "DGCTimer";
                 shortcut = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + "\\" + "DGCTimer" + ".url"; //Path to the shortcut
                 SaveLoadManager.SaveLoadManagerr.menuData.VersionDGCTimer = "0.0.0"; SaveLoadManager.SaveLoadManagerr.SaveJSONToDisk(); //We uninstalled the app, so we put the version back to 0.0.0. An app with version 0.0.0, means it's not installed
                 break;
 
             case 6://ImageSearcher
                 processName = "ReclameCutter";
+                folderName = "ImageSearcher";
                 shortcut = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + "\\" + "ImageSearcher" + ".url"; //Path to the shortcut
                 SaveLoadManager.SaveLoadManagerr.menuData.VersionImageSearcher = "0.0.0"; SaveLoadManager.SaveLoadManagerr.SaveJSONToDisk(); //We uninstalled the app, so we put the version back to 0.0.0. An app with version 0.0.0, means it's not installed
                 break;
 
             case 7://IToW
                 processName = "IToW";
+                folderName = "IToW";
                 shortcut = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + "\\" + "IToW" + ".url"; //Path to the shortcut
                 SaveLoadManager.SaveLoadManagerr.menuData.VersionIToW = "0.0.0"; SaveLoadManager.SaveLoadManagerr.SaveJSONToDisk(); //We uninstalled the app, so we put the version back to 0.0.0. An app with version 0.0.0, means it's not installed
                 break;
 
             case 8://WToI
                 processName = "WToI";
+                folderName = "WToI";
                 shortcut = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + "\\" + "WToI" + ".url"; //Path to the shortcut
                 SaveLoadManager.SaveLoadManagerr.menuData.VersionWToI = "0.0.0"; SaveLoadManager.SaveLoadManagerr.SaveJSONToDisk(); //We uninstalled the app, so we put the version back to 0.0.0. An app with version 0.0.0, means it's not installed
                 break;
 
             default:
                 processName = "";
+                folderName = "";
                 shortcut = "";
                 break;
         }
@@ -1613,11 +1623,11 @@ public class Navigation : MonoBehaviour
 
 
         //Delete the directory the app is in
-        if (Directory.Exists(SaveLoadManager.SaveLoadManagerr.menuData.path + @"/" + processName)) //If the directory already exist, try to delete it and it's files first
+        if (Directory.Exists(SaveLoadManager.SaveLoadManagerr.menuData.path + @"/" + folderName)) //If the directory already exist, try to delete it and it's files first
         {
             try
             {
-                Directory.Delete(SaveLoadManager.SaveLoadManagerr.menuData.path + @"/" + processName, true); //Delete all files and subfolders recursivly + delete the directory itself 
+                Directory.Delete(SaveLoadManager.SaveLoadManagerr.menuData.path + @"/" + folderName, true); //Delete all files and subfolders recursivly + delete the directory itself 
             }
             catch (Exception e)
             {//We might not permissions/files could be in use, so just try/catch
