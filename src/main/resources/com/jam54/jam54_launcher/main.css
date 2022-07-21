@@ -1,0 +1,19 @@
+BorderPane {
+    /*-fx-background-color: linear-gradient(from 25% 25% to 100% 175%, #0F1330, #00040c);*/
+    /*background-image: url("data:image/svg+xml,");*/
+    /*background-repeat: no-repeat;*/
+    /*padding-right: calc(1.5em + 0.75rem);*/
+    /*background-position: center right calc(0.375em + 0.1875rem);*/
+    /*background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);*/
+    -fx-background-color: linear-gradient(from 25% 25% to 100% 100%, #101431, #060412);
+}
+
+.topbar {
+    /*-fx-background-color: linear-gradient(to right, #0A0A1E, #080718);*/
+    -fx-background-color: linear-gradient(from 25% 25% to 100% 100%, #0a0b20, #080516);
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0.5, 0.0, 0.0);
+}
+
+.leftbar {
+    -fx-background-color: linear-gradient(from 25% 25% to 100% 100%, #0d0f26, #090b20);
+}
