@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -7,7 +10,18 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="754.0" prefWidth="1228.0" stylesheets="@main.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
    <top>
-      <HBox prefHeight="64.0" styleClass="topbar" BorderPane.alignment="CENTER" />
+      <HBox maxHeight="64.0" prefHeight="64.0" styleClass="topbar" BorderPane.alignment="CENTER_LEFT">
+         <children>
+            <ImageView fitHeight="54.0" fitWidth="54.0" pickOnBounds="true" preserveRatio="true">
+               <HBox.margin>
+                  <Insets bottom="5.0" left="6.0" right="5.0" top="5.0" />
+               </HBox.margin>
+               <image>
+                  <Image url="@img/jam54Icon.png" />
+               </image>
+            </ImageView>
+         </children>
+      </HBox>
    </top>
    <left>
       <VBox prefWidth="64.0" styleClass="leftbar" BorderPane.alignment="CENTER" />
