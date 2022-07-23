@@ -17,3 +17,20 @@ BorderPane {
 .leftbar {
     -fx-background-color: linear-gradient(from 25% 25% to 100% 100%, #0d0f26, #090b20);
 }
+
+.updateAvailableHolder{
+    -fx-border-color: #25C85E;
+    -fx-border-radius: 10;
+}
+
+.updateAvailableHolder Label {
+    -fx-text-fill: #25C85E;
+}
+
+.updateAvailableHolder Button {
+    -fx-background-color: linear-gradient(from 25% 25% to 100% 100%, #25C85E, #1DCF19);
+    -fx-background-radius: 0 9 9 0;
+    -fx-pref-height: 1000000;
+    -fx-text-fill: white;
+    -fx-skin: "com.jam54.jam54_launcher.animations.ButtonScale";
+}
