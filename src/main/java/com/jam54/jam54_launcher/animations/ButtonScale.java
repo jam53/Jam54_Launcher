@@ -6,6 +6,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.skin.ButtonSkin;
 import javafx.util.Duration;
 
+/**
+ * This class is used as an `-fx-skin`, to animate controls when the user hovers over them
+ */
 public class ButtonScale extends ButtonSkin
 {
     public ButtonScale(Button control) {
