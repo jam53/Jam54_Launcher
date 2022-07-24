@@ -1,19 +1,30 @@
 package com.jam54.jam54_launcher.SaveLoad;
 
 import com.google.gson.Gson;
+import com.jam54.jam54_launcher.ErrorMessage;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.SystemUtils;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.LinkOption;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Base64;
-import java.util.prefs.Preferences;
 
 /**
  * This class is used to save/load data within the launcher
  */
 public final class SaveLoadManager
 {
+    private static final Path savePath;
     private static Jam54LauncherData data;
 
     static
     {
+        savePath = Paths.get(SystemUtils.getUserHome().getAbsolutePath(), ".Jam54Launcher", "Jam54LauncherData.dat");
+
         data = new Jam54LauncherData();
         /* Our Jam54LauncherData object holds all the variables + instantiated with their default values.
          * Later we will overwrite this data object with the user's save file.
@@ -29,11 +40,18 @@ public final class SaveLoadManager
      */
     private static void loadSaveFileFromDisk()
     {
-        String saveFile = Preferences.userRoot().get("Jam54LauncherSaveFile", null);
-
-        if (saveFile != null) //Check if the save file exists, before trying to use it to overwrite the default values
+        if (savePath.toFile().isFile()) //Check if the save file exists, before trying to use it to overwrite the default values
         {
-            data = new Gson().fromJson(decode(saveFile), Jam54LauncherData.class); //Load the user's save file and use it to overwrite the default values. Leave new default values that aren't present in the user's save file untouched
+            try
+            {
+                String fileContents = FileUtils.readFileToString(savePath.toFile(), StandardCharsets.UTF_8);
+                data = new Gson().fromJson(decode(fileContents), Jam54LauncherData.class); //Load the user's save file and use it to overwrite the default values. Leave new default values that aren't present in the user's save file untouched
+            }
+            catch (IOException e)
+            {
+                ErrorMessage errorMessage = new ErrorMessage(false, "%The program encountered an error while trying to load data from the disk. " + e);
+                errorMessage.show();
+            }
         }
 
         saveToDisk(); //Normally we would just save the exact same json that's already saved to the disk. The only exception to this is when there are new default values (i.e. a there was an update, that added additional data/variables to the save file)
@@ -45,7 +63,16 @@ public final class SaveLoadManager
      */
     public static void saveToDisk()
     {
-        Preferences.userRoot().put("Jam54LauncherSaveFile", encode(new Gson().toJson(data)));
+        try
+        {
+            FileUtils.writeStringToFile(savePath.toFile(), encode(new Gson().toJson(data)), StandardCharsets.UTF_8);
+            Files.setAttribute(savePath.getParent(), "dos:hidden", true, LinkOption.NOFOLLOW_LINKS);
+        }
+        catch (IOException e)
+        {
+            ErrorMessage errorMessage = new ErrorMessage(false, "%The program encountered an error while trying to save data to the disk. " + e);
+            errorMessage.show();
+        }
     }
 
     /**
