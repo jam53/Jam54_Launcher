@@ -1,0 +1,52 @@
+ErrorMessage {
+    -fx-background-color: #d95252;
+    -fx-background-radius: 25;
+    -fx-padding: 15;
+    -fx-pref-width: 400;
+    -fx-pref-height: 200;
+}
+
+ErrorMessage Label {
+    -fx-font-size: 80;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+ErrorMessage TextFlow {
+    -fx-text-alignment: Left;
+    -fx-padding: 30 0 35 15;
+}
+
+ErrorMessage Text {
+    -fx-font-size: 21;
+    -fx-fill: white;
+}
+
+ErrorMessage Button {
+    -fx-background-color: #f1f1f1;
+    -fx-background-radius: 4;
+    -fx-background-insets: 0.4; /*, 1.5, -1.4, 3;*/
+
+    /*-fx-border-color: #ffffff;*/
+    /*-fx-border-radius: 4;*/
+    /*-fx-border-width: 3;*/
+
+    -fx-font-size: 15;
+    -fx-text-fill: black;
+
+    -fx-skin: "com.jam54.jam54_launcher.animations.ButtonScale";
+}
+
+ErrorMessage Button:hover {
+
+    -fx-background-color: #d9d9d9;
+
+    -fx-text-fill: black;
+}
+
+ErrorMessage Button:pressed{
+
+    -fx-background-color: #9d9d9d;
+
+    -fx-text-fill: white;
+}
