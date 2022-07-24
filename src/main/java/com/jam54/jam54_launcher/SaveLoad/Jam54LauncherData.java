@@ -6,8 +6,16 @@ package com.jam54.jam54_launcher.SaveLoad;
  */
 public class Jam54LauncherData
 {
+    //region data/variables
     private String version = "0.1.0";
+    //endregion
 
+    private void fireInvalidationEvent()
+    {
+        SaveLoadManager.saveToDisk();
+    }
+
+    //region getters and setters
     public String getVersion()
     {
         return version;
@@ -18,9 +26,5 @@ public class Jam54LauncherData
         this.version = version;
         fireInvalidationEvent();
     }
-
-    private void fireInvalidationEvent()
-    {
-        SaveLoadManager.saveToDisk();
-    }
+    //endregion
 }
