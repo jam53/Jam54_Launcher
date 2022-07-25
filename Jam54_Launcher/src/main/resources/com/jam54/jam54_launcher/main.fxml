@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="754.0" prefWidth="1228.0" stylesheets="@main.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jam54.jam54_launcher.MainController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="754.0" prefWidth="1228.0" stylesheets="@main.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
    <top>
       <HBox maxHeight="64.0" prefHeight="64.0" styleClass="topbar" BorderPane.alignment="CENTER_LEFT">
          <children>
@@ -22,7 +22,7 @@
                   <Image url="@img/jam54Icon.png" />
                </image>
             </ImageView>
-            <HBox alignment="CENTER_LEFT" styleClass="updateAvailableHolder">
+            <HBox fx:id="updateAvailable_Button" alignment="CENTER_LEFT" styleClass="updateAvailableHolder">
                <HBox.margin>
                   <Insets bottom="15.0" left="50.0" top="15.0" />
                </HBox.margin>
