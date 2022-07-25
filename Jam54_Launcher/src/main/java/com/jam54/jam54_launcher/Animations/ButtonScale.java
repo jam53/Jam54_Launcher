@@ -1,6 +1,5 @@
-package com.jam54.jam54_launcher.animations;
+package com.jam54.jam54_launcher.Animations;
 
-import javafx.animation.FadeTransition;
 import javafx.animation.ScaleTransition;
 import javafx.scene.control.Button;
 import javafx.scene.control.skin.ButtonSkin;

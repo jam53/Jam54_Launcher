@@ -32,5 +32,5 @@ BorderPane {
     -fx-background-radius: 0 9 9 0;
     -fx-pref-height: 1000000;
     -fx-text-fill: white;
-    -fx-skin: "com.jam54.jam54_launcher.animations.ButtonScale";
+    -fx-skin: "com.jam54.jam54_launcher.Animations.ButtonScale";
 }
