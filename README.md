@@ -1,6 +1,6 @@
 # Jam54_Launcher
 The Jam54 Launcher is used to install and update all of the software developed by jam54. The launcher itself is written in Java and JavaFX.
-> Java was choosen over C# for it's crossplatform GUI capabilities
+> Java was chosen over C# for it's crossplatform GUI capabilities
 
 ## Functionality
 The launcher updates automatically to the latest version available. No user interaction is required.
