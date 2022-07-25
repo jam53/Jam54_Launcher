@@ -16,5 +16,6 @@ You can download the launcher from [here](https://jam53.github.io/jam54/download
 The main reason behind the development of the launcher, was to create one unified place for people to download all the games/programs that have been developed by jam54. Instead of having to search for download links that are scattered all over the [official website.](https://jam53.github.io/jam54)
 
 ## Documentation
-- [Setting up the project](/Documentation/SettingUpTheProject.md)
-- [Building the project](/Documentation/BuildingTheProject.md)
+- [Setting up the project](./Documentation/SettingUpTheProject.md)
+- [Understanding what's in the repository](./Documentation/WhatsInTheRepository.md)
+- [Building the project](./Documentation/BuildingTheProject.md)

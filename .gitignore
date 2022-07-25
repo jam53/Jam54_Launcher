@@ -1,5 +1,7 @@
 /Jam54_Launcher/target/
+/Jam54_Launcher/out/
 /Updater/target/
+/Updater/out/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
