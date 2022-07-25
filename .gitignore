@@ -1,39 +1,25 @@
-target/
+/Jam54_Launcher/target/
+/Updater/target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
 
 ### IntelliJ IDEA ###
-.idea/modules.xml
-.idea/jarRepositories.xml
-.idea/compiler.xml
-.idea/libraries/
-.idea/uiDesigner.xml
+Jam54_Launcher/.idea/modules.xml
+Jam54_Launcher/.idea/jarRepositories.xml
+Jam54_Launcher/.idea/compiler.xml
+Jam54_Launcher/.idea/libraries/
+Jam54_Launcher/.idea/uiDesigner.xml
+
+Updater/.idea/modules.xml
+Updater/.idea/jarRepositories.xml
+Updater/.idea/compiler.xml
+Updater/.idea/libraries/
+Updater/.idea/uiDesigner.xml
+
 *.iws
 *.iml
 *.ipr
-
-### Eclipse ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
-
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-build/
-!**/src/main/**/build/
-!**/src/test/**/build/
-
-### VS Code ###
-.vscode/
 
 ### Mac OS ###
 .DS_Store
