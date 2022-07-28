@@ -10,6 +10,14 @@
 
 ## Prerequisites
 
+### Downloading the JDK
+This project uses OpenJDK 18.0.2, which may be downloaded from [here.](https://jdk.java.net/18/) This version is used for everything Java related in this repository, this includes but is not limited to:
+- The Jam54_Launcher project
+- The Updater project
+- JavaFX
+- The Scene Builder
+- The jpackage command
+
 ### Download the IDE
 We recommend using the *IntelliJ IDEA* IDE, however, any other IDE should work fine.
 
