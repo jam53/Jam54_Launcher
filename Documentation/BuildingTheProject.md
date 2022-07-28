@@ -22,20 +22,20 @@ Once we have built both of our projects, we can create an installer by following
 Following the guide should yield these commands:
 - Windows
     ```
-    jpackage --input . --module-path "D:\Program Files\openjfx-18.0.1_windows-x64_bin-jmods\javafx-jmods-18.0.1" --add-modules javafx.controls,javafx.fxml --name "Jam54 Launcher" --icon "..\..\..\src\main\resources\com\jam54_launcher\img\jam54Icon.ico" --app-version 0.1.0 --vendor "jam54" --copyright "Copyright © 2022 jam54" --win-dir-chooser --win-shortcut --win-per-user-install --win-menu --description "The Jam54 Launcher is used to install and update all of the software developed by jam54." --main-jar Jam54_Launcher.jar --main-class com.jam54.jam54_launcher.Main --type msi
+    jpackage --input . --module-path "D:\Program Files\openjfx-18.0.1_windows-x64_bin-jmods\javafx-jmods-18.0.1" --add-modules javafx.controls,javafx.fxml,jdk.crypto.ec --name "Jam54 Launcher" --icon "..\..\..\src\main\resources\com\jam54_launcher\img\jam54Icon.ico" --app-version 0.1.0 --vendor "jam54" --copyright "Copyright © 2022 jam54" --win-dir-chooser --win-shortcut --win-per-user-install --win-menu --description "The Jam54 Launcher is used to install and update all of the software developed by jam54." --main-jar Jam54_Launcher.jar --main-class com.jam54.jam54_launcher.Main --type msi
     ```
 
 - Linux deb
     ```
-    jpackage --input . --module-path "../javafx-jmods-18.0.1/" --add-modules javafx.controls,javafx.fxml --name "Jam54 Launcher" --icon "../jam54Icon.png" --app-version 0.1.0 --vendor "jam54" --copyright "Copyright © 2022 jam54" --linux-shortcut --description "The Jam54 Launcher is used to install and update all of the software developed by jam54." --main-jar Jam54_Launcher.jar --main-class com.jam54.jam54_launcher.Main --type deb
+    jpackage --input . --module-path "../javafx-jmods-18.0.1/" --add-modules javafx.controls,javafx.fxml,jdk.crypto.ec --name "Jam54 Launcher" --icon "../jam54Icon.png" --app-version 0.1.0 --vendor "jam54" --copyright "Copyright © 2022 jam54" --linux-shortcut --description "The Jam54 Launcher is used to install and update all of the software developed by jam54." --main-jar Jam54_Launcher.jar --main-class com.jam54.jam54_launcher.Main --type deb
     ```
 
 - Linux rpm
     ```
-    jpackage --input . --module-path "../javafx-jmods-18.0.1/" --add-modules javafx.controls,javafx.fxml --name "Jam54 Launcher" --icon "../jam54Icon.png" --app-version 0.1.0 --vendor "jam54" --copyright "Copyright © 2022 jam54" --linux-shortcut --description "The Jam54 Launcher is used to install and update all of the software developed by jam54." --main-jar Jam54_Launcher.jar --main-class com.jam54.jam54_launcher.Main --type rpm
+    jpackage --input . --module-path "../javafx-jmods-18.0.1/" --add-modules javafx.controls,javafx.fxml,jdk.crypto.ec --name "Jam54 Launcher" --icon "../jam54Icon.png" --app-version 0.1.0 --vendor "jam54" --copyright "Copyright © 2022 jam54" --linux-shortcut --description "The Jam54 Launcher is used to install and update all of the software developed by jam54." --main-jar Jam54_Launcher.jar --main-class com.jam54.jam54_launcher.Main --type rpm
     ```
 
 - MacOs
     ```
-    jpackage --input . --module-path "../javafx-jmods-18.0.1/" --add-modules javafx.controls,javafx.fxml --name "Jam54 Launcher" --icon "../jam54Icon.icns" --app-version 0.1.0 --vendor "jam54" --copyright "Copyright © 2022 jam54" --description "The Jam54 Launcher is used to install and update all of the software developed by jam54." --main-jar Jam54_Launcher.jar --main-class com.jam54.jam54_launcher.Main --type pkg --mac-package-identifier com.jam54.jam54_launcher --mac-package-name JAM54LAUNCHER
+    jpackage --input . --module-path "../javafx-jmods-18.0.1/" --add-modules javafx.controls,javafx.fxml,jdk.crypto.ec --name "Jam54 Launcher" --icon "../jam54Icon.icns" --app-version 0.1.0 --vendor "jam54" --copyright "Copyright © 2022 jam54" --description "The Jam54 Launcher is used to install and update all of the software developed by jam54." --main-jar Jam54_Launcher.jar --main-class com.jam54.jam54_launcher.Main --type pkg --mac-package-identifier com.jam54.jam54_launcher --mac-package-name JAM54LAUNCHER
     ```
