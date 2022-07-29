@@ -5,7 +5,7 @@ This repository consists of 2 projects, the *Jam54_Launcher* itself, and the *Up
 This IntelliJ project contains the main program, i.e. the *Jam54Launcher* that manages all of the applications. It is used to download applications and helps to keep them up to date.
 
 # Updater
-Apart from the *Jam54Launcher*, there is another project called *Updater*. The sole purpose of this *Updater* is to update the *Jam54Launcher* itself. 
+Apart from the *Jam54Launcher*, there is another project called *Updater*. This is a C# console application whose sole purpose is to update the *Jam54Launcher* itself. 
 
 # How does it work
 The *Jam54Launcher* is the main program, and will normally be launched first. Now let's say there is a new update available for the *Jam54Launcher*. 

@@ -9,8 +9,8 @@ Make sure to update the *--app-version* argument when creating the installer usi
 
 # The hosted files
 Prepare the following files:
-- Jam54LauncherSetup.msi (and installers for any other platforms needed)
-    - (Rebuild it according to the [Building The Project](./Documentation/BuildingTheProject.md) guide)
+- Jam54LauncherSetup.msi (Make sure it matches this name exactly)
+    - (Rebuild it according to the [Building The Project](./BuildingTheProject.md) guide)
 - Jam54_Launcher.jar
     - A newly built jar, that contains the new version of the Jam54Launcher
 - version.txt

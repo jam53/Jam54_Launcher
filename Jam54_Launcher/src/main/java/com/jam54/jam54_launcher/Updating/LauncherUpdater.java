@@ -6,6 +6,7 @@ import com.jam54.jam54_launcher.SaveLoad.SaveLoadManager;
 import javafx.application.Platform;
 import org.apache.commons.io.FileUtils;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
@@ -14,6 +15,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 
 /**
  * This class is used to check if there are new updates available for the Jam54Launcher, and if there are it starts the update process.
@@ -93,10 +95,16 @@ public class LauncherUpdater
     {
         try
         {
-            Process process = Runtime.getRuntime().exec("java -jar Updater.jar");
+            String updaterFolder = Paths.get(new File(LauncherUpdater.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParentFile().getPath(), "Updater").normalize().toString(); //Gets the path to the folder that contains the Updater.exe executable
+            String updaterExecutable = Paths.get(updaterFolder, "Updater.exe").normalize().toString(); //Get the path to the Updater.exe executable
+
+            final ProcessBuilder pb = new ProcessBuilder(updaterExecutable);
+            pb.directory(new File(updaterFolder));
+            final Process p = pb.start();
+
             Platform.exit();
         }
-        catch (IOException e)
+        catch (IOException | URISyntaxException e)
         {
             ErrorMessage errorMessage = new ErrorMessage(false, "%Failed to start the Updater");
             errorMessage.show();
