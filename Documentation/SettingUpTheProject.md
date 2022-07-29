@@ -18,7 +18,7 @@ This project uses OpenJDK 18.0.2, which may be downloaded from [here.](https://j
 - The Scene Builder
 - The jpackage command
 
-### Download the IDE
+### Download the Java IDE
 We recommend using the *IntelliJ IDEA* IDE, however, any other IDE should work fine.
 
 You may download *IntelliJ IDEA* from [here.](https://www.jetbrains.com/idea/download/)
@@ -26,7 +26,7 @@ You may download *IntelliJ IDEA* from [here.](https://www.jetbrains.com/idea/dow
 ### Download the *Scene Builder*
 Since this project uses `.fxml` files, you may also want to download the *Scene Builder* from [here.](https://gluonhq.com/products/scene-builder/)
 
-### Configuring the IDE
+### Configuring the Java IDE
 The steps described here are meant for *IntelliJ IDEA*. In case you are using another IDE, the steps needed to configure your IDE of choice should be similar to the ones listed here.
 
 1. On the *Welcome screen*, open the *Customize* tab.
@@ -35,5 +35,18 @@ The steps described here are meant for *IntelliJ IDEA*. In case you are using an
 4. Insert the path to the *Scene Builder*. On Windows  this is located inside: `C:\Users\<user>\AppData\Local\SceneBuilder\SceneBuilder.exe` by default.
 5. Click on *Apply*
 
-### Opening the project
-You can now open the project using *IntelliJ IDEA*
+### Opening the Java project
+You can now open the Jam54_Launcher project using *IntelliJ IDEA*
+
+---
+
+### Downloading the C# IDE
+We recommend using the *Visual Studio* IDE, however, any other IDE should work fine.
+
+You may download *Visual Studio* from [here.](https://visualstudio.microsoft.com/downloads/)
+
+### Configuring the C# IDE
+.NET 6.0 is used for everything C# related in this repository.
+
+### Opening the C# project
+You can now open the Updater project using *Visual Studio*

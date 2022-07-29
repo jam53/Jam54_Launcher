@@ -1,7 +1,6 @@
+### IntelliJ IDEA - Java ###
 /Jam54_Launcher/target/
 /Jam54_Launcher/out/
-/Updater/target/
-/Updater/out/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
@@ -13,15 +12,42 @@ Jam54_Launcher/.idea/compiler.xml
 Jam54_Launcher/.idea/libraries/
 Jam54_Launcher/.idea/uiDesigner.xml
 
-Updater/.idea/modules.xml
-Updater/.idea/jarRepositories.xml
-Updater/.idea/compiler.xml
-Updater/.idea/libraries/
-Updater/.idea/uiDesigner.xml
-
 *.iws
 *.iml
 *.ipr
 
 ### Mac OS ###
 .DS_Store
+
+### Visual Studio - C# ###
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# User-specific files (MonoDevelop/Xamarin Studio)
+*.userprefs
+
+# Mono auto generated files
+mono_crash.*
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Ww][Ii][Nn]32/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+# Visual Studio 2015/2017 cache/options directory
+.vs/
