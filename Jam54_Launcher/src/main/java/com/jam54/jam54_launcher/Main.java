@@ -1,5 +1,6 @@
 package com.jam54.jam54_launcher;
 
+import com.jam54.jam54_launcher.SaveLoad.SaveLoadManager;
 import com.jam54.jam54_launcher.Updating.LauncherUpdater;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -16,7 +17,7 @@ public class Main extends Application
     {
         Jam54LauncherModel model = new Jam54LauncherModel();
 
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("main.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("main.fxml"), SaveLoadManager.getResourceBundle());
 
         MainController controller = new MainController();
         controller.setModel(model);

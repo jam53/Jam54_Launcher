@@ -1,5 +1,6 @@
 package com.jam54.jam54_launcher;
 
+import com.jam54.jam54_launcher.SaveLoad.SaveLoadManager;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
@@ -37,7 +38,7 @@ public class ErrorMessage extends BorderPane
         textFlow.getChildren().add(new Text(errorMessage));
         setCenter(textFlow);
 
-        Button ok = new Button("%OK");
+        Button ok = new Button(SaveLoadManager.getTranslation("Ok"));
         ok.setOnAction(this::handle);
         setAlignment(ok, Pos.CENTER);
         setBottom(ok);
@@ -46,7 +47,7 @@ public class ErrorMessage extends BorderPane
         Scene scene = new Scene(this);
 
         stage = new Stage();
-        stage.setTitle("%Error");
+        stage.setTitle(SaveLoadManager.getTranslation("Error"));
         scene.setFill(Color.TRANSPARENT); //Because of the styling defined inside the CSS, the corners of our window will be rounded. If we dont add this line however, there will be a white background behind the rounded corners, instead of them being transparent.
         stage.initStyle(StageStyle.TRANSPARENT); //This makes the bar (with minimize, maximize and close) above our window invisible
         stage.initModality(Modality.APPLICATION_MODAL); //This makes it so the user has to close the error message window first, before they can interact with the launcher again

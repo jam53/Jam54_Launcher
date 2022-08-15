@@ -12,6 +12,8 @@ import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Base64;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 /**
  * This class is used to save/load data within the launcher
@@ -20,6 +22,7 @@ public final class SaveLoadManager
 {
     private static final Path savePath;
     private static Jam54LauncherData data;
+    private static final ResourceBundle resourceBundle;
 
     static
     {
@@ -39,6 +42,8 @@ public final class SaveLoadManager
         */
 
         loadSaveFileFromDisk();
+
+        resourceBundle = ResourceBundle.getBundle("com/jam54/jam54_launcher/i18n", getData().getLocale());
     }
 
     /**
@@ -55,7 +60,7 @@ public final class SaveLoadManager
             }
             catch (IOException e)
             {
-                ErrorMessage errorMessage = new ErrorMessage(false, "%The program encountered an error while trying to load data from the disk. " + e);
+                ErrorMessage errorMessage = new ErrorMessage(false, SaveLoadManager.getTranslation("ErrorLoadingDataFromDisk") + e);
                 errorMessage.show();
             }
         }
@@ -76,7 +81,7 @@ public final class SaveLoadManager
         }
         catch (IOException e)
         {
-            ErrorMessage errorMessage = new ErrorMessage(false, "%The program encountered an error while trying to save data to the disk. " + e);
+            ErrorMessage errorMessage = new ErrorMessage(false, SaveLoadManager.getTranslation("ErrorSavingDataToDisk") + e);
             errorMessage.show();
         }
     }
@@ -109,5 +114,14 @@ public final class SaveLoadManager
     public static Jam54LauncherData getData()
     {
         return data;
+    }
+
+    public static ResourceBundle getResourceBundle()
+    {
+        return resourceBundle;
+    }
+    public static String getTranslation(String key)
+    {
+        return resourceBundle.getString(key);
     }
 }
