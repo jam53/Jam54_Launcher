@@ -2,7 +2,7 @@
 Please follow the steps stated in this document, in chronological order.
 
 # Inside the Jam54Launcher IntelliJ project
-- Open *Jam54LauncherData.java*, and update the `version` variable
+- Open *Jam54LauncherConfig.properties*, and update the `version` variable
 
 # When creating the installer
 Make sure to update the *--app-version* argument when creating the installer using *jpackage*

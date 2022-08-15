@@ -7,7 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Whilst the {@link com.jam54.jam54_launcher.SaveLoad.Jam54LauncherData} is used to have persistent data, by saving and loading data from the disk.
+ * Whilst the {@link com.jam54.jam54_launcher.SaveLoad.Jam54LauncherData} class is used to have persistent data, by saving and loading data from/to the disk.
+ * And Jam54LauncherConfig.properties is used to only read config values from that don't change.
  *
  * This class is used to store data during runtime. It is the model in the MVC pattern, therefore when we change the value of a variable,
  * the listeners will be notified that a variable's value inside the model has been changed

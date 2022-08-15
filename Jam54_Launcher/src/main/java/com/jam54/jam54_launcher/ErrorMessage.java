@@ -27,7 +27,7 @@ public class ErrorMessage extends BorderPane
     {
         this.closeApplication = closeApplication;
 
-        getStylesheets().add(Main.class.getResource("ErrorMessage.css").toString());
+        getStylesheets().add(Main.class.getResource("css/ErrorMessage.css").toString());
 
         Label exclamationMark = new Label("!");
         setAlignment(exclamationMark, Pos.CENTER);

@@ -24,6 +24,12 @@ public final class SaveLoadManager
     static
     {
         savePath = Paths.get(SystemUtils.getUserHome().getAbsolutePath(), ".Jam54Launcher", "Jam54LauncherData.dat");
+        /* Instead of using the path defined in `dataPath` under Jam54LauncherData.java
+           The following path: `C:\Users\<user>\.Jam54Launcher\Jam54LauncherData.dat` returned by the command above is used to save the save file.
+           This way we won't have any issues when the user changes the path contained in `dataPath` to a different path.
+           By making sure the save file is always stored in the same place, and can't be moved, we can always load it in.
+           Whereas if we used the path in `dataPath`, we won't know where the save file would be located if the user changed `dataPath`'s value
+         */
 
         data = new Jam54LauncherData();
         /* Our Jam54LauncherData object holds all the variables + instantiated with their default values.

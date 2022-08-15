@@ -1,5 +1,8 @@
 package com.jam54.jam54_launcher.SaveLoad;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 /**
  * This is a "data class" that holds all the data/variables that need to be persistent between different sessions
  * + it sets the default value for these variables
@@ -7,7 +10,7 @@ package com.jam54.jam54_launcher.SaveLoad;
 public class Jam54LauncherData
 {
     //region data/variables
-    private String version = "0.1.0";
+    private String dataPath = Paths.get(System.getenv("LOCALAPPDATA"), "Jam54Launcher").toString();
     //endregion
 
     private void fireInvalidationEvent()
@@ -16,14 +19,21 @@ public class Jam54LauncherData
     }
 
     //region getters and setters
-    public String getVersion()
+
+    /**
+     * This function returns a Path, where the launcher can place the downloaded apps
+     */
+    public Path getDataPath()
     {
-        return version;
+        return Paths.get(dataPath);
     }
 
-    public void setVersion(String version)
+    /**
+     * This function sets a Path, where the launcher can place the downloaded apps
+     */
+    public void setDataPath(Path savePath)
     {
-        this.version = version;
+        this.dataPath = savePath.toString();
         fireInvalidationEvent();
     }
     //endregion
