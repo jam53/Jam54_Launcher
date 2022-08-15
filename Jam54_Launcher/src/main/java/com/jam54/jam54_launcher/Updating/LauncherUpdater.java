@@ -2,12 +2,14 @@ package com.jam54.jam54_launcher.Updating;
 
 import com.jam54.jam54_launcher.ErrorMessage;
 import com.jam54.jam54_launcher.Jam54LauncherModel;
+import com.jam54.jam54_launcher.Main;
 import com.jam54.jam54_launcher.SaveLoad.SaveLoadManager;
 import javafx.application.Platform;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -16,6 +18,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Properties;
 
 /**
  * This class is used to check if there are new updates available for the Jam54Launcher, and if there are it starts the update process.
@@ -23,21 +26,21 @@ import java.util.ArrayList;
 public class LauncherUpdater
 {
     private Jam54LauncherModel model;
-    private static URL VERSION_URL; //This contains the url to a file in which the latest version of the launcher is stored
-    private static URL JAM54LAUNCHER_URL; //This contains the url to the latest version of the Jam54_Launcher.jar
+    private final Properties properties; //This properties variable, contains config/pref info about the launcher. E.g. the version number, the download url for a new version, ...
 
     public LauncherUpdater(Jam54LauncherModel model)
     {
         this.model = model;
+        properties = new Properties();
 
-        try
+        try (InputStream in = Main.class.getResourceAsStream("Jam54LauncherConfig.properties"))
         {
-            VERSION_URL = new URL("https://github.com/jamhorn/Jam54Launcher/releases/latest/download/version.txt");
-            JAM54LAUNCHER_URL = new URL("https://github.com/jamhorn/Jam54Launcher/releases/latest/download/Jam54_Launcher.jar");
+            properties.load(in);
         }
-        catch (MalformedURLException e)
+        catch (IOException e)
         {
-            throw new RuntimeException(e);
+            ErrorMessage errorMessage = new ErrorMessage(false, "%Couldn't load config/prefs from Jam54LauncherConfig.properties");
+            errorMessage.show();
         }
     }
 
@@ -47,7 +50,7 @@ public class LauncherUpdater
         try
         {
             Path tempFile = Files.createTempFile("version", ".txt");
-            FileUtils.copyURLToFile(VERSION_URL, tempFile.toFile(), 10000, 10000);
+            FileUtils.copyURLToFile(new URL(properties.getProperty("versionUrl")), tempFile.toFile(), 10000, 10000);
             versionInCloud = FileUtils.readFileToString(tempFile.toFile(), StandardCharsets.UTF_8);
         }
         catch (IOException e)
@@ -73,11 +76,11 @@ public class LauncherUpdater
             model.setNewVersionDownloaded(false);
             update();
         }
-        else if (!versionInCloud.equals(SaveLoadManager.getData().getVersion()) && !versionInCloud.equals(""))
+        else if (!versionInCloud.equals(properties.getProperty("version")) && !versionInCloud.equals(""))
         {//If true, this means there is a new version available
             try
             {
-                FileUtils.copyURLToFile(JAM54LAUNCHER_URL, newJarLocation.toFile(), 10000, 10000); //Download the new version of the launcher
+                FileUtils.copyURLToFile(new URL(properties.getProperty("Jam54LauncherUrl")), newJarLocation.toFile(), 10000, 10000); //Download the new version of the launcher
                 model.setNewVersionDownloaded(true);
             } catch (IOException e)
             {
