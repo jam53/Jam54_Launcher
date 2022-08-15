@@ -39,7 +39,7 @@ public class LauncherUpdater
         }
         catch (IOException e)
         {
-            ErrorMessage errorMessage = new ErrorMessage(false, "%Couldn't load config/prefs from Jam54LauncherConfig.properties");
+            ErrorMessage errorMessage = new ErrorMessage(false, SaveLoadManager.getTranslation("ErrorLoadingJam54LauncherConfig"));
             errorMessage.show();
         }
     }
@@ -55,7 +55,7 @@ public class LauncherUpdater
         }
         catch (IOException e)
         {
-            ErrorMessage errorMessage = new ErrorMessage(false, "%Failed to check for updates, please ensure you hava a stable network connection.");
+            ErrorMessage errorMessage = new ErrorMessage(false, SaveLoadManager.getTranslation("FailedCheckingUpdates"));
             errorMessage.show();
         }
 
@@ -84,7 +84,7 @@ public class LauncherUpdater
                 model.setNewVersionDownloaded(true);
             } catch (IOException e)
             {
-                ErrorMessage errorMessage = new ErrorMessage(false, "%Failed to download a new version of the Jam54 Launcher, please ensure you have a stable network connection.");
+                ErrorMessage errorMessage = new ErrorMessage(false, SaveLoadManager.getTranslation("FailedDownloadingNewJam54LauncherVersion"));
                 errorMessage.show();
             }
         }
@@ -109,7 +109,7 @@ public class LauncherUpdater
         }
         catch (IOException | URISyntaxException e)
         {
-            ErrorMessage errorMessage = new ErrorMessage(false, "%Failed to start the Updater");
+            ErrorMessage errorMessage = new ErrorMessage(false, SaveLoadManager.getTranslation("FailedToStartUpdater"));
             errorMessage.show();
         }
     }
