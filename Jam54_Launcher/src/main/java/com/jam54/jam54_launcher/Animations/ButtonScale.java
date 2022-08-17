@@ -6,6 +6,7 @@ import javafx.scene.control.skin.ButtonSkin;
 import javafx.util.Duration;
 
 /**
+ * This animation makes a button slightly bigger upon hovering over it
  * This class is used as an `-fx-skin`, to animate controls when the user hovers over them
  */
 public class ButtonScale extends ButtonSkin
