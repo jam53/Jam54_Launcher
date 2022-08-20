@@ -14,8 +14,32 @@ BorderPane {
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0.5, 0.0, 0.0);
 }
 
-.leftbar {
+.leftBar {
     -fx-background-color: linear-gradient(from 25% 25% to 100% 100%, #0d0f26, #090b20);
+    -fx-alignment: top-center;
+    -fx-spacing: 15;
+    -fx-pref-width: 64;
+    -fx-max-width: 64;
+}
+
+.leftBar ToggleButton {
+    -fx-background-radius: 64;
+    -fx-background-position: center;
+    -fx-background-repeat: no-repeat;
+
+    -fx-pref-width: 50;
+    -fx-pref-height: 50;
+
+    -fx-background-color: rgba(255, 255, 255, 0);
+    -fx-padding: 0;
+}
+
+.leftBar ToggleButton:selected {
+    -fx-background-color: rgba(255, 255, 255, 0.1);
+}
+
+.leftBar ToggleButton:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.25);
 }
 
 .updateAvailableHolder{
@@ -33,4 +57,33 @@ BorderPane {
     -fx-pref-height: 1000000;
     -fx-text-fill: white;
     -fx-skin: "com.jam54.jam54_launcher.Animations.ButtonScale";
+}
+
+.buttonBar {
+    -fx-alignment: center;
+}
+
+.titleBar {
+    -fx-padding: 50px;
+    -fx-font-size: 16;
+    -fx-font-weight: bold;
+}
+
+.titleBar Label {
+    -fx-text-fill: white;
+}
+
+.titleBar HBox {
+    -fx-alignment: center-right;
+    -fx-spacing: 5;
+}
+
+.searchBar {
+    -fx-background-position: left center;
+    -fx-background-repeat: no-repeat;
+    -fx-background-image:url('https://placekitten.com/20/20');
+}
+
+.applicationsHolder {
+    -fx-pref-height: 1000000;
 }

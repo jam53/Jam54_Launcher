@@ -1,5 +1,6 @@
 package com.jam54.jam54_launcher;
 
+import com.jam54.jam54_launcher.Windows.Application.ApplicationInfo;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 
@@ -18,6 +19,14 @@ public class Jam54LauncherModel implements Observable
     private final List<InvalidationListener> listenerList;
 
     private boolean newVersionDownloaded;
+    private boolean gamesWindowSelected;
+    private boolean programsWindowSelected;
+    private boolean settingsWindowSelected;
+    private boolean applicationWindowSelected;
+
+    private ApplicationInfo openedApplicationInfo;
+    private ArrayList<ApplicationInfo> allApplicationInfos;
+    private ArrayList<ApplicationInfo> visibleApplicationInfos;
 
     public Jam54LauncherModel()
     {
@@ -52,6 +61,83 @@ public class Jam54LauncherModel implements Observable
     public void setNewVersionDownloaded(boolean newVersionDownloaded)
     {
         this.newVersionDownloaded = newVersionDownloaded;
+        fireInvalidationEvent();
+    }
+
+    public boolean isGamesWindowSelected()
+    {
+        return gamesWindowSelected;
+    }
+
+    public void setGamesWindowSelected(boolean gamesWindowSelected)
+    {
+        this.gamesWindowSelected = gamesWindowSelected;
+        fireInvalidationEvent();
+    }
+
+    public boolean isProgramsWindowSelected()
+    {
+        return programsWindowSelected;
+    }
+
+    public void setProgramsWindowSelected(boolean programsWindowSelected)
+    {
+        this.programsWindowSelected = programsWindowSelected;
+        fireInvalidationEvent();
+    }
+
+    public boolean isSettingsWindowSelected()
+    {
+        return settingsWindowSelected;
+    }
+
+    public void setSettingsWindowSelected(boolean settingsWindowSelected)
+    {
+        this.settingsWindowSelected = settingsWindowSelected;
+        fireInvalidationEvent();
+    }
+
+    public boolean isApplicationWindowSelected()
+    {
+        return applicationWindowSelected;
+    }
+
+    public void setApplicationWindowSelected(boolean applicationWindowSelected)
+    {
+        this.applicationWindowSelected = applicationWindowSelected;
+        fireInvalidationEvent();
+    }
+
+    public ApplicationInfo getOpenedApplication()
+    {
+        return openedApplicationInfo;
+    }
+
+    public void setOpenedApplication(ApplicationInfo openedApplicationInfo)
+    {
+        this.openedApplicationInfo = openedApplicationInfo;
+        fireInvalidationEvent();
+    }
+
+    public ArrayList<ApplicationInfo> getAllApplications()
+    {
+        return allApplicationInfos;
+    }
+
+    public void setAllApplications(ArrayList<ApplicationInfo> allApplicationInfos)
+    {
+        this.allApplicationInfos = allApplicationInfos;
+        fireInvalidationEvent();
+    }
+
+    public ArrayList<ApplicationInfo> getVisibleApplicationInfos()
+    {
+        return visibleApplicationInfos;
+    }
+
+    public void setVisibleApplicationInfos(ArrayList<ApplicationInfo> visibleApplicationInfos)
+    {
+        this.visibleApplicationInfos = visibleApplicationInfos;
         fireInvalidationEvent();
     }
 }
