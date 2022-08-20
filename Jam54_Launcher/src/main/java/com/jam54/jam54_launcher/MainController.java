@@ -2,6 +2,7 @@ package com.jam54.jam54_launcher;
 
 import com.jam54.jam54_launcher.Windows.Application.ApplicationWindow;
 import com.jam54.jam54_launcher.Windows.GamesPrograms.GamesProgramsWindow;
+import com.jam54.jam54_launcher.Windows.LeftBar;
 import com.jam54.jam54_launcher.Windows.Settings.SettingsWindow;
 import com.jam54.jam54_launcher.Updating.LauncherUpdater;
 import javafx.beans.InvalidationListener;
@@ -23,46 +24,26 @@ public class MainController implements InvalidationListener
     private final GamesProgramsWindow gamesProgramsWindow;
     private final SettingsWindow settingsWindow;
     private final ApplicationWindow applicationWindow;
+    private final LeftBar leftBar;
 
     @FXML
     private HBox updateAvailable_Button;
     @FXML
     private BorderPane borderPane;
-    @FXML
-    private VBox leftBar;
 
     public MainController()
     {
         gamesProgramsWindow = new GamesProgramsWindow();
         settingsWindow = new SettingsWindow();
         applicationWindow = new ApplicationWindow();
+        leftBar = new LeftBar();
     }
 
     public void initialize()
     {
-        ToggleGroup toggleGroup = new ToggleGroup();
-        toggleGroup.selectedToggleProperty().addListener((obsVal, oldVal, newVal) -> {
-            if (newVal == null)
-                oldVal.setSelected(true);
-        });
+        borderPane.setLeft(leftBar);
 
-        ToggleButton homeButton = new ToggleButton();
-        ToggleButton settingsButton = new ToggleButton();
-
-        homeButton.setToggleGroup(toggleGroup);
-        settingsButton.setToggleGroup(toggleGroup);
-        toggleGroup.selectToggle(homeButton);
-
-        homeButton.getStyleClass().add("leftBarToggle");
-        settingsButton.getStyleClass().add("leftBarToggle");
-
-        homeButton.setGraphic(new ImageView(new Image("/com/jam54/jam54_launcher/img/Home.png", 50, 50, true, true)));
-        settingsButton.setGraphic(new ImageView(new Image("/com/jam54/jam54_launcher/img/Settings.png", 30, 30, true, true)));
-
-        leftBar.getChildren().addAll(homeButton, settingsButton);
-
-
-        borderPane.setCenter(gamesProgramsWindow); //When the program opens, we want to show the games/programs window
+        model.setGamesWindowSelected(true); //When the program opens, we want to show the games/programs window
     }
 
     public void setModel(Jam54LauncherModel model)
@@ -73,7 +54,13 @@ public class MainController implements InvalidationListener
         gamesProgramsWindow.setModel(model);
         settingsWindow.setModel(model);
         applicationWindow.setModel(model);
+        leftBar.setModel(model);
     }
+
+    /**
+     * After an update is installed. A button at the top of the screen will become visible that restarts the program.
+     * If the user clicks on that button, this function will be called.
+     */
     @FXML
     private void restartProgram(ActionEvent event)
     {
