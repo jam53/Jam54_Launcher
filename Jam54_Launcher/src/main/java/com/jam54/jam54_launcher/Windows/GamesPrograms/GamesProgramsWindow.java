@@ -1,6 +1,7 @@
 package com.jam54.jam54_launcher.Windows.GamesPrograms;
 
 import com.jam54.jam54_launcher.Jam54LauncherModel;
+import com.jam54.jam54_launcher.Windows.Application.ApplicationButton;
 import com.jam54.jam54_launcher.Windows.Application.ApplicationInfo;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
@@ -106,7 +107,10 @@ public class GamesProgramsWindow extends VBox implements InvalidationListener
 
         for (ApplicationInfo application : model.getVisibleApplicationInfos())
         {
-            applicationsHolder.getChildren().add(new Button(application.name()));
+            ApplicationButton button = new ApplicationButton(application);
+            button.setModel(model);
+
+            applicationsHolder.getChildren().add(button);
         }
     }
 
