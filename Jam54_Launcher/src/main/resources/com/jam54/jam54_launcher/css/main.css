@@ -14,13 +14,15 @@ BorderPane {
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0.5, 0.0, 0.0);
 }
 
-.leftbar {
+.leftBar {
     -fx-background-color: linear-gradient(from 25% 25% to 100% 100%, #0d0f26, #090b20);
     -fx-alignment: top-center;
     -fx-spacing: 15;
+    -fx-pref-width: 64;
+    -fx-max-width: 64;
 }
 
-.leftBarToggle {
+.leftBar ToggleButton {
     -fx-background-radius: 64;
     -fx-background-position: center;
     -fx-background-repeat: no-repeat;
@@ -32,11 +34,11 @@ BorderPane {
     -fx-padding: 0;
 }
 
-.leftBarToggle:selected {
+.leftBar ToggleButton:selected {
     -fx-background-color: rgba(255, 255, 255, 0.1);
 }
 
-.leftBarToggle:hover {
+.leftBar ToggleButton:hover {
     -fx-background-color: rgba(255, 255, 255, 0.25);
 }
 
