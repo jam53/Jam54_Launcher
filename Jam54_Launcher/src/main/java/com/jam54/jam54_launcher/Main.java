@@ -23,7 +23,7 @@ public class Main extends Application
         controller.setModel(model);
         fxmlLoader.setController(controller);
 
-        Scene scene = new Scene(fxmlLoader.load());
+        Scene scene = new Scene(fxmlLoader.load(), 1228, 754); //If we set for example, 300 as prefWidth inside the FXML. The we could make our window bigger and the hboxes, vboxes, flowplanes etc. would resize accordingly. But anything smaller than 300 after resizing. Would just cut of the side of the window. By setting both the prefWidth and prefHeight to 1 inside the FXML. Followed by choosing the correct widht/height inside Java. The window resizes correctly, even at smaller resolutions
         stage.setTitle("Jam54 Launcher");
         stage.getIcons().add(new Image(Main.class.getResource("img/jam54Icon.png").toString()));
         stage.setScene(scene);
