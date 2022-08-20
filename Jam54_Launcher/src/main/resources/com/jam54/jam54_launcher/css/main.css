@@ -83,3 +83,7 @@ BorderPane {
     -fx-background-repeat: no-repeat;
     -fx-background-image:url('https://placekitten.com/20/20');
 }
+
+.applicationsHolder {
+    -fx-pref-height: 1000000;
+}

@@ -1,10 +1,9 @@
 package com.jam54.jam54_launcher;
 
-import com.jam54.jam54_launcher.Windows.Application.Application;
+import com.jam54.jam54_launcher.Windows.Application.ApplicationInfo;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,9 +24,9 @@ public class Jam54LauncherModel implements Observable
     private boolean settingsWindowSelected;
     private boolean applicationWindowSelected;
 
-    private Application openedApplication;
-    private ArrayList<Application> allApplications;
-    private ArrayList<Application> applicationsToShow;
+    private ApplicationInfo openedApplicationInfo;
+    private ArrayList<ApplicationInfo> allApplicationInfos;
+    private ArrayList<ApplicationInfo> visibleApplicationInfos;
 
     public Jam54LauncherModel()
     {
@@ -109,36 +108,36 @@ public class Jam54LauncherModel implements Observable
         fireInvalidationEvent();
     }
 
-    public Application getOpenedApplication()
+    public ApplicationInfo getOpenedApplication()
     {
-        return openedApplication;
+        return openedApplicationInfo;
     }
 
-    public void setOpenedApplication(Application openedApplication)
+    public void setOpenedApplication(ApplicationInfo openedApplicationInfo)
     {
-        this.openedApplication = openedApplication;
+        this.openedApplicationInfo = openedApplicationInfo;
         fireInvalidationEvent();
     }
 
-    public ArrayList<Application> getAllApplications()
+    public ArrayList<ApplicationInfo> getAllApplications()
     {
-        return allApplications;
+        return allApplicationInfos;
     }
 
-    public void setAllApplications(ArrayList<Application> allApplications)
+    public void setAllApplications(ArrayList<ApplicationInfo> allApplicationInfos)
     {
-        this.allApplications = allApplications;
+        this.allApplicationInfos = allApplicationInfos;
         fireInvalidationEvent();
     }
 
-    public ArrayList<Application> getApplicationsToShow()
+    public ArrayList<ApplicationInfo> getVisibleApplicationInfos()
     {
-        return applicationsToShow;
+        return visibleApplicationInfos;
     }
 
-    public void setApplicationsToShow(ArrayList<Application> applicationsToShow)
+    public void setVisibleApplicationInfos(ArrayList<ApplicationInfo> visibleApplicationInfos)
     {
-        this.applicationsToShow = applicationsToShow;
+        this.visibleApplicationInfos = visibleApplicationInfos;
         fireInvalidationEvent();
     }
 }

@@ -31,7 +31,7 @@ public class LeftBar extends VBox implements InvalidationListener
             {
                 oldVal.setSelected(true);
             }
-        }); //This makes it so that there always has to be at least one toggle selcted
+        }); //This makes it so that there always has to be at least one toggle selected
 
         homeToggle = new ToggleButton();
         settingsToggle = new ToggleButton();
@@ -53,6 +53,7 @@ public class LeftBar extends VBox implements InvalidationListener
     public void setModel(Jam54LauncherModel model)
     {
         this.model = model;
+        model.addListener(this);
     }
 
     @Override

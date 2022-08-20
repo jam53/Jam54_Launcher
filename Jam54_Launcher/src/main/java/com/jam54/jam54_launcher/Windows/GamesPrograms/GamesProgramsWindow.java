@@ -1,10 +1,11 @@
 package com.jam54.jam54_launcher.Windows.GamesPrograms;
 
 import com.jam54.jam54_launcher.Jam54LauncherModel;
-import com.jam54.jam54_launcher.Windows.Application.Application;
+import com.jam54.jam54_launcher.Windows.Application.ApplicationInfo;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
@@ -22,13 +23,38 @@ public class GamesProgramsWindow extends VBox implements InvalidationListener
     private Jam54LauncherModel model;
     private FlowPane applicationsHolder;
 
+    private ToggleGroup toggleGroup;
+    private ToggleButton gamesToggle;
+    private ToggleButton programsToggle;
+
+    private Label title;
+
     public GamesProgramsWindow()
     {
         //region button bar
         HBox buttonBar = new HBox();
-
         buttonBar.getStyleClass().add("buttonBar");
-        buttonBar.getChildren().addAll(new Button("Games"), new Button("Programs"));
+
+        toggleGroup = new ToggleGroup(); //This ToggleGroup holds the games/programs toggles
+        toggleGroup.selectedToggleProperty().addListener((obsVal, oldVal, newVal) -> {
+            if (newVal == null)
+            {
+                oldVal.setSelected(true);
+            }
+        }); //This makes it so that there always has to be at least one toggle selected
+
+        gamesToggle = new ToggleButton("%Games");
+        programsToggle = new ToggleButton("%Programs");
+
+        gamesToggle.setOnAction(this::showGames);
+        programsToggle.setOnAction(this::showPrograms);
+
+        gamesToggle.setToggleGroup(toggleGroup);
+        programsToggle.setToggleGroup(toggleGroup);
+
+        toggleGroup.selectToggle(gamesToggle);
+
+        buttonBar.getChildren().addAll(gamesToggle, programsToggle);
         //endregion
 
         //region title bar
@@ -37,9 +63,16 @@ public class GamesProgramsWindow extends VBox implements InvalidationListener
 
         HBox.setHgrow(filtersHolder, Priority.ALWAYS);
 
-        Label title = new Label("a");
+        title = new Label("%Games");
 
-        SearchBar searchBar = new SearchBar();
+        SearchBar searchBar = new SearchBar(); //Deze comment dan weg doen. Maar dus ruwweg komt de werking van de searchBar neer op het volgende:
+        //De searchBar houdt een referentie bij naar het model. Maar is geen view, dus geen invalidationListener interface implementeren.
+        //Maar vanaf dat de gebruiker begint te typen. Filtert deze klasse de ApplicationInfo objecten uit waarvan de naam de string bevat die de gebruiker typte.
+        //(Hoeft niet in het begin van de naam te zijn. Als de naam AstroRun is, en de gebruiker type run, dat moeten we het ook tonen)
+        //De searchbar vraagt dus eerst alle visibleApplicationInfo objecten op aan het model, filtert ze, en doet dan setVisibleApplicationInfoObjects
+        //Waarom vragen we de visible op, en niet allemaal? Want het kan zijn dat de gebruiker al andere filters had aan staan. Bv enkel apps voor Windows
+        //zelfde redenering voor de filter opties hier onder
+        //TODO
 
         filtersHolder.getChildren().setAll(new Label("Sort By:"), new ChoiceBox<String>(FXCollections.observableArrayList(List.of("Alphabetical ↑", "Alphabetical ↓", "Release Date ↑", "Release Date ↑"))), new ComboBox<String>(FXCollections.observableArrayList(List.of("All Platforms", "Android", "Windows", "Web"))), new CheckBox("Show installed applications only"), searchBar);
         titleBar.getStyleClass().add("titleBar");
@@ -51,9 +84,7 @@ public class GamesProgramsWindow extends VBox implements InvalidationListener
         applicationsHolder.getStyleClass().add("applicationsHolder");
         //endregion
 
-        Button test = new Button("Open settings");
-//        test.setOnAction(e -> model.setSettingsWindowSelected());
-        getChildren().setAll(buttonBar, titleBar, test);
+        getChildren().setAll(buttonBar, titleBar, applicationsHolder);
     }
 
     @Override
@@ -73,9 +104,25 @@ public class GamesProgramsWindow extends VBox implements InvalidationListener
     {
         applicationsHolder.getChildren().clear();
 
-        for (Application application : model.getAllApplications())
+        for (ApplicationInfo application : model.getVisibleApplicationInfos())
         {
             applicationsHolder.getChildren().add(new Button(application.name()));
         }
+    }
+
+    private void showGames(ActionEvent event)
+    {
+        title.setText("%Games");
+        //TODO
+        //Zodanig filteren dat getVisibleApplicationInfos enkel de games toont. Daarvoor zullen we dus
+        //getAllApplicationsInfos moeten oproepen, en dan kijken welke filters er actief zijn. En dan de objecten terug setten in het model die overblijven
+    }
+
+    private void showPrograms(ActionEvent event)
+    {
+        title.setText("%Programs");
+        //TODO
+        //Zodanig filteren dat getVisibleApplicationInfos enkel de programmas toont. Daarvoor zullen we dus
+        //getAllApplicationsInfos moeten oproepen, en dan kijken welke filters er actief zijn. En dan de objecten terug setten in het model die overblijven
     }
 }
