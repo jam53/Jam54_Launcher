@@ -84,6 +84,7 @@ public class Main extends Application
          * We kijken ook als de lastUpdate waarde groter is dan degene die momenteel in het ApplicationInfo object staat, zo ja, overschrijven
          *
          * Uiteindelijk geven we deze lijst met ApplicationInfo objecten dan terug. En steken we ze in het model
+         * Ipv properties file mss online ook gwn een sqlite database gebruiken. Is mss beter
          */
 
 
