@@ -25,7 +25,9 @@ public class Main extends Application
         //Dit betekent dus dat als de gebruiker de launcher voor de eerte keer opent, en geen internet heeft.
         //Dan zal de gebruiker toch zien welke applicaties er allemaal zijn.
         //Dit betekent natuurlijk wel dat voor elke nieuwe applicatie we toevoegen, we ook een nieuwe versie van de launcher moeten uitbrengen.
-        //Maar, we hoeven niet voor elke nieuwe versie van een app. Een nieuwe versie van de launcher uit te brengen
+        //Maar, we hoeven niet voor elke nieuwe versie van een app. Een nieuwe versie van de launcher uit te brengen (eig wel want lastUpdated ding)
+            //Zou in principe ook in die versions.txt kunnen zitten, maar een nieuwe versie van de launcher uitbrengen is nu ook niet zo moeilijk
+            //+ dan is er minder clutter in die versions.txt + zoveel maakt het niet uit als die last updated niet 100% correct is
         /*
          * De Sqlite databank heeft de volgende velden:
          * int: id, varchar: name, blob: image (dit is dus echt de foto als data, niet een padnaam naar de foto ofzo)
@@ -36,6 +38,7 @@ public class Main extends Application
          * Deze bevat één lijn, namelijk wat de laatste versie is van de launcher.
          *
          * Ik zou deze "versionUrl" variabele aanpassen naar "versionsUrl" en er als comment het volgende bij zetten:
+         * !! beter een apart bestand voor de applicaties, gesplitst is duidelijker
          * The URL to a .properties file. Which contains what the latest version number is for both the launcher itself + all the apps the launcher can install
          * Dus we kunnen nog altijd doen wat we gebruiken van version.txt, de versie van de launcher extraheren om te kijken als er een nieuwe update is
          * Maar daarnaast hebben we voor elke app ook wat het laatste versie nummer is

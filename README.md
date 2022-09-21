@@ -18,5 +18,6 @@ The main reason behind the development of the launcher, was to create one unifie
 ## Documentation
 - [Setting up the project](./Documentation/SettingUpTheProject.md)
 - [Understanding what's in the repository](./Documentation/WhatsInTheRepository.md)
+- [Adding and/or updating applications](./Documentation/Adding%26UpdatingApplications.md)
 - [Building the project](./Documentation/BuildingTheProject.md)
 - [Updating the Jam54Launcher](./Documentation/UpdatingTheJam54Launcher.md)
