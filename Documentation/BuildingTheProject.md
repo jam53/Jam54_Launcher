@@ -23,7 +23,7 @@ Move the contents of the *Jam54_Launcher_jar* folder to a new folder.
 - Click on the *Publish* button
 - The build will be placed inside: `bin\Release\net6.0\win-x64\`
 - Create a subfolder called `Updater` inside the new folder that contains the files produced by building the Jam54_Launcher project
-- Move the files produced during this build, into the subfolder called Updater
+- Move the files produced during this build, into the subfolder called Updater. Place this Updater folder in the folder that contains the jars from building the Jam54_Launcher.
 
 ## Creating An Installer
 Once we have built both of our projects, we can create an installer by following the steps described in [creating an installer.](./CreatingAnInstaller.md) 
