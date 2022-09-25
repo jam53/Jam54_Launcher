@@ -18,7 +18,11 @@
 <br>
 
 ## Adding an application
-You can a new application by entering the following command in WSL (not CMD)
+We will need to insert a tuple in the database `applications.sqlite` that comes with the launcher, and also insert a line in the `applicationsVersions.properties` file that is stored online. The former contains details about the application, the latter is used to check whether or not the application in question has a new update.
+
+### applications.sqlite
+
+You can add a new application by entering the following command in WSL (not CMD)
 ```sql
 sqlite3 applications.sqlite
 
@@ -230,12 +234,38 @@ INSERT INTO application_description VALUES('ZH', 9, "深入了解您的 Sky 游�
 ```
 </details>
 
+### applicationsVersions.properties
+To add a new application, add a new line to the `applicationsVersions.properties` file
+> The id for this application should be the same one that is used inside the `applications.sqlite` database:
+```
+app<id>=<version>
+```
+
+The contents of this file may look something like this:
+```
+app0=0.3.0
+app1=1.0.0
+app2=1.0.0
+app3=1.0.0
+app4=0.10.0
+app5=1.0.0
+app6=1.0.0
+app7=1.4.0
+app8=1.9.0
+app9=1.1.9
+```
+
 <br>
 
 ## Updating an application
+
+### applications.sqlite
 You can update an existing application's details by entering the following command
 ```sql
 sqlite3 applications.sqlite
 
 UPDATE applications SET name="newName" WHERE id=0;
 ```
+
+### applicationsVersions.properties
+Open the `applicationsVersions.properties` file, and update the value behind the = of the application in question.

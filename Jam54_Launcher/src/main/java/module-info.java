@@ -5,4 +5,5 @@ open module com.jam54.jam54_launcher {
     requires org.apache.commons.io;
     requires org.apache.commons.lang3;
     requires jdk.crypto.ec;
+    requires java.sql;
 }

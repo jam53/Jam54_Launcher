@@ -13,6 +13,8 @@ public class Jam54LauncherData
     //region data/variables
     private String dataPath = Paths.get(System.getenv("LOCALAPPDATA"), "Jam54Launcher").toString(); //A path where the launcher can place the downloaded apps
     private String locale = "en"; //The locale/language that should be used when displaying the application
+
+    private String[] installedApplicationVersions = new String[10]; //The version numbers of the installed applications, an empty string in case the application isn't installed
     //endregion
 
     private void fireInvalidationEvent()
@@ -52,6 +54,26 @@ public class Jam54LauncherData
     public void setLocale(Locale locale)
     {
         this.locale = locale.getLanguage();
+        fireInvalidationEvent();
+    }
+
+    /**
+     * This function returns and array, where each index corresponds with the id of every app.
+     * The array holds the version number of the installed applications, an empty string means the application isn't installed
+     *
+     * So index 0, would equal to the application with index 0, which is Stelexo in this case
+     */
+    public String[] getInstalledApplicationVersions()
+    {
+        return installedApplicationVersions;
+    }
+
+    /**
+     * Sets the array that holds the version numbers of the installed applications, where an empty string means the application isn't installed.
+     */
+    public void setInstalledApplicationVersions(String[] installedApplicationVersions)
+    {
+        this.installedApplicationVersions = installedApplicationVersions;
         fireInvalidationEvent();
     }
     //endregion
