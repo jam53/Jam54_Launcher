@@ -10,7 +10,7 @@
     ```
 
     ```sql
-    CREATE TABLE applications(id INT PRIMARY KEY, name TEXT, logo TEXT, android INT, web INT, windows INT, releaseDate INT, latestUpdate INT);
+    CREATE TABLE applications(id INT PRIMARY KEY, name TEXT, logo TEXT, android INT, web INT, windows INT, releaseDate INT, latestUpdate INT, isGame INT);
 
     CREATE TABLE application_description(language TEXT, id INT REFERENCES applications(id), description TEXT, PRIMARY KEY (language, id));
     ```
@@ -34,7 +34,8 @@ INSERT INTO applications VALUES(
     <If the app is available on the web, then 1, else 0>,
     <If the app is available on windows, then 1, else 0>,
     <The release date of the app in UNIX time (milliseconds)>,
-    <The last time this app was updated in UNIX time (milliseconds)>);
+    <The last time this app was updated in UNIX time (milliseconds)>,
+    <If the app is a game, then 1, else 0>);
 
 INSERT INTO application_description VALUES(
     <The language the description is written in>,
@@ -50,25 +51,25 @@ sqlite3 applications.sqlite
 ```
 
 ```sql
-INSERT INTO applications VALUES(0, 'Stelexo', 'com/jam54/jam54_launcher/img/applicationLogos/Stelexo.png', 0, 0, 1, 1530835200, 1609549200);
+INSERT INTO applications VALUES(0, 'Stelexo', 'com/jam54/jam54_launcher/img/applicationLogos/Stelexo.png', 0, 0, 1, 1530835200, 1609549200, 1);
 
-INSERT INTO applications VALUES(1, 'IToW', 'com/jam54/jam54_launcher/img/applicationLogos/IToW.png', 0, 0, 1, 1533340800, 1533340800);
+INSERT INTO applications VALUES(1, 'IToW', 'com/jam54/jam54_launcher/img/applicationLogos/IToW.png', 0, 0, 1, 1533340800, 1533340800, 0);
 
-INSERT INTO applications VALUES(2, 'WToI', 'com/jam54/jam54_launcher/img/applicationLogos/WToI.png', 0, 0, 1, 1533340800, 1533340800);
+INSERT INTO applications VALUES(2, 'WToI', 'com/jam54/jam54_launcher/img/applicationLogos/WToI.png', 0, 0, 1, 1533340800, 1533340800, 0);
 
-INSERT INTO applications VALUES(3, 'DGCTimer', 'com/jam54/jam54_launcher/img/applicationLogos/DGCTimer.png', 0, 0, 1, 1534118400, 1534291200);
+INSERT INTO applications VALUES(3, 'DGCTimer', 'com/jam54/jam54_launcher/img/applicationLogos/DGCTimer.png', 0, 0, 1, 1534118400, 1534291200, 0);
 
-INSERT INTO applications VALUES(4, 'Smash&Fly', 'com/jam54/jam54_launcher/img/applicationLogos/Smash&Fly.png', 1, 0, 0, 1567987200, 1574643600);
+INSERT INTO applications VALUES(4, 'Smash&Fly', 'com/jam54/jam54_launcher/img/applicationLogos/Smash&Fly.png', 1, 0, 0, 1567987200, 1574643600, 1);
 
-INSERT INTO applications VALUES(5, 'AutoEditor', 'com/jam54/jam54_launcher/img/applicationLogos/AutoEditor.jpg', 0, 0, 1, 1564876800, 1616029200);
+INSERT INTO applications VALUES(5, 'AutoEditor', 'com/jam54/jam54_launcher/img/applicationLogos/AutoEditor.jpg', 0, 0, 1, 1564876800, 1616029200, 0);
 
-INSERT INTO applications VALUES(6, 'ImageSearcher', 'com/jam54/jam54_launcher/img/applicationLogos/ImageSearcher.png', 0, 0, 1, 1582765200, 1587168000);
+INSERT INTO applications VALUES(6, 'ImageSearcher', 'com/jam54/jam54_launcher/img/applicationLogos/ImageSearcher.png', 0, 0, 1, 1582765200, 1587168000, 0);
 
-INSERT INTO applications VALUES(7, 'AstroRun', 'com/jam54/jam54_launcher/img/applicationLogos/AstroRun.png', 1, 0, 0, 1589500800, 1654732800);
+INSERT INTO applications VALUES(7, 'AstroRun', 'com/jam54/jam54_launcher/img/applicationLogos/AstroRun.png', 1, 0, 0, 1589500800, 1654732800, 1);
 
-INSERT INTO applications VALUES(8, 'Flash', 'com/jam54/jam54_launcher/img/applicationLogos/Flash.png', 0, 0, 1, 1649808000, 1653004800);
+INSERT INTO applications VALUES(8, 'Flash', 'com/jam54/jam54_launcher/img/applicationLogos/Flash.png', 0, 0, 1, 1649808000, 1653004800, 0);
 
-INSERT INTO applications VALUES(9, 'Sky Screenshot Stats', 'com/jam54/jam54_launcher/img/applicationLogos/SkyScreenshotStats.jpg', 0, 1, 0, 1654128000, 1657238400);
+INSERT INTO applications VALUES(9, 'Sky Screenshot Stats', 'com/jam54/jam54_launcher/img/applicationLogos/SkyScreenshotStats.jpg', 0, 1, 0, 1654128000, 1657238400, 0);
 
 
 

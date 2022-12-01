@@ -83,7 +83,8 @@ public class ApplicationsLoader
                     apps.get(i).descriptions(),
                     apps.get(i).platforms(),
                     apps.get(i).releaseDate(),
-                    apps.get(i).lastUpdate()
+                    apps.get(i).lastUpdate(),
+                    apps.get(i).isGame()
             ));
         }
 
@@ -127,7 +128,8 @@ public class ApplicationsLoader
                         apps.get(i).descriptions(),
                         apps.get(i).platforms(),
                         apps.get(i).releaseDate(),
-                        apps.get(i).lastUpdate()
+                        apps.get(i).lastUpdate(),
+                        apps.get(i).isGame()
                 ));
             }
         }

@@ -83,7 +83,8 @@ class JDBCApplicationDAO implements ApplicationDAO
                             descriptions,
                             platforms,
                             rsApplications.getLong("releaseDate"),
-                            rsApplications.getLong("latestUpdate"));
+                            rsApplications.getLong("latestUpdate"),
+                            rsApplications.getBoolean("isGame"));
 
                     applicationInfos.add(applicationInfo);
 

@@ -13,6 +13,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -22,13 +25,17 @@ import java.util.List;
 public class GamesProgramsWindow extends VBox implements InvalidationListener
 {
     private Jam54LauncherModel model;
-    private FlowPane applicationsHolder;
+    private final FlowPane applicationsHolder;
 
-    private ToggleGroup toggleGroup;
-    private ToggleButton gamesToggle;
-    private ToggleButton programsToggle;
+    private final ComboBox<String> sortOrder_comboBox;
+    private final ComboBox<String> selectedPlatforms_comboBox;
+    private final CheckBox installedApplications_checkBox;
 
-    private Label title;
+    private final ToggleGroup toggleGroup;
+    private final ToggleButton gamesToggle;
+    private final ToggleButton programsToggle;
+
+    private final Label title;
 
     public GamesProgramsWindow()
     {
@@ -47,9 +54,6 @@ public class GamesProgramsWindow extends VBox implements InvalidationListener
         gamesToggle = new ToggleButton("%Games");
         programsToggle = new ToggleButton("%Programs");
 
-        gamesToggle.setOnAction(this::showGames);
-        programsToggle.setOnAction(this::showPrograms);
-
         gamesToggle.setToggleGroup(toggleGroup);
         programsToggle.setToggleGroup(toggleGroup);
 
@@ -66,16 +70,27 @@ public class GamesProgramsWindow extends VBox implements InvalidationListener
 
         title = new Label("%Games");
 
-        SearchBar searchBar = new SearchBar(); //Deze comment dan weg doen. Maar dus ruwweg komt de werking van de searchBar neer op het volgende:
-        //De searchBar houdt een referentie bij naar het model. Maar is geen view, dus geen invalidationListener interface implementeren.
-        //Maar vanaf dat de gebruiker begint te typen. Filtert deze klasse de ApplicationInfo objecten uit waarvan de naam de string bevat die de gebruiker typte.
-        //(Hoeft niet in het begin van de naam te zijn. Als de naam AstroRun is, en de gebruiker type run, dat moeten we het ook tonen)
-        //De searchbar vraagt dus eerst alle visibleApplicationInfo objecten op aan het model, filtert ze, en doet dan setVisibleApplicationInfoObjects
-        //Waarom vragen we de visible op, en niet allemaal? Want het kan zijn dat de gebruiker al andere filters had aan staan. Bv enkel apps voor Windows
-        //zelfde redenering voor de filter opties hier onder
-        //TODO
+        TextField searchBar = new TextField();
 
-        filtersHolder.getChildren().setAll(new Label("Sort By:"), new ChoiceBox<String>(FXCollections.observableArrayList(List.of("Alphabetical ↑", "Alphabetical ↓", "Release Date ↑", "Release Date ↑"))), new ComboBox<String>(FXCollections.observableArrayList(List.of("All Platforms", "Android", "Windows", "Web"))), new CheckBox("Show installed applications only"), searchBar);
+        searchBar.setPromptText("%Search");
+
+        sortOrder_comboBox = new ComboBox<>(FXCollections.observableArrayList(List.of("%Alphabetical ↓","%Alphabetical ↑", "%Release Date ↓", "%Release Date ↑", "Last Updated ↓", "Last Updated ↑")));
+        selectedPlatforms_comboBox = new ComboBox<>(FXCollections.observableArrayList(List.of("%All Platforms", "%Android", "%Windows", "%Web")));
+        installedApplications_checkBox = new CheckBox("%Show installed applications only");
+
+        sortOrder_comboBox.getSelectionModel().select(0);
+        selectedPlatforms_comboBox.getSelectionModel().select(0);
+
+        sortOrder_comboBox.setOnAction(e -> model.filterAndSortVisibleApplicationInfos(selectedPlatforms_comboBox.getSelectionModel().getSelectedIndex(), installedApplications_checkBox.isSelected(), sortOrder_comboBox.getSelectionModel().getSelectedIndex(), gamesToggle.isSelected(), searchBar.getText()));
+        selectedPlatforms_comboBox.setOnAction(e -> model.filterAndSortVisibleApplicationInfos(selectedPlatforms_comboBox.getSelectionModel().getSelectedIndex(), installedApplications_checkBox.isSelected(), sortOrder_comboBox.getSelectionModel().getSelectedIndex(), gamesToggle.isSelected(), searchBar.getText()));
+        installedApplications_checkBox.setOnAction(e -> model.filterAndSortVisibleApplicationInfos(selectedPlatforms_comboBox.getSelectionModel().getSelectedIndex(), installedApplications_checkBox.isSelected(), sortOrder_comboBox.getSelectionModel().getSelectedIndex(), gamesToggle.isSelected(), searchBar.getText()));
+
+        gamesToggle.setOnAction(e -> model.filterAndSortVisibleApplicationInfos(selectedPlatforms_comboBox.getSelectionModel().getSelectedIndex(), installedApplications_checkBox.isSelected(), sortOrder_comboBox.getSelectionModel().getSelectedIndex(), gamesToggle.isSelected(), searchBar.getText()));
+        programsToggle.setOnAction(e -> model.filterAndSortVisibleApplicationInfos(selectedPlatforms_comboBox.getSelectionModel().getSelectedIndex(), installedApplications_checkBox.isSelected(), sortOrder_comboBox.getSelectionModel().getSelectedIndex(), gamesToggle.isSelected(), searchBar.getText()));
+
+        searchBar.textProperty().addListener((obs, oldValue, newValue) -> model.filterAndSortVisibleApplicationInfos(selectedPlatforms_comboBox.getSelectionModel().getSelectedIndex(), installedApplications_checkBox.isSelected(), sortOrder_comboBox.getSelectionModel().getSelectedIndex(), gamesToggle.isSelected(), newValue));
+
+        filtersHolder.getChildren().setAll(new Label("%Sort By:"), sortOrder_comboBox, selectedPlatforms_comboBox, installedApplications_checkBox, searchBar);
         titleBar.getStyleClass().add("titleBar");
         titleBar.getChildren().setAll(title, filtersHolder);
         //endregion
@@ -112,21 +127,10 @@ public class GamesProgramsWindow extends VBox implements InvalidationListener
 
             applicationsHolder.getChildren().add(button);
         }
-    }
 
-    private void showGames(ActionEvent event)
-    {
-        title.setText("%Games");
-        //TODO
-        //Zodanig filteren dat getVisibleApplicationInfos enkel de games toont. Daarvoor zullen we dus
-        //getAllApplicationsInfos moeten oproepen, en dan kijken welke filters er actief zijn. En dan de objecten terug setten in het model die overblijven
-    }
-
-    private void showPrograms(ActionEvent event)
-    {
-        title.setText("%Programs");
-        //TODO
-        //Zodanig filteren dat getVisibleApplicationInfos enkel de programmas toont. Daarvoor zullen we dus
-        //getAllApplicationsInfos moeten oproepen, en dan kijken welke filters er actief zijn. En dan de objecten terug setten in het model die overblijven
+        if (applicationsHolder.getChildren().size() == 0)
+        {
+            applicationsHolder.getChildren().add(new Label("%No items found for the applied filters OR No application matched the provided filters"));
+        }
     }
 }

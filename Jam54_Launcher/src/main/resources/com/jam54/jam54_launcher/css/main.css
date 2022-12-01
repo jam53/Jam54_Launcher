@@ -78,7 +78,7 @@ BorderPane {
     -fx-spacing: 5;
 }
 
-.searchBar {
+.titleBar TextField {
     -fx-background-position: left center;
     -fx-background-repeat: no-repeat;
     -fx-background-image:url('https://placekitten.com/20/20');

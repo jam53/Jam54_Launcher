@@ -1,11 +1,14 @@
 package com.jam54.jam54_launcher;
 
 import com.jam54.jam54_launcher.Windows.Application.ApplicationInfo;
+import com.jam54.jam54_launcher.Windows.Application.Platforms;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.function.Predicate;
 
 /**
  * Whilst the {@link com.jam54.jam54_launcher.SaveLoad.Jam54LauncherData} class is used to have persistent data, by saving and loading data from/to the disk.
@@ -138,6 +141,63 @@ public class Jam54LauncherModel implements Observable
     public void setVisibleApplicationInfos(ArrayList<ApplicationInfo> visibleApplicationInfos)
     {
         this.visibleApplicationInfos = visibleApplicationInfos;
+        fireInvalidationEvent();
+    }
+
+    /**
+     * This function sorts a given list of application infos based on the provided wayToSort integer, and also filters out the apps that don't correspond to the selected platform + whether or not we only want to show the installed applications + if we want to show games or programs + what's written inside the searchbar
+     * sortOrder:
+     *     0 - Alphabetically ascending
+     *     1 - Alphabetically descending
+     *     2 - Release Date ascending
+     *     3 - Release Date descending
+     *     4 - Last Update ascending
+     *     5 - Last Update descending
+     * allowedPlatform:
+     *     0 - Android, Windows, Web
+     *     1 - Android
+     *     2 - Windows
+     *     3 - Web
+     */
+    public void filterAndSortVisibleApplicationInfos(int allowedPlatform, boolean installedOnly, int sortOrder, boolean gamesOnly, String searchText)
+    {
+        visibleApplicationInfos = new ArrayList<>();
+        visibleApplicationInfos.addAll(allApplicationInfos);//Make a deep copy, since we will be removing objects from the arraylist
+
+        ArrayList<Platforms> allowedPlatforms = new ArrayList<>();
+
+        switch (allowedPlatform)
+        {
+            case 0 ->
+            {
+                allowedPlatforms.add(Platforms.WINDOWS);
+                allowedPlatforms.add(Platforms.ANDROID);
+                allowedPlatforms.add(Platforms.WEB);
+            }
+            case 1 -> allowedPlatforms.add(Platforms.ANDROID);
+            case 2 -> allowedPlatforms.add(Platforms.WINDOWS);
+            case 3 -> allowedPlatforms.add(Platforms.WEB);
+        }
+
+        visibleApplicationInfos.removeIf(Predicate.not(app -> allowedPlatforms.stream().anyMatch(app.platforms()::contains))); //Filter out all the apps whose platform isn't present inside the `allowedPlatforms list`
+
+        visibleApplicationInfos.removeIf(app -> app.version() != null || installedOnly); //Keep only the installed applications or all of them depending on the parameter
+
+        visibleApplicationInfos.removeIf(app -> app.isGame() != gamesOnly); //Remove all games, or programs depending on the value of the `onlyGames` variable
+
+        visibleApplicationInfos.removeIf(Predicate.not(app -> app.name().toLowerCase().contains(searchText.toLowerCase().trim()))); //Check the apps for the text written in the searchbar
+
+        switch (sortOrder)
+        {
+            case 0 -> visibleApplicationInfos.sort(Comparator.comparing(ApplicationInfo::name));
+            case 1 -> visibleApplicationInfos.sort((app1, app2) -> app2.name().compareTo(app1.name()));
+            case 2 -> visibleApplicationInfos.sort((app1, app2) -> (int) (app2.releaseDate() - app1.releaseDate()));
+            case 3 -> visibleApplicationInfos.sort(Comparator.comparingLong(ApplicationInfo::releaseDate));
+            case 4 -> visibleApplicationInfos.sort((app1, app2) -> (int) (app2.lastUpdate() - app1.lastUpdate()));
+            case 5 -> visibleApplicationInfos.sort(Comparator.comparingLong(ApplicationInfo::lastUpdate));
+            default -> System.out.println("Couldn't sort application info objects");
+        }
+
         fireInvalidationEvent();
     }
 }
