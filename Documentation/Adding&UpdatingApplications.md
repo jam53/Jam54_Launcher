@@ -255,6 +255,9 @@ app8=1.9.0
 app9=1.1.9
 ```
 
+### Jam54LauncherData.java
+Increment the size of the `installedApplicationVersions` array constructor by one.
+
 <br>
 
 ## Updating an application
