@@ -14,7 +14,7 @@ public class Jam54LauncherData
     private String dataPath = Paths.get(System.getenv("LOCALAPPDATA"), "Jam54Launcher").toString(); //A path where the launcher can place the downloaded apps
     private String locale = "en"; //The locale/language that should be used when displaying the application
 
-    private String[] installedApplicationVersions = new String[10]; //The version numbers of the installed applications, an empty string in case the application isn't installed
+    private String[] installedApplicationVersions = new String[10]; //The version numbers of the installed applications, null in case the application isn't installed
     //endregion
 
     private void fireInvalidationEvent()
@@ -69,7 +69,7 @@ public class Jam54LauncherData
     }
 
     /**
-     * Sets the array that holds the version numbers of the installed applications, where an empty string means the application isn't installed.
+     * Sets the array that holds the version numbers of the installed applications, where a null means the application isn't installed.
      */
     public void setInstalledApplicationVersions(String[] installedApplicationVersions)
     {
