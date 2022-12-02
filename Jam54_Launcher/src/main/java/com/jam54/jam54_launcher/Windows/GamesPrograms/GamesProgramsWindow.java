@@ -74,7 +74,7 @@ public class GamesProgramsWindow extends VBox implements InvalidationListener
 
         searchBar.setPromptText("%Search");
 
-        sortOrder_comboBox = new ComboBox<>(FXCollections.observableArrayList(List.of("%Alphabetical ↓","%Alphabetical ↑", "%Release Date ↓", "%Release Date ↑", "Last Updated ↓", "Last Updated ↑")));
+        sortOrder_comboBox = new ComboBox<>(FXCollections.observableArrayList(List.of("%Alphabetical" + " ↓","%Alphabetical" + " ↑", "%Release Date" + " ↓", "%Release Date" + " ↑", "Last Updated" + " ↓", "Last Updated" + " ↑")));
         selectedPlatforms_comboBox = new ComboBox<>(FXCollections.observableArrayList(List.of("%All Platforms", "%Android", "%Windows", "%Web")));
         installedApplications_checkBox = new CheckBox("%Show installed applications only");
 
