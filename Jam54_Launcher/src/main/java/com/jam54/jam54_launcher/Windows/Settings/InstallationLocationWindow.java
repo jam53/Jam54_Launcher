@@ -1,0 +1,87 @@
+package com.jam54.jam54_launcher.Windows.Settings;
+
+import com.jam54.jam54_launcher.ErrorMessage;
+import com.jam54.jam54_launcher.Jam54LauncherModel;
+import com.jam54.jam54_launcher.SaveLoad.SaveLoadManager;
+import javafx.geometry.Orientation;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.Separator;
+import javafx.scene.layout.VBox;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
+import org.apache.commons.io.FileUtils;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
+
+public class InstallationLocationWindow extends VBox
+{
+    public InstallationLocationWindow()
+    {
+        Label title = new Label("%Games & Programs installation path");
+
+        Label dataFolderSize = new Label(getFolderSize(SaveLoadManager.getData().getDataPath()));
+
+        Button changeDataPath_Button = new Button(SaveLoadManager.getData().getDataPath().toString());
+        changeDataPath_Button.setOnAction(e -> chooseNewDataPathDirectory(SaveLoadManager.getData().getDataPath(), changeDataPath_Button));
+
+        Separator separator = new Separator(Orientation.HORIZONTAL);
+
+        this.getChildren().addAll(title, dataFolderSize, changeDataPath_Button, separator);
+    }
+
+    /**
+     * Opens a folder picker, checks if the selected folder exists.
+     * If so it saves the new datapath location and updates the text of the button that called this method + copies the files over and deletes the old dataPath folder
+     */
+    private void chooseNewDataPathDirectory(Path currentDataPath, Button changeDataPathButton)
+    {
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        directoryChooser.setInitialDirectory(currentDataPath.toFile());
+
+        File selectedFolder = directoryChooser.showDialog(this.getScene().getWindow());
+
+        if (selectedFolder != null && selectedFolder.isDirectory())
+        {
+            try
+            {
+                Files.move(currentDataPath, selectedFolder.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                SaveLoadManager.getData().setDataPath(selectedFolder.toPath());
+                changeDataPathButton.setText(selectedFolder.getAbsolutePath());
+            }
+            catch (IOException e)
+            {
+                ErrorMessage errorMessage = new ErrorMessage(false, "%Please close all currently running apps that were installed using the Jam54Launcher and cancel any ongoing downloads.");
+                errorMessage.show();
+            }
+        }
+    }
+
+    /**
+     * Given a path to a folder, returns the size of that folder as either "", "X MB" or "X GB"
+     */
+    private String getFolderSize(Path path)
+    {
+        long sizeInBytes = FileUtils.sizeOfDirectory(path.toFile());
+
+        sizeInBytes = sizeInBytes / 1024 / 1024; //Get the size in megabytes instead of bytes
+
+        if (sizeInBytes <= 1) //If the directory is empty
+        {
+            return "";
+        }
+        else if (sizeInBytes > 1024) //If the directory is bigger than 1 gigabyte
+        {
+            sizeInBytes = sizeInBytes / 1024; //Convert it to gigabytes
+            return sizeInBytes + " GB";
+        }
+        else
+        {
+            return sizeInBytes + " MB";
+        }
+    }
+}

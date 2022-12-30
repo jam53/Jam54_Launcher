@@ -1,5 +1,7 @@
 package com.jam54.jam54_launcher.SaveLoad;
 
+import java.io.File;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Locale;
@@ -28,6 +30,11 @@ public class Jam54LauncherData
      */
     public Path getDataPath()
     {
+        if (Files.notExists(Paths.get(dataPath)))
+        {
+            new File(dataPath).mkdirs();
+        }
+
         return Paths.get(dataPath);
     }
 
