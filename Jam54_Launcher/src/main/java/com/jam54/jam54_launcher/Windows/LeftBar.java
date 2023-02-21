@@ -1,6 +1,6 @@
 package com.jam54.jam54_launcher.Windows;
 
-import com.jam54.jam54_launcher.Jam54LauncherModel;
+import com.jam54.jam54_launcher.Data.Jam54LauncherModel;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.event.ActionEvent;

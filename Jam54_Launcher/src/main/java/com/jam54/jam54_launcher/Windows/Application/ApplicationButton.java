@@ -1,6 +1,7 @@
 package com.jam54.jam54_launcher.Windows.Application;
 
-import com.jam54.jam54_launcher.Jam54LauncherModel;
+import com.jam54.jam54_launcher.Data.Jam54LauncherModel;
+import com.jam54.jam54_launcher.database_access.Other.ApplicationInfo;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;

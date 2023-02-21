@@ -1,23 +1,21 @@
 package com.jam54.jam54_launcher.Updating;
 
 import com.jam54.jam54_launcher.ErrorMessage;
-import com.jam54.jam54_launcher.Jam54LauncherModel;
+import com.jam54.jam54_launcher.Data.Jam54LauncherModel;
 import com.jam54.jam54_launcher.Main;
-import com.jam54.jam54_launcher.SaveLoad.SaveLoadManager;
+import com.jam54.jam54_launcher.Data.SaveLoad.SaveLoadManager;
 import javafx.application.Platform;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.Properties;
 
 /**

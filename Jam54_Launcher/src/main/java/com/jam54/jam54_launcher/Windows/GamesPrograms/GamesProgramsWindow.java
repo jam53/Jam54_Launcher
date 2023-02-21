@@ -1,21 +1,17 @@
 package com.jam54.jam54_launcher.Windows.GamesPrograms;
 
-import com.jam54.jam54_launcher.Jam54LauncherModel;
+import com.jam54.jam54_launcher.Data.Jam54LauncherModel;
 import com.jam54.jam54_launcher.Windows.Application.ApplicationButton;
-import com.jam54.jam54_launcher.Windows.Application.ApplicationInfo;
+import com.jam54.jam54_launcher.database_access.Other.ApplicationInfo;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.collections.FXCollections;
-import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 /**

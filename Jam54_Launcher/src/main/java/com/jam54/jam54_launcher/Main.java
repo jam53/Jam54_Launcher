@@ -1,9 +1,10 @@
 package com.jam54.jam54_launcher;
 
-import com.jam54.jam54_launcher.SaveLoad.SaveLoadManager;
+import com.jam54.jam54_launcher.Data.Jam54LauncherModel;
+import com.jam54.jam54_launcher.Data.SaveLoad.SaveLoadManager;
 import com.jam54.jam54_launcher.Updating.LauncherUpdater;
-import com.jam54.jam54_launcher.Windows.Application.ApplicationInfo;
-import com.jam54.jam54_launcher.Windows.Application.ApplicationsLoader;
+import com.jam54.jam54_launcher.Data.Loaders.ApplicationsLoader;
+import com.jam54.jam54_launcher.Data.Loaders.OtherLoader;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -11,7 +12,6 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class Main extends Application
 {
@@ -25,6 +25,10 @@ public class Main extends Application
         model.setAllApplications(applicationsLoader.getApplicationInfos());
         model.setVisibleApplicationInfos(model.getAllApplications());
         model.filterAndSortVisibleApplicationInfos(0, false, 0, true, ""); //If we don't sort the application infos initially, they will appear in the wrong order upon startup until the user selects a different sort order. Since platform=0 (all platforms) and installedOnly=false, gamesOnly=true and searchText="" all games will be shown
+
+        OtherLoader otherLoader = new OtherLoader();
+
+        model.setSupportedLanguages(otherLoader.getSupportedLanguages());
 
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("main.fxml"), SaveLoadManager.getResourceBundle());
 

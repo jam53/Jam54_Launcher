@@ -1,4 +1,4 @@
-package com.jam54.jam54_launcher.SaveLoad;
+package com.jam54.jam54_launcher.Data.SaveLoad;
 
 import java.io.File;
 import java.nio.file.Files;

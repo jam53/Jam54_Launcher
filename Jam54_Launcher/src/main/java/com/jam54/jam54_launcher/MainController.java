@@ -1,5 +1,6 @@
 package com.jam54.jam54_launcher;
 
+import com.jam54.jam54_launcher.Data.Jam54LauncherModel;
 import com.jam54.jam54_launcher.Windows.Application.ApplicationWindow;
 import com.jam54.jam54_launcher.Windows.GamesPrograms.GamesProgramsWindow;
 import com.jam54.jam54_launcher.Windows.LeftBar;
@@ -9,14 +10,8 @@ import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ToggleButton;
-import javafx.scene.control.ToggleGroup;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 
 public class MainController implements InvalidationListener
 {

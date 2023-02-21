@@ -1,15 +1,13 @@
 package com.jam54.jam54_launcher.Windows.Settings;
 
 import com.jam54.jam54_launcher.ErrorMessage;
-import com.jam54.jam54_launcher.Jam54LauncherModel;
-import com.jam54.jam54_launcher.SaveLoad.SaveLoadManager;
+import com.jam54.jam54_launcher.Data.SaveLoad.SaveLoadManager;
 import javafx.geometry.Orientation;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
 import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
-import javafx.stage.FileChooser;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -18,6 +16,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 
+/**
+ * This class is used to create the InstallationLocation window, at the right side within the settings window
+ */
 public class InstallationLocationWindow extends VBox
 {
     public InstallationLocationWindow()

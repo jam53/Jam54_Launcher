@@ -1,6 +1,6 @@
-package com.jam54.jam54_launcher;
+package com.jam54.jam54_launcher.Data;
 
-import com.jam54.jam54_launcher.Windows.Application.ApplicationInfo;
+import com.jam54.jam54_launcher.database_access.Other.ApplicationInfo;
 import com.jam54.jam54_launcher.Windows.Application.Platforms;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
@@ -8,10 +8,11 @@ import javafx.beans.Observable;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 import java.util.function.Predicate;
 
 /**
- * Whilst the {@link com.jam54.jam54_launcher.SaveLoad.Jam54LauncherData} class is used to have persistent data, by saving and loading data from/to the disk.
+ * Whilst the {@link com.jam54.jam54_launcher.Data.SaveLoad.Jam54LauncherData} class is used to have persistent data, by saving and loading data from/to the disk.
  * And Jam54LauncherConfig.properties is used to only read config values from that don't change.
  *
  * This class is used to store data during runtime. It is the model in the MVC pattern, therefore when we change the value of a variable,
@@ -30,6 +31,8 @@ public class Jam54LauncherModel implements Observable
     private ApplicationInfo openedApplicationInfo;
     private ArrayList<ApplicationInfo> allApplicationInfos;
     private ArrayList<ApplicationInfo> visibleApplicationInfos;
+
+    private ArrayList<Locale> supportedLanguages;
 
     public Jam54LauncherModel()
     {
@@ -199,5 +202,16 @@ public class Jam54LauncherModel implements Observable
         }
 
         fireInvalidationEvent();
+    }
+
+    public void setSupportedLanguages(ArrayList<Locale> languages)
+    {
+        this.supportedLanguages = languages;
+        fireInvalidationEvent();
+    }
+
+    public ArrayList<Locale> getSupportedLanguages()
+    {
+        return supportedLanguages;
     }
 }

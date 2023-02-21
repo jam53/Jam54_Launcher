@@ -1,8 +1,8 @@
 package com.jam54.jam54_launcher.database_access.jdbc;
 
 import com.jam54.jam54_launcher.ErrorMessage;
-import com.jam54.jam54_launcher.SaveLoad.SaveLoadManager;
-import com.jam54.jam54_launcher.Windows.Application.ApplicationInfo;
+import com.jam54.jam54_launcher.Data.SaveLoad.SaveLoadManager;
+import com.jam54.jam54_launcher.database_access.Other.ApplicationInfo;
 import com.jam54.jam54_launcher.Windows.Application.Platforms;
 import com.jam54.jam54_launcher.database_access.ApplicationDAO;
 import com.jam54.jam54_launcher.database_access.DataAccessException;

@@ -1,4 +1,4 @@
-package com.jam54.jam54_launcher.SaveLoad;
+package com.jam54.jam54_launcher.Data.SaveLoad;
 
 import com.google.gson.Gson;
 import com.jam54.jam54_launcher.ErrorMessage;
@@ -12,7 +12,6 @@ import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Base64;
-import java.util.Locale;
 import java.util.ResourceBundle;
 
 /**

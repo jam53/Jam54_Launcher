@@ -1,6 +1,6 @@
 package com.jam54.jam54_launcher.database_access;
 
-import com.jam54.jam54_launcher.Windows.Application.ApplicationInfo;
+import com.jam54.jam54_launcher.database_access.Other.ApplicationInfo;
 
 import java.util.ArrayList;
 

@@ -1,15 +1,11 @@
 package com.jam54.jam54_launcher.Windows.Settings;
 
 import com.jam54.jam54_launcher.ErrorMessage;
-import com.jam54.jam54_launcher.Jam54LauncherModel;
+import com.jam54.jam54_launcher.Data.Jam54LauncherModel;
 import com.jam54.jam54_launcher.Main;
-import com.jam54.jam54_launcher.SaveLoad.SaveLoadManager;
-import javafx.beans.InvalidationListener;
-import javafx.beans.Observable;
+import com.jam54.jam54_launcher.Data.SaveLoad.SaveLoadManager;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ToggleButton;
-import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -42,7 +38,7 @@ public class SettingsWindow extends HBox
         Button language = new Button("%Language");
 
         installationLocation.setOnAction( e -> setRightSide(new InstallationLocationWindow()));
-        language.setOnAction( e -> setRightSide(new LanguageWindow()));
+        language.setOnAction( e -> setRightSide(new LanguageWindow(model.getSupportedLanguages())));
 
         leftBarTop.getChildren().addAll(title, other, installationLocation, language);
 
@@ -72,16 +68,6 @@ public class SettingsWindow extends HBox
         leftBarBottom.getChildren().addAll(version, socials);
 
         leftBar.getChildren().addAll(leftBarTop, leftBarBottom);
-
-
-        //TODO
-        //Dit object hoeft normaal geen listener/viewer te zijn. Het past alleen maar dingen aan in het model (taal, install location, etc)
-        //Het switchen tussen de 2 tabjes "Installation Location" en "Language"
-        //Niet zo fancy doen zoals Games/programs, Settings & ApplicationWindow switching
-        //Maar gewoon met setVisible & setManaged
-        //TODO
-        //Ook nog de social buttons laten werken
-
 
         this.getChildren().addAll(leftBar, rightSide);
     }

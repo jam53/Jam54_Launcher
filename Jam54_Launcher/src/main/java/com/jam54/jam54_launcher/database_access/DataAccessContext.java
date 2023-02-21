@@ -8,6 +8,7 @@ public interface DataAccessContext extends AutoCloseable
 {
 
     ApplicationDAO getApplicationDAO();
+    OtherDAO getOtherDAO();
 
     @Override
     void close() throws DataAccessException;

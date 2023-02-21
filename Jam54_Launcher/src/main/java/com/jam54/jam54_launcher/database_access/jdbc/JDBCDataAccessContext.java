@@ -1,9 +1,10 @@
 package com.jam54.jam54_launcher.database_access.jdbc;
 
-import com.jam54.jam54_launcher.SaveLoad.SaveLoadManager;
+import com.jam54.jam54_launcher.Data.SaveLoad.SaveLoadManager;
 import com.jam54.jam54_launcher.database_access.ApplicationDAO;
 import com.jam54.jam54_launcher.database_access.DataAccessContext;
 import com.jam54.jam54_launcher.database_access.DataAccessException;
+import com.jam54.jam54_launcher.database_access.OtherDAO;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -24,6 +25,12 @@ class JDBCDataAccessContext implements DataAccessContext
     public ApplicationDAO getApplicationDAO()
     {
         return new JDBCApplicationDAO(connection);
+    }
+
+    @Override
+    public OtherDAO getOtherDAO()
+    {
+        return new JDBCOtherDAO(connection);
     }
 
     @Override

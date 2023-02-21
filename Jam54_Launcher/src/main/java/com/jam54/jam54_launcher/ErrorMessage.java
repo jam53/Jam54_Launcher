@@ -1,6 +1,6 @@
 package com.jam54.jam54_launcher;
 
-import com.jam54.jam54_launcher.SaveLoad.SaveLoadManager;
+import com.jam54.jam54_launcher.Data.SaveLoad.SaveLoadManager;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
