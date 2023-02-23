@@ -192,8 +192,8 @@ public class Jam54LauncherModel implements Observable
 
         switch (sortOrder)
         {
-            case 0 -> visibleApplicationInfos.sort(Comparator.comparing(ApplicationInfo::name));
-            case 1 -> visibleApplicationInfos.sort((app1, app2) -> app2.name().compareTo(app1.name()));
+            case 0 -> visibleApplicationInfos.sort(Comparator.comparing(ApplicationInfo::name, String.CASE_INSENSITIVE_ORDER));
+            case 1 -> visibleApplicationInfos.sort((app1, app2) -> app2.name().compareToIgnoreCase(app1.name()));
             case 2 -> visibleApplicationInfos.sort((app1, app2) -> (int) (app2.releaseDate() - app1.releaseDate()));
             case 3 -> visibleApplicationInfos.sort(Comparator.comparingLong(ApplicationInfo::releaseDate));
             case 4 -> visibleApplicationInfos.sort((app1, app2) -> (int) (app2.lastUpdate() - app1.lastUpdate()));
