@@ -11,6 +11,7 @@ import javafx.scene.image.Image;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 
 /**
  * Implementatie van {@link ApplicationDAO} met behulp van JDBC.
@@ -47,14 +48,14 @@ class JDBCApplicationDAO implements ApplicationDAO
             {
                 while (rsApplications.next())
                 {
-                    HashMap<String, String> descriptions = new HashMap<>();
+                    HashMap<Locale, String> descriptions = new HashMap<>();
 
                     psDescriptions.setInt(1, rsApplications.getInt("id"));
                     try (ResultSet rsDescriptions = psDescriptions.executeQuery())
                     {
                         while (rsDescriptions.next())
                         {
-                            descriptions.put(rsDescriptions.getString("language"), rsDescriptions.getString("description"));
+                            descriptions.put(new Locale(rsDescriptions.getString("language")), rsDescriptions.getString("description"));
                         }
                     }
 
