@@ -259,6 +259,43 @@ app9=1.1.9
 ### Jam54LauncherData.java
 Increment the size of the `installedApplicationVersions` array constructor by one.
 
+### Hosting & hashing the application files
+
+> Just as a small tl:dr on how the files are hosted. Basically the files are hosted as a website, the root folder of the website contains the several subfolders.  
+> These subfolders have the names 0 1 2 etc., which corresponds to the application id's defined inside the `applications.sqlite` database  
+> Each subfolder then contains all the binaries for that application + a files called `hashes.txt`. This file contains all the hashes for the binaries of that application.
+>
+> This makes it so that when we want to download a specific file of a given application. We can do that by going visiting the following url: `base url` + `subfolder (a number representing the applicationId)` + `path to file`
+
+#### Hashing the files
+- Create a "root" directory
+- Create a subfolder for each of the applications; the name of a subfolder should be the *id* of the application whose files will be in the subfolder
+- Place the binaries of the application in the subfolder
+- Repeat this for all of the applications
+
+---
+
+- Inside the `Main.java` file, place the following code in the beginning of the main method:
+    - ```java
+      Hashes hashes = new Hashes();
+      ArrayList<Path> paths = new ArrayList<>();
+      paths.add(Path.of("pathToRootFolder\\0"));
+      paths.add(Path.of("pathToRootFolder\\1"));
+      // etc for all of the applications in the root folder
+      hashes.calculateHashesTXTFiles(paths);
+      ```
+- Run the application
+- Remove the lines you added to the `Main.java` file in the previous step
+- Each of the subfolders should now contain a hashes.txt file
+
+--- 
+
+> Here we assume that GitHub pages is enabled, so that we can host our files
+
+- Go to the [following repository](https://github.com/jamhorn/Jam54Launcher)
+- Push all of the files in the "root" folder, to the *files* branch (make sure to use the correct Git account, by signing in and out of GitHub desktop)
+- Also place a copy of the "root" folder in: `OneDrive\Documenten\Scripts\Builds\Jam54Launcher\AppBuilds`
+
 <br>
 
 ## Updating an application
@@ -273,3 +310,30 @@ UPDATE applications SET name="newName" WHERE id=0;
 
 ### applicationsVersions.properties
 Open the `applicationsVersions.properties` file, and update the value behind the = of the application in question.
+
+### Hosting & hashing the application files
+
+#### Hashing the files
+- Navigate to the "root" folder containing all of the apps: `OneDrive\Documenten\Scripts\Builds\Jam54Launcher\AppBuilds`
+- Remove all of the files in the subfolder of the file which you want to update, and place the new binaries in the subfolder
+
+---
+
+- Inside the `Main.java` file, place the following code in the beginning of the main method:
+    - ```java
+      Hashes hashes = new Hashes();
+      ArrayList<Path> paths = new ArrayList<>();
+      paths.add(Path.of("pathToRootFolder\\0")); //Name of subfolder that corresponds to the app that we want to update
+      hashes.calculateHashesTXTFiles(paths);
+      ```
+- Run the application
+- Remove the lines you added to the `Main.java` file in the previous step
+- Each of the subfolders should now contain a hashes.txt file
+
+--- 
+
+> Here we assume that GitHub pages is enabled, so that we can host our files
+
+- Go to the [following repository](https://github.com/jamhorn/Jam54Launcher)
+- Push all of the files in the "root" folder, to the *files* branch (make sure to use the correct Git account, by signing in and out of GitHub desktop)
+- > Since it's a git commit, only the updated files will actually be pushed, rather than all the files
