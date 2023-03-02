@@ -59,7 +59,7 @@ public class Hashes
 
     /**
      * Given a list of Paths, this function will calculate the hashes for all the files in each of the paths (and their subdirectories).
-     * And place a "hashes.txt" file in the root of every path from the list, containing the hashes for all the files in that directory.
+     * And place a "Hashes.txt" file in the root of every path from the list, containing the hashes for all the files in that directory.
      */
     public void calculateHashesTXTFiles(ArrayList<Path> paths)
     {
@@ -73,7 +73,7 @@ public class Hashes
 
                 try
                 {
-                    FileUtils.writeStringToFile(Path.of(path.toString(), "hashes.txt").toFile(), linesToWrite.toString(), StandardCharsets.UTF_8);
+                    FileUtils.writeStringToFile(Path.of(path.toString(), "Hashes.txt").toFile(), linesToWrite.toString(), StandardCharsets.UTF_8);
                 }
                 catch (IOException e)
                 {//Since we will only ever use this during development/when publishing files, we don't need to create a fancy GUI error message window

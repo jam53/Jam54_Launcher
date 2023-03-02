@@ -263,11 +263,15 @@ Increment the size of the `installedApplicationVersions` array constructor by on
 
 > Just as a small tl:dr on how the files are hosted. Basically the files are hosted as a website, the root folder of the website contains the several subfolders.  
 > These subfolders have the names 0 1 2 etc., which corresponds to the application id's defined inside the `applications.sqlite` database  
-> Each subfolder then contains all the binaries for that application + a files called `hashes.txt`. This file contains all the hashes for the binaries of that application.
+> 
+> Each subfolder then contains all the binaries for that application  
+> \+ a file called `Hashes.txt`. This file contains all the hashes for the binaries of that application.  
+> \+ a file called `Split.txt`, which may or may not be empty. It contains the path to files that were bigger than a certain amount in megabytes and that have been split into smaller chunks.
+> > We split files that are larger than 99MBs into smaller chunks in order to stay below the 100MB size limit that GitHub imposes. (We host the binaries of the applications using GitHub pages)
 >
 > This makes it so that when we want to download a specific file of a given application. We can do that by going visiting the following url: `base url` + `subfolder (a number representing the applicationId)` + `path to file`
 
-#### Hashing the files
+#### Hashing & splitting the files
 - Create a "root" directory
 - Create a subfolder for each of the applications; the name of a subfolder should be the *id* of the application whose files will be in the subfolder
 - Place the binaries of the application in the subfolder
@@ -277,16 +281,21 @@ Increment the size of the `installedApplicationVersions` array constructor by on
 
 - Inside the `Main.java` file, place the following code in the beginning of the main method:
     - ```java
-      Hashes hashes = new Hashes();
       ArrayList<Path> paths = new ArrayList<>();
+
       paths.add(Path.of("pathToRootFolder\\0"));
       paths.add(Path.of("pathToRootFolder\\1"));
       // etc for all of the applications in the root folder
+
+      FileSplitterCombiner fileSplitterCombiner = new FileSplitterCombiner();
+      paths.forEach(path -> fileSplitterCombiner.splitFilesLargerThan(99, path));
+
+      Hashes hashes = new Hashes();
       hashes.calculateHashesTXTFiles(paths);
       ```
 - Run the application
 - Remove the lines you added to the `Main.java` file in the previous step
-- Each of the subfolders should now contain a hashes.txt file
+- Each of the subfolders should now contain both a Hashes.txt file and a Split.txt file
 
 --- 
 
@@ -294,6 +303,7 @@ Increment the size of the `installedApplicationVersions` array constructor by on
 
 - Go to the [following repository](https://github.com/jamhorn/Jam54Launcher)
 - Push all of the files in the "root" folder, to the *files* branch (make sure to use the correct Git account, by signing in and out of GitHub desktop)
+  > Do note that files that were too large for GitHub (over 100MB) have been split. But the original unsplit file is also still present in the subfolder of such an application. Therefore when uploading such an application's binaries, just omit the original, unsplitted file.
 - Also place a copy of the "root" folder in: `OneDrive\Documenten\Scripts\Builds\Jam54Launcher\AppBuilds`
 
 <br>
@@ -313,7 +323,7 @@ Open the `applicationsVersions.properties` file, and update the value behind the
 
 ### Hosting & hashing the application files
 
-#### Hashing the files
+#### Hashing & splitting the files
 - Navigate to the "root" folder containing all of the apps: `OneDrive\Documenten\Scripts\Builds\Jam54Launcher\AppBuilds`
 - Remove all of the files in the subfolder of the file which you want to update, and place the new binaries in the subfolder
 
@@ -321,14 +331,18 @@ Open the `applicationsVersions.properties` file, and update the value behind the
 
 - Inside the `Main.java` file, place the following code in the beginning of the main method:
     - ```java
-      Hashes hashes = new Hashes();
       ArrayList<Path> paths = new ArrayList<>();
       paths.add(Path.of("pathToRootFolder\\0")); //Name of subfolder that corresponds to the app that we want to update
+
+      FileSplitterCombiner fileSplitterCombiner = new FileSplitterCombiner();
+      paths.forEach(path -> fileSplitterCombiner.splitFilesLargerThan(99, path));
+
+      Hashes hashes = new Hashes();
       hashes.calculateHashesTXTFiles(paths);
       ```
 - Run the application
 - Remove the lines you added to the `Main.java` file in the previous step
-- Each of the subfolders should now contain a hashes.txt file
+- Each of the subfolders should now contain both a Hashes.txt file and a Split.txt file
 
 --- 
 
@@ -336,4 +350,5 @@ Open the `applicationsVersions.properties` file, and update the value behind the
 
 - Go to the [following repository](https://github.com/jamhorn/Jam54Launcher)
 - Push all of the files in the "root" folder, to the *files* branch (make sure to use the correct Git account, by signing in and out of GitHub desktop)
-- > Since it's a git commit, only the updated files will actually be pushed, rather than all the files
+  > - Since it's a git commit, only the updated files will actually be pushed, rather than all the files
+  > - Do note that files that were too large for GitHub (over 100MB) have been split. But the original unsplit file is also still present in the subfolder of such an application. Therefore when uploading such an application's binaries, just omit the original, unsplitted files
