@@ -2,9 +2,13 @@ package com.jam54.jam54_launcher.Windows.Application;
 
 import com.jam54.jam54_launcher.Data.Jam54LauncherModel;
 import com.jam54.jam54_launcher.Data.SaveLoad.SaveLoadManager;
+import com.jam54.jam54_launcher.ErrorMessage;
+import com.jam54.jam54_launcher.Main;
+import com.jam54.jam54_launcher.Updating.Hashes;
 import com.jam54.jam54_launcher.database_access.Other.ApplicationInfo;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -15,11 +19,23 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import org.apache.commons.io.FileUtils;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Properties;
 
 /**
  * This window displays more detail about a specific app.
@@ -152,7 +168,30 @@ public class ApplicationWindow extends VBox implements InvalidationListener
                 Button installButton = new Button("%Install");
                 installButtonsHolder.getChildren().add(installButton);
 
-                installButton.setOnAction(this::installApp);
+                InstallApp installApp = new InstallApp();
+
+                installButton.setOnAction(e ->
+                {
+                    new Thread(installApp).start();
+                    installButton.setDisable(true);
+                    installButton.textProperty().bind(installApp.messageProperty()); //Update button's text with progress
+                });
+                installApp.setOnSucceeded(e ->
+                {
+                    installButton.setDisable(false); //When the task finishes, enable the button again
+
+                    ApplicationInfo updatedApp = new ApplicationInfo(openedApp.id(), openedApp.name(), openedApp.image(), false, openedApp.availableVersion(), openedApp.availableVersion(), openedApp.descriptions(), openedApp.platforms(), openedApp.releaseDate(), openedApp.lastUpdate(), openedApp.isGame());
+                    model.setOpenedApplication(updatedApp);
+
+                    ArrayList<ApplicationInfo> applicationsInModel = model.getAllApplications();
+                    applicationsInModel.remove(openedApp);
+                    applicationsInModel.add(updatedApp);
+                    model.setAllApplications(applicationsInModel);
+
+                    String[] installedApplicationVersions = SaveLoadManager.getData().getInstalledApplicationVersions();
+                    installedApplicationVersions[updatedApp.id()] = updatedApp.version();
+                    SaveLoadManager.getData().setInstalledApplicationVersions(installedApplicationVersions);
+                });
             }
             else if (openedApp.updateAvailable()) //If the app is installed but if there is an update available
             {
@@ -162,8 +201,55 @@ public class ApplicationWindow extends VBox implements InvalidationListener
                 installButtonsHolder.getChildren().add(removeButton);
                 installButtonsHolder.getChildren().add(updateButton);
 
-                removeButton.setOnAction(this::removeApp);
-                updateButton.setOnAction(this::installApp);
+                InstallApp installApp = new InstallApp();
+                RemoveApp removeApp = new RemoveApp();
+
+                updateButton.setOnAction(e -> {
+                    new Thread(installApp).start();
+                    updateButton.setDisable(true);
+                    removeButton.setDisable(true);
+                    updateButton.textProperty().bind(installApp.messageProperty()); //Update button's text with progress
+                });
+                installApp.setOnSucceeded(e -> {
+                    updateButton.setDisable(false); //When the task finishes, enable the button again
+                    removeButton.setDisable(false);
+
+                    ApplicationInfo updatedApp = new ApplicationInfo(openedApp.id(), openedApp.name(), openedApp.image(), false, openedApp.availableVersion(), openedApp.availableVersion(), openedApp.descriptions(), openedApp.platforms(), openedApp.releaseDate(), openedApp.lastUpdate(), openedApp.isGame());
+                    model.setOpenedApplication(updatedApp);
+
+                    ArrayList<ApplicationInfo> applicationsInModel = model.getAllApplications();
+                    applicationsInModel.remove(openedApp);
+                    applicationsInModel.add(updatedApp);
+                    model.setAllApplications(applicationsInModel);
+
+                    String[] installedApplicationVersions = SaveLoadManager.getData().getInstalledApplicationVersions();
+                    installedApplicationVersions[updatedApp.id()] = updatedApp.version();
+                    SaveLoadManager.getData().setInstalledApplicationVersions(installedApplicationVersions);
+                });
+
+                removeButton.setOnAction(e -> {
+                    new Thread(removeApp).start();
+                    updateButton.setDisable(true);
+                    removeButton.setDisable(true);
+                    removeButton.textProperty().bind(removeApp.messageProperty()); //Update button's text with progress
+                });
+
+                removeApp.setOnSucceeded(e -> {
+                    updateButton.setDisable(false); //When the task finishes, enable the button again
+                    removeButton.setDisable(false);
+
+                    ApplicationInfo updatedApp = new ApplicationInfo(openedApp.id(), openedApp.name(), openedApp.image(), openedApp.updateAvailable(), openedApp.availableVersion(), null, openedApp.descriptions(), openedApp.platforms(), openedApp.releaseDate(), openedApp.lastUpdate(), openedApp.isGame());
+                    model.setOpenedApplication(updatedApp);
+
+                    ArrayList<ApplicationInfo> applicationsInModel = model.getAllApplications();
+                    applicationsInModel.remove(openedApp);
+                    applicationsInModel.add(updatedApp);
+                    model.setAllApplications(applicationsInModel);
+
+                    String[] installedApplicationVersions = SaveLoadManager.getData().getInstalledApplicationVersions();
+                    installedApplicationVersions[updatedApp.id()] = updatedApp.version();
+                    SaveLoadManager.getData().setInstalledApplicationVersions(installedApplicationVersions);
+                });
             }
             else //If the app is installed and there is no update available
             {
@@ -173,42 +259,161 @@ public class ApplicationWindow extends VBox implements InvalidationListener
                 installButtonsHolder.getChildren().add(removeButton);
                 installButtonsHolder.getChildren().add(playButton);
 
-                removeButton.setOnAction(this::removeApp);
-                playButton.setOnAction(this::installApp);
+                RemoveApp removeApp = new RemoveApp();
+
+                removeButton.setOnAction(e -> {
+                    new Thread(removeApp).start();
+                    playButton.setDisable(true);
+                    removeButton.setDisable(true);
+                    removeButton.textProperty().bind(removeApp.messageProperty()); //Update button's text with progress
+                });
+
+                removeApp.setOnSucceeded(e -> {
+                    playButton.setDisable(false); //When the task finishes, enable the button again
+                    removeButton.setDisable(false);
+
+                    ApplicationInfo updatedApp = new ApplicationInfo(openedApp.id(), openedApp.name(), openedApp.image(), openedApp.updateAvailable(), openedApp.availableVersion(), null, openedApp.descriptions(), openedApp.platforms(), openedApp.releaseDate(), openedApp.lastUpdate(), openedApp.isGame());
+                    model.setOpenedApplication(updatedApp);
+
+                    ArrayList<ApplicationInfo> applicationsInModel = model.getAllApplications();
+                    applicationsInModel.remove(openedApp);
+                    applicationsInModel.add(updatedApp);
+                    model.setAllApplications(applicationsInModel);
+
+                    String[] installedApplicationVersions = SaveLoadManager.getData().getInstalledApplicationVersions();
+                    installedApplicationVersions[updatedApp.id()] = updatedApp.version();
+                    SaveLoadManager.getData().setInstalledApplicationVersions(installedApplicationVersions);
+                });
+                
+                playButton.setOnAction(this::playApp);
             }
         }
     }
 
     /**
-     * This function is used to install or update an app
+     * This class is used to install or update an app
      * By comparing hashes in the cloud, and hashes computed locally, it will determine which files to erase/update
+     *
+     * We use a class instead of a function, so that we can make it run async/in parallel to avoid the UI freezing
      */
-    private void installApp(ActionEvent actionEvent)
+    private class InstallApp extends Task<Void>
     {
-        //TODO installeren en update is basically hetzelfde, hashes.txt downloaden hashes hier berekeken (bij installeren 0 obv)
-        //hashes bij beide aanwezig -> ok
-        //hashes lokaal aanwezig maar niet in cloud -> afvegen
-        //hashes in cloud aanwezig maar niet lokaal -> downloaden
+        int openedAppId = model.getOpenedApplication().id();
+        Path appInstallationPath = Path.of(SaveLoadManager.getData().getDataPath().toString(), openedAppId + "");
+        String appsBaseDownloadUrl = "";
+        HashMap<String, Path> hashesLocal;
+        HashMap<String, Path> hashesCloud;
 
-        //verschil van 2 dicts A en B met hashes/pad naar bestand
-//        Map<K, V> differenceMap = new HashMap<>(A);
-//        differenceMap.entrySet().removeAll(B.entrySet());
+        @Override
+        protected Void call()
+        {
+            //region load Jam54LauncherConfig properties file
+            Properties properties = new Properties();
 
-        //splitsen van hash%pad naar bestand en in dict zetten
-//        String input = "key1%value1";
-//
-//        Map<String, String> map = new HashMap<>();
-//
-//        String[] keyValue = input.split("%");
-//        String key = keyValue[0];
-//        String value = keyValue[1];
-//        map.put(key, value);
+            try (InputStream in = Main.class.getResourceAsStream("Jam54LauncherConfig.properties"))
+            {
+                properties.load(in);
+                appsBaseDownloadUrl = properties.getProperty("appsBaseDownloadUrl") + "/";
+            }
+            catch (IOException e)
+            {
+                ErrorMessage errorMessage = new ErrorMessage(false, SaveLoadManager.getTranslation("ErrorLoadingJam54LauncherConfig"));
+                errorMessage.show();
+            }
+            //endregion
+
+            //region get hashes
+            updateMessage("%Calculating hashes");
+
+            Hashes hashes = new Hashes();
+            hashesLocal = hashes.calculateHashesForFilesInDirectory(appInstallationPath);
+            hashesCloud = new HashMap<>();
+
+            try
+            {
+                Path tempFile = Files.createTempFile("Hashes", ".txt");
+                FileUtils.copyURLToFile(new URL(appsBaseDownloadUrl + openedAppId + "/" + "Hashes.txt"), tempFile.toFile(), 10000, 10000);
+
+                for(String line : FileUtils.readLines(tempFile.toFile(), StandardCharsets.UTF_8))
+                {
+                    String[] keyValue = line.split("\\|"); //Escaped '|' character
+                    hashesCloud.put(keyValue[0], Path.of(keyValue[1]));
+                }
+            }
+            catch (IOException e)
+            {
+                throw new RuntimeException(e);
+            }
+            //endregion
+
+            //region calculate files to remove and remove (hashesLocal verschil hashesCloud)
+            updateMessage("%Removing old files");
+            HashMap<String, Path> differenceMap = new HashMap<>(hashesLocal);
+            differenceMap.entrySet().removeAll(hashesCloud.entrySet());
+
+            for (Path fileToRemove : differenceMap.values())
+            {
+                fileToRemove.toFile().delete();
+            }
+            //endregion
+
+            //region calculate files that are either missing or changed and download them (hashesCloud verschil hashesLocal)
+            differenceMap = new HashMap<>(hashesCloud);
+            differenceMap.entrySet().removeAll(hashesLocal.entrySet());
+
+            try
+            {
+                float filesDownloaded = 0;
+                float filesToDownload = differenceMap.size();
+                for (Path fileToDownload : differenceMap.values())
+                {
+                    filesDownloaded++;
+                    updateMessage(Math.round((filesDownloaded/filesToDownload)*100) + "%");
+                    FileUtils.copyURLToFile(new URL(appsBaseDownloadUrl + openedAppId + "/" + fileToDownload.toString().replace("\\", "/")), Path.of(appInstallationPath.toString(), fileToDownload.toString()).toFile(), 10000, 10000);
+                }
+            }
+            catch (IOException e)
+            {
+                throw new RuntimeException(e);
+            }
+            //endregion
+            return null;
+        }
     }
 
     /**
-     * This function is called in order to remove an app
+     * This class is used to remove an app
+     *
+     * We use a class instead of a function, so that we can make it run async/in parallel to avoid the UI freezing
      */
-    private void removeApp(ActionEvent actionEvent)
+    private class RemoveApp extends Task<Void>
+    {
+        int openedAppId = model.getOpenedApplication().id();
+        Path appInstallationPath = Path.of(SaveLoadManager.getData().getDataPath().toString(), openedAppId + "");
+
+        @Override
+        protected Void call()
+        {
+            updateMessage("%Uninstalling");
+
+            try
+            {
+                FileUtils.deleteDirectory(appInstallationPath.toFile());
+            }
+            catch (IOException e)
+            {
+                ErrorMessage errorMessage = new ErrorMessage(false, "%Couldn't remove application. " + e.getMessage());
+                errorMessage.show();
+            }
+
+            return null;
+        }
+    }
+
+    /**
+     * This function opens/starts a specific app
+     */
+    private void playApp(ActionEvent actionEvent)
     {
 
     }

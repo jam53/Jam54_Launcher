@@ -47,11 +47,14 @@ public class Hashes
     {
         HashMap<String, Path> hashedFiles = new HashMap<>();
 
-        Iterator<File> it = FileUtils.iterateFiles(root.toFile(), null, true);
-        while(it.hasNext())
+        if (root.toFile().exists())
         {
-            Path file = it.next().toPath();
-            hashedFiles.put(calculateHash(file), root.relativize(file)); //The relativize function makes it so that the path to the file starts in the `root` directory
+            Iterator<File> it = FileUtils.iterateFiles(root.toFile(), null, true);
+            while (it.hasNext())
+            {
+                Path file = it.next().toPath();
+                hashedFiles.put(calculateHash(file), root.relativize(file)); //The relativize function makes it so that the path to the file starts in the `root` directory
+            }
         }
 
         return hashedFiles;
