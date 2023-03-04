@@ -80,6 +80,7 @@ public class ApplicationsLoader
                     apps.get(i).name(),
                     apps.get(i).image(),
                     apps.get(i).updateAvailable(),
+                    apps.get(i).availableVersion(),
                     SaveLoadManager.getData().getInstalledApplicationVersions()[i],
                     apps.get(i).descriptions(),
                     apps.get(i).platforms(),
@@ -125,6 +126,7 @@ public class ApplicationsLoader
                         ! (applicationsVersionsProperties.getProperty("app" + i).equals(apps.get(i).version())), //If the version number in the cloud doesn't equal
                             //the version number stored locally. Then it means there is either a new update available/the app isn't download.
                             //So in both cases we can show the install button, and therefore put this variable, "updateAvailable" to true.
+                        applicationsVersionsProperties.getProperty("app" + i),
                         apps.get(i).version(),
                         apps.get(i).descriptions(),
                         apps.get(i).platforms(),

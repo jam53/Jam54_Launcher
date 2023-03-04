@@ -81,6 +81,7 @@ class JDBCApplicationDAO implements ApplicationDAO
                             new Image(rsApplications.getString("logo")),
                             false,
                             null,
+                            null,
                             descriptions,
                             platforms,
                             rsApplications.getLong("releaseDate"),
