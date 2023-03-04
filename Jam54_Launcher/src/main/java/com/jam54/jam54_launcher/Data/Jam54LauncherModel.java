@@ -184,7 +184,7 @@ public class Jam54LauncherModel implements Observable
 
         visibleApplicationInfos.removeIf(Predicate.not(app -> allowedPlatforms.stream().anyMatch(app.platforms()::contains))); //Filter out all the apps whose platform isn't present inside the `allowedPlatforms list`
 
-        visibleApplicationInfos.removeIf(app -> app.version() != null || installedOnly); //Keep only the installed applications or all of them depending on the parameter
+        visibleApplicationInfos.removeIf(app -> app.version() == null && installedOnly); //Keep only the installed applications or all of them depending on the parameter
 
         visibleApplicationInfos.removeIf(app -> app.isGame() != gamesOnly); //Remove all games, or programs depending on the value of the `onlyGames` variable
 
