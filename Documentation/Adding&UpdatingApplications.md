@@ -275,6 +275,14 @@ Increment the size of the `installedApplicationVersions` array constructor by on
 - Create a "root" directory
 - Create a subfolder for each of the applications; the name of a subfolder should be the *id* of the application whose files will be in the subfolder
 - Place the binaries of the application in the subfolder
+  - Inside the subfolder of each application, create a file called `EntryPoint.txt`. This file should only contain 1 line, the path to the main executable of the application.  
+    The path should start from within the subfolder, therefore it doesn't contain the name of the subfolder itself. Here is an example:
+    ```
+    <folder within subfolder>\<more folders>\<name executable>
+    ```
+    ```
+    Stelexo.exe
+    ```
 - Repeat this for all of the applications
 
 ---
