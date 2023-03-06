@@ -304,6 +304,9 @@ Increment the size of the `installedApplicationVersions` array constructor by on
 - Run the application
 - Remove the lines you added to the `Main.java` file in the previous step
 - Each of the subfolders should now contain both a Hashes.txt file and a Split.txt file
+- In root directory containing all of the subfolders, run the following command (adjust the name of the subfolders in the for loop, so that it contains all of the subfolders)
+  - `for folder in 0 1 2 3 5 6 8; do cd "$folder" && grep -F -f Split.txt Hashes.txt | grep .part -v | tee linesToRemove.txt && grep -F -f linesToRemove.txt Hashes.txt -v | tee newHashes.txt && rm linesToRemove.txt && mv newHashes.txt Hashes.txt && cd ..; done`
+    > This command will remove the lines in `Hashes.txt` that point to the original unsplitted files that were larger than the specified treshold to the `splitFilesLargerThan()` function
 
 --- 
 
@@ -351,6 +354,9 @@ Open the `applicationsVersions.properties` file, and update the value behind the
 - Run the application
 - Remove the lines you added to the `Main.java` file in the previous step
 - Each of the subfolders should now contain both a Hashes.txt file and a Split.txt file
+- In root directory containing all of the subfolders, run the following command (adjust the name of the subfolders in the for loop, so that it contains all of the subfolders)
+  - `for folder in 0 1 2 3 5 6 8; do cd "$folder" && grep -F -f Split.txt Hashes.txt | grep .part -v | tee linesToRemove.txt && grep -F -f linesToRemove.txt Hashes.txt -v | tee newHashes.txt && rm linesToRemove.txt && mv newHashes.txt Hashes.txt && cd ..; done`
+    > This command will remove the lines in `Hashes.txt` that point to the original unsplitted files that were larger than the specified treshold to the `splitFilesLargerThan()` function
 
 --- 
 
