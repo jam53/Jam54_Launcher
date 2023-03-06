@@ -353,7 +353,7 @@ public class ApplicationWindow extends VBox implements InvalidationListener
 
             for (Path fileToRemove : differenceMap.values())
             {
-                fileToRemove.toFile().delete();
+                Path.of(appInstallationPath.toString(), fileToRemove.toString()).toFile().delete();
             }
             //endregion
 
