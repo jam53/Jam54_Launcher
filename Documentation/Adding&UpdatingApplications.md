@@ -315,6 +315,7 @@ Increment the size of the `installedApplicationVersions` array constructor by on
 - Go to the [following repository](https://github.com/jamhorn/Jam54Launcher)
 - Push all of the files in the "root" folder, to the *files* branch (make sure to use the correct Git account, by signing in and out of GitHub desktop)
   > Do note that files that were too large for GitHub (over 100MB) have been split. But the original unsplit file is also still present in the subfolder of such an application. Therefore when uploading such an application's binaries, just omit the original, unsplitted file.
+- Create an empty file called `.nojekyll` in the root of the repository. Otherwise files/folders starting with `_` will be seen as jekyll files by GitHub pages
 - Also place a copy of the "root" folder in: `OneDrive\Documenten\Scripts\Builds\Jam54Launcher\AppBuilds`
 
 <br>
