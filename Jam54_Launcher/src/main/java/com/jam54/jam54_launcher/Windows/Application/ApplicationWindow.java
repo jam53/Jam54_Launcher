@@ -369,7 +369,7 @@ public class ApplicationWindow extends VBox implements InvalidationListener
                 {
                     filesDownloaded++;
                     updateMessage(Math.round((filesDownloaded/filesToDownload)*100) + "%");
-                    FileUtils.copyURLToFile(new URL(appsBaseDownloadUrl + openedAppId + "/" + fileToDownload.toString().replace("\\", "/")), Path.of(appInstallationPath.toString(), fileToDownload.toString()).toFile(), 10000, 10000);
+                    FileUtils.copyURLToFile(new URL(appsBaseDownloadUrl + openedAppId + "/" + fileToDownload.toString().replace("\\", "/").replace(" ", "%20")), Path.of(appInstallationPath.toString(), fileToDownload.toString()).toFile(), 10000, 10000); //wth
                 }
             }
             catch (IOException e)
