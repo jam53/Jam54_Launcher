@@ -4,6 +4,7 @@ import com.jam54.jam54_launcher.Data.Jam54LauncherModel;
 import com.jam54.jam54_launcher.Data.SaveLoad.SaveLoadManager;
 import com.jam54.jam54_launcher.ErrorMessage;
 import com.jam54.jam54_launcher.Main;
+import com.jam54.jam54_launcher.Updating.FileSplitterCombiner;
 import com.jam54.jam54_launcher.Updating.Hashes;
 import com.jam54.jam54_launcher.database_access.Other.ApplicationInfo;
 import javafx.beans.InvalidationListener;
@@ -284,7 +285,7 @@ public class ApplicationWindow extends VBox implements InvalidationListener
                     installedApplicationVersions[updatedApp.id()] = updatedApp.version();
                     SaveLoadManager.getData().setInstalledApplicationVersions(installedApplicationVersions);
                 });
-                
+
                 playButton.setOnAction(this::playApp);
             }
         }
@@ -377,6 +378,14 @@ public class ApplicationWindow extends VBox implements InvalidationListener
                 throw new RuntimeException(e);
             }
             //endregion
+
+            //region In case there were splitted files, merge them
+            FileSplitterCombiner fileSplitterCombiner = new FileSplitterCombiner();
+            updateMessage("%Installing");
+            fileSplitterCombiner.combineSplitFiles(appInstallationPath);
+
+            //endregion
+
             return null;
         }
     }
