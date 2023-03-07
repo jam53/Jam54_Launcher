@@ -276,12 +276,18 @@ Increment the size of the `installedApplicationVersions` array constructor by on
 - Create a subfolder for each of the applications; the name of a subfolder should be the *id* of the application whose files will be in the subfolder
 - Place the binaries of the application in the subfolder
   - Inside the subfolder of each application, create a file called `EntryPoint.txt`. This file should only contain 1 line, the path to the main executable of the application.  
-    The path should start from within the subfolder, therefore it doesn't contain the name of the subfolder itself. Here is an example:
+    The path should start from within the subfolder, therefore it doesn't contain the name of the subfolder itself. Here are some examples:
     ```
     <folder within subfolder>\<more folders>\<name executable>
     ```
     ```
     Stelexo.exe
+    ```
+    ```
+    https://jam53.github.io/jam54/
+    ```
+    ```
+    mailto:jam54.help@outlook.com
     ```
 - Repeat this for all of the applications
 
@@ -305,7 +311,7 @@ Increment the size of the `installedApplicationVersions` array constructor by on
 - Remove the lines you added to the `Main.java` file in the previous step
 - Each of the subfolders should now contain both a Hashes.txt file and a Split.txt file
 - In root directory containing all of the subfolders, run the following command (adjust the name of the subfolders in the for loop, so that it contains all of the subfolders)
-  - `for folder in 0 1 2 3 5 6 8; do cd "$folder" && grep -F -f Split.txt Hashes.txt | grep .part -v | tee linesToRemove.txt && grep -F -f linesToRemove.txt Hashes.txt -v | tee newHashes.txt && rm linesToRemove.txt && mv newHashes.txt Hashes.txt && cd ..; done`
+  - `for folder in 0 1 2 3 4 5 6 7 8 9; do cd "$folder" && grep -F -f Split.txt Hashes.txt | grep .part -v | tee linesToRemove.txt && grep -F -f linesToRemove.txt Hashes.txt -v | tee newHashes.txt && rm linesToRemove.txt && mv newHashes.txt Hashes.txt && cd ..; done`
     > This command will remove the lines in `Hashes.txt` that point to the original unsplitted files that were larger than the specified treshold to the `splitFilesLargerThan()` function
 
 --- 
