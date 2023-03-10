@@ -31,18 +31,15 @@ public class ApplicationButton extends VBox
         this.model = model;
     }
 
-    public ApplicationInfo getInfo()
-    {
-        return info;
-    }
-
-    public void setInfo(ApplicationInfo info)
-    {
-        this.info = info;
-    }
-
     private void selectApplicationWindow(ActionEvent event)
     {
+        //This fixes a bug where, if you opened an application that hadn't been installed yet during this session of the Jam54Launcher. Proceeded to install it, went back to the games/programs window and opened the app that was just installed again, that it would appear to be uninstalled. Since the application info that is in this class wouldnt but updated
+        model.getAllApplications().forEach(applicationInfo -> {
+            if (applicationInfo.id() == info.id())
+            {
+                info = applicationInfo;
+            }
+        });
         model.setOpenedApplication(info);
 
         model.setApplicationWindowSelected(true);
