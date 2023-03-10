@@ -1,8 +1,10 @@
 package com.jam54.jam54_launcher.Windows.Settings;
 
+import com.jam54.jam54_launcher.Data.Jam54LauncherModel;
 import com.jam54.jam54_launcher.ErrorMessage;
 import com.jam54.jam54_launcher.Data.SaveLoad.SaveLoadManager;
 import javafx.geometry.Orientation;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
@@ -44,19 +46,21 @@ public class InstallationLocationWindow extends VBox
         DirectoryChooser directoryChooser = new DirectoryChooser();
         directoryChooser.setInitialDirectory(currentDataPath.toFile());
 
-        File selectedFolder = directoryChooser.showDialog(this.getScene().getWindow());
+        File selectedFolder = directoryChooser.showDialog(this.getScene() != null ? this.getScene().getWindow() : new Scene(this).getWindow());
 
         if (selectedFolder != null && selectedFolder.isDirectory())
         {
             try
             {
-                Files.move(currentDataPath, selectedFolder.toPath(), StandardCopyOption.REPLACE_EXISTING);
-                SaveLoadManager.getData().setDataPath(selectedFolder.toPath());
-                changeDataPathButton.setText(selectedFolder.getAbsolutePath());
+                Path newDataPath = Path.of(selectedFolder.toString(), "Jam54Launcher");
+
+                Files.move(currentDataPath, newDataPath, StandardCopyOption.REPLACE_EXISTING);
+                SaveLoadManager.getData().setDataPath(newDataPath);
+                changeDataPathButton.setText(newDataPath.toString());
             }
             catch (IOException e)
             {
-                ErrorMessage errorMessage = new ErrorMessage(false, "%Please close all currently running apps that were installed using the Jam54Launcher and cancel any ongoing downloads.");
+                ErrorMessage errorMessage = new ErrorMessage(false, "%Please close all currently running apps that were installed using the Jam54Launcher and cancel any ongoing downloads. " + e.getMessage());
                 errorMessage.show();
             }
         }
