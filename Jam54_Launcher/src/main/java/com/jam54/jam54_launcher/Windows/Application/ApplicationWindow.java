@@ -22,9 +22,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import org.apache.commons.io.FileUtils;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -37,6 +35,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Properties;
+import java.util.concurrent.TimeUnit;
 
 /**
  * This window displays more detail about a specific app.
@@ -69,6 +68,8 @@ public class ApplicationWindow extends VBox implements InvalidationListener
     private final TextFlow descriptionHolder;
     private final Text description;
     private HBox installButtonsHolder;
+    private Button installUpdateButton;
+    private InstallApp installApp;
 
 
     public ApplicationWindow()
@@ -112,6 +113,8 @@ public class ApplicationWindow extends VBox implements InvalidationListener
         rightSide.getChildren().addAll(descriptionHolder, installButtonsHolder);
 
         this.getChildren().addAll(topBar, leftSide, rightSide);
+
+        installUpdateButton = new Button(); //We initialiseren deze variabele reeds hier, in tegenstelling tot de play/remove buttons die elke keer opnieuw worden angemaakt bij het openen van het ApplicationWindow. We doen dit op voorhand omdat in het geval dat de gebruiker een update start, het ApplicationWindow verlaat, en terugkomt. In dat geval zal de install button er weer staan
     }
 
     /**
@@ -164,129 +167,155 @@ public class ApplicationWindow extends VBox implements InvalidationListener
             description.setText(openedApp.descriptions().get(SaveLoadManager.getData().getLocale()));
 
             installButtonsHolder.getChildren().clear();
-            if (openedApp.version() == null) //If the app isn't installed
+            if (model.getUpdatingApp() == null || !openedApp.updateAvailable()) //Check if there isn't another app updating/downloading files
             {
-                Button installButton = new Button("%Install");
-                installButtonsHolder.getChildren().add(installButton);
-
-                InstallApp installApp = new InstallApp();
-
-                installButton.setOnAction(e ->
+                installUpdateButton.textProperty().unbind();
+                if (openedApp.version() == null) //If the app isn't installed
                 {
-                    new Thread(installApp).start();
-                    installButton.setDisable(true);
-                    installButton.textProperty().bind(installApp.messageProperty()); //Update button's text with progress
-                });
-                installApp.setOnSucceeded(e ->
+                    installUpdateButton.setText("%Install");
+                    installButtonsHolder.getChildren().add(installUpdateButton);
+
+                    installApp = new InstallApp();
+
+                    installUpdateButton.setOnAction(e ->
+                    {
+                        model.setUpdatingApp(openedApp.id());
+                        new Thread(installApp).start();
+                        installUpdateButton.setDisable(true);
+                        installUpdateButton.textProperty().bind(installApp.messageProperty()); //Update button's text with progress
+                    });
+                    installApp.setOnSucceeded(e ->
+                    {
+                        model.setUpdatingApp(null);
+                        installUpdateButton.setDisable(false); //When the task finishes, enable the button again
+
+                        ApplicationInfo updatedApp = new ApplicationInfo(openedApp.id(), openedApp.name(), openedApp.image(), false, openedApp.availableVersion(), openedApp.availableVersion(), openedApp.descriptions(), openedApp.platforms(), openedApp.releaseDate(), openedApp.lastUpdate(), openedApp.isGame());
+                        model.setOpenedApplication(updatedApp);
+
+                        ArrayList<ApplicationInfo> applicationsInModel = model.getAllApplications();
+                        applicationsInModel.remove(openedApp);
+                        applicationsInModel.add(updatedApp);
+                        model.setAllApplications(applicationsInModel);
+
+                        String[] installedApplicationVersions = SaveLoadManager.getData().getInstalledApplicationVersions();
+                        installedApplicationVersions[updatedApp.id()] = updatedApp.version();
+                        SaveLoadManager.getData().setInstalledApplicationVersions(installedApplicationVersions);
+                    });
+                }
+                else if (openedApp.updateAvailable()) //If the app is installed but if there is an update available
                 {
-                    installButton.setDisable(false); //When the task finishes, enable the button again
+                    installUpdateButton.setText("%Update");
+                    Button removeButton = new Button("%Remove");
 
-                    ApplicationInfo updatedApp = new ApplicationInfo(openedApp.id(), openedApp.name(), openedApp.image(), false, openedApp.availableVersion(), openedApp.availableVersion(), openedApp.descriptions(), openedApp.platforms(), openedApp.releaseDate(), openedApp.lastUpdate(), openedApp.isGame());
-                    model.setOpenedApplication(updatedApp);
+                    installButtonsHolder.getChildren().add(removeButton);
+                    installButtonsHolder.getChildren().add(installUpdateButton);
 
-                    ArrayList<ApplicationInfo> applicationsInModel = model.getAllApplications();
-                    applicationsInModel.remove(openedApp);
-                    applicationsInModel.add(updatedApp);
-                    model.setAllApplications(applicationsInModel);
+                    installApp = new InstallApp();
+                    RemoveApp removeApp = new RemoveApp();
 
-                    String[] installedApplicationVersions = SaveLoadManager.getData().getInstalledApplicationVersions();
-                    installedApplicationVersions[updatedApp.id()] = updatedApp.version();
-                    SaveLoadManager.getData().setInstalledApplicationVersions(installedApplicationVersions);
-                });
+                    installUpdateButton.setOnAction(e ->
+                    {
+                        model.setUpdatingApp(openedApp.id());
+                        new Thread(installApp).start();
+                        installUpdateButton.setDisable(true);
+                        removeButton.setDisable(true);
+                        installUpdateButton.textProperty().bind(installApp.messageProperty()); //Update button's text with progress
+                    });
+                    installApp.setOnSucceeded(e ->
+                    {
+                        model.setUpdatingApp(null);
+                        installUpdateButton.setDisable(false); //When the task finishes, enable the button again
+                        removeButton.setDisable(false);
+
+                        ApplicationInfo updatedApp = new ApplicationInfo(openedApp.id(), openedApp.name(), openedApp.image(), false, openedApp.availableVersion(), openedApp.availableVersion(), openedApp.descriptions(), openedApp.platforms(), openedApp.releaseDate(), openedApp.lastUpdate(), openedApp.isGame());
+                        model.setOpenedApplication(updatedApp);
+
+                        ArrayList<ApplicationInfo> applicationsInModel = model.getAllApplications();
+                        applicationsInModel.remove(openedApp);
+                        applicationsInModel.add(updatedApp);
+                        model.setAllApplications(applicationsInModel);
+
+                        String[] installedApplicationVersions = SaveLoadManager.getData().getInstalledApplicationVersions();
+                        installedApplicationVersions[updatedApp.id()] = updatedApp.version();
+                        SaveLoadManager.getData().setInstalledApplicationVersions(installedApplicationVersions);
+                    });
+
+                    removeButton.setOnAction(e ->
+                    {
+                        new Thread(removeApp).start();
+                        installUpdateButton.setDisable(true);
+                        removeButton.setDisable(true);
+                        removeButton.textProperty().bind(removeApp.messageProperty()); //Update button's text with progress
+                    });
+
+                    removeApp.setOnSucceeded(e ->
+                    {
+                        installUpdateButton.setDisable(false); //When the task finishes, enable the button again
+                        removeButton.setDisable(false);
+
+                        ApplicationInfo updatedApp = new ApplicationInfo(openedApp.id(), openedApp.name(), openedApp.image(), openedApp.updateAvailable(), openedApp.availableVersion(), null, openedApp.descriptions(), openedApp.platforms(), openedApp.releaseDate(), openedApp.lastUpdate(), openedApp.isGame());
+                        model.setOpenedApplication(updatedApp);
+
+                        ArrayList<ApplicationInfo> applicationsInModel = model.getAllApplications();
+                        applicationsInModel.remove(openedApp);
+                        applicationsInModel.add(updatedApp);
+                        model.setAllApplications(applicationsInModel);
+
+                        String[] installedApplicationVersions = SaveLoadManager.getData().getInstalledApplicationVersions();
+                        installedApplicationVersions[updatedApp.id()] = updatedApp.version();
+                        SaveLoadManager.getData().setInstalledApplicationVersions(installedApplicationVersions);
+                    });
+                }
+                else //If the app is installed and there is no update available
+                {
+                    Button removeButton = new Button("%Remove");
+                    Button playButton = new Button("%Start");
+
+                    installButtonsHolder.getChildren().add(removeButton);
+                    installButtonsHolder.getChildren().add(playButton);
+
+                    RemoveApp removeApp = new RemoveApp();
+
+                    removeButton.setOnAction(e ->
+                    {
+                        new Thread(removeApp).start();
+                        playButton.setDisable(true);
+                        removeButton.setDisable(true);
+                        removeButton.textProperty().bind(removeApp.messageProperty()); //Update button's text with progress
+                    });
+
+                    removeApp.setOnSucceeded(e ->
+                    {
+                        playButton.setDisable(false); //When the task finishes, enable the button again
+                        removeButton.setDisable(false);
+
+                        ApplicationInfo updatedApp = new ApplicationInfo(openedApp.id(), openedApp.name(), openedApp.image(), openedApp.updateAvailable(), openedApp.availableVersion(), null, openedApp.descriptions(), openedApp.platforms(), openedApp.releaseDate(), openedApp.lastUpdate(), openedApp.isGame());
+                        model.setOpenedApplication(updatedApp);
+
+                        ArrayList<ApplicationInfo> applicationsInModel = model.getAllApplications();
+                        applicationsInModel.remove(openedApp);
+                        applicationsInModel.add(updatedApp);
+                        model.setAllApplications(applicationsInModel);
+
+                        String[] installedApplicationVersions = SaveLoadManager.getData().getInstalledApplicationVersions();
+                        installedApplicationVersions[updatedApp.id()] = updatedApp.version();
+                        SaveLoadManager.getData().setInstalledApplicationVersions(installedApplicationVersions);
+                    });
+
+                    playButton.setOnAction(this::playApp);
+                }
             }
-            else if (openedApp.updateAvailable()) //If the app is installed but if there is an update available
+            else if (model.getUpdatingApp() == openedApp.id())
             {
-                Button removeButton = new Button("%Remove");
-                Button updateButton = new Button("%Update");
-
-                installButtonsHolder.getChildren().add(removeButton);
-                installButtonsHolder.getChildren().add(updateButton);
-
-                InstallApp installApp = new InstallApp();
-                RemoveApp removeApp = new RemoveApp();
-
-                updateButton.setOnAction(e -> {
-                    new Thread(installApp).start();
-                    updateButton.setDisable(true);
-                    removeButton.setDisable(true);
-                    updateButton.textProperty().bind(installApp.messageProperty()); //Update button's text with progress
-                });
-                installApp.setOnSucceeded(e -> {
-                    updateButton.setDisable(false); //When the task finishes, enable the button again
-                    removeButton.setDisable(false);
-
-                    ApplicationInfo updatedApp = new ApplicationInfo(openedApp.id(), openedApp.name(), openedApp.image(), false, openedApp.availableVersion(), openedApp.availableVersion(), openedApp.descriptions(), openedApp.platforms(), openedApp.releaseDate(), openedApp.lastUpdate(), openedApp.isGame());
-                    model.setOpenedApplication(updatedApp);
-
-                    ArrayList<ApplicationInfo> applicationsInModel = model.getAllApplications();
-                    applicationsInModel.remove(openedApp);
-                    applicationsInModel.add(updatedApp);
-                    model.setAllApplications(applicationsInModel);
-
-                    String[] installedApplicationVersions = SaveLoadManager.getData().getInstalledApplicationVersions();
-                    installedApplicationVersions[updatedApp.id()] = updatedApp.version();
-                    SaveLoadManager.getData().setInstalledApplicationVersions(installedApplicationVersions);
-                });
-
-                removeButton.setOnAction(e -> {
-                    new Thread(removeApp).start();
-                    updateButton.setDisable(true);
-                    removeButton.setDisable(true);
-                    removeButton.textProperty().bind(removeApp.messageProperty()); //Update button's text with progress
-                });
-
-                removeApp.setOnSucceeded(e -> {
-                    updateButton.setDisable(false); //When the task finishes, enable the button again
-                    removeButton.setDisable(false);
-
-                    ApplicationInfo updatedApp = new ApplicationInfo(openedApp.id(), openedApp.name(), openedApp.image(), openedApp.updateAvailable(), openedApp.availableVersion(), null, openedApp.descriptions(), openedApp.platforms(), openedApp.releaseDate(), openedApp.lastUpdate(), openedApp.isGame());
-                    model.setOpenedApplication(updatedApp);
-
-                    ArrayList<ApplicationInfo> applicationsInModel = model.getAllApplications();
-                    applicationsInModel.remove(openedApp);
-                    applicationsInModel.add(updatedApp);
-                    model.setAllApplications(applicationsInModel);
-
-                    String[] installedApplicationVersions = SaveLoadManager.getData().getInstalledApplicationVersions();
-                    installedApplicationVersions[updatedApp.id()] = updatedApp.version();
-                    SaveLoadManager.getData().setInstalledApplicationVersions(installedApplicationVersions);
-                });
+                installButtonsHolder.getChildren().add(installUpdateButton);
+                installUpdateButton.textProperty().unbind();
+                installUpdateButton.textProperty().bind(installApp.messageProperty());
             }
-            else //If the app is installed and there is no update available
+            else if (model.getUpdatingApp() != null)
             {
-                Button removeButton = new Button("%Remove");
-                Button playButton = new Button("%Play");
-
-                installButtonsHolder.getChildren().add(removeButton);
-                installButtonsHolder.getChildren().add(playButton);
-
-                RemoveApp removeApp = new RemoveApp();
-
-                removeButton.setOnAction(e -> {
-                    new Thread(removeApp).start();
-                    playButton.setDisable(true);
-                    removeButton.setDisable(true);
-                    removeButton.textProperty().bind(removeApp.messageProperty()); //Update button's text with progress
-                });
-
-                removeApp.setOnSucceeded(e -> {
-                    playButton.setDisable(false); //When the task finishes, enable the button again
-                    removeButton.setDisable(false);
-
-                    ApplicationInfo updatedApp = new ApplicationInfo(openedApp.id(), openedApp.name(), openedApp.image(), openedApp.updateAvailable(), openedApp.availableVersion(), null, openedApp.descriptions(), openedApp.platforms(), openedApp.releaseDate(), openedApp.lastUpdate(), openedApp.isGame());
-                    model.setOpenedApplication(updatedApp);
-
-                    ArrayList<ApplicationInfo> applicationsInModel = model.getAllApplications();
-                    applicationsInModel.remove(openedApp);
-                    applicationsInModel.add(updatedApp);
-                    model.setAllApplications(applicationsInModel);
-
-                    String[] installedApplicationVersions = SaveLoadManager.getData().getInstalledApplicationVersions();
-                    installedApplicationVersions[updatedApp.id()] = updatedApp.version();
-                    SaveLoadManager.getData().setInstalledApplicationVersions(installedApplicationVersions);
-                });
-
-                playButton.setOnAction(this::playApp);
+                installButtonsHolder.getChildren().add(installUpdateButton);
+                installUpdateButton.textProperty().unbind();
+                installUpdateButton.setText("%Kindly hold on whilst X concludes its installation procedure.");
             }
         }
     }
@@ -383,7 +412,6 @@ public class ApplicationWindow extends VBox implements InvalidationListener
             FileSplitterCombiner fileSplitterCombiner = new FileSplitterCombiner();
             updateMessage("%Installing");
             fileSplitterCombiner.combineSplitFiles(appInstallationPath);
-
             //endregion
 
             return null;
@@ -405,13 +433,42 @@ public class ApplicationWindow extends VBox implements InvalidationListener
         {
             updateMessage("%Uninstalling");
 
+            String openedAppExecutableName = model.removeRunningApp(openedAppId);
+            if (openedAppExecutableName != null) //If the app was running, then this process wouldn't be `null`
+            {
+                ProcessBuilder closeApp = new ProcessBuilder("cmd.exe", "/c", "taskkill /f /im " + '"' + openedAppExecutableName + '"');
+                try
+                {
+                    closeApp.start();
+
+                    long startTime = System.currentTimeMillis();
+                    long maxWaitTime = 20000; // Maximum wait time in milliseconds
+
+                    ProcessBuilder pb = new ProcessBuilder("cmd.exe", "/c", "tasklist");
+                    Process p = pb.start();
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
+                    String line;
+                    while ((line = reader.readLine()) != null && System.currentTimeMillis() - startTime < maxWaitTime) {
+                        if (line.contains(openedAppExecutableName)) {
+                            //We just loop here until the application is no longer present in the list, i.e. until the process that is removing it has finsihed
+                            //`process.waitfor();` didn't really work, since we aren't directly launching the application binary, but rather launching a new cmd prompt that we use to launch the application
+                        }
+                    }
+                }
+                catch (IOException e)
+                {
+                    ErrorMessage errorMessage = new ErrorMessage(false, "%Please ensure that " + openedAppExecutableName + " is closed before proceeding with the uninstallation process. " + e.getMessage());
+                    errorMessage.show();
+                }
+            }
+
             try
             {
                 FileUtils.deleteDirectory(appInstallationPath.toFile());
             }
             catch (IOException e)
             {
-                ErrorMessage errorMessage = new ErrorMessage(false, "%Couldn't remove application. " + e.getMessage());
+                ErrorMessage errorMessage = new ErrorMessage(false, "%Please ensure that " + openedAppExecutableName + " is closed before proceeding with the uninstallation process. " + e.getMessage());
                 errorMessage.show();
             }
 
@@ -424,6 +481,23 @@ public class ApplicationWindow extends VBox implements InvalidationListener
      */
     private void playApp(ActionEvent actionEvent)
     {
+        int openedAppId = model.getOpenedApplication().id();
+        Path appInstallationPath = Path.of(SaveLoadManager.getData().getDataPath().toString(), openedAppId + "");
 
+        try
+        {
+            String entryPoint = FileUtils.readFileToString(Path.of(appInstallationPath.toString(), "EntryPoint.txt").toFile(), StandardCharsets.UTF_8);
+
+            String fullPathToApp = entryPoint.contains(":") ? entryPoint : Path.of(appInstallationPath.toString(), entryPoint).toString(); //If the entrypoint contains a ":" character. Then it means it isn't a path to a file, but rather an URL to a website or an URL to send a mail. In such cases we don't want to use Path.of() but just the raw string
+
+            ProcessBuilder processBuilder = new ProcessBuilder("cmd.exe", "/c", "start", "\"\" " + '"' + fullPathToApp + '"');
+            processBuilder.start();
+            model.addRunningApp(openedAppId, new File(entryPoint).getName()); //We keep track of the process used to start this application, this way we can stop/close the application when we want to remove it, in case it would still be running
+        }
+        catch (IOException e)
+        {
+            ErrorMessage errorMessage = new ErrorMessage(false, "%Couldn't launch application. " + e.getMessage());
+            errorMessage.show();
+        }
     }
 }

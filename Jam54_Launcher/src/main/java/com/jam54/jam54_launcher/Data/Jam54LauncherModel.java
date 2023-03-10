@@ -5,10 +5,8 @@ import com.jam54.jam54_launcher.Windows.Application.Platforms;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Locale;
+import java.lang.reflect.Array;
+import java.util.*;
 import java.util.function.Predicate;
 
 /**
@@ -34,9 +32,14 @@ public class Jam54LauncherModel implements Observable
 
     private ArrayList<Locale> supportedLanguages;
 
+    private final HashMap<Integer, String> runningApps;
+
+    private Integer updatingApp;
+
     public Jam54LauncherModel()
     {
         listenerList = new ArrayList<>();
+        runningApps = new HashMap<>();
     }
 
     private void fireInvalidationEvent()
@@ -204,14 +207,57 @@ public class Jam54LauncherModel implements Observable
         fireInvalidationEvent();
     }
 
+    /**
+     * This method is used to set the Locale's of the language in which the Jam54Launcher can be displayed
+     */
     public void setSupportedLanguages(ArrayList<Locale> languages)
     {
         this.supportedLanguages = languages;
         fireInvalidationEvent();
     }
 
+    /**
+     * This function returns a list of all the Locale's language in which the Jam54Launcher can be viewed
+     */
     public ArrayList<Locale> getSupportedLanguages()
     {
         return supportedLanguages;
+    }
+
+    /**
+     * When we start an app, we keep track of which apps we have started. This way we can close that app in the event that the user would like to remove that application.
+     * Because if we wouldn't stop the app while it is running, and would attempt to remove it. We might encounter some errors with file locks etc
+     */
+    public void addRunningApp(int appId, String executableName)
+    {
+        runningApps.put(appId, executableName);
+        fireInvalidationEvent();
+    }
+
+    /**
+     * This method is used to remove an app from the hashmap that keeps track of all the apps that were launched using the Jam54Launcher.
+     * @return Returns the app that was removed from the hashmap
+     */
+    public String removeRunningApp(int appId)
+    {
+        return runningApps.remove(appId);
+    }
+
+    /**
+     * If we start installing/updating an app, we will set the id of app being installed/updated
+     * @param applicationId Null means we aren't updating any applications
+     */
+    public void setUpdatingApp(Integer applicationId)
+    {
+        updatingApp = applicationId;
+        fireInvalidationEvent();
+    }
+
+    /**
+     * @return  Returns the applicationId of the app that is currently installing/updating. Null if there isn't an app being installed/updated
+     */
+    public Integer getUpdatingApp()
+    {
+        return updatingApp;
     }
 }
