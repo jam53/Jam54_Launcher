@@ -6,6 +6,7 @@ import com.jam54.jam54_launcher.database_access.Other.ApplicationInfo;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.collections.FXCollections;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
@@ -33,10 +34,12 @@ public class GamesProgramsWindow extends VBox implements InvalidationListener
 
     private final Label title;
 
+    private final HBox buttonBar, gamesProgramsTogglesHolder, titleHolder, searchBarHolder;
+
     public GamesProgramsWindow()
     {
         //region button bar
-        HBox buttonBar = new HBox();
+        buttonBar = new HBox();
         buttonBar.getStyleClass().add("buttonBar");
 
         toggleGroup = new ToggleGroup(); //This ToggleGroup holds the games/programs toggles
@@ -52,10 +55,24 @@ public class GamesProgramsWindow extends VBox implements InvalidationListener
 
         gamesToggle.setToggleGroup(toggleGroup);
         programsToggle.setToggleGroup(toggleGroup);
+        gamesProgramsTogglesHolder = new HBox(gamesToggle, programsToggle);
+        gamesProgramsTogglesHolder.prefWidthProperty().bind(buttonBar.prefWidthProperty().divide(3));
+        gamesProgramsTogglesHolder.getStyleClass().add("buttonBarToggles");
 
         toggleGroup.selectToggle(gamesToggle);
 
-        buttonBar.getChildren().addAll(gamesToggle, programsToggle);
+        title = new Label("%Games");
+        titleHolder = new HBox(title);
+        titleHolder.prefWidthProperty().bind(buttonBar.prefWidthProperty().divide(3));
+        titleHolder.getStyleClass().add("buttonBarTitle");
+
+        TextField searchBar = new TextField();
+        searchBar.setPromptText("%Search");
+        searchBarHolder = new HBox(searchBar);
+        searchBarHolder.prefWidthProperty().bind(buttonBar.prefWidthProperty().divide(3));
+        searchBarHolder.getStyleClass().add("buttonBarSearchBar");
+
+        buttonBar.getChildren().addAll(titleHolder, gamesProgramsTogglesHolder, searchBarHolder);
         //endregion
 
         //region title bar
@@ -63,12 +80,6 @@ public class GamesProgramsWindow extends VBox implements InvalidationListener
         HBox filtersHolder = new HBox();
 
         HBox.setHgrow(filtersHolder, Priority.ALWAYS);
-
-        title = new Label("%Games");
-
-        TextField searchBar = new TextField();
-
-        searchBar.setPromptText("%Search");
 
         sortOrder_comboBox = new ComboBox<>(FXCollections.observableArrayList(List.of("%Alphabetical" + " ↓","%Alphabetical" + " ↑", "%Release Date" + " ↓", "%Release Date" + " ↑", "Last Updated" + " ↓", "Last Updated" + " ↑")));
         selectedPlatforms_comboBox = new ComboBox<>(FXCollections.observableArrayList(List.of("%All Platforms", "%Android", "%Windows", "%Web")));
@@ -86,9 +97,9 @@ public class GamesProgramsWindow extends VBox implements InvalidationListener
 
         searchBar.textProperty().addListener((obs, oldValue, newValue) -> model.filterAndSortVisibleApplicationInfos(selectedPlatforms_comboBox.getSelectionModel().getSelectedIndex(), installedApplications_checkBox.isSelected(), sortOrder_comboBox.getSelectionModel().getSelectedIndex(), gamesToggle.isSelected(), newValue));
 
-        filtersHolder.getChildren().setAll(new Label("%Sort By:"), sortOrder_comboBox, selectedPlatforms_comboBox, installedApplications_checkBox, searchBar);
+        filtersHolder.getChildren().setAll(new Label("%Sort By:"), sortOrder_comboBox, selectedPlatforms_comboBox, installedApplications_checkBox);
         titleBar.getStyleClass().add("titleBar");
-        titleBar.getChildren().setAll(title, filtersHolder);
+        titleBar.getChildren().setAll(filtersHolder);
         //endregion
 
         //region center area
@@ -98,7 +109,6 @@ public class GamesProgramsWindow extends VBox implements InvalidationListener
 
         getChildren().setAll(buttonBar, titleBar, applicationsHolder);
     }
-
     @Override
     public void invalidated(Observable observable)
     {
