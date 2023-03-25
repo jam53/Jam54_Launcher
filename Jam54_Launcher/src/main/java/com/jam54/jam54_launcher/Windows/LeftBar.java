@@ -1,5 +1,7 @@
 package com.jam54.jam54_launcher.Windows;
 
+import com.jam54.jam54_launcher.Animations.ToggleButtonColor;
+import com.jam54.jam54_launcher.Animations.ToggleButtonNotGradientColor;
 import com.jam54.jam54_launcher.Data.Jam54LauncherModel;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
@@ -9,6 +11,7 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 
 /**
  * This class is used to create the bar at the left. Which holds the home, settings, ... button toggles
@@ -42,8 +45,12 @@ public class LeftBar extends VBox implements InvalidationListener
         homeToggle.setToggleGroup(toggleGroup);
         settingsToggle.setToggleGroup(toggleGroup);
 
-        homeToggle.setGraphic(new ImageView(new Image("/com/jam54/jam54_launcher/img/Home.png", 50, 50, true, true)));
-        settingsToggle.setGraphic(new ImageView(new Image("/com/jam54/jam54_launcher/img/Settings.png", 30, 30, true, true)));
+        homeToggle.getStyleClass().add("homeToggle");
+        settingsToggle.getStyleClass().add("settingsToggle");
+
+        homeToggle.setSkin(new ToggleButtonNotGradientColor(homeToggle, Color.web("#242424"), Color.web("#595959"), Color.web("#3E3E3E")));
+        settingsToggle.setSkin(new ToggleButtonNotGradientColor(settingsToggle, Color.web("#242424"), Color.web("#595959"), Color.web("#3E3E3E")));
+
 
         toggleGroup.selectToggle(homeToggle);
 

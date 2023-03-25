@@ -51,23 +51,49 @@ GamesProgramsWindow, ApplicationWindow, SettingsWindow {
 }
 
 .leftBar ToggleButton {
-    -fx-background-radius: 64;
+    -fx-background-radius: 4;
     -fx-background-position: center;
     -fx-background-repeat: no-repeat;
 
     -fx-pref-width: 50;
     -fx-pref-height: 50;
 
-    -fx-background-color: rgba(255, 255, 255, 0);
+    -fx-background-color: -hollow-button-unselected;
     -fx-padding: 0;
 }
 
 .leftBar ToggleButton:selected {
-    -fx-background-color: rgba(255, 255, 255, 0.1);
+    -fx-background-color: -hollow-button-clicked;
 }
 
 .leftBar ToggleButton:hover {
-    -fx-background-color: rgba(255, 255, 255, 0.25);
+    -fx-background-color: -bg-selected;
+}
+
+.homeToggle {
+    -fx-background-image: url('../img/icons/Home_ButtonIconUnselected.png');
+    -fx-background-size: 37;
+}
+
+.homeToggle:hover {
+    -fx-background-image: url('../img/icons/Home_ButtonIconHovered.png');
+}
+
+.homeToggle:selected {
+    -fx-background-image: url('../img/icons/Home_ButtonIconClicked.png');
+}
+
+.settingsToggle {
+    -fx-background-image: url('../img/icons/Settings_ButtonIconUnselected.png');
+    -fx-background-size: 37;
+}
+
+.settingsToggle:hover {
+    -fx-background-image: url('../img/icons/Settings_ButtonIconHovered.png');
+}
+
+.settingsToggle:selected {
+    -fx-background-image: url('../img/icons/Settings_ButtonIconClicked.png');
 }
 
 .updateAvailableHolder{
@@ -134,10 +160,6 @@ GamesProgramsWindow, ApplicationWindow, SettingsWindow {
 .buttonBarSearchBar{
     -fx-alignment: CENTER_RIGHT;
 }
-
-/** {*/
-/*    -fx-border-color: yellow;*/
-/*}*/
 
 .buttonBarSearchBar TextField {
     -fx-pref-width: 275;
