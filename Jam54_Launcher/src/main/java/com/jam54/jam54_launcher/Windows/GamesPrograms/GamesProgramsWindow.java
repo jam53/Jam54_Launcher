@@ -1,5 +1,7 @@
 package com.jam54.jam54_launcher.Windows.GamesPrograms;
 
+import com.jam54.jam54_launcher.Animations.CheckBoxColor;
+import com.jam54.jam54_launcher.Animations.ComboBoxColor;
 import com.jam54.jam54_launcher.Animations.TextFieldColor;
 import com.jam54.jam54_launcher.Animations.ToggleButtonColor;
 import com.jam54.jam54_launcher.Data.Jam54LauncherModel;
@@ -86,14 +88,15 @@ public class GamesProgramsWindow extends VBox implements InvalidationListener
         //endregion
 
         //region title bar
-        HBox titleBar = new HBox();
         HBox filtersHolder = new HBox();
 
         HBox.setHgrow(filtersHolder, Priority.ALWAYS);
 
-        sortOrder_comboBox = new ComboBox<>(FXCollections.observableArrayList(List.of("%Alphabetical" + " ↓","%Alphabetical" + " ↑", "%Release Date" + " ↓", "%Release Date" + " ↑", "Last Updated" + " ↓", "Last Updated" + " ↑")));
-        selectedPlatforms_comboBox = new ComboBox<>(FXCollections.observableArrayList(List.of("%All Platforms", "%Android", "%Windows", "%Web")));
-        installedApplications_checkBox = new CheckBox("%Show installed applications only");
+        sortOrder_comboBox = new ComboBoxColor(FXCollections.observableArrayList(List.of("%Alphabetical" + " ↓","%Alphabetical" + " ↑", "%Release Date" + " ↓", "%Release Date" + " ↑", "%Last Updated" + " ↓", "%Last Updated" + " ↑")), Color.web("#141414"), Color.web("#3E3E3E"), Color.web("#595959"));
+        selectedPlatforms_comboBox = new ComboBoxColor(FXCollections.observableArrayList(List.of("%All Platforms", "%Android", "%Windows", "%Web")), Color.web("#141414"), Color.web("#3E3E3E"), Color.web("#595959"));
+
+        installedApplications_checkBox = new CheckBox("%Currently installed apps");
+        installedApplications_checkBox.setSkin(new CheckBoxColor(installedApplications_checkBox, Color.web("#141414"), Color.web("#3E3E3E"), Color.web("#3D77C2")));
 
         sortOrder_comboBox.getSelectionModel().select(0);
         selectedPlatforms_comboBox.getSelectionModel().select(0);
@@ -107,9 +110,8 @@ public class GamesProgramsWindow extends VBox implements InvalidationListener
 
         searchBar.textProperty().addListener((obs, oldValue, newValue) -> model.filterAndSortVisibleApplicationInfos(selectedPlatforms_comboBox.getSelectionModel().getSelectedIndex(), installedApplications_checkBox.isSelected(), sortOrder_comboBox.getSelectionModel().getSelectedIndex(), gamesToggle.isSelected(), newValue));
 
-        filtersHolder.getChildren().setAll(new Label("%Sort By:"), sortOrder_comboBox, selectedPlatforms_comboBox, installedApplications_checkBox);
-        titleBar.getStyleClass().add("titleBar");
-        titleBar.getChildren().setAll(filtersHolder);
+        filtersHolder.getChildren().setAll(new Text("%Sort By:"), sortOrder_comboBox, selectedPlatforms_comboBox, installedApplications_checkBox);
+        filtersHolder.getStyleClass().add("filtersHolder");
         //endregion
 
         //region center area
@@ -117,7 +119,7 @@ public class GamesProgramsWindow extends VBox implements InvalidationListener
         applicationsHolder.getStyleClass().add("applicationsHolder");
         //endregion
 
-        getChildren().setAll(buttonBar, titleBar, applicationsHolder);
+        getChildren().setAll(buttonBar, filtersHolder, applicationsHolder);
     }
     @Override
     public void invalidated(Observable observable)

@@ -89,7 +89,7 @@ GamesProgramsWindow, ApplicationWindow, SettingsWindow {
 
 .buttonBar {
     -fx-pref-width: 10000000000000000;
-    -fx-padding: 40 60 40 30;
+    -fx-padding: 36 30 27 30;
 }
 
 .buttonBarTitle {
@@ -175,21 +175,111 @@ GamesProgramsWindow, ApplicationWindow, SettingsWindow {
     -fx-background-image:url('../img/icons/Search_ButtonIconHovered.png');
 }
 
-.titleBar {
-    -fx-padding: 50px;
+.filtersHolder {
     -fx-font-size: 16;
-    -fx-font-weight: bold;
+    -fx-padding: 0 30 0 30;
+    -fx-alignment: center-left;
+    -fx-spacing: 10;
 }
 
-.titleBar Label {
-    -fx-text-fill: white;
+.filtersHolder Text {
+    -fx-fill: -button-icon-unselected;
+    -fx-font-family: 'Lato';
+    -fx-font-size: 20;
 }
 
-.titleBar HBox {
-    -fx-alignment: center-right;
-    -fx-spacing: 5;
+.filtersHolder ComboBoxColor {
+    -fx-background-color: -hollow-button-unselected;
+    -fx-border-color: -other-border-division-scrollbar;
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+    -fx-padding: 4 0;
+
+    -fx-background-position: right center;
+    -fx-background-repeat: no-repeat;
+    -fx-background-image:url('../img/icons/UpDownChevrons_ButtonIconUnselected.png');
+    -fx-background-size: 21;
+}
+
+.filtersHolder ComboBoxColor > * {
+    -fx-font-size: 15;
+    -fx-font-family: 'Lato';
+    -fx-text-fill: -button-icon-unselected;
+}
+
+.filtersHolder ComboBoxColor:hover {
+    -fx-background-color: -hollow-button-hovered;
+    -fx-border-color: -hollow-button-clicked;
+    -fx-prompt-text-fill: -button-icon-hovered;
+    -fx-background-image:url('../img/icons/UpDownChevrons_ButtonIconHovered.png');
+}
+
+.filtersHolder ComboBoxColor:hover > * {
+    -fx-text-fill: -button-icon-hovered;
+}
+
+.filtersHolder ComboBoxColor:focused {
+    -fx-background-color: -hollow-button-clicked;
+    -fx-border-color: -hollow-button-clicked;
+    -fx-prompt-text-fill: -button-icon-clicked;
+    -fx-background-image:url('../img/icons/UpDownChevrons_ButtonIconClicked.png');
+}
+
+.filtersHolder ComboBoxColor:focused > * {
+    -fx-text-fill: -button-icon-clicked;
+}
+
+.combo-box .list-view {
+    -fx-background-color: -other-border-division-scrollbar;
+}
+
+.combo-box .list-view .list-cell {
+    -fx-background-color: -bg-foreground;
+    -fx-text-fill: -text-not-highlighted;
+    -fx-border-width: 1 0 0 0;
+    -fx-border-color: -other-border-division-scrollbar;
+}
+
+.combo-box .list-view .list-cell:selected, .combo-box .list-view .list-cell:hover {
+    -fx-background-color: -bg-selected;
+    -fx-text-fill: -text-highlighted;
+}
+
+.combo-box .arrow, .combo-box .arrow-button {
+    -fx-background-color: transparent;
+}
+
+.filtersHolder CheckBox {
+    -fx-font-size: 16;
+    -fx-font-family: 'Lato';
+    -fx-text-fill: -button-icon-unselected;
+}
+
+.filtersHolder .check-box .box {
+    -fx-background-color: -hollow-button-unselected;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+    -fx-border-color: -other-border-division-scrollbar;
+}
+
+.filtersHolder .check-box:hover .box {
+    -fx-background-color: -hollow-button-hovered;
+    -fx-border-color: -hollow-button-clicked;
+    -fx-background-insets: 0 0 1 0;
+}
+
+.filtersHolder .check-box:selected .box {
+    -fx-background-color: -accent-button-main;
+    -fx-border-color: -other-border-division-scrollbar;
+    -fx-background-insets: 0 0 1 0;
+}
+
+.filtersHolder .check-box:selected .mark {
+    -fx-background-color: -text-highlighted;
+    -fx-shape: "M12.8642 0.966136L12.8642 0.966112C12.6862 0.834995 12.463 0.778397 12.2433 0.807446C12.0236 0.836501 11.8232 0.949199 11.687 1.12285L5.40442 9.1291L2.22182 6.03962L2.22191 6.03953L2.2167 6.03481C2.05646 5.88984 1.84567 5.81178 1.62891 5.8155C1.41214 5.81921 1.20421 5.90445 1.04921 6.05495C0.894029 6.20563 0.804051 6.41013 0.800133 6.62573C0.796215 6.84135 0.878719 7.04893 1.02846 7.20496L1.02837 7.20505L1.03344 7.20997L4.89549 10.96C4.9808 11.0429 5.08303 11.1069 5.19513 11.1478C5.30723 11.1888 5.42686 11.2059 5.54607 11.1982C5.66528 11.1905 5.78165 11.1581 5.88739 11.103C5.99314 11.0479 6.08599 10.9711 6.15944 10.8777L6.15953 10.8776L13.0256 2.12731C13.0256 2.1273 13.0256 2.12729 13.0256 2.12728C13.0933 2.04108 13.143 1.94244 13.1717 1.83693C13.2004 1.73139 13.2074 1.6213 13.1922 1.51303C13.177 1.40477 13.1401 1.30073 13.0837 1.20687C13.0273 1.11303 12.9526 1.0313 12.8642 0.966136Z";
 }
 
 .applicationsHolder {
     -fx-pref-height: 1000000;
+    -fx-alignment: center;
 }

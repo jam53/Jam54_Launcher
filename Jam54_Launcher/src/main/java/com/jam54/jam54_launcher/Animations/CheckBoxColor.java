@@ -1,33 +1,24 @@
 package com.jam54.jam54_launcher.Animations;
 
-import javafx.animation.*;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.StringBinding;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.geometry.Insets;
-import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleButton;
-import javafx.scene.control.skin.ButtonSkin;
+import javafx.scene.control.skin.CheckBoxSkin;
 import javafx.scene.control.skin.TextFieldSkin;
-import javafx.scene.control.skin.ToggleButtonSkin;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.LinearGradient;
-import javafx.scene.paint.Stop;
-import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
-import java.sql.Time;
-
 /**
- * This animation transitions smoothly between the default/normal and hovered/selected colors of a textfield
- * This class is used in Java code by writing `TextField.setSkin(...);`
+ * This animation transitions smoothly between the default/normal and hovered/selected colors of a checkbox
+ * This class is used in Java code by writing `CheckBox.setSkin(...);`
  */
-public class TextFieldColor extends TextFieldSkin
+public class CheckBoxColor extends CheckBoxSkin
 {
     /**
      * @param control The ToggleButton to animate
@@ -35,7 +26,7 @@ public class TextFieldColor extends TextFieldSkin
      * @param hoverColor The hovered color
      * @param selectColor The selected color
      */
-    public TextFieldColor(TextField control, Color defaultColor, Color hoverColor, Color selectColor) {
+    public CheckBoxColor(CheckBox control, Color defaultColor, Color hoverColor, Color selectColor) {
         super(control);
 
         final ObjectProperty<Color> color = new SimpleObjectProperty<>(defaultColor);
@@ -50,7 +41,7 @@ public class TextFieldColor extends TextFieldSkin
             {
                 return "-fx-background-color: " + colorToString(color) + ";";
             }
-            else if (control.isFocused())
+            else if (control.isSelected())
             {
                 return "-fx-background-color: " + colorToString(selectColor);
             }
@@ -61,7 +52,7 @@ public class TextFieldColor extends TextFieldSkin
         }, color);
 
         // bind the button's style property
-        control.styleProperty().bind(cssColorSpec);
+        control.lookup(".check-box .box").styleProperty().bind(cssColorSpec);
 
         final Timeline hoverIn = new Timeline(
                 new KeyFrame(Duration.ZERO, new KeyValue(color, defaultColor)),
@@ -77,14 +68,14 @@ public class TextFieldColor extends TextFieldSkin
 
         control.setOnMouseEntered(event ->
         {
-            if (!control.isFocused())
+            if (!control.isSelected())
             {
                 hoverIn.play();
             }
         });
         control.setOnMouseExited(event ->
         {
-            if (!control.isFocused())
+            if (!control.isSelected())
             {
                 hoverOut.play();
             }
@@ -96,7 +87,6 @@ public class TextFieldColor extends TextFieldSkin
                 hoverOut.play();
             }
         });
-        control.setOnKeyPressed(e -> focusedColor.play());
         control.setOnMousePressed(e -> focusedColor.play());
 
         hoverIn.play(); //Dit runt de eerste keer in het begin, zodat de geselecteerde toggle de geselecteerde kleur krijgt

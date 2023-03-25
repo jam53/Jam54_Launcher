@@ -81,7 +81,10 @@ public class ToggleButtonColor extends ToggleButtonSkin
         });
         control.setOnMouseExited(event ->
         {
-            hoverOut.play();
+            if (!control.isFocused())
+            {
+                hoverOut.play();
+            }
         });
         control.selectedProperty().addListener((observableValue, notSelected, t1) ->
         {
