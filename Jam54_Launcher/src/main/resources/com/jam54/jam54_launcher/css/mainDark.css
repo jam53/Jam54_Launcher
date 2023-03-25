@@ -24,6 +24,8 @@
 
     -other-border-division-scrollbar: #404040;
     -other-blur: rgba(255, 255, 255, 0.25);
+    -toggle-button-gradient: linear-gradient(from 25% 25% to 100% 100%, #2193D3, #494FD6);
+    -toggle-button-flat: #0E112C
 }
 
 BorderPane {
@@ -87,18 +89,90 @@ GamesProgramsWindow, ApplicationWindow, SettingsWindow {
 
 .buttonBar {
     -fx-pref-width: 10000000000000000;
-}
-
-.buttonBarToggles {
-    -fx-alignment: center;
+    -fx-padding: 40 60 40 30;
 }
 
 .buttonBarTitle {
     -fx-alignment: CENTER_LEFT;
 }
 
+.buttonBarTitle Text{
+    -fx-font-size: 25;
+    -fx-fill: -text-highlighted;
+    -fx-font-family: 'Lato';
+    -fx-font-weight: bold;
+}
+
+.buttonBarToggles {
+    -fx-alignment: center;
+    -fx-spacing: 20;
+}
+
+.buttonBarToggles ToggleButton {
+    -fx-background-color: #0E112C;
+    -fx-border-color: -toggle-button-gradient;
+    -fx-border-radius: 35;
+    -fx-border-width: 2;
+    -fx-background-radius: 35;
+    -fx-font-size: 24;
+    -fx-font-family: 'New Rubrik TRIAL';
+    -fx-padding: 2 20;
+}
+
+.buttonBarToggles ToggleButton:selected {
+    -fx-background-color: -toggle-button-gradient;
+}
+
+.buttonBarToggles ToggleButton:hover {
+    -fx-background-color: -toggle-button-gradient;
+}
+
+.buttonBarToggles ToggleButton Text {
+    -fx-fill: -text-highlighted;
+}
+
 .buttonBarSearchBar{
     -fx-alignment: CENTER_RIGHT;
+}
+
+/** {*/
+/*    -fx-border-color: yellow;*/
+/*}*/
+
+.buttonBarSearchBar TextField {
+    -fx-pref-width: 275;
+    -fx-pref-height: 45;
+    -fx-background-color: -hollow-button-unselected;
+    -fx-border-color: -other-border-division-scrollbar;
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+}
+
+.buttonBarSearchBar TextField {
+    -fx-font-size: 20;
+    -fx-prompt-text-fill: -button-icon-unselected;
+    -fx-text-fill: -button-icon-unselected;
+    -fx-font-family: 'Lato';
+    -fx-background-position: left center;
+    -fx-background-repeat: no-repeat;
+    -fx-background-image:url('../img/icons/Search_ButtonIconUnselected.png');
+    -fx-background-size: 50;
+    -fx-padding: 0 0 0 43;
+}
+
+.buttonBarSearchBar TextField:hover {
+    -fx-background-color: -hollow-button-hovered;
+    -fx-border-color: -hollow-button-clicked;
+    -fx-prompt-text-fill: -button-icon-hovered;
+    -fx-text-fill: -button-icon-hovered;
+    -fx-background-image:url('../img/icons/Search_ButtonIconHovered.png');
+}
+.buttonBarSearchBar TextField:focused {
+    -fx-background-color: -hollow-button-clicked;
+    -fx-border-color: -hollow-button-clicked;
+    -fx-prompt-text-fill: -button-icon-clicked;
+    -fx-text-fill: -button-icon-clicked;
+    -fx-background-image:url('../img/icons/Search_ButtonIconHovered.png');
 }
 
 .titleBar {
@@ -114,12 +188,6 @@ GamesProgramsWindow, ApplicationWindow, SettingsWindow {
 .titleBar HBox {
     -fx-alignment: center-right;
     -fx-spacing: 5;
-}
-
-.titleBar TextField {
-    -fx-background-position: left center;
-    -fx-background-repeat: no-repeat;
-    -fx-background-image:url('https://placekitten.com/20/20');
 }
 
 .applicationsHolder {

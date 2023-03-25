@@ -47,4 +47,12 @@ public class ApplicationButton extends VBox
         //We don't set the Games/Programs windows' values to false. This is because only one of them would have been true anyway.
         //And if we go "back to library" from the Application Window. This will allow us to reopen the last page we were on. Either Games or Programs
     }
+
+    /**
+     * This function returns true, if this is a button for a game
+     */
+    public boolean isGame()
+    {
+        return info.isGame();
+    }
 }

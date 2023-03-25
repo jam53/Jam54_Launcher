@@ -18,6 +18,8 @@ public class Main extends Application
     @Override
     public void start(Stage stage) throws IOException
     {
+        (new LoadInFonts()).loadFonts();
+
         Jam54LauncherModel model = new Jam54LauncherModel();
 
         ApplicationsLoader applicationsLoader = new ApplicationsLoader();

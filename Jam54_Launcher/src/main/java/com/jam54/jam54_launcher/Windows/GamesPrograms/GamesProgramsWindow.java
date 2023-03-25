@@ -1,5 +1,7 @@
 package com.jam54.jam54_launcher.Windows.GamesPrograms;
 
+import com.jam54.jam54_launcher.Animations.TextFieldColor;
+import com.jam54.jam54_launcher.Animations.ToggleButtonColor;
 import com.jam54.jam54_launcher.Data.Jam54LauncherModel;
 import com.jam54.jam54_launcher.Windows.Application.ApplicationButton;
 import com.jam54.jam54_launcher.database_access.Other.ApplicationInfo;
@@ -12,6 +14,8 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 
 import java.util.List;
 
@@ -32,7 +36,7 @@ public class GamesProgramsWindow extends VBox implements InvalidationListener
     private final ToggleButton gamesToggle;
     private final ToggleButton programsToggle;
 
-    private final Label title;
+    private final Text title;
 
     private final HBox buttonBar, gamesProgramsTogglesHolder, titleHolder, searchBarHolder;
 
@@ -50,8 +54,13 @@ public class GamesProgramsWindow extends VBox implements InvalidationListener
             }
         }); //This makes it so that there always has to be at least one toggle selected
 
-        gamesToggle = new ToggleButton("%Games");
-        programsToggle = new ToggleButton("%Programs");
+        gamesToggle = new ToggleButton();
+        gamesToggle.setSkin(new ToggleButtonColor(gamesToggle, Color.web("#0E112C"), Color.web("#2193D3"), Color.web("#494FD6")));
+        gamesToggle.setGraphic(new Text("%Games")); //By default the text inside a ToggleButton is displayed usinga "Label" object, which looks terrible and not smooth when using a custom font
+        programsToggle = new ToggleButton();
+        programsToggle.setGraphic(new Text("%Programs"));
+        programsToggle.setSkin(new ToggleButtonColor(programsToggle, Color.web("#0E112C"), Color.web("#2193D3"), Color.web("#494FD6")));
+
 
         gamesToggle.setToggleGroup(toggleGroup);
         programsToggle.setToggleGroup(toggleGroup);
@@ -61,13 +70,14 @@ public class GamesProgramsWindow extends VBox implements InvalidationListener
 
         toggleGroup.selectToggle(gamesToggle);
 
-        title = new Label("%Games");
+        title = new Text("%Games");
         titleHolder = new HBox(title);
         titleHolder.prefWidthProperty().bind(buttonBar.prefWidthProperty().divide(3));
         titleHolder.getStyleClass().add("buttonBarTitle");
 
         TextField searchBar = new TextField();
         searchBar.setPromptText("%Search");
+        searchBar.setSkin(new TextFieldColor(searchBar, Color.web("#141414"), Color.web("#3E3E3E"), Color.web("#595959")));
         searchBarHolder = new HBox(searchBar);
         searchBarHolder.prefWidthProperty().bind(buttonBar.prefWidthProperty().divide(3));
         searchBarHolder.getStyleClass().add("buttonBarSearchBar");
@@ -138,5 +148,8 @@ public class GamesProgramsWindow extends VBox implements InvalidationListener
         {
             applicationsHolder.getChildren().add(new Label("%No items found for the applied filters OR No application matched the provided filters"));
         }
+
+        int amountOfApps = model.getVisibleApplicationInfos().size();
+        title.setText((gamesToggle.isSelected() ? "%Games" : "%Programs") + (amountOfApps > 0 ? " (" + amountOfApps + ")" : ""));
     }
 }
