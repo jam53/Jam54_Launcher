@@ -65,6 +65,21 @@
                 <configuration>
                     <source>17</source>
                     <target>17</target>
+<!--                    Dit zijn de versies die gebruikt worden voor de source code in het project en voor de bytecode die gecompileerd wordt. Men gebruikt best dezelfde versie voor source & target.-->
+
+<!--                    Waarom zetten we versie vast? Stel we publiceren de jam54 launcher met Java 17 en brengen wat later een update uit met Java 18. Sinds we bij het updaten van de jam54 launcher alleen de jar vernieuwen zal dit tot problemen leiden. De jar zal nu in Java 18 gecompileerd zijn, terwijl de JRE die bij de jam54 launcher nog versie 17 zal hebben. Sinds de versie van onze jam54 launcher jar hoger is dan de JRE waarmee het gerunned wordt lukt dit niet. Dit geeft een error van de vorm:-->
+
+<!--                    Error: LinkageError occurred while loading main class com.jam54.jam54_launcher.Main-->
+<!--                    java.lang.UnsupportedClassVersionError: com/jam54/jam54_launcher/Main has been compiled by a more recent version of the Java Runtime (class file version 62.0), this version of the Java Runtime only recognizes class file versions up to 61.0-->
+
+<!--                    Dus basically moet gelden, versie JRE >= versie JAR-->
+
+<!--                    Het is ook mogelijk om te builden voor oudere Java versies met meer recentere JDK's, dus er moet gelden, versie JDK >= versie target Java-->
+
+<!--                    De JDK die wordt gebruikt door `maven-compiler-plugin` om onze jar te builden, is degene die staat in ons PATH-->
+
+<!--                    We gebruiken Java 17 als doel omdat dit de laagste versie die alles nog support dat wij gebruiken (Records, Switches, etc), verder is het ook mooi meegenomen dat het een LTS is en dezelfde versie als onze JavaFX. Dat is niet noodzakelijk though-->
+
                 </configuration>
             </plugin>
             <plugin>
