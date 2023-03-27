@@ -169,7 +169,9 @@ public class GamesProgramsWindow extends VBox implements InvalidationListener
 
         if (applicationsHolder.getChildren().size() == 0)
         {
-            applicationsHolder.getChildren().add(new Label("%No items found for the applied filters OR No application matched the provided filters"));
+            HBox noApplicationsMatched = new HBox(new Text("%There were no applications that matched the filters you specified."));
+            noApplicationsMatched.setId("noApplicationsMatched");
+            applicationsHolder.getChildren().add(noApplicationsMatched);
         }
 
         int amountOfApps = model.getVisibleApplicationInfos().size();

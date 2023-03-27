@@ -374,6 +374,20 @@ GamesProgramsWindow, ApplicationWindow, SettingsWindow {
     -fx-vgap: 40;
 }
 
+#noApplicationsMatched {
+    -fx-background-color: -bg-foreground;
+    -fx-padding: 20;
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+    -fx-border-color: -other-border-division-scrollbar;
+}
+
+#noApplicationsMatched Text {
+    -fx-font-size: 20;
+    -fx-fill: -text-highlighted;
+    -fx-font-family: 'Lato';
+}
+
 .applicationButton {
     -fx-background-color: -bg-foreground;
     -fx-background-radius: 5;
