@@ -106,7 +106,7 @@ public class ApplicationWindow extends VBox implements InvalidationListener
 
         installButtonsHolder = new HBox();
 
-        leftSide.getChildren().addAll(imageView, latestUpdate_HBox, new Separator(), releaseDate_HBox, new Separator(), platform_HBox, new Separator());
+        leftSide.getChildren().addAll(latestUpdate_HBox, new Separator(), releaseDate_HBox, new Separator(), platform_HBox, new Separator());
 
         topBar.getChildren().addAll(title, backToLibrary);
 
@@ -167,7 +167,19 @@ public class ApplicationWindow extends VBox implements InvalidationListener
             description.setText(openedApp.descriptions().get(SaveLoadManager.getData().getLocale()));
 
             installButtonsHolder.getChildren().clear();
-            if (model.getUpdatingApp() == null || !openedApp.updateAvailable()) //Check if there isn't another app updating/downloading files
+            if (model.isAppValidating(openedApp.id()))
+            {
+                Button validatingAppButton = new Button("%Kindly hold on whilst " + openedApp.name() + " concludes its file validation procedure.");
+                installButtonsHolder.getChildren().add(validatingAppButton);
+                validatingAppButton.setDisable(true);
+            }
+            else if (model.isAppRemoving(openedApp.id()))
+            {
+                Button removingAppButton = new Button("%Kindly hold until " + openedApp.name() + "'s uninstall procedure finishes.");
+                installButtonsHolder.getChildren().add(removingAppButton);
+                removingAppButton.setDisable(true);
+            }
+            else if (model.getUpdatingApp() == null || !openedApp.updateAvailable()) //Check if there isn't another app updating/downloading files
             {
                 installUpdateButton.textProperty().unbind();
                 if (openedApp.version() == null) //If the app isn't installed
@@ -315,7 +327,7 @@ public class ApplicationWindow extends VBox implements InvalidationListener
             {
                 installButtonsHolder.getChildren().add(installUpdateButton);
                 installUpdateButton.textProperty().unbind();
-                installUpdateButton.setText("%Kindly hold on whilst X concludes its installation procedure.");
+                installUpdateButton.setText("%Kindly hold on whilst " + model.getApp(model.getUpdatingApp()).name() + " concludes its installation procedure.");
             }
         }
     }
@@ -326,9 +338,9 @@ public class ApplicationWindow extends VBox implements InvalidationListener
      *
      * We use a class instead of a function, so that we can make it run async/in parallel to avoid the UI freezing
      */
-    private class InstallApp extends Task<Void>
+    public class InstallApp extends Task<Void>
     {
-        int openedAppId = model.getOpenedApplication().id();
+        int openedAppId = model.getOpenedApplication() != null ? model.getOpenedApplication().id() : model.getLastValidatingApp();
         Path appInstallationPath = Path.of(SaveLoadManager.getData().getDataPath().toString(), openedAppId + "");
         String appsBaseDownloadUrl = "";
         HashMap<String, Path> hashesLocal;
@@ -413,6 +425,7 @@ public class ApplicationWindow extends VBox implements InvalidationListener
             FileSplitterCombiner fileSplitterCombiner = new FileSplitterCombiner();
             updateMessage("%Installing");
             fileSplitterCombiner.combineSplitFiles(appInstallationPath);
+            createShortcut(model.getApp(openedAppId));
             //endregion
 
             return null;
@@ -424,9 +437,9 @@ public class ApplicationWindow extends VBox implements InvalidationListener
      *
      * We use a class instead of a function, so that we can make it run async/in parallel to avoid the UI freezing
      */
-    private class RemoveApp extends Task<Void>
+    public class RemoveApp extends Task<Void>
     {
-        int openedAppId = model.getOpenedApplication().id();
+        int openedAppId = model.getOpenedApplication() != null ? model.getOpenedApplication().id() : model.getLastRemovingApp();
         Path appInstallationPath = Path.of(SaveLoadManager.getData().getDataPath().toString(), openedAppId + "");
 
         @Override
@@ -434,38 +447,42 @@ public class ApplicationWindow extends VBox implements InvalidationListener
         {
             updateMessage("%Uninstalling");
 
-            String openedAppExecutableName = model.removeRunningApp(openedAppId);
-            if (openedAppExecutableName != null) //If the app was running, then this process wouldn't be `null`
+            model.removeRunningApp(openedAppId);
+            String openedAppExecutableName = "";
+
+            try
             {
+                String entryPoint = FileUtils.readFileToString(Path.of(appInstallationPath.toString(), "EntryPoint.txt").toFile(), StandardCharsets.UTF_8);
+                openedAppExecutableName = new File(entryPoint).getName();
+
                 ProcessBuilder closeApp = new ProcessBuilder("cmd.exe", "/c", "taskkill /f /im " + '"' + openedAppExecutableName + '"');
-                try
-                {
-                    closeApp.start();
 
-                    long startTime = System.currentTimeMillis();
-                    long maxWaitTime = 20000; // Maximum wait time in milliseconds
+                closeApp.start();
 
-                    ProcessBuilder pb = new ProcessBuilder("cmd.exe", "/c", "tasklist");
-                    Process p = pb.start();
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
-                    String line;
-                    while ((line = reader.readLine()) != null && System.currentTimeMillis() - startTime < maxWaitTime) {
-                        if (line.contains(openedAppExecutableName)) {
-                            //We just loop here until the application is no longer present in the list, i.e. until the process that is removing it has finsihed
-                            //`process.waitfor();` didn't really work, since we aren't directly launching the application binary, but rather launching a new cmd prompt that we use to launch the application
-                        }
+                long startTime = System.currentTimeMillis();
+                long maxWaitTime = 20000; // Maximum wait time in milliseconds
+
+                ProcessBuilder pb = new ProcessBuilder("cmd.exe", "/c", "tasklist");
+                Process p = pb.start();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
+                String line;
+                while ((line = reader.readLine()) != null && System.currentTimeMillis() - startTime < maxWaitTime) {
+                    if (line.contains(openedAppExecutableName)) {
+                        //We just loop here until the application is no longer present in the list, i.e. until the process that is removing it has finsihed
+                        //`process.waitfor();` didn't really work, since we aren't directly launching the application binary, but rather launching a new cmd prompt that we use to launch the application
                     }
                 }
-                catch (IOException e)
-                {
-                    ErrorMessage errorMessage = new ErrorMessage(false, "%Please ensure that " + openedAppExecutableName + " is closed before proceeding with the uninstallation process. " + e.getMessage());
-                    errorMessage.show();
-                }
+            }
+            catch (IOException e)
+            {
+                ErrorMessage errorMessage = new ErrorMessage(false, "%Please ensure that " + openedAppExecutableName + " is closed before proceeding with the uninstallation process. " + e.getMessage());
+                errorMessage.show();
             }
 
             try
             {
                 FileUtils.deleteDirectory(appInstallationPath.toFile());
+                removeShortcut(model.getApp(openedAppId));
             }
             catch (IOException e)
             {
@@ -498,6 +515,67 @@ public class ApplicationWindow extends VBox implements InvalidationListener
         catch (IOException e)
         {
             ErrorMessage errorMessage = new ErrorMessage(false, "%Couldn't launch application. " + e.getMessage());
+            errorMessage.show();
+        }
+    }
+
+    /**
+     * Create the shortcuts for the given application info on both the desktop and the "Start Menu/Programs" folder, so that the app shows up in Windows Search
+     */
+    public void createShortcut(ApplicationInfo info)
+    {
+        int appId = info.id();
+        Path appInstallationPath = Path.of(SaveLoadManager.getData().getDataPath().toString(), appId + "");
+
+        try
+        {
+            String entryPoint = FileUtils.readFileToString(Path.of(appInstallationPath.toString(), "EntryPoint.txt").toFile(), StandardCharsets.UTF_8);
+
+            String fullPathToApp = entryPoint.contains(":") ? entryPoint : Path.of(appInstallationPath.toString(), entryPoint).toString(); //If the entrypoint contains a ":" character. Then it means it isn't a path to a file, but rather an URL to a website or an URL to send a mail. In such cases we don't want to use Path.of() but just the raw string
+
+            String desktopShortcutCommand = "cmd.exe /c powershell.exe -Command \"$WshShell = New-Object -comObject WScript.Shell; $Shortcut = $WshShell.CreateShortcut(\\\"$([System.Environment]::GetFolderPath([System.Environment+SpecialFolder]::Desktop))\\\\" + info.name() + ".lnk\\\"); $Shortcut.TargetPath = \\\"" + fullPathToApp.replace("\\", "\\\\") + "\\\"; $Shortcut.Save()\"";
+
+            String startMenuShortcutCommand = "cmd.exe /c powershell.exe -Command \"$WshShell = New-Object -comObject WScript.Shell; $Shortcut = $WshShell.CreateShortcut(\\\"%userprofile%\\\\\\\\AppData\\\\\\\\Roaming\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\Start Menu\\\\\\\\Programs\\\\\\\\\\\\" + info.name() + ".lnk\\\"); $Shortcut.TargetPath = \\\"" + fullPathToApp.replace("\\", "\\\\") + "\\\"; $Shortcut.Save()\"";
+
+            File scriptFile = File.createTempFile ("createShortcuts", ".bat");
+            try (PrintWriter script = new PrintWriter(scriptFile)) {
+                script.println(desktopShortcutCommand);
+                script.println(startMenuShortcutCommand);
+            }
+
+            ProcessBuilder createShortcuts = new ProcessBuilder(scriptFile.getAbsolutePath());
+            createShortcuts.start();
+        }
+        catch (Exception e) {
+            ErrorMessage errorMessage = new ErrorMessage(false, "%Couldn't create shortcut. " + e.getMessage());
+            errorMessage.show();
+        }
+    }
+
+    /**
+     * Removes the shortcuts for the given application info in both the desktop and the "Start Menu/Programs" folder
+     */
+    public void removeShortcut(ApplicationInfo info)
+    {
+        int appId = info.id();
+
+        try
+        {
+            String desktopShortcutCommand = "cmd.exe /c powershell.exe -Command \"Remove-Item \\\"$([System.Environment]::GetFolderPath([System.Environment+SpecialFolder]::Desktop))\\\\" + info.name() + ".lnk\\\"";
+
+            String startMenuShortcutCommand = "cmd.exe /c powershell.exe -Command \"Remove-Item \\\"%userprofile%\\\\\\\\AppData\\\\\\\\Roaming\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\Start Menu\\\\\\\\Programs\\\\\\\\\\\\" + info.name() + ".lnk\\\"";
+
+            File scriptFile = File.createTempFile ("removeShortcuts", ".bat");
+            try (PrintWriter script = new PrintWriter(scriptFile)) {
+                script.println(desktopShortcutCommand);
+                script.println(startMenuShortcutCommand);
+            }
+
+            ProcessBuilder removeShortcuts = new ProcessBuilder(scriptFile.getAbsolutePath());
+            removeShortcuts.start();
+        }
+        catch (Exception e) {
+            ErrorMessage errorMessage = new ErrorMessage(false, "%Couldn't remove shortcut. " + e.getMessage());
             errorMessage.show();
         }
     }

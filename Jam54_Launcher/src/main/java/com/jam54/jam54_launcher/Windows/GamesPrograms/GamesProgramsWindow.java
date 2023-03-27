@@ -9,8 +9,12 @@ import com.jam54.jam54_launcher.Windows.Application.ApplicationButton;
 import com.jam54.jam54_launcher.database_access.Other.ApplicationInfo;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
@@ -19,7 +23,9 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
+import java.sql.SQLOutput;
 import java.util.List;
+import java.util.Set;
 
 /**
  * This class is used to create the Games/Programs window.
@@ -115,11 +121,22 @@ public class GamesProgramsWindow extends VBox implements InvalidationListener
         //endregion
 
         //region center area
+        ScrollPane centerArea = new ScrollPane();
+        centerArea.setId("centerArea");
+
         applicationsHolder = new FlowPane();
         applicationsHolder.getStyleClass().add("applicationsHolder");
+
+        centerArea.setContent(applicationsHolder);
+
+        final double SPEED = 0.01;
+        centerArea.getContent().setOnScroll(scrollEvent -> {
+            double deltaY = scrollEvent.getDeltaY() * SPEED;
+            centerArea.setVvalue(centerArea.getVvalue() - deltaY);
+        });
         //endregion
 
-        getChildren().setAll(buttonBar, filtersHolder, applicationsHolder);
+        getChildren().setAll(buttonBar, filtersHolder, centerArea);
     }
     @Override
     public void invalidated(Observable observable)
@@ -143,7 +160,11 @@ public class GamesProgramsWindow extends VBox implements InvalidationListener
             ApplicationButton button = new ApplicationButton(application);
             button.setModel(model);
 
-            applicationsHolder.getChildren().add(button);
+            VBox appButtonHolder = new VBox(); //See explanation for this extra holder in the `applicationButtonHolder` styleclass inside the stylesheet
+            appButtonHolder.getStyleClass().add("applicationButtonHolder");
+
+            appButtonHolder.getChildren().add(button);
+            applicationsHolder.getChildren().add(appButtonHolder);
         }
 
         if (applicationsHolder.getChildren().size() == 0)

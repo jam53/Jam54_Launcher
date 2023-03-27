@@ -7,26 +7,27 @@ import javafx.beans.binding.Bindings;
 import javafx.beans.binding.StringBinding;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.collections.ObservableList;
-import javafx.scene.Node;
-import javafx.scene.control.ComboBox;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
+import javafx.scene.control.skin.ButtonSkin;
+import javafx.scene.control.skin.TextFieldSkin;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
 /**
- * This ComboBox class, transitions smoothly between the default/normal and hovered/selected colors of a Combobox
+ * This animation transitions smoothly between the default/normal and hovered/selected colors of a button
+ * This class is used in Java code by writing `Button.setSkin(...);`
  */
-public class ComboBoxColor extends ComboBox
+public class ButtonColor extends ButtonSkin
 {
     /**
-     * @param values The items of the ComboBox
+     * @param control The ToggleButton to animate
      * @param defaultColor The default/normal color
      * @param hoverColor The hovered color
      * @param selectColor The selected color
      */
-    public ComboBoxColor(ObservableList<String> values, Color defaultColor, Color hoverColor, Color selectColor) {
-
-        this.setItems(values);
+    public ButtonColor(Button control, Color defaultColor, Color hoverColor, Color selectColor) {
+        super(control);
 
         final ObjectProperty<Color> color = new SimpleObjectProperty<>(defaultColor);
 
@@ -40,7 +41,7 @@ public class ComboBoxColor extends ComboBox
         }, color);
 
         // bind the button's style property
-        this.styleProperty().bind(cssColorSpec);
+        control.styleProperty().bind(cssColorSpec);
 
         final Timeline hoverIn = new Timeline(
                 new KeyFrame(Duration.ZERO, new KeyValue(color, defaultColor)),
@@ -50,37 +51,17 @@ public class ComboBoxColor extends ComboBox
                 new KeyFrame(Duration.ZERO, new KeyValue(color, hoverColor)),
                 new KeyFrame(Duration.millis(200), new KeyValue(color, defaultColor)));
 
-        final Timeline focusedColor = new Timeline(
-                new KeyFrame(Duration.ZERO, new KeyValue(color, hoverColor)),
-                new KeyFrame(Duration.millis(200), new KeyValue(color, selectColor)));
-
-        this.hoverProperty().addListener((observableValue, oldV, hovered) ->
+        control.hoverProperty().addListener((observableValue, oldV, hovered) ->
         {
-            if (hovered && !this.isShowing())
+            if (hovered)
             {
                 hoverIn.play();
             }
-            else if (!this.isShowing())
-            {
-                hoverOut.play();
-            }
             else
             {
-                focusedColor.play();
+                hoverOut.play();
             }
         });
-
-        this.showingProperty().addListener(((observableValue, oldV, showing) ->
-        {
-            if (!showing)
-            {
-                hoverOut.play();
-            }
-            else
-            {
-                focusedColor.play();
-            }
-        }));
     }
 
     /**

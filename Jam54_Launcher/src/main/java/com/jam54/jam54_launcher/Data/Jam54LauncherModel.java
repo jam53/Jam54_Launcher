@@ -1,5 +1,6 @@
 package com.jam54.jam54_launcher.Data;
 
+import com.jam54.jam54_launcher.Windows.Application.ApplicationWindow;
 import com.jam54.jam54_launcher.database_access.Other.ApplicationInfo;
 import com.jam54.jam54_launcher.Windows.Application.Platforms;
 import javafx.beans.InvalidationListener;
@@ -36,10 +37,15 @@ public class Jam54LauncherModel implements Observable
 
     private Integer updatingApp;
 
+    private final ArrayList<Integer> validatingApps;
+    private final ArrayList<Integer> removingApps;
+
     public Jam54LauncherModel()
     {
         listenerList = new ArrayList<>();
         runningApps = new HashMap<>();
+        validatingApps = new ArrayList<>();
+        removingApps = new ArrayList<>();
     }
 
     private void fireInvalidationEvent()
@@ -259,5 +265,85 @@ public class Jam54LauncherModel implements Observable
     public Integer getUpdatingApp()
     {
         return updatingApp;
+    }
+
+    /**
+     * @return  Returns the applicationInfo of the given appId
+     */
+    public ApplicationInfo getApp(int id)
+    {
+        for(ApplicationInfo applicationInfo : allApplicationInfos)
+        {
+            if (applicationInfo.id() == id)
+            {
+                return applicationInfo;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * If an app's files are being validated, we add them to the validatingApps list using this function
+     */
+    public void addValidatingApp(int appId)
+    {
+        validatingApps.add(appId);
+    }
+
+    /**
+     * If an app's files are done being validated, we remove them from the validatingApps list using this function
+     */
+    public void removeValidatingApp(Integer appId)
+    {
+        validatingApps.remove(appId);
+    }
+
+    /**
+     * Checks if the validatingApps list contains a given appId
+     */
+    public boolean isAppValidating(Integer appId)
+    {
+        return validatingApps.contains(appId);
+    }
+
+    /**
+     * Gets the last app in the list of apps that is validating
+     */
+    public int getLastValidatingApp()
+    {
+        return validatingApps.get(validatingApps.size() - 1);
+    }
+
+    /**
+     * If an app's files are being removed, we add them to the removingApps list using this function
+     */
+    public void addRemovingApp(int appId)
+    {
+        removingApps.add(appId);
+    }
+
+    /**
+     * If an app's files are done being removed, we remove them from the removingApps list using this function
+     */
+    public void removeRemovingApp(Integer appId)
+    {
+        removingApps.remove(appId);
+    }
+
+    /**
+     * Checks if the removingApps list contains a given appId
+     */
+    public boolean isAppRemoving(Integer appId)
+    {
+        return removingApps.contains(appId);
+    }
+
+    /**
+     * Gets the last app in the list of apps that is removing
+     */
+    public int getLastRemovingApp()
+    {
+        return removingApps.get(removingApps.size() - 1);
     }
 }

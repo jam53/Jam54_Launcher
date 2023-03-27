@@ -52,11 +52,11 @@ public class TextFieldColor extends TextFieldSkin
             }
             else if (control.isFocused())
             {
-                return "-fx-background-color: " + colorToString(selectColor);
+                return "-fx-background-color: " + colorToString(color) + ";";
             }
             else
             {
-                return "-fx-background-color: " + colorToString(defaultColor) + ";";
+                return "-fx-background-color: " + colorToString(color) + ";";
             }
         }, color);
 
@@ -98,8 +98,6 @@ public class TextFieldColor extends TextFieldSkin
         });
         control.setOnKeyPressed(e -> focusedColor.play());
         control.setOnMousePressed(e -> focusedColor.play());
-
-        hoverIn.play(); //Dit runt de eerste keer in het begin, zodat de geselecteerde toggle de geselecteerde kleur krijgt
     }
 
     /**

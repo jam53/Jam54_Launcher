@@ -37,18 +37,7 @@ public class CheckBoxColor extends CheckBoxSkin
         final StringBinding cssColorSpec = Bindings.createStringBinding(() ->
         {
             color.get(); //Do not remove, otherwise the animation breaks
-            if (control.isHover())
-            {
-                return "-fx-background-color: " + colorToString(color) + ";";
-            }
-            else if (control.isSelected())
-            {
-                return "-fx-background-color: " + colorToString(selectColor);
-            }
-            else
-            {
-                return "-fx-background-color: " + colorToString(defaultColor) + ";";
-            }
+            return "-fx-background-color: " + colorToString(color) + ";";
         }, color);
 
         // bind the button's style property
@@ -66,30 +55,21 @@ public class CheckBoxColor extends CheckBoxSkin
                 new KeyFrame(Duration.ZERO, new KeyValue(color, hoverColor)),
                 new KeyFrame(Duration.millis(200), new KeyValue(color, selectColor)));
 
-        control.setOnMouseEntered(event ->
+        control.hoverProperty().addListener((observableValue, oldValue, hovered) ->
         {
-            if (!control.isSelected())
-            {
+            if (hovered && !control.isSelected())
+            {//A bit counter intuitive, but will return true when hovered && not selected
                 hoverIn.play();
             }
-        });
-        control.setOnMouseExited(event ->
-        {
-            if (!control.isSelected())
-            {
+            else if (!control.isSelected())
+            {//A bit counter intuitive, but will return true when not selected
                 hoverOut.play();
             }
         });
-        control.focusedProperty().addListener((observableValue, notFocused, t1) ->
+        control.setOnMousePressed(e ->
         {
-            if (notFocused)
-            {
-                hoverOut.play();
-            }
+            focusedColor.play();
         });
-        control.setOnMousePressed(e -> focusedColor.play());
-
-        hoverIn.play(); //Dit runt de eerste keer in het begin, zodat de geselecteerde toggle de geselecteerde kleur krijgt
     }
 
     /**

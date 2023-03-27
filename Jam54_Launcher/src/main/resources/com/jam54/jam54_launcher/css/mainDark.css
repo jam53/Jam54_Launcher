@@ -99,6 +99,7 @@ GamesProgramsWindow, ApplicationWindow, SettingsWindow {
 .updateAvailableHolder{
     -fx-border-color: #25C85E;
     -fx-border-radius: 10;
+    -fx-alignment: center-right;
 }
 
 .updateAvailableHolder Label {
@@ -107,7 +108,9 @@ GamesProgramsWindow, ApplicationWindow, SettingsWindow {
 
 .updateAvailableHolder Button {
     -fx-background-color: linear-gradient(from 25% 25% to 100% 100%, #25C85E, #1DCF19);
+    -fx-border-color: linear-gradient(from 25% 25% to 100% 100%, #25C85E, #1DCF19);
     -fx-background-radius: 0 9 9 0;
+    -fx-border-radius: 0 9 9 0;
     -fx-pref-height: 1000000;
     -fx-text-fill: white;
     -fx-skin: "com.jam54.jam54_launcher.Animations.ButtonScale";
@@ -199,7 +202,7 @@ GamesProgramsWindow, ApplicationWindow, SettingsWindow {
 
 .filtersHolder {
     -fx-font-size: 16;
-    -fx-padding: 0 30 0 30;
+    -fx-padding: 0 30 30 30;
     -fx-alignment: center-left;
     -fx-spacing: 10;
 }
@@ -301,7 +304,215 @@ GamesProgramsWindow, ApplicationWindow, SettingsWindow {
     -fx-shape: "M12.8642 0.966136L12.8642 0.966112C12.6862 0.834995 12.463 0.778397 12.2433 0.807446C12.0236 0.836501 11.8232 0.949199 11.687 1.12285L5.40442 9.1291L2.22182 6.03962L2.22191 6.03953L2.2167 6.03481C2.05646 5.88984 1.84567 5.81178 1.62891 5.8155C1.41214 5.81921 1.20421 5.90445 1.04921 6.05495C0.894029 6.20563 0.804051 6.41013 0.800133 6.62573C0.796215 6.84135 0.878719 7.04893 1.02846 7.20496L1.02837 7.20505L1.03344 7.20997L4.89549 10.96C4.9808 11.0429 5.08303 11.1069 5.19513 11.1478C5.30723 11.1888 5.42686 11.2059 5.54607 11.1982C5.66528 11.1905 5.78165 11.1581 5.88739 11.103C5.99314 11.0479 6.08599 10.9711 6.15944 10.8777L6.15953 10.8776L13.0256 2.12731C13.0256 2.1273 13.0256 2.12729 13.0256 2.12728C13.0933 2.04108 13.143 1.94244 13.1717 1.83693C13.2004 1.73139 13.2074 1.6213 13.1922 1.51303C13.177 1.40477 13.1401 1.30073 13.0837 1.20687C13.0273 1.11303 12.9526 1.0313 12.8642 0.966136Z";
 }
 
+#centerArea {
+    -fx-background: -bg-main;
+    -fx-fit-to-height: true;
+    -fx-fit-to-width: true;
+    -fx-border-color: -bg-main;
+    -fx-border-width: 2;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+.scroll-bar:horizontal .track,
+.scroll-bar:vertical .track{
+    -fx-background-color : -bg-main;
+    -fx-border-color : -bg-main;
+    -fx-background-radius : 0.0em;
+    -fx-background-insets: -1;
+    -fx-border-radius :2.0em;
+}
+
+
+.scroll-bar:horizontal .increment-button ,
+.scroll-bar:horizontal .decrement-button {
+    -fx-background-color : -bg-main;
+    -fx-background-radius : 0.0em;
+    -fx-padding :0.0 0.0 10.0 0.0;
+
+}
+
+.scroll-bar:vertical .increment-button ,
+.scroll-bar:vertical .decrement-button {
+    -fx-background-color : -bg-main;
+    -fx-background-radius : 0.0em;
+    -fx-padding :0.0 10.0 0.0 0.0;
+
+}
+
+.scroll-bar .increment-arrow,
+.scroll-bar .decrement-arrow{
+    -fx-shape : " ";
+    -fx-padding :0.15em 0.0;
+}
+
+.scroll-bar:vertical .increment-arrow,
+.scroll-bar:vertical .decrement-arrow{
+    -fx-shape : " ";
+    -fx-padding :0.0 0.15em;
+}
+
+.scroll-bar:horizontal .thumb,
+.scroll-bar:vertical .thumb {
+    -fx-background-color : -bg-foreground;
+    -fx-background-insets : 2.0, 0.0, 0.0;
+    -fx-background-radius : 2.0em;
+}
+
+.scroll-bar:horizontal .thumb:hover,
+.scroll-bar:vertical .thumb:hover {
+    -fx-background-color : -bg-selected;
+    -fx-background-insets : 2.0, 0.0, 0.0;
+    -fx-background-radius : 2.0em;
+}
+
 .applicationsHolder {
     -fx-pref-height: 1000000;
-    -fx-alignment: center;
+    -fx-alignment: top-left;
+    -fx-padding: 5 30;
+    -fx-hgap: 40;
+    -fx-vgap: 40;
+}
+
+.applicationButton {
+    -fx-background-color: -bg-foreground;
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+    -fx-border-color: -other-border-division-scrollbar;
+    -fx-pref-width: 188;
+}
+
+.applicationButtonHolder:hover ApplicationButton {
+    -fx-effect: dropshadow(gaussian, -other-blur, 8, 0, 0.0, 0.0);
+    -fx-border-width: 3;
+    -fx-border-color: -accent-button-main;
+} /* We only want to enable this 3px width border, when the holder around this applicationButton is being hovered. Otherwise the user might hover over just the holder which will remove the holder's border width. Which will cause visual UI tripping */
+
+.applicationButton:pressed {
+    -fx-effect: dropshadow(gaussian, -other-blur, 11, 0, 0.0, 0.0);
+    -fx-border-color: -accent-button-clicked;
+}
+
+/*When we increase the border of the applicationButton upon hovering, it gets 2 pixels bigger. (From border width 1 to 3). This causes all the other applicationButtons to slightly move up/down when we hover. Since there is a difference in height now
+
+To circumvent/get around this, we put the applicationButton in another VBox which has a border of 2 pixels. When we then hover we set the border width of the applicationButtonHolder to 0. These cancel each other out and this way the size stays the same, which no longer causes all the applicationButtons to shift up/down when hovering over them
+*/
+.applicationButtonHolder {
+    -fx-border-width: 2;
+    -fx-border-color: transparent;
+}
+
+.applicationButtonHolder:hover {
+    -fx-border-width: 0;
+}
+
+.applicationButton HBox {
+    -fx-padding: 9 11 6 11;
+    -fx-border-color: -other-border-division-scrollbar;
+    -fx-border-style: solid none none none;
+}
+
+.applicationButton HBox Text {
+    -fx-font-size: 18;
+    -fx-fill: -text-highlighted;
+    -fx-font-family: 'New Rubrik TRIAL';
+}
+
+#statusHolder {
+    -fx-padding: 3 0 0 3;
+    -fx-alignment: center-left;
+    -fx-border-width: 0;
+    -fx-spacing: 8;
+}
+
+#statusHolder Text {
+    -fx-font-size: 13;
+    -fx-fill: -button-icon-unselected;
+    -fx-font-family: 'New Rubrik TRIAL';
+    -fx-padding: 0 0 0 3;
+}
+
+.applicationButton HBox HBox {
+    -fx-alignment: center-right;
+    -fx-pref-width: 10000000000;
+    -fx-border-width: 0;
+    -fx-padding: 0;
+}
+
+.applicationButton HBox HBox Button {
+    -fx-pref-width: 28;
+    -fx-pref-height: 28;
+
+    -fx-background-color: -hollow-button-unselected;
+    -fx-background-image: url('../img/icons/Options_ButtonIconUnselected.png');
+    -fx-background-size: 28;
+
+}
+
+.applicationButton HBox HBox Button:hover {
+    -fx-background-color: -hollow-button-clicked;
+    -fx-background-image: url('../img/icons/Options_ButtonIconHovered.png');
+}
+
+.applicationButton HBox HBox Button:selected {
+    -fx-background-color: -hollow-button-clicked;
+    -fx-background-image: url('../img/icons/Options_ButtonIconClicked.png');
+}
+
+.optionsWindow{
+    -fx-background-color: -bg-foreground;
+    -fx-border-color: -other-border-division-scrollbar;
+    -fx-padding: 15;
+    -fx-background-radius: 4;
+    -fx-border-radius: 4;
+}
+
+.optionsWindow Button{
+    -fx-pref-height: 30;
+
+    -fx-font-size: 13;
+    -fx-text-fill: -text-highlighted;
+    -fx-font-family: 'Lato';
+
+    -fx-background-color: transparent;
+
+    -fx-max-width: 1000000;
+
+    -fx-alignment: center-left;
+}
+
+.optionsWindow HBox Button {
+    -fx-max-width: 1000000;
+}
+
+.optionsWindow Button:hover {
+    -fx-background-color: -bg-selected;
+    -fx-underline: true;
+}
+
+.optionsWindow Button:pressed {
+    -fx-background-color: -filled-button-clicked;
+}
+
+.optionsWindow HBox HBox {
+    -fx-alignment: center-right;
+}
+
+.optionsWindow HBox HBox Button {
+    -fx-text-fill: -text-not-highlighted;
+}
+
+#seperatorHolder .separator *.line {
+    -fx-border-color: -other-border-division-scrollbar;
+    -fx-border-width: 1;
+    -fx-padding: 0;
+}
+
+#versionHolder {
+    -fx-alignment: center-left;
+}
+
+#noButtonStyling:hover {
+    -fx-background-color: transparent;
+    -fx-underline: false;
 }

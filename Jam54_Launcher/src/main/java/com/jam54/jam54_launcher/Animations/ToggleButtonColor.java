@@ -19,6 +19,8 @@ import javafx.scene.paint.Stop;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
+import java.sql.SQLOutput;
+
 /**
  * This animation transitions smoothly between the default/normal and hovered/selected colors of a toggle button
  * This class is used in Java code by writing `ToggleButton.setSkin(...);`
@@ -53,7 +55,7 @@ public class ToggleButtonColor extends ToggleButtonSkin
             }
             else
             {
-                return "-fx-background-color: linear-gradient(from 25% 25% to 100% 100%, " + colorToString(defaultColor) + ", " + colorToString(defaultColor) + ");";
+                return "-fx-background-color: linear-gradient(from 25% 25% to 100% 100%, " + colorToString(color1) + ", " + colorToString(color2) + ");";
             }
         }, color1);
 
@@ -72,29 +74,28 @@ public class ToggleButtonColor extends ToggleButtonSkin
                 new KeyFrame(Duration.millis(200), new KeyValue(color1, defaultColor)),
                 new KeyFrame(Duration.millis(200), new KeyValue(color2, defaultColor)));
 
-        control.setOnMouseEntered(event ->
+        control.hoverProperty().addListener((obs, oldV, hovered) ->
         {
-            if (!control.isSelected())
+            if (hovered && !control.isSelected())
+            {
+                hoverIn.play();
+            }
+            else if (!hovered && !control.isSelected())
+            {
+                hoverOut.play();
+            }
+        });
+        control.selectedProperty().addListener((observableValue, oldV, selected) ->
+        {
+            if (!selected)
+            {
+                hoverOut.play();
+            }
+            else
             {
                 hoverIn.play();
             }
         });
-        control.setOnMouseExited(event ->
-        {
-            if (!control.isFocused())
-            {
-                hoverOut.play();
-            }
-        });
-        control.selectedProperty().addListener((observableValue, notSelected, t1) ->
-        {
-            if (notSelected)
-            {
-                hoverOut.play();
-            }
-        });
-
-        hoverIn.play(); //Dit runt de eerste keer in het begin, zodat de geselecteerde toggle de geselecteerde kleur krijgt
     }
 
     /**
