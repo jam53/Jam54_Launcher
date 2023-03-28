@@ -289,6 +289,7 @@ public class Jam54LauncherModel implements Observable
     public void addValidatingApp(int appId)
     {
         validatingApps.add(appId);
+        fireInvalidationEvent();
     }
 
     /**
@@ -297,6 +298,7 @@ public class Jam54LauncherModel implements Observable
     public void removeValidatingApp(Integer appId)
     {
         validatingApps.remove(appId);
+        fireInvalidationEvent();
     }
 
     /**
@@ -308,11 +310,18 @@ public class Jam54LauncherModel implements Observable
     }
 
     /**
-     * Gets the last app in the list of apps that is validating
+     * Gets the last app in the list of apps that is validating, returns null if there are no apps being validated
      */
-    public int getLastValidatingApp()
+    public Integer getLastValidatingApp()
     {
-        return validatingApps.get(validatingApps.size() - 1);
+        if (validatingApps.size() >= 1)
+        {
+            return validatingApps.get(validatingApps.size() - 1);
+        }
+        else
+        {
+            return null;
+        }
     }
 
     /**
@@ -321,6 +330,7 @@ public class Jam54LauncherModel implements Observable
     public void addRemovingApp(int appId)
     {
         removingApps.add(appId);
+        fireInvalidationEvent();
     }
 
     /**
@@ -329,6 +339,7 @@ public class Jam54LauncherModel implements Observable
     public void removeRemovingApp(Integer appId)
     {
         removingApps.remove(appId);
+        fireInvalidationEvent();
     }
 
     /**
@@ -340,10 +351,17 @@ public class Jam54LauncherModel implements Observable
     }
 
     /**
-     * Gets the last app in the list of apps that is removing
+     * Gets the last app in the list of apps that is removing, returns null if there are no apps being removed
      */
-    public int getLastRemovingApp()
+    public Integer getLastRemovingApp()
     {
-        return removingApps.get(removingApps.size() - 1);
+        if (removingApps.size() >= 1)
+        {
+            return removingApps.get(removingApps.size() - 1);
+        }
+        else
+        {
+            return null;
+        }
     }
 }

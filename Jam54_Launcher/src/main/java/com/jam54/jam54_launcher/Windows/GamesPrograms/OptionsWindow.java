@@ -24,12 +24,20 @@ import java.util.ArrayList;
  */
 public class OptionsWindow extends VBox
 {
+    /**
+     * Constructor from when being called from the ApplicationButton
+     */
     public OptionsWindow(ApplicationInfo info, ApplicationButton applicationButton, Jam54LauncherModel model)
     {
         this.getStyleClass().add("optionsWindow");
 
-        Button storePage_Button = new Button("%Go To Store Page");
+        HBox storePage_ButtonHolder = new HBox();
+        Button storePage_Button = new Button();
+        HBox.setHgrow(storePage_Button, Priority.ALWAYS);
+        storePage_Button.setGraphic(new Text("%Go To Store Page"));
         storePage_Button.setOnAction(e -> {applicationButton.selectApplicationWindow(null); applicationButton.closeOptionsWindow();});
+        storePage_ButtonHolder.getChildren().add(storePage_Button);
+
         HBox verifyFileIntegrity_ButtonHolder = new HBox();
         HBox createDesktopShortcut_ButtonHolder = new HBox();
 
@@ -45,40 +53,59 @@ public class OptionsWindow extends VBox
         {
             try
             {
-                Button verifyFileIntegrity_Button = new Button("%Verify file integrity");
-                HBox.setHgrow(verifyFileIntegrity_Button, Priority.ALWAYS);
-                verifyFileIntegrity_ButtonHolder.getChildren().add(verifyFileIntegrity_Button);
-                verifyFileIntegrity_Button.setOnAction(event ->
+                if (model.getUpdatingApp() == null) // if there isn't an app being updated
                 {
-                    applicationButton.closeOptionsWindow();
-                    model.addValidatingApp(info.id());
-
-                    ApplicationWindow applicationWindow = new ApplicationWindow();
-                    applicationWindow.setModel(model);
-                    ApplicationWindow.InstallApp installApp = applicationWindow.new InstallApp();
-                    new Thread(installApp).start();
-
-                    installApp.setOnSucceeded(e ->
+                    Button verifyFileIntegrity_Button = new Button();
+                    verifyFileIntegrity_Button.setGraphic(new Text("%Verify file integrity"));
+                    HBox.setHgrow(verifyFileIntegrity_Button, Priority.ALWAYS);
+                    verifyFileIntegrity_ButtonHolder.getChildren().add(verifyFileIntegrity_Button);
+                    verifyFileIntegrity_Button.setOnAction(event ->
                     {
-                        model.removeValidatingApp(info.id());
+                        applicationButton.closeOptionsWindow();
+                        model.addValidatingApp(info.id());
 
-                        ApplicationInfo openedApp = info;
+                        ApplicationWindow applicationWindow = new ApplicationWindow();
+                        applicationWindow.setModel(model);
+                        ApplicationWindow.InstallApp installApp = applicationWindow.new InstallApp();
+                        new Thread(installApp).start();
 
-                        ApplicationInfo updatedApp = new ApplicationInfo(openedApp.id(), openedApp.name(), openedApp.image(), false, openedApp.availableVersion(), openedApp.availableVersion(), openedApp.descriptions(), openedApp.platforms(), openedApp.releaseDate(), openedApp.lastUpdate(), openedApp.isGame());
-                        model.setOpenedApplication(updatedApp);
+                        installApp.setOnSucceeded(e ->
+                        {
+                            model.removeValidatingApp(info.id());
 
-                        ArrayList<ApplicationInfo> applicationsInModel = model.getAllApplications();
-                        applicationsInModel.remove(openedApp);
-                        applicationsInModel.add(updatedApp);
-                        model.setAllApplications(applicationsInModel);
+                            ApplicationInfo openedApp = info;
 
-                        String[] installedApplicationVersions = SaveLoadManager.getData().getInstalledApplicationVersions();
-                        installedApplicationVersions[updatedApp.id()] = updatedApp.version();
-                        SaveLoadManager.getData().setInstalledApplicationVersions(installedApplicationVersions);
+                            ApplicationInfo updatedApp = new ApplicationInfo(openedApp.id(), openedApp.name(), openedApp.image(), false, openedApp.availableVersion(), openedApp.availableVersion(), openedApp.descriptions(), openedApp.platforms(), openedApp.releaseDate(), openedApp.lastUpdate(), openedApp.isGame());
+                            model.setOpenedApplication(updatedApp);
+
+                            ArrayList<ApplicationInfo> applicationsInModel = model.getAllApplications();
+                            applicationsInModel.remove(openedApp);
+                            applicationsInModel.add(updatedApp);
+                            model.setAllApplications(applicationsInModel);
+
+                            ArrayList<ApplicationInfo> newVisibleApplicationsInModel = new ArrayList<>();
+                            for (ApplicationInfo visibleApp : model.getVisibleApplicationInfos())
+                            {
+                                if (visibleApp.id() == (openedApp.id()))
+                                {
+                                    newVisibleApplicationsInModel.add(updatedApp);
+                                }
+                                else
+                                {
+                                    newVisibleApplicationsInModel.add(visibleApp);
+                                }
+                            }
+                            model.setVisibleApplicationInfos(newVisibleApplicationsInModel);
+
+                            String[] installedApplicationVersions = SaveLoadManager.getData().getInstalledApplicationVersions();
+                            installedApplicationVersions[updatedApp.id()] = updatedApp.version();
+                            SaveLoadManager.getData().setInstalledApplicationVersions(installedApplicationVersions);
+                        });
                     });
-                });
+                }
 
-                Button createDesktopShortcut_Button = new Button("%Create Desktop Shortcut");
+                Button createDesktopShortcut_Button = new Button();
+                createDesktopShortcut_Button.setGraphic(new Text("%Create Desktop Shortcut"));
                 createDesktopShortcut_Button.setOnAction(e ->
                 {
                     applicationButton.closeOptionsWindow();
@@ -88,54 +115,75 @@ public class OptionsWindow extends VBox
                 });
                 createDesktopShortcut_ButtonHolder.getChildren().add(createDesktopShortcut_Button);
 
-                Button uninstall_Button = new Button("%Uninstall");
-                uninstall_Button.setOnAction(event ->
+                if (model.getUpdatingApp() == null) // if there isn't an app being updated
                 {
-                    applicationButton.closeOptionsWindow();
-                    model.addRemovingApp(info.id());
-
-                    ApplicationWindow applicationWindow = new ApplicationWindow();
-                    applicationWindow.setModel(model);
-                    ApplicationWindow.RemoveApp removeApp = applicationWindow.new RemoveApp();
-                    new Thread(removeApp).start();
-
-                    removeApp.setOnSucceeded(e ->
+                    Button uninstall_Button = new Button();
+                    uninstall_Button.setGraphic(new Text("%Uninstall"));
+                    uninstall_Button.setOnAction(event ->
                     {
-                        model.removeRemovingApp(info.id());
+                        applicationButton.closeOptionsWindow();
+                        model.addRemovingApp(info.id());
 
-                        ApplicationInfo openedApp = info;
+                        ApplicationWindow applicationWindow = new ApplicationWindow();
+                        applicationWindow.setModel(model);
+                        ApplicationWindow.RemoveApp removeApp = applicationWindow.new RemoveApp();
+                        new Thread(removeApp).start();
 
-                        ApplicationInfo updatedApp = new ApplicationInfo(openedApp.id(), openedApp.name(), openedApp.image(), openedApp.updateAvailable(), openedApp.availableVersion(), null, openedApp.descriptions(), openedApp.platforms(), openedApp.releaseDate(), openedApp.lastUpdate(), openedApp.isGame());
-                        model.setOpenedApplication(updatedApp);
+                        removeApp.setOnSucceeded(e ->
+                        {
+                            model.removeRemovingApp(info.id());
 
-                        ArrayList<ApplicationInfo> applicationsInModel = model.getAllApplications();
-                        applicationsInModel.remove(openedApp);
-                        applicationsInModel.add(updatedApp);
-                        model.setAllApplications(applicationsInModel);
+                            ApplicationInfo openedApp = info;
 
-                        String[] installedApplicationVersions = SaveLoadManager.getData().getInstalledApplicationVersions();
-                        installedApplicationVersions[updatedApp.id()] = updatedApp.version();
-                        SaveLoadManager.getData().setInstalledApplicationVersions(installedApplicationVersions);
+                            ApplicationInfo updatedApp = new ApplicationInfo(openedApp.id(), openedApp.name(), openedApp.image(), openedApp.updateAvailable(), openedApp.availableVersion(), null, openedApp.descriptions(), openedApp.platforms(), openedApp.releaseDate(), openedApp.lastUpdate(), openedApp.isGame());
+                            model.setOpenedApplication(updatedApp);
+
+                            ArrayList<ApplicationInfo> applicationsInModel = model.getAllApplications();
+                            applicationsInModel.remove(openedApp);
+                            applicationsInModel.add(updatedApp);
+                            model.setAllApplications(applicationsInModel);
+
+                            ArrayList<ApplicationInfo> newVisibleApplicationsInModel = new ArrayList<>();
+                            for (ApplicationInfo visibleApp : model.getVisibleApplicationInfos())
+                            {
+                                if (visibleApp.id() == (openedApp.id()))
+                                {
+                                    newVisibleApplicationsInModel.add(updatedApp);
+                                }
+                                else
+                                {
+                                    newVisibleApplicationsInModel.add(visibleApp);
+                                }
+                            }
+                            model.setVisibleApplicationInfos(newVisibleApplicationsInModel);
+
+                            String[] installedApplicationVersions = SaveLoadManager.getData().getInstalledApplicationVersions();
+                            installedApplicationVersions[updatedApp.id()] = updatedApp.version();
+                            SaveLoadManager.getData().setInstalledApplicationVersions(installedApplicationVersions);
+                        });
                     });
-                });
 
-                HBox appSize_TextHolder = new HBox();
-                HBox.setHgrow(appSize_TextHolder, Priority.ALWAYS);
-                Button appSize_Text = new Button(getFolderSize(Path.of(SaveLoadManager.getData().getDataPath().toString(), "" + info.id())));
-                appSize_Text.setId("noButtonStyling");
-                appSize_TextHolder.getChildren().add(appSize_Text);
-                uninstallHolder.getChildren().addAll(uninstall_Button, appSize_TextHolder);
+                    HBox appSize_TextHolder = new HBox();
+                    HBox.setHgrow(appSize_TextHolder, Priority.ALWAYS);
+                    Button appSize_Text = new Button();
+                    appSize_Text.setGraphic(new Text(getFolderSize(Path.of(SaveLoadManager.getData().getDataPath().toString(), "" + info.id()))));
+                    appSize_Text.setId("noButtonStyling");
+                    appSize_TextHolder.getChildren().add(appSize_Text);
+                    uninstallHolder.getChildren().addAll(uninstall_Button, appSize_TextHolder);
+                }
 
                 Separator separator = new Separator();
                 HBox.setHgrow(separator, Priority.ALWAYS);
                 separatorHolder.getChildren().add(separator);
 
                 versionHolder.setId("versionHolder");
-                Button version_Button = new Button("%Version");
+                Button version_Button = new Button();
+                version_Button.setGraphic(new Text("%Version"));
                 version_Button.setId("noButtonStyling");
                 HBox appVersion_ButtonHolder = new HBox();
                 HBox.setHgrow(appVersion_ButtonHolder, Priority.ALWAYS);
-                Button appVersion_Button = new Button(info.version());
+                Button appVersion_Button = new Button();
+                appVersion_Button.setGraphic(new Text(info.version()));
                 appVersion_Button.setId("noButtonStyling");
                 appVersion_ButtonHolder.getChildren().add(appVersion_Button);
                 versionHolder.getChildren().addAll(version_Button, appVersion_ButtonHolder);
@@ -147,7 +195,170 @@ public class OptionsWindow extends VBox
             }
         }
 
-        this.getChildren().addAll(storePage_Button, verifyFileIntegrity_ButtonHolder, createDesktopShortcut_ButtonHolder, uninstallHolder, separatorHolder, versionHolder);
+        this.getChildren().addAll(storePage_ButtonHolder, verifyFileIntegrity_ButtonHolder, createDesktopShortcut_ButtonHolder, uninstallHolder, separatorHolder, versionHolder);
+    }
+
+    /**
+     * Constructor from when being called from the ApplicationWindow
+     */
+    public OptionsWindow(ApplicationWindow applicationWindow, Jam54LauncherModel model)
+    {
+        this.getStyleClass().add("optionsWindow");
+
+        HBox verifyFileIntegrity_ButtonHolder = new HBox();
+        HBox createDesktopShortcut_ButtonHolder = new HBox();
+
+        HBox uninstallHolder = new HBox();
+
+        HBox separatorHolder = new HBox();
+        separatorHolder.setId("seperatorHolder");
+
+        HBox versionHolder = new HBox();
+
+        ApplicationInfo info = model.getOpenedApplication();
+
+        if (info.version() != null) //If the app is installed
+        {
+            try
+            {
+                if (model.getUpdatingApp() == null) // if there isn't an app being updated
+                {
+                    Button verifyFileIntegrity_Button = new Button();
+                    verifyFileIntegrity_Button.setGraphic(new Text("%Verify file integrity"));
+                    HBox.setHgrow(verifyFileIntegrity_Button, Priority.ALWAYS);
+                    verifyFileIntegrity_ButtonHolder.getChildren().add(verifyFileIntegrity_Button);
+                    verifyFileIntegrity_Button.setOnAction(event ->
+                    {
+                        applicationWindow.closeOptionsWindow();
+                        model.addValidatingApp(info.id());
+
+                        ApplicationWindow.InstallApp installApp = applicationWindow.new InstallApp();
+                        new Thread(installApp).start();
+
+                        installApp.setOnSucceeded(e ->
+                        {
+                            model.removeValidatingApp(info.id());
+
+                            ApplicationInfo openedApp = info;
+
+                            ApplicationInfo updatedApp = new ApplicationInfo(openedApp.id(), openedApp.name(), openedApp.image(), false, openedApp.availableVersion(), openedApp.availableVersion(), openedApp.descriptions(), openedApp.platforms(), openedApp.releaseDate(), openedApp.lastUpdate(), openedApp.isGame());
+                            model.setOpenedApplication(updatedApp);
+
+                            ArrayList<ApplicationInfo> applicationsInModel = model.getAllApplications();
+                            applicationsInModel.remove(openedApp);
+                            applicationsInModel.add(updatedApp);
+                            model.setAllApplications(applicationsInModel);
+
+                            ArrayList<ApplicationInfo> newVisibleApplicationsInModel = new ArrayList<>();
+                            for (ApplicationInfo visibleApp : model.getVisibleApplicationInfos())
+                            {
+                                if (visibleApp.id() == (openedApp.id()))
+                                {
+                                    newVisibleApplicationsInModel.add(updatedApp);
+                                }
+                                else
+                                {
+                                    newVisibleApplicationsInModel.add(visibleApp);
+                                }
+                            }
+                            model.setVisibleApplicationInfos(newVisibleApplicationsInModel);
+
+                            String[] installedApplicationVersions = SaveLoadManager.getData().getInstalledApplicationVersions();
+                            installedApplicationVersions[updatedApp.id()] = updatedApp.version();
+                            SaveLoadManager.getData().setInstalledApplicationVersions(installedApplicationVersions);
+                        });
+                    });
+                }
+
+                Button createDesktopShortcut_Button = new Button();
+                createDesktopShortcut_Button.setGraphic(new Text("%Create Desktop Shortcut"));
+                createDesktopShortcut_Button.setOnAction(e ->
+                {
+                    applicationWindow.closeOptionsWindow();
+                    applicationWindow.createShortcut(info);
+                });
+                createDesktopShortcut_ButtonHolder.getChildren().add(createDesktopShortcut_Button);
+
+                if (model.getUpdatingApp() == null) // if there isn't an app being updated
+                {
+                    Button uninstall_Button = new Button();
+                    uninstall_Button.setGraphic(new Text("%Uninstall"));
+                    uninstall_Button.setOnAction(event ->
+                    {
+                        applicationWindow.closeOptionsWindow();
+                        model.addRemovingApp(info.id());
+
+                        ApplicationWindow.RemoveApp removeApp = applicationWindow.new RemoveApp();
+                        new Thread(removeApp).start();
+
+                        removeApp.setOnSucceeded(e ->
+                        {
+                            model.removeRemovingApp(info.id());
+
+                            ApplicationInfo openedApp = info;
+
+                            ApplicationInfo updatedApp = new ApplicationInfo(openedApp.id(), openedApp.name(), openedApp.image(), openedApp.updateAvailable(), openedApp.availableVersion(), null, openedApp.descriptions(), openedApp.platforms(), openedApp.releaseDate(), openedApp.lastUpdate(), openedApp.isGame());
+                            model.setOpenedApplication(updatedApp);
+
+                            ArrayList<ApplicationInfo> applicationsInModel = model.getAllApplications();
+                            applicationsInModel.remove(openedApp);
+                            applicationsInModel.add(updatedApp);
+                            model.setAllApplications(applicationsInModel);
+
+                            ArrayList<ApplicationInfo> newVisibleApplicationsInModel = new ArrayList<>();
+                            for (ApplicationInfo visibleApp : model.getVisibleApplicationInfos())
+                            {
+                                if (visibleApp.id() == (openedApp.id()))
+                                {
+                                    newVisibleApplicationsInModel.add(updatedApp);
+                                }
+                                else
+                                {
+                                    newVisibleApplicationsInModel.add(visibleApp);
+                                }
+                            }
+                            model.setVisibleApplicationInfos(newVisibleApplicationsInModel);
+
+                            String[] installedApplicationVersions = SaveLoadManager.getData().getInstalledApplicationVersions();
+                            installedApplicationVersions[updatedApp.id()] = updatedApp.version();
+                            SaveLoadManager.getData().setInstalledApplicationVersions(installedApplicationVersions);
+                        });
+                    });
+
+                    HBox appSize_TextHolder = new HBox();
+                    HBox.setHgrow(appSize_TextHolder, Priority.ALWAYS);
+                    Button appSize_Text = new Button();
+                    appSize_Text.setGraphic(new Text(getFolderSize(Path.of(SaveLoadManager.getData().getDataPath().toString(), "" + info.id()))));
+                    appSize_Text.setId("noButtonStyling");
+                    appSize_TextHolder.getChildren().add(appSize_Text);
+
+                    uninstallHolder.getChildren().addAll(uninstall_Button, appSize_TextHolder);
+                }
+
+                Separator separator = new Separator();
+                HBox.setHgrow(separator, Priority.ALWAYS);
+                separatorHolder.getChildren().add(separator);
+
+                versionHolder.setId("versionHolder");
+                Button version_Button = new Button();
+                version_Button.setGraphic(new Text("%Version"));
+                version_Button.setId("noButtonStyling");
+                HBox appVersion_ButtonHolder = new HBox();
+                HBox.setHgrow(appVersion_ButtonHolder, Priority.ALWAYS);
+                Button appVersion_Button = new Button();
+                appVersion_Button.setGraphic(new Text(info.version()));
+                appVersion_Button.setId("noButtonStyling");
+                appVersion_ButtonHolder.getChildren().add(appVersion_Button);
+                versionHolder.getChildren().addAll(version_Button, appVersion_ButtonHolder);
+            }
+            catch (Exception e)
+            { //If we have an installed app, open the store page, remove it, and open the options menu. Then the info object wont be updated and we would therefore think the app is still installed. Stuff inside the try statement would then throw errors; for example when calculating the size of the app etc. That's why there is a try-catch here
+                verifyFileIntegrity_ButtonHolder.getChildren().clear();
+                createDesktopShortcut_ButtonHolder.getChildren().clear();
+            }
+        }
+
+        this.getChildren().addAll(verifyFileIntegrity_ButtonHolder, createDesktopShortcut_ButtonHolder, uninstallHolder, separatorHolder, versionHolder);
     }
 
     /**

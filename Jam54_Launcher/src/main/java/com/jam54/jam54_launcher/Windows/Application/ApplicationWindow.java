@@ -1,25 +1,37 @@
 package com.jam54.jam54_launcher.Windows.Application;
 
+import com.jam54.jam54_launcher.Animations.ButtonColor;
+import com.jam54.jam54_launcher.Animations.ToggleButtonColor;
 import com.jam54.jam54_launcher.Data.Jam54LauncherModel;
 import com.jam54.jam54_launcher.Data.SaveLoad.SaveLoadManager;
 import com.jam54.jam54_launcher.ErrorMessage;
 import com.jam54.jam54_launcher.Main;
 import com.jam54.jam54_launcher.Updating.FileSplitterCombiner;
 import com.jam54.jam54_launcher.Updating.Hashes;
+import com.jam54.jam54_launcher.Windows.GamesPrograms.OptionsWindow;
 import com.jam54.jam54_launcher.database_access.Other.ApplicationInfo;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Separator;
+import javafx.geometry.Bounds;
+import javafx.geometry.Orientation;
+import javafx.scene.Node;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import javafx.stage.Popup;
+import javafx.stage.Stage;
+import javafx.stage.Window;
 import org.apache.commons.io.FileUtils;
 
 import java.io.*;
@@ -33,9 +45,10 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Properties;
-import java.util.concurrent.TimeUnit;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * This window displays more detail about a specific app.
@@ -49,20 +62,20 @@ public class ApplicationWindow extends VBox implements InvalidationListener
     private final VBox leftSide;
     private final VBox rightSide;
 
-    private final Label title;
-    private final Button backToLibrary;
+    private final Text title;
+    private final ToggleButton backToLibrary;
 
     private final ImageView imageView;
     private final HBox latestUpdate_HBox;
-    private final Label latestUpdate_Label;
-    private final Label latestUpdateDate;
+    private final Text latestUpdate_Text;
+    private final Text latestUpdateDate;
 
     private final HBox releaseDate_HBox;
-    private final Label releaseDate_Label;
-    private final Label releaseDateDate;
+    private final Text releaseDate_Text;
+    private final Text releaseDateDate;
 
     private final HBox platform_HBox;
-    private final Label platform_Label;
+    private final Text platform_Text;
     private final HBox platformIcons_HBox;
 
     private final TextFlow descriptionHolder;
@@ -70,49 +83,133 @@ public class ApplicationWindow extends VBox implements InvalidationListener
     private HBox installButtonsHolder;
     private Button installUpdateButton;
     private InstallApp installApp;
-
+    private Popup popup;
 
     public ApplicationWindow()
     {
-        topBar = new HBox();
-        leftSide = new VBox();
-        rightSide = new VBox();
+        this.getStyleClass().add("applicationWindow");
 
-        title = new Label();
-        backToLibrary = new Button("%Back To Library");
+        //region topBar
+        topBar = new HBox();
+        topBar.getStyleClass().add("buttonBar");
+
+        title = new Text();
+        HBox titleHolder = new HBox(title);
+        titleHolder.prefWidthProperty().bind(topBar.prefWidthProperty().divide(3));
+        titleHolder.getStyleClass().add("buttonBarTitle");
+
+        backToLibrary = new ToggleButton();
+        backToLibrary.setGraphic(new Text("%Back To Library")); //By default the text inside a ToggleButton is displayed usinga "Label" object, which looks terrible and not smooth when using a custom font
+        backToLibrary.setSkin(new ToggleButtonColor(backToLibrary, Color.web("#0E112C"), Color.web("#2193D3"), Color.web("#494FD6")));
         backToLibrary.setOnAction(this::backToLibrary);
+        HBox backToLibraryHolder = new HBox(backToLibrary);
+        backToLibraryHolder.prefWidthProperty().bind(topBar.prefWidthProperty().divide(3));
+        backToLibraryHolder.getStyleClass().add("buttonBarToggles");
+
+        HBox optionsButtonHolder = new HBox();
+        optionsButtonHolder.prefWidthProperty().bind(topBar.prefWidthProperty().divide(3));
+        Button optionsButton = new Button();
+        optionsButton.setId("optionsButton");
+        optionsButton.setOnMouseClicked(this::openOptionsWindow);
+        optionsButton.setSkin(new ButtonColor(optionsButton, Color.web("#242424"), Color.web("#595959"), Color.web("#595959")));
+        optionsButtonHolder.getChildren().add(optionsButton);
+        optionsButtonHolder.getStyleClass().add("optionsButtonHolder");
+
+        topBar.getChildren().addAll(titleHolder, backToLibraryHolder, optionsButtonHolder);
+        //endregion
+
+        //region left side
+        leftSide = new VBox();
+        leftSide.getStyleClass().add("leftSideApplicationWindow");
 
         imageView = new ImageView();
+        imageView.setFitHeight(346);
+        imageView.setFitWidth(346);
+
+        Rectangle clipRounded = new Rectangle();
+        clipRounded.setWidth(346);
+        clipRounded.setHeight(346);
+        clipRounded.setArcHeight(10);
+        clipRounded.setArcWidth(10);
+
+        imageView.setClip(clipRounded);
 
         latestUpdate_HBox = new HBox();
-        latestUpdate_Label = new Label("%LatestUpdate");
-        latestUpdateDate = new Label();
+        latestUpdate_Text = new Text("%LatestUpdate");
+        latestUpdate_Text.setId("applicationWindowNotHighlightedText");
+        latestUpdateDate = new Text();
+        latestUpdateDate.setId("applicationWindowHighlightedText");
 
         releaseDate_HBox = new HBox();
-        releaseDate_Label = new Label("%ReleaseDate");
-        releaseDateDate = new Label();
+        releaseDate_Text = new Text("%ReleaseDate");
+        releaseDate_Text.setId("applicationWindowNotHighlightedText");
+        releaseDateDate = new Text();
+        releaseDateDate.setId("applicationWindowHighlightedText");
 
         platform_HBox = new HBox();
-        platform_Label = new Label("%Platform");
+        platform_HBox.setId("platform_HBox");
+        platform_Text = new Text("%Platform");
+        platform_Text.setId("applicationWindowNotHighlightedText");
         platformIcons_HBox = new HBox();
 
-        latestUpdate_HBox.getChildren().addAll(latestUpdate_Label, latestUpdateDate);
-        releaseDate_HBox.getChildren().addAll(releaseDate_Label, releaseDateDate);
-        platform_HBox.getChildren().addAll(platform_Label, platformIcons_HBox);
+        latestUpdate_HBox.getChildren().addAll(latestUpdate_Text, new HBox(latestUpdateDate));
+        releaseDate_HBox.getChildren().addAll(releaseDate_Text, new HBox(releaseDateDate));
+        platform_HBox.getChildren().addAll(new HBox(platform_Text, new HBox(platformIcons_HBox)));
+
+        leftSide.getChildren().addAll(imageView, latestUpdate_HBox, new Separator(), releaseDate_HBox, new Separator(), platform_HBox);
+        //endregion
+
+        //region right side
+        rightSide = new VBox();
+        rightSide.getStyleClass().add("rightSideApplicationWindow");
+
+        ScrollPane descriptionScrollPane = new ScrollPane();
+        descriptionScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
 
         descriptionHolder = new TextFlow();
+        descriptionHolder.setLineSpacing(5);
         description = new Text();
         descriptionHolder.getChildren().add(description);
 
+        descriptionScrollPane.setContent(descriptionHolder);
+
+        final double SPEED = 0.01;
+        descriptionScrollPane.getContent().setOnScroll(scrollEvent -> {
+            double deltaY = scrollEvent.getDeltaY() * SPEED;
+            descriptionScrollPane.setVvalue(descriptionScrollPane.getVvalue() - deltaY);
+        });
+
+        //region enable/disable scrollbar based on whether or not all of the content is visible inside the scrollpane
+        // Get the position and size of the viewport
+        descriptionHolder.heightProperty().addListener(e -> {
+
+        Bounds viewportBounds = descriptionScrollPane.getViewportBounds();
+        double viewportHeight = viewportBounds.getHeight();
+
+        // Get the size of the content
+        double contentHeight = descriptionHolder.getBoundsInLocal().getHeight();
+
+        // Check if there is content that isn't being shown
+        boolean hasUnshownContent = contentHeight > viewportHeight;
+
+            if (hasUnshownContent)
+            {
+                descriptionScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+            }
+            else
+            {
+                descriptionScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+            }
+        });
+        //endregion
+
+
         installButtonsHolder = new HBox();
 
-        leftSide.getChildren().addAll(latestUpdate_HBox, new Separator(), releaseDate_HBox, new Separator(), platform_HBox, new Separator());
+        rightSide.getChildren().addAll(descriptionScrollPane, installButtonsHolder);
+        //endregion
 
-        topBar.getChildren().addAll(title, backToLibrary);
-
-        rightSide.getChildren().addAll(descriptionHolder, installButtonsHolder);
-
-        this.getChildren().addAll(topBar, leftSide, rightSide);
+        this.getChildren().addAll(topBar, new HBox(leftSide, rightSide));
 
         installUpdateButton = new Button(); //We initialiseren deze variabele reeds hier, in tegenstelling tot de play/remove buttons die elke keer opnieuw worden angemaakt bij het openen van het ApplicationWindow. We doen dit op voorhand omdat in het geval dat de gebruiker een update start, het ApplicationWindow verlaat, en terugkomt. In dat geval zal de install button er weer staan
     }
@@ -127,6 +224,7 @@ public class ApplicationWindow extends VBox implements InvalidationListener
         model.setSettingsWindowSelected(false);
         //We don't set on of the Games/Programs windows' values to true. This is because one of them is already true. (Since we didn't set it to false when opening the ApplicationWindow)
         //And if we go "back to library" from the Application Window. This will allow us to reopen the last page we were on. Either Games or Programs
+        backToLibrary.setSelected(false); //It would have been better to use a button, rather than a toggle button. But we already have the CSS styling and the ToggleButton skin so in order to relieve some of the work I just used a toggle button. But because it's a ToggleButton and not a Button, it will appear "clicked/hovered" when we return to the application window after having clicked on it before. That's why we set `selected` to `false`
     }
 
     public void setModel(Jam54LauncherModel model)
@@ -161,30 +259,83 @@ public class ApplicationWindow extends VBox implements InvalidationListener
             platformIcons_HBox.getChildren().clear();
             for (Platforms platform : openedApp.platforms())
             {
-                platformIcons_HBox.getChildren().add(new Label(platform.name()));
+                Image platformIcon;
+
+                if (platform == Platforms.ANDROID)
+                {
+                    platformIcon = new Image("/com/jam54/jam54_launcher/img/icons/Mobile.png", 44, 44, true, true);
+                }
+                else if (platform == Platforms.WINDOWS)
+                {
+                    platformIcon = new Image("/com/jam54/jam54_launcher/img/icons/Desktop.png", 44, 44, true, true);
+                }
+                else
+                {
+                    platformIcon = new Image("/com/jam54/jam54_launcher/img/icons/Web.png", 44, 44, true, true);
+                }
+
+                platformIcons_HBox.getChildren().add(new ImageView(platformIcon));
             }
 
-            description.setText(openedApp.descriptions().get(SaveLoadManager.getData().getLocale()));
+            description.setText(openedApp.descriptions().get(SaveLoadManager.getData().getLocale()).replace("\\n", "\n\n"));
 
             installButtonsHolder.getChildren().clear();
             if (model.isAppValidating(openedApp.id()))
             {
-                Button validatingAppButton = new Button("%Kindly hold on whilst " + openedApp.name() + " concludes its file validation procedure.");
+                Button validatingAppButton = new Button();
+                validatingAppButton.setId("nonPrimaryButton");
+                validatingAppButton.setDisable(true);
+                validatingAppButton.setSkin(new ButtonColor(validatingAppButton, Color.web("#404040"), Color.web("#383838"), Color.web("#313131")));
+                Text text = new Text();
+                AtomicBoolean doneOnce = new AtomicBoolean(false);
+                validatingAppButton.widthProperty().addListener((obs, oldV, newV) ->
+                {
+                    if (!doneOnce.get() && newV.doubleValue() > 0)
+                    {
+                        doneOnce.set(true);
+                        text.setWrappingWidth(newV.doubleValue()/1.3);
+                        text.setText("%Kindly hold on whilst " + openedApp.name() + " concludes its file validation procedure.");
+                    }
+                });
+                validatingAppButton.setGraphic(text);
                 installButtonsHolder.getChildren().add(validatingAppButton);
                 validatingAppButton.setDisable(true);
             }
             else if (model.isAppRemoving(openedApp.id()))
             {
-                Button removingAppButton = new Button("%Kindly hold until " + openedApp.name() + "'s uninstall procedure finishes.");
+                Button removingAppButton = new Button();
+                removingAppButton.setId("nonPrimaryButton");
+                removingAppButton.setDisable(true);
+                removingAppButton.setSkin(new ButtonColor(removingAppButton, Color.web("#404040"), Color.web("#383838"), Color.web("#313131")));
+                Text text = new Text();
+                AtomicBoolean doneOnce = new AtomicBoolean(false);
+                removingAppButton.widthProperty().addListener((obs, oldV, newV) ->
+                {
+                    if (!doneOnce.get() && newV.doubleValue() > 0)
+                    {
+                        doneOnce.set(true);
+                        text.setWrappingWidth(newV.doubleValue()/1.3);
+                        text.setText("%Kindly hold on until " + openedApp.name() + "'s uninstall procedure finishes.");
+                    }
+                });
+                removingAppButton.setGraphic(text);
                 installButtonsHolder.getChildren().add(removingAppButton);
                 removingAppButton.setDisable(true);
             }
-            else if (model.getUpdatingApp() == null || !openedApp.updateAvailable()) //Check if there isn't another app updating/downloading files
+            else if ((model.getUpdatingApp() == null && model.getLastValidatingApp() == null && model.getLastRemovingApp() == null) || !openedApp.updateAvailable()) //Check if there isn't another app updating/downloading files && there isn't another app validating its files && there isn't another app being removed
             {
                 installUpdateButton.textProperty().unbind();
+                installUpdateButton.setId("primaryButton");
+                installUpdateButton.setSkin(new ButtonColor(installUpdateButton, Color.web("#3D77C2"), Color.web("#3669AB"), Color.web("#2E5A93")));
                 if (openedApp.version() == null) //If the app isn't installed
                 {
-                    installUpdateButton.setText("%Install");
+                    HBox iconTextHolder = new HBox();
+                    ImageView buttonIcon = new ImageView(new Image(Main.class.getResource("img/icons/DownloadWhite.png").toString()));
+                    buttonIcon.setFitHeight(24);
+                    buttonIcon.setFitWidth(24);
+                    Text buttonText = new Text("%INSTALL");
+                    iconTextHolder.getChildren().setAll(buttonIcon, buttonText);
+                    installUpdateButton.setGraphic(iconTextHolder);
                     installButtonsHolder.getChildren().add(installUpdateButton);
 
                     installApp = new InstallApp();
@@ -193,8 +344,18 @@ public class ApplicationWindow extends VBox implements InvalidationListener
                     {
                         model.setUpdatingApp(openedApp.id());
                         new Thread(installApp).start();
-                        installUpdateButton.setDisable(true);
-                        installUpdateButton.textProperty().bind(installApp.messageProperty()); //Update button's text with progress
+
+                        installButtonsHolder.getChildren().clear();
+                        VBox installProgressHolder = new VBox();
+
+                        Text installProgress_Text = new Text();
+                        ProgressBar progressBar = new ProgressBar();
+
+                        installProgressHolder.getChildren().addAll(installProgress_Text, progressBar);
+                        installButtonsHolder.getChildren().add(installProgressHolder);
+
+                        installProgress_Text.textProperty().bind(installApp.messageProperty()); //Update button's text with progress message
+                        progressBar.progressProperty().bind(installApp.progressProperty()); //Update the progressBar's progress with the progress
                     });
                     installApp.setOnSucceeded(e ->
                     {
@@ -209,6 +370,20 @@ public class ApplicationWindow extends VBox implements InvalidationListener
                         applicationsInModel.add(updatedApp);
                         model.setAllApplications(applicationsInModel);
 
+                        ArrayList<ApplicationInfo> newVisibleApplicationsInModel = new ArrayList<>();
+                        for (ApplicationInfo visibleApp : model.getVisibleApplicationInfos())
+                        {
+                            if (visibleApp.id() == (openedApp.id()))
+                            {
+                                newVisibleApplicationsInModel.add(updatedApp);
+                            }
+                            else
+                            {
+                                newVisibleApplicationsInModel.add(visibleApp);
+                            }
+                        }
+                        model.setVisibleApplicationInfos(newVisibleApplicationsInModel);
+
                         String[] installedApplicationVersions = SaveLoadManager.getData().getInstalledApplicationVersions();
                         installedApplicationVersions[updatedApp.id()] = updatedApp.version();
                         SaveLoadManager.getData().setInstalledApplicationVersions(installedApplicationVersions);
@@ -216,10 +391,29 @@ public class ApplicationWindow extends VBox implements InvalidationListener
                 }
                 else if (openedApp.updateAvailable()) //If the app is installed but if there is an update available
                 {
-                    installUpdateButton.setText("%Update");
-                    Button removeButton = new Button("%Remove");
+                    HBox iconTextHolder = new HBox();
+                    ImageView buttonIcon = new ImageView(new Image(Main.class.getResource("img/icons/UpdateWhite.png").toString()));
+                    buttonIcon.setFitHeight(22);
+                    buttonIcon.setFitWidth(22);
+                    Text buttonText = new Text("%UPDATE");
+                    iconTextHolder.getChildren().setAll(buttonIcon, buttonText);
+                    installUpdateButton.setGraphic(iconTextHolder);
 
-                    installButtonsHolder.getChildren().add(removeButton);
+                    Button removeButton = new Button();
+                    removeButton.setId("nonPrimaryButton");
+                    removeButton.setSkin(new ButtonColor(removeButton, Color.web("#404040"), Color.web("#383838"), Color.web("#313131")));
+                    HBox iconTextHolder2 = new HBox();
+                    ImageView buttonIcon2 = new ImageView(new Image(Main.class.getResource("img/icons/Uninstall.png").toString()));
+                    buttonIcon2.setFitHeight(22);
+                    buttonIcon2.setFitWidth(22);
+                    Text buttonText2 = new Text("%UNINSTALL");
+                    iconTextHolder.getChildren().setAll(buttonIcon2, buttonText2);
+                    installUpdateButton.setGraphic(iconTextHolder2);
+
+                    if (model.getUpdatingApp() == null && model.getLastValidatingApp() == null && model.getLastRemovingApp() == null)
+                    { //You can only remove an app, while there is no other app being downloaded, validated or removed. So we only add the uninstall button when that is the case
+                        installButtonsHolder.getChildren().add(removeButton);
+                    }
                     installButtonsHolder.getChildren().add(installUpdateButton);
 
                     installApp = new InstallApp();
@@ -229,9 +423,18 @@ public class ApplicationWindow extends VBox implements InvalidationListener
                     {
                         model.setUpdatingApp(openedApp.id());
                         new Thread(installApp).start();
-                        installUpdateButton.setDisable(true);
-                        removeButton.setDisable(true);
-                        installUpdateButton.textProperty().bind(installApp.messageProperty()); //Update button's text with progress
+
+                        installButtonsHolder.getChildren().clear();
+                        VBox installProgressHolder = new VBox();
+
+                        Text installProgress_Text = new Text();
+                        ProgressBar progressBar = new ProgressBar();
+
+                        installProgressHolder.getChildren().addAll(installProgress_Text, progressBar);
+                        installButtonsHolder.getChildren().add(installProgressHolder);
+
+                        installProgress_Text.textProperty().bind(installApp.messageProperty()); //Update button's text with progress message
+                        progressBar.progressProperty().bind(installApp.progressProperty()); //Update the progressBar's progress with the progress
                     });
                     installApp.setOnSucceeded(e ->
                     {
@@ -247,6 +450,20 @@ public class ApplicationWindow extends VBox implements InvalidationListener
                         applicationsInModel.add(updatedApp);
                         model.setAllApplications(applicationsInModel);
 
+                        ArrayList<ApplicationInfo> newVisibleApplicationsInModel = new ArrayList<>();
+                        for (ApplicationInfo visibleApp : model.getVisibleApplicationInfos())
+                        {
+                            if (visibleApp.id() == (openedApp.id()))
+                            {
+                                newVisibleApplicationsInModel.add(updatedApp);
+                            }
+                            else
+                            {
+                                newVisibleApplicationsInModel.add(visibleApp);
+                            }
+                        }
+                        model.setVisibleApplicationInfos(newVisibleApplicationsInModel);
+
                         String[] installedApplicationVersions = SaveLoadManager.getData().getInstalledApplicationVersions();
                         installedApplicationVersions[updatedApp.id()] = updatedApp.version();
                         SaveLoadManager.getData().setInstalledApplicationVersions(installedApplicationVersions);
@@ -257,7 +474,7 @@ public class ApplicationWindow extends VBox implements InvalidationListener
                         new Thread(removeApp).start();
                         installUpdateButton.setDisable(true);
                         removeButton.setDisable(true);
-                        removeButton.textProperty().bind(removeApp.messageProperty()); //Update button's text with progress
+                        buttonText2.textProperty().bind(removeApp.messageProperty()); //Update button's text with progress
                     });
 
                     removeApp.setOnSucceeded(e ->
@@ -273,6 +490,20 @@ public class ApplicationWindow extends VBox implements InvalidationListener
                         applicationsInModel.add(updatedApp);
                         model.setAllApplications(applicationsInModel);
 
+                        ArrayList<ApplicationInfo> newVisibleApplicationsInModel = new ArrayList<>();
+                        for (ApplicationInfo visibleApp : model.getVisibleApplicationInfos())
+                        {
+                            if (visibleApp.id() == (openedApp.id()))
+                            {
+                                newVisibleApplicationsInModel.add(updatedApp);
+                            }
+                            else
+                            {
+                                newVisibleApplicationsInModel.add(visibleApp);
+                            }
+                        }
+                        model.setVisibleApplicationInfos(newVisibleApplicationsInModel);
+
                         String[] installedApplicationVersions = SaveLoadManager.getData().getInstalledApplicationVersions();
                         installedApplicationVersions[updatedApp.id()] = updatedApp.version();
                         SaveLoadManager.getData().setInstalledApplicationVersions(installedApplicationVersions);
@@ -280,10 +511,32 @@ public class ApplicationWindow extends VBox implements InvalidationListener
                 }
                 else //If the app is installed and there is no update available
                 {
-                    Button removeButton = new Button("%Remove");
-                    Button playButton = new Button("%Start");
+                    Button removeButton = new Button();
+                    removeButton.setId("nonPrimaryButton");
+                    removeButton.setSkin(new ButtonColor(removeButton, Color.web("#404040"), Color.web("#383838"), Color.web("#313131")));
+                    HBox iconTextHolder = new HBox();
+                    ImageView buttonIcon = new ImageView(new Image(Main.class.getResource("img/icons/Uninstall.png").toString()));
+                    buttonIcon.setFitHeight(22);
+                    buttonIcon.setFitWidth(22);
+                    Text buttonText = new Text("%UNINSTALL");
+                    iconTextHolder.getChildren().setAll(buttonIcon, buttonText);
+                    removeButton.setGraphic(iconTextHolder);
 
-                    installButtonsHolder.getChildren().add(removeButton);
+                    Button playButton = new Button();
+                    playButton.setId("primaryButton");
+                    playButton.setSkin(new ButtonColor(playButton, Color.web("#3D77C2"), Color.web("#3669AB"), Color.web("#2E5A93")));
+                    HBox iconTextHolder2 = new HBox();
+                    ImageView buttonIcon2 = new ImageView(new Image(Main.class.getResource("img/icons/PlayWhite.png").toString()));
+                    buttonIcon2.setFitHeight(20);
+                    buttonIcon2.setFitWidth(17);
+                    Text buttonText2 = new Text("%START");
+                    iconTextHolder2.getChildren().setAll(buttonIcon2, buttonText2);
+                    playButton.setGraphic(iconTextHolder2);
+
+                    if (model.getUpdatingApp() == null && model.getLastValidatingApp() == null && model.getLastRemovingApp() == null)
+                    { //You can only remove an app, while there is no other app being downloaded, validated or removed. So we only add the uninstall button when that is the case
+                        installButtonsHolder.getChildren().add(removeButton);
+                    }
                     installButtonsHolder.getChildren().add(playButton);
 
                     RemoveApp removeApp = new RemoveApp();
@@ -293,7 +546,7 @@ public class ApplicationWindow extends VBox implements InvalidationListener
                         new Thread(removeApp).start();
                         playButton.setDisable(true);
                         removeButton.setDisable(true);
-                        removeButton.textProperty().bind(removeApp.messageProperty()); //Update button's text with progress
+                        buttonText.textProperty().bind(removeApp.messageProperty()); //Update button's text with progress
                     });
 
                     removeApp.setOnSucceeded(e ->
@@ -309,6 +562,20 @@ public class ApplicationWindow extends VBox implements InvalidationListener
                         applicationsInModel.add(updatedApp);
                         model.setAllApplications(applicationsInModel);
 
+                        ArrayList<ApplicationInfo> newVisibleApplicationsInModel = new ArrayList<>();
+                        for (ApplicationInfo visibleApp : model.getVisibleApplicationInfos())
+                        {
+                            if (visibleApp.id() == (openedApp.id()))
+                            {
+                                newVisibleApplicationsInModel.add(updatedApp);
+                            }
+                            else
+                            {
+                                newVisibleApplicationsInModel.add(visibleApp);
+                            }
+                        }
+                        model.setVisibleApplicationInfos(newVisibleApplicationsInModel);
+
                         String[] installedApplicationVersions = SaveLoadManager.getData().getInstalledApplicationVersions();
                         installedApplicationVersions[updatedApp.id()] = updatedApp.version();
                         SaveLoadManager.getData().setInstalledApplicationVersions(installedApplicationVersions);
@@ -317,17 +584,84 @@ public class ApplicationWindow extends VBox implements InvalidationListener
                     playButton.setOnAction(this::playApp);
                 }
             }
-            else if (model.getUpdatingApp() == openedApp.id())
+            else if (model.getLastValidatingApp() != null)
             {
                 installButtonsHolder.getChildren().add(installUpdateButton);
                 installUpdateButton.textProperty().unbind();
-                installUpdateButton.textProperty().bind(installApp.messageProperty());
+                installUpdateButton.setId("nonPrimaryButton");
+                installUpdateButton.setDisable(true);
+                installUpdateButton.setSkin(new ButtonColor(installUpdateButton, Color.web("#404040"), Color.web("#383838"), Color.web("#313131")));
+
+                Text text = new Text("");
+                if (installUpdateButton.getWidth() > 0)
+                {
+                    text.setWrappingWidth(installUpdateButton.getWidth()/1.3);
+                    text.setText("%Kindly hold on whilst " + model.getApp(model.getLastValidatingApp()).name() + " concludes its file validation procedure.");
+                }
+                installUpdateButton.widthProperty().addListener((obs, oldV, newV) ->
+                {
+                    if (newV.doubleValue() > 0)
+                    {
+                        text.setWrappingWidth(newV.doubleValue()/1.3);
+                        text.setText("%Kindly hold on whilst " + model.getApp(model.getLastValidatingApp()).name() + " concludes its file validation procedure.");
+                    }
+                });
+                installUpdateButton.setGraphic(text);
+            }
+            else if (model.getLastRemovingApp() != null)
+            {
+                installButtonsHolder.getChildren().add(installUpdateButton);
+                installUpdateButton.textProperty().unbind();
+                installUpdateButton.setId("nonPrimaryButton");
+                installUpdateButton.setDisable(true);
+                installUpdateButton.setSkin(new ButtonColor(installUpdateButton, Color.web("#404040"), Color.web("#383838"), Color.web("#313131")));
+
+                Text text = new Text("");
+                if (installUpdateButton.getWidth() > 0)
+                {
+                    text.setWrappingWidth(installUpdateButton.getWidth()/1.3);
+                    text.setText("%Kindly hold on until " + model.getApp(model.getLastRemovingApp()).name() + "'s uninstall procedure finishes.");
+                }
+                installUpdateButton.widthProperty().addListener((obs, oldV, newV) ->
+                {
+                    if (newV.doubleValue() > 0)
+                    {
+                        text.setWrappingWidth(newV.doubleValue()/1.3);
+                        text.setText("%Kindly hold on until " + model.getApp(model.getLastRemovingApp()).name() + "'s uninstall procedure finishes.");
+                    }
+                });
+                installUpdateButton.setGraphic(text);
+            }
+            else if (model.getUpdatingApp() == openedApp.id())
+            {
+                installButtonsHolder.getChildren().clear();
+                VBox installProgressHolder = new VBox();
+
+                Text installProgress_Text = new Text();
+                ProgressBar progressBar = new ProgressBar();
+
+                installProgressHolder.getChildren().addAll(installProgress_Text, progressBar);
+                installButtonsHolder.getChildren().add(installProgressHolder);
+
+                installProgress_Text.textProperty().bind(installApp.messageProperty()); //Update button's text with progress message
+                progressBar.progressProperty().bind(installApp.progressProperty()); //Update the progressBar's progress with the progress
             }
             else if (model.getUpdatingApp() != null)
             {
                 installButtonsHolder.getChildren().add(installUpdateButton);
                 installUpdateButton.textProperty().unbind();
-                installUpdateButton.setText("%Kindly hold on whilst " + model.getApp(model.getUpdatingApp()).name() + " concludes its installation procedure.");
+                installUpdateButton.setId("nonPrimaryButton");
+                installUpdateButton.setDisable(true);
+                installUpdateButton.setSkin(new ButtonColor(installUpdateButton, Color.web("#404040"), Color.web("#383838"), Color.web("#313131")));
+
+                Text text = new Text("");
+                while (installUpdateButton.getWidth() <= 0)
+                {
+                    //wait
+                }
+                text.setWrappingWidth(installUpdateButton.getWidth() / 1.3);
+                text.setText("%Kindly hold on whilst " + model.getApp(model.getUpdatingApp()).name() + " concludes its installation procedure.");
+                installUpdateButton.setGraphic(text);
             }
         }
     }
@@ -365,7 +699,7 @@ public class ApplicationWindow extends VBox implements InvalidationListener
             //endregion
 
             //region get hashes
-            updateMessage("%Calculating hashes");
+            updateMessage("%CALCULATING HASHES");
 
             Hashes hashes = new Hashes();
             hashesLocal = hashes.calculateHashesForFilesInDirectory(appInstallationPath);
@@ -389,7 +723,7 @@ public class ApplicationWindow extends VBox implements InvalidationListener
             //endregion
 
             //region calculate files to remove and remove (hashesLocal verschil hashesCloud)
-            updateMessage("%Removing old files");
+            updateMessage("%REMOVING OLD FILES");
             HashMap<String, Path> differenceMap = new HashMap<>(hashesLocal);
             differenceMap.entrySet().removeAll(hashesCloud.entrySet());
 
@@ -411,7 +745,8 @@ public class ApplicationWindow extends VBox implements InvalidationListener
                 {
                     System.out.println("Downloading: " + fileToDownload);
                     filesDownloaded++;
-                    updateMessage(Math.round((filesDownloaded/filesToDownload)*100) + "%");
+                    updateMessage("%DOWNLOADING" + " " + (Math.round((filesDownloaded/filesToDownload)*100) + "%"));
+                    updateProgress(filesDownloaded, filesToDownload);
                     FileUtils.copyURLToFile(new URL(appsBaseDownloadUrl + openedAppId + "/" + fileToDownload.toString().replace("\\", "/").replace(" ", "%20")), Path.of(appInstallationPath.toString(), fileToDownload.toString()).toFile(), 10000, 10000); //wth
                 }
             }
@@ -423,7 +758,7 @@ public class ApplicationWindow extends VBox implements InvalidationListener
 
             //region In case there were splitted files, merge them
             FileSplitterCombiner fileSplitterCombiner = new FileSplitterCombiner();
-            updateMessage("%Installing");
+            updateMessage("%INSTALLING");
             fileSplitterCombiner.combineSplitFiles(appInstallationPath);
             createShortcut(model.getApp(openedAppId));
             //endregion
@@ -445,7 +780,7 @@ public class ApplicationWindow extends VBox implements InvalidationListener
         @Override
         protected Void call()
         {
-            updateMessage("%Uninstalling");
+            updateMessage("%UNINSTALLING");
 
             model.removeRunningApp(openedAppId);
             String openedAppExecutableName = "";
@@ -578,5 +913,28 @@ public class ApplicationWindow extends VBox implements InvalidationListener
             ErrorMessage errorMessage = new ErrorMessage(false, "%Couldn't remove shortcut. " + e.getMessage());
             errorMessage.show();
         }
+    }
+
+    /**
+     * Opens a optionsWindow at the location of the button
+     */
+    private void openOptionsWindow(MouseEvent event)
+    {
+        OptionsWindow optionsWindow = new OptionsWindow(this, model);
+        optionsWindow.getStylesheets().add(Main.class.getResource("css/mainDark.css").toString());
+
+        popup = new Popup();
+        popup.getContent().add(optionsWindow);
+        popup.show(this.getScene().getWindow(), event.getScreenX(), event.getScreenY());
+
+        popup.setAutoHide(true); // Make the Popup automatically hide when it loses focus
+    }
+
+    /**
+     * Closes the popup window which contains the optionsWindow
+     */
+    public void closeOptionsWindow()
+    {
+        popup.hide();
     }
 }

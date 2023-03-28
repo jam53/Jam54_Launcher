@@ -137,7 +137,7 @@ GamesProgramsWindow, ApplicationWindow, SettingsWindow {
     -fx-spacing: 20;
 }
 
-.buttonBarToggles ToggleButton {
+.buttonBarToggles ToggleButton, .applicationWindow ToggleButton {
     -fx-background-color: #0E112C;
     -fx-border-color: -toggle-button-gradient;
     -fx-border-radius: 35;
@@ -148,15 +148,15 @@ GamesProgramsWindow, ApplicationWindow, SettingsWindow {
     -fx-padding: 2 20;
 }
 
-.buttonBarToggles ToggleButton:selected {
+.buttonBarToggles ToggleButton:selected, .applicationWindow ToggleButton:selected {
     -fx-background-color: -toggle-button-gradient;
 }
 
-.buttonBarToggles ToggleButton:hover {
+.buttonBarToggles ToggleButton:hover, .applicationWindow ToggleButton:hover {
     -fx-background-color: -toggle-button-gradient;
 }
 
-.buttonBarToggles ToggleButton Text {
+.buttonBarToggles ToggleButton Text, .applicationWindow ToggleButton Text {
     -fx-fill: -text-highlighted;
 }
 
@@ -453,22 +453,29 @@ To circumvent/get around this, we put the applicationButton in another VBox whic
     -fx-padding: 0;
 }
 
-.applicationButton HBox HBox Button {
+.applicationButton HBox HBox Button, #optionsButton {
     -fx-pref-width: 28;
     -fx-pref-height: 28;
 
     -fx-background-color: -hollow-button-unselected;
     -fx-background-image: url('../img/icons/Options_ButtonIconUnselected.png');
     -fx-background-size: 28;
-
 }
 
-.applicationButton HBox HBox Button:hover {
+#optionsButton {
+    -fx-pref-width: 45;
+    -fx-pref-height: 45;
+    -fx-min-width: 45;
+    -fx-min-height: 45;
+    -fx-background-size: 45;
+}
+
+.applicationButton HBox HBox Button:hover, #optionsButton:hover {
     -fx-background-color: -hollow-button-clicked;
     -fx-background-image: url('../img/icons/Options_ButtonIconHovered.png');
 }
 
-.applicationButton HBox HBox Button:selected {
+.applicationButton HBox HBox Button:selected, #optionsButton:selected {
     -fx-background-color: -hollow-button-clicked;
     -fx-background-image: url('../img/icons/Options_ButtonIconClicked.png');
 }
@@ -483,16 +490,15 @@ To circumvent/get around this, we put the applicationButton in another VBox whic
 
 .optionsWindow Button{
     -fx-pref-height: 30;
-
-    -fx-font-size: 13;
-    -fx-text-fill: -text-highlighted;
-    -fx-font-family: 'Lato';
-
     -fx-background-color: transparent;
-
     -fx-max-width: 1000000;
-
     -fx-alignment: center-left;
+}
+
+.optionsWindow Button Text {
+    -fx-font-size: 14;
+    -fx-fill: -text-highlighted;
+    -fx-font-family: 'Lato';
 }
 
 .optionsWindow HBox Button {
@@ -501,6 +507,9 @@ To circumvent/get around this, we put the applicationButton in another VBox whic
 
 .optionsWindow Button:hover {
     -fx-background-color: -bg-selected;
+}
+
+.optionsWindow Button:hover Text {
     -fx-underline: true;
 }
 
@@ -512,8 +521,8 @@ To circumvent/get around this, we put the applicationButton in another VBox whic
     -fx-alignment: center-right;
 }
 
-.optionsWindow HBox HBox Button {
-    -fx-text-fill: -text-not-highlighted;
+.optionsWindow HBox HBox Button Text {
+    -fx-fill: -text-not-highlighted;
 }
 
 #seperatorHolder .separator *.line {
@@ -528,5 +537,160 @@ To circumvent/get around this, we put the applicationButton in another VBox whic
 
 #noButtonStyling:hover {
     -fx-background-color: transparent;
+}
+
+#noButtonStyling:hover Text {
     -fx-underline: false;
+}
+
+.optionsButtonHolder {
+    -fx-alignment: center-right;
+}
+
+.leftSideApplicationWindow {
+    -fx-padding: 0 80 30 30;
+    -fx-spacing: 20;
+    -fx-pref-width: 346;
+}
+
+.leftSideApplicationWindow .separator *.line {
+    -fx-border-color: -other-border-division-scrollbar;
+    -fx-border-width: 1;
+    -fx-padding: 0;
+}
+
+.leftSideApplicationWindow HBox HBox {
+    -fx-alignment: center-right;
+    -fx-pref-width: 1000000000;
+}
+
+#platform_HBox HBox {
+    -fx-alignment: center-left;
+    -fx-pref-width: 1000000000;
+}
+
+#platform_HBox HBox HBox{
+    -fx-alignment: center-right;
+    -fx-pref-width: 1000000000;
+}
+
+#applicationWindowNotHighlightedText {
+    -fx-font-size: 21;
+    -fx-fill: -text-not-highlighted;
+    -fx-font-family: 'Lato';
+}
+
+#applicationWindowHighlightedText {
+    -fx-font-size: 21;
+    -fx-fill: -text-highlighted;
+    -fx-font-family: 'Lato';
+}
+
+.rightSideApplicationWindow {
+    -fx-padding: 0 70 0 0;
+    -fx-alignment: bottom-center;
+}
+
+.rightSideApplicationWindow ScrollPane {
+    -fx-pref-height: 100000000;
+
+    -fx-background: -bg-main;
+    -fx-fit-to-height: true;
+    -fx-fit-to-width: true;
+    -fx-border-color: -bg-main;
+    -fx-border-width: 2;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+.rightSideApplicationWindow ScrollPane TextFlow Text {
+    -fx-font-size: 21;
+    -fx-fill: -text-highlighted;
+    -fx-font-family: 'Lato';
+}
+
+.rightSideApplicationWindow HBox {
+    -fx-padding: 0 0 30 0;
+    -fx-alignment: bottom-left;
+    -fx-min-height: 153;
+    -fx-spacing: 55;
+}
+
+.rightSideApplicationWindow HBox Button HBox Text, .rightSideApplicationWindow HBox Button Text {
+    -fx-font-size: 28;
+    -fx-fill: -text-highlighted;
+    -fx-font-family: 'Lato';
+}
+
+.rightSideApplicationWindow HBox Button {
+    -fx-pref-height: 63;
+    -fx-background-radius: 9;
+    -fx-pref-width: 100000000;
+    -fx-alignment: center;
+}
+
+.rightSideApplicationWindow HBox Button HBox {
+    -fx-alignment: center;
+    -fx-padding: 0;
+    -fx-min-height: 0;
+    -fx-spacing: 12;
+}
+
+.rightSideApplicationWindow HBox VBox {
+    -fx-alignment: bottom-left;
+    -fx-pref-width: 1000000;
+    -fx-spacing: 10;
+}
+
+.rightSideApplicationWindow HBox VBox Text {
+    -fx-font-size: 21;
+    -fx-fill: -text-highlighted;
+    -fx-font-family: 'Lato';
+}
+
+.rightSideApplicationWindow HBox VBox ProgressBar {
+    -fx-accent: -accent-button-main;
+    -fx-text-box-border: -other-border-division-scrollbar;
+    -fx-control-inner-background: -other-border-division-scrollbar;
+    -fx-pref-width: 100000;
+}
+
+.progress-bar .track {
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-border-color: -other-border-division-scrollbar;
+    -fx-border-insets: 0;
+    -fx-background-insets: 0;
+    -fx-pref-height: 13;
+}
+
+.progress-bar .bar {
+    -fx-background-radius: 5;
+    -fx-border-insets: 0;
+    -fx-background-insets: 0;
+    -fx-pref-height: 13;
+}
+
+#primaryButton {
+    -fx-background-color: -accent-button-main;
+}
+
+#primaryButton:hover {
+    -fx-background-color: -accent-button-hovered;
+}
+
+#primaryButton:pressed {
+    -fx-background-color: -accent-button-clicked;
+}
+
+#nonPrimaryButton {
+    -fx-background-color: -filled-button-unselected;
+}
+
+#nonPrimaryButton:hover {
+    -fx-background-color: -filled-button-hovered;
+}
+
+#nonPrimaryButton:pressed {
+    -fx-background-color: -filled-button-clicked;
 }

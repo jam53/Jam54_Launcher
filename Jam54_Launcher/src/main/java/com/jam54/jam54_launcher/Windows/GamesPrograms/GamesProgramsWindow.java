@@ -12,6 +12,7 @@ import javafx.beans.Observable;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.geometry.Bounds;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -134,6 +135,30 @@ public class GamesProgramsWindow extends VBox implements InvalidationListener
             double deltaY = scrollEvent.getDeltaY() * SPEED;
             centerArea.setVvalue(centerArea.getVvalue() - deltaY);
         });
+
+        //region enable/disable scrollbar based on whether or not all of the content is visible inside the scrollpane
+        // Get the position and size of the viewport
+        applicationsHolder.heightProperty().addListener(e -> {
+
+            Bounds viewportBounds = centerArea.getViewportBounds();
+            double viewportHeight = viewportBounds.getHeight();
+
+            // Get the size of the content
+            double contentHeight = applicationsHolder.getBoundsInLocal().getHeight();
+
+            // Check if there is content that isn't being shown
+            boolean hasUnshownContent = contentHeight > viewportHeight + 18;
+
+            if (hasUnshownContent)
+            {
+                centerArea.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+            }
+            else
+            {
+                centerArea.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+            }
+        });
+        //endregion
         //endregion
 
         getChildren().setAll(buttonBar, filtersHolder, centerArea);
