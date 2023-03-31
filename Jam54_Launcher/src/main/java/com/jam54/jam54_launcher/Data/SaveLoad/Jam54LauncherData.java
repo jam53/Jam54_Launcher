@@ -15,8 +15,8 @@ public class Jam54LauncherData
     //region data/variables
     private String dataPath = Paths.get(System.getenv("LOCALAPPDATA"), "Jam54Launcher").toString(); //A path where the launcher can place the downloaded apps
     private String locale = "en"; //The locale/language that should be used when displaying the application
-
     private String[] installedApplicationVersions = new String[10]; //The version numbers of the installed applications, null in case the application isn't installed
+    private ColorTheme colorTheme = ColorTheme.DARK; //Holds the value of the selected colortheme, Dark by default
     //endregion
 
     private void fireInvalidationEvent()
@@ -81,6 +81,23 @@ public class Jam54LauncherData
     public void setInstalledApplicationVersions(String[] installedApplicationVersions)
     {
         this.installedApplicationVersions = installedApplicationVersions;
+        fireInvalidationEvent();
+    }
+
+    /**
+     * Returns the selected color theme to be used in the launcher
+     */
+    public ColorTheme getColorTheme()
+    {
+        return colorTheme;
+    }
+
+    /**
+     * Sets the selected color theme to be used in the launcher
+     */
+    public void setColorTheme(ColorTheme colorTheme)
+    {
+        this.colorTheme = colorTheme;
         fireInvalidationEvent();
     }
     //endregion

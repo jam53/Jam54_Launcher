@@ -1,5 +1,6 @@
 package com.jam54.jam54_launcher.Windows.Settings;
 
+import com.jam54.jam54_launcher.Animations.ButtonColor;
 import com.jam54.jam54_launcher.Data.Jam54LauncherModel;
 import com.jam54.jam54_launcher.ErrorMessage;
 import com.jam54.jam54_launcher.Data.SaveLoad.SaveLoadManager;
@@ -8,7 +9,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.stage.DirectoryChooser;
 import org.apache.commons.io.FileUtils;
 
@@ -25,23 +29,43 @@ public class InstallationLocationWindow extends VBox
 {
     public InstallationLocationWindow()
     {
-        Label title = new Label(SaveLoadManager.getTranslation("GamesProgramsInstallationPath"));
+        this.getStyleClass().add("installationLocationWindow");
 
-        Label dataFolderSize = new Label(getFolderSize(SaveLoadManager.getData().getDataPath()));
+        Text title = new Text(SaveLoadManager.getTranslation("GamesProgramsInstallationPath"));
+        title.setId("HighlightedSettingsTitle");
 
-        Button changeDataPath_Button = new Button(SaveLoadManager.getData().getDataPath().toString());
-        changeDataPath_Button.setOnAction(e -> chooseNewDataPathDirectory(SaveLoadManager.getData().getDataPath(), changeDataPath_Button));
+        Text description = new Text("%Choose a location for Games and Programs installs.");
+        description.setId("NotHighlightedSettingsDescription");
 
-        Separator separator = new Separator(Orientation.HORIZONTAL);
+        VBox folderPickerHolder = new VBox();
+        folderPickerHolder.getStyleClass().add("folderPickerHolder");
 
-        this.getChildren().addAll(title, dataFolderSize, changeDataPath_Button, separator);
+        Text dataFolderSize = new Text(getFolderSize(SaveLoadManager.getData().getDataPath()));
+        HBox dataFolderSizeHolder = new HBox(dataFolderSize);
+        dataFolderSizeHolder.setId("dataFolderSizeHolder");
+
+        Button picker = new Button();
+        picker.setSkin(new ButtonColor(picker, Color.web("#242424"), Color.web("#3E3E3E"), Color.web("#3E3E3E")));
+
+        HBox pickerContainer = new HBox();
+        pickerContainer.setId("pickerContainer");
+        Text folderPath = new Text(SaveLoadManager.getData().getDataPath().toString());
+        pickerContainer.getChildren().addAll(folderPath, new HBox(new HBox()));
+
+        picker.setGraphic(pickerContainer);
+
+        picker.setOnAction(e -> chooseNewDataPathDirectory(SaveLoadManager.getData().getDataPath(), folderPath));
+
+        folderPickerHolder.getChildren().addAll(dataFolderSizeHolder, picker);
+
+        this.getChildren().addAll(title, description, folderPickerHolder);
     }
 
     /**
      * Opens a folder picker, checks if the selected folder exists.
      * If so it saves the new datapath location and updates the text of the button that called this method + copies the files over and deletes the old dataPath folder
      */
-    private void chooseNewDataPathDirectory(Path currentDataPath, Button changeDataPathButton)
+    private void chooseNewDataPathDirectory(Path currentDataPath, Text folderPath)
     {
         DirectoryChooser directoryChooser = new DirectoryChooser();
         directoryChooser.setInitialDirectory(currentDataPath.toFile());
@@ -56,7 +80,7 @@ public class InstallationLocationWindow extends VBox
 
                 Files.move(currentDataPath, newDataPath, StandardCopyOption.REPLACE_EXISTING);
                 SaveLoadManager.getData().setDataPath(newDataPath);
-                changeDataPathButton.setText(newDataPath.toString());
+                folderPath.setText(newDataPath.toString());
             }
             catch (IOException e)
             {

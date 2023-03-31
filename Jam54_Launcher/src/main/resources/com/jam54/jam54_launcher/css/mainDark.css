@@ -525,7 +525,7 @@ To circumvent/get around this, we put the applicationButton in another VBox whic
     -fx-fill: -text-not-highlighted;
 }
 
-#seperatorHolder .separator *.line {
+#seperatorHolder .separator *.line, .separator *.line {
     -fx-border-color: -other-border-division-scrollbar;
     -fx-border-width: 1;
     -fx-padding: 0;
@@ -693,4 +693,341 @@ To circumvent/get around this, we put the applicationButton in another VBox whic
 
 #nonPrimaryButton:pressed {
     -fx-background-color: -filled-button-clicked;
+}
+
+.settingsWindow {
+    -fx-padding: 40 80 30 20;
+    -fx-spacing: 40;
+    -fx-pref-width: 346;
+}
+
+#settingsWindowTitleHolder {
+    -fx-padding: 0 0 25 10;
+}
+
+#settingsWindowTitleHolder Text {
+    -fx-font-size: 25;
+    -fx-fill: -text-highlighted;
+    -fx-font-family: 'Lato';
+    -fx-font-weight: bold;
+    -fx-padding: 0 0 0 10;
+}
+
+.settingsWindowLeftBar {
+    -fx-min-width: 169;
+    -fx-pref-width: 169;
+}
+
+.settingsWindowLeftBar ToggleButton {
+    -fx-pref-width: 1000000;
+    -fx-background-radius: 4;
+    -fx-alignment: center-left;
+    -fx-padding: 2 10 3 10;
+    -fx-min-height: 28;
+    -fx-background-color: -hollow-button-unselected;
+}
+
+.settingsWindowLeftBar ToggleButton:hover {
+    -fx-background-color: -hollow-button-hovered;
+}
+
+.settingsWindowLeftBar ToggleButton:armed {
+    -fx-background-color: -hollow-button-clicked;
+}
+
+.settingsWindowLeftBar ToggleButton:selected {
+    -fx-background-color: -hollow-button-clicked;
+}
+
+.settingsWindowLeftBar ToggleButton Text {
+    -fx-fill: -text-not-highlighted;
+    -fx-font-size: 15;
+    -fx-font-family: 'Lato';
+}
+
+.settingsWindowLeftBar ToggleButton:hover Text {
+    -fx-fill: -text-highlighted;
+}
+
+.settingsWindowLeftBar ToggleButton:selected Text {
+    -fx-fill: -text-highlighted;
+}
+
+.settingsWindowLeftBarBottom {
+    -fx-alignment: bottom-left;
+    -fx-pref-height: 10000000;
+}
+
+.settingsWindowLeftBarBottom HBox {
+    -fx-padding: 0 0 0 10;
+}
+
+.settingsWindowLeftBarBottom HBox Text {
+    -fx-fill: -text-not-highlighted;
+    -fx-font-size: 12;
+    -fx-font-family: 'Lato';
+    -fx-font-weight: bold;
+}
+
+.settingsWindowLeftBarTop {
+    -fx-spacing: 4;
+}
+
+.socials {
+    -fx-padding: 5 0 0 10;
+    -fx-spacing: 7;
+}
+
+.socials Button {
+    -fx-background-color: -hollow-button-unselected;
+    -fx-background-size: 18;
+    -fx-pref-width: 18;
+    -fx-pref-height: 18;
+    -fx-padding: 0;
+}
+
+#youtubeButton {
+    -fx-background-image: url("../img/icons/YouTube_ButtonIconUnselected.png");
+}
+
+#youtubeButton:hover {
+    -fx-background-image: url("../img/icons/YouTube_ButtonIconHovered.png");
+}
+
+#youtubeButton:pressed {
+    -fx-background-image: url("../img/icons/YouTube_ButtonIconClicked.png");
+}
+
+#playstoreButton {
+    -fx-background-image: url("../img/icons/PlayStore_ButtonIconUnselected.png");
+}
+
+#playstoreButton:hover {
+    -fx-background-image: url("../img/icons/PlayStore_ButtonIconHovered.png");
+}
+
+#playstoreButton:pressed {
+    -fx-background-image: url("../img/icons/PlayStore_ButtonIconClicked.png");
+}
+
+#discordButton {
+    -fx-background-image: url("../img/icons/Discord_ButtonIconUnselected.png");
+}
+
+#discordButton:hover {
+    -fx-background-image: url("../img/icons/Discord_ButtonIconHovered.png");
+}
+
+#discordButton:pressed {
+    -fx-background-image: url("../img/icons/Discord_ButtonIconClicked.png");
+}
+
+#githubButton {
+    -fx-background-image: url("../img/icons/GitHub_ButtonIconUnselected.png");
+}
+
+#githubButton:hover {
+    -fx-background-image: url("../img/icons/GitHub_ButtonIconHovered.png");
+}
+
+#githubButton:pressed {
+    -fx-background-image: url("../img/icons/GitHub_ButtonIconClicked.png");
+}
+
+#mailButton {
+    -fx-background-image: url("../img/icons/Mail_ButtonIconUnselected.png");
+}
+
+#mailButton:hover {
+    -fx-background-image: url("../img/icons/Mail_ButtonIconHovered.png");
+}
+
+#mailButton:pressed {
+    -fx-background-image: url("../img/icons/Mail_ButtonIconClicked.png");
+}
+
+.installationLocationWindow, appearanceWindow {
+    -fx-spacing: 8;
+}
+
+#HighlightedSettingsTitle {
+    -fx-fill: -text-highlighted;
+    -fx-font-size: 20;
+    -fx-font-family: 'Lato';
+    -fx-font-weight: bold;
+}
+
+#NotHighlightedSettingsDescription {
+    -fx-fill: -text-not-highlighted;
+    -fx-font-size: 12;
+    -fx-font-family: 'Lato';
+}
+
+#dataFolderSizeHolder {
+    -fx-alignment: bottom-right;
+    -fx-padding: 0 0 3 0;
+}
+
+#dataFolderSizeHolder Text {
+    -fx-fill: -text-not-highlighted;
+    -fx-font-size: 13;
+    -fx-font-family: 'Lato';
+    -fx-font-weight: bold;
+}
+
+.folderPickerHolder {
+    -fx-pref-width: 375;
+}
+
+.folderPickerHolder Button {
+    -fx-padding: 0;
+    -fx-background-color: -bg-foreground;
+    -fx-background-radius: 4;
+    -fx-background-insets: 0;
+}
+
+.folderPickerHolder Button:hover {
+    -fx-background-color: -bg-selected;
+}
+
+#pickerContainer {
+    -fx-padding: 15;
+    -fx-spacing: 15;
+}
+
+#pickerContainer Text {
+    -fx-fill: -text-highlighted;
+    -fx-font-size: 13;
+    -fx-font-family: 'Lato';
+}
+
+#pickerContainer HBox {
+    -fx-alignment: center-right;
+    -fx-pref-width: 10000000;
+}
+
+#pickerContainer HBox HBox {
+    -fx-background-image: url("../img/icons/Folder_ButtonIconUnselected.png");
+    -fx-background-size: 20;
+    -fx-pref-width: 19.5;
+    -fx-pref-height: 16.5;
+    -fx-min-height: 16.5;
+    -fx-min-width: 19.5;
+}
+
+#pickerContainer:hover HBox HBox {
+    -fx-background-image: url("../img/icons/Folder_ButtonIconHovered.png");
+}
+
+.appearanceWindowToggleButton {
+    -fx-background-color: -hollow-button-unselected;
+}
+
+.appearanceWindowToggleButton HBox{
+    -fx-alignment: center-left;
+    -fx-spacing: 8;
+}
+
+.appearanceWindowToggleButton HBox HBox {
+    -fx-background-radius: 1000;
+    -fx-border-radius: 1000;
+    -fx-padding: 0;
+    -fx-pref-width: 20;
+    -fx-pref-height: 20;
+    -fx-min-width: 20;
+    -fx-min-height: 20;
+    -fx-background-color: -bg-foreground;
+    -fx-border-color: -other-border-division-scrollbar;
+    -fx-alignment: center;
+}
+
+.appearanceWindowToggleButton HBox HBox HBox {
+    -fx-background-color: -hollow-button-unselected;
+    -fx-background-radius: 1000;
+    -fx-border-radius: 1000;
+    -fx-padding: 0;
+    -fx-pref-width: 10;
+    -fx-pref-height: 10;
+    -fx-min-width: 10;
+    -fx-min-height: 10;
+    -fx-max-height: 10;
+    -fx-max-width: 10;
+    -fx-border-width: 0;
+}
+
+.appearanceWindowToggleButton:selected HBox HBox {
+    -fx-background-color: -accent-button-main;
+}
+
+.appearanceWindowToggleButton:selected HBox HBox HBox {
+    -fx-background-color: -text-highlighted;
+}
+
+.appearanceWindowToggleButton HBox Text {
+    -fx-fill: -button-icon-unselected;
+    -fx-font-size: 16;
+    -fx-font-family: 'Lato';
+}
+
+.appearanceWindowToggleButton:hover HBox Text {
+    -fx-fill: -button-icon-hovered;
+}
+
+.appearanceWindowToggleButton:selected HBox Text {
+    -fx-fill: -button-icon-clicked;
+}
+
+.languagePickerHolder {
+    -fx-spacing: 30;
+    -fx-padding: 0 15 0 0;
+}
+
+.languagePickerHolder ComboBoxColor {
+    -fx-background-color: -hollow-button-unselected;
+    -fx-background-radius: 4;
+    -fx-border-radius: 4;
+    -fx-padding: 4 0;
+    -fx-pref-width: 375;
+    -fx-border-color: transparent;
+    -fx-border-width: 0 0 2 0;
+    -fx-background-insets: 0 -15 0 0;
+    -fx-border-insets: 0 -15 0 0;
+
+    -fx-background-position: right center;
+    -fx-background-repeat: no-repeat;
+    -fx-background-image:url('../img/icons/ChevronDown_ButtonIconUnselected.png');
+    -fx-background-size: 14;
+}
+
+.languagePickerHolder ComboBoxColor > * {
+    -fx-font-size: 15;
+    -fx-font-family: 'Lato';
+    -fx-text-fill: -text-highlighted;
+}
+
+.languagePickerHolder ComboBoxColor:hover {
+    -fx-background-color: -hollow-button-hovered;
+    -fx-border-color: -accent-button-main;
+    -fx-prompt-text-fill: -button-icon-hovered;
+    -fx-background-image:url('../img/icons/ChevronDown_ButtonIconHovered.png');
+}
+
+.languagePickerHolder ComboBoxColor:focused {
+    -fx-background-color: -hollow-button-clicked;
+    -fx-border-color: -accent-button-main;
+    -fx-prompt-text-fill: -button-icon-clicked;
+}
+
+.languagePickerHolder ComboBoxColor .scroll-bar:horizontal .track, .languagePickerHolder ComboBoxColor .scroll-bar:vertical .track {
+    -fx-background-color : -bg-foreground;
+    -fx-border-color : -bg-foreground;
+    -fx-background-radius : 0.0em;
+    -fx-background-insets: -1;
+    -fx-border-radius :2.0em;
+}
+
+.languagePickerHolder ComboBoxColor .scroll-bar:horizontal .thumb, .languagePickerHolder ComboBoxColor .scroll-bar:vertical .thumb {
+    -fx-background-color : -bg-selected;
+    -fx-background-insets : 2.0, 0.0, 0.0;
+    -fx-background-radius : 2.0em;
 }

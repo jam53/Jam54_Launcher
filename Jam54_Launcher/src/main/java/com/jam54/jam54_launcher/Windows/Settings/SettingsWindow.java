@@ -1,13 +1,17 @@
 package com.jam54.jam54_launcher.Windows.Settings;
 
+import com.jam54.jam54_launcher.Animations.ToggleButtonNotGradientColor;
 import com.jam54.jam54_launcher.ErrorMessage;
 import com.jam54.jam54_launcher.Data.Jam54LauncherModel;
 import com.jam54.jam54_launcher.Main;
 import com.jam54.jam54_launcher.Data.SaveLoad.SaveLoadManager;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,48 +28,139 @@ public class SettingsWindow extends HBox
 
     public SettingsWindow()
     {
+        this.getStyleClass().add("settingsWindow");
+
         VBox leftBar = new VBox();
+        leftBar.getStyleClass().add("settingsWindowLeftBar");
 
         VBox leftBarTop = new VBox(); //Contains the title (Settings) + the options inside the settings menu
+        leftBarTop.getStyleClass().add("settingsWindowLeftBarTop");
         VBox leftBarBottom = new VBox(); //Contains the version number + social media icons
+        leftBarBottom.getStyleClass().add("settingsWindowLeftBarBottom");
 
         rightSide = new InstallationLocationWindow(); //We don't use the `setRightSide` method here. Although we would prefer to use it for consistency's sake. But when we do that we get an error since in that method we clear the `rightSide` first. But at this point the `rightSide` variable isn't assigned yet, so we get a nullpointer exception
 
-        Label title = new Label(SaveLoadManager.getTranslation("Settings"));
-        Label other = new Label("%Other");
+        Text title = new Text(SaveLoadManager.getTranslation("Settings"));
+        VBox titleHolder = new VBox(title);
+        titleHolder.setId("settingsWindowTitleHolder");
 
-        Button installationLocation = new Button(SaveLoadManager.getTranslation("InstallationLocation"));
-        Button language = new Button(SaveLoadManager.getTranslation("Language"));
+        ToggleGroup toggleGroup = new ToggleGroup();
+        toggleGroup.selectedToggleProperty().addListener((obsVal, oldVal, newVal) -> {
+            if (newVal == null)
+            {
+                oldVal.setSelected(true);
+            }
+        }); //This makes it so that there always has to be at least one toggle selected
+
+        ToggleButton installationLocation = new ToggleButton();
+        installationLocation.setSkin(new ToggleButtonNotGradientColor(installationLocation, Color.web("#141414"), Color.web("#3E3E3E"), Color.web("#595959")));
+        Text installationLocationText = new Text(SaveLoadManager.getTranslation("InstallationLocation"));
+        installationLocation.setGraphic(installationLocationText);
+
+        ToggleButton language = new ToggleButton();
+        language.setSkin(new ToggleButtonNotGradientColor(language, Color.web("#141414"), Color.web("#3E3E3E"), Color.web("#595959")));
+        Text languageText = new Text("%Appearance");
+        language.setGraphic(languageText);
 
         installationLocation.setOnAction( e -> setRightSide(new InstallationLocationWindow()));
-        language.setOnAction( e -> setRightSide(new LanguageWindow(model.getSupportedLanguages())));
+        language.setOnAction( e -> setRightSide(new AppearanceWindow(model.getSupportedLanguages())));
 
-        leftBarTop.getChildren().addAll(title, other, installationLocation, language);
+        installationLocation.setToggleGroup(toggleGroup);
+        language.setToggleGroup(toggleGroup);
 
-        Label version = new Label(SaveLoadManager.getTranslation("CouldntRetrieveLauncherVersion"));
+        toggleGroup.selectToggle(installationLocation);
+
+        leftBarTop.getChildren().addAll(titleHolder, installationLocation, language);
+
+        Text version = new Text(SaveLoadManager.getTranslation("CouldntRetrieveLauncherVersion"));
 
         Properties properties = new Properties();
         try (InputStream in = Main.class.getResourceAsStream("Jam54LauncherConfig.properties"))
         {
             properties.load(in);
-            version = new Label(properties.getProperty("version"));
+            version = new Text(properties.getProperty("version"));
         }
         catch (IOException e)
         {
             ErrorMessage errorMessage = new ErrorMessage(false, SaveLoadManager.getTranslation("ErrorLoadingJam54LauncherConfig"));
             errorMessage.show();
         }
+        HBox versionHolder = new HBox(version);
 
         HBox socials = new HBox();
+        socials.getStyleClass().add("socials");
 
-        Button discord = new Button("d");
-        Button youtube = new Button("y");
-        Button playstore = new Button("p");
-        Button website = new Button("w");
+        Button youtube = new Button();
+        Button playstore = new Button();
+        Button discord = new Button();
+        Button github = new Button();
+        Button mail = new Button();
 
-        socials.getChildren().addAll(discord, youtube, playstore, website);
+        youtube.setId("youtubeButton");
+        playstore.setId("playstoreButton");
+        discord.setId("discordButton");
+        github.setId("githubButton");
+        mail.setId("mailButton");
 
-        leftBarBottom.getChildren().addAll(version, socials);
+        youtube.setOnAction(e ->
+        {
+            try
+            {
+                (new ProcessBuilder("cmd.exe", "/c", "start", "\"\" " + '"' + "https://youtube.com/c/jam54" + '"')).start();
+            } catch (IOException ex)
+            {
+                ErrorMessage errorMessage = new ErrorMessage(false, "%Couldn't open website." + " " + ex.getMessage());
+                errorMessage.show();
+            }
+        });
+        playstore.setOnAction(e ->
+        {
+            try
+            {
+                (new ProcessBuilder("cmd.exe", "/c", "start", "\"\" " + '"' + "https://play.google.com/store/apps/details?id=com.jam54.AstroRun&hl=en" + '"')).start();
+            } catch (IOException ex)
+            {
+                ErrorMessage errorMessage = new ErrorMessage(false, "%Couldn't open website." + " " + ex.getMessage());
+                errorMessage.show();
+            }
+        });
+        discord.setOnAction(e ->
+        {
+            try
+            {
+                (new ProcessBuilder("cmd.exe", "/c", "start", "\"\" " + '"' + "https://discord.gg/z6wEvv7" + '"')).start();
+            } catch (IOException ex)
+            {
+                ErrorMessage errorMessage = new ErrorMessage(false, "%Couldn't open website." + " " + ex.getMessage());
+                errorMessage.show();
+            }
+        });
+        github.setOnAction(e ->
+        {
+            try
+            {
+                (new ProcessBuilder("cmd.exe", "/c", "start", "\"\" " + '"' + "https://github.com/jam53" + '"')).start();
+            } catch (IOException ex)
+            {
+                ErrorMessage errorMessage = new ErrorMessage(false, "%Couldn't open website." + " " + ex.getMessage());
+                errorMessage.show();
+            }
+        });
+        mail.setOnAction(e ->
+        {
+            try
+            {
+                (new ProcessBuilder("cmd.exe", "/c", "start", "\"\" " + '"' + "mailto:jam54.help@outlook.com" + '"')).start();
+            } catch (IOException ex)
+            {
+                ErrorMessage errorMessage = new ErrorMessage(false, "%Couldn't open website." + " " + ex.getMessage());
+                errorMessage.show();
+            }
+        });
+
+        socials.getChildren().addAll(youtube, discord, playstore, github, mail);
+
+        leftBarBottom.getChildren().addAll(versionHolder, socials);
 
         leftBar.getChildren().addAll(leftBarTop, leftBarBottom);
 
