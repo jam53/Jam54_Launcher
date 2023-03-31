@@ -39,6 +39,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.text.MessageFormat;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -99,7 +100,7 @@ public class ApplicationWindow extends VBox implements InvalidationListener
         titleHolder.getStyleClass().add("buttonBarTitle");
 
         backToLibrary = new ToggleButton();
-        backToLibrary.setGraphic(new Text("%Back To Library")); //By default the text inside a ToggleButton is displayed usinga "Label" object, which looks terrible and not smooth when using a custom font
+        backToLibrary.setGraphic(new Text(SaveLoadManager.getTranslation("BackToLibrary"))); //By default the text inside a ToggleButton is displayed usinga "Label" object, which looks terrible and not smooth when using a custom font
         backToLibrary.setSkin(new ToggleButtonColor(backToLibrary, Color.web("#0E112C"), Color.web("#2193D3"), Color.web("#494FD6")));
         backToLibrary.setOnAction(this::backToLibrary);
         HBox backToLibraryHolder = new HBox(backToLibrary);
@@ -135,20 +136,20 @@ public class ApplicationWindow extends VBox implements InvalidationListener
         imageView.setClip(clipRounded);
 
         latestUpdate_HBox = new HBox();
-        latestUpdate_Text = new Text("%LatestUpdate");
+        latestUpdate_Text = new Text(SaveLoadManager.getTranslation("LatestUpdate"));
         latestUpdate_Text.setId("applicationWindowNotHighlightedText");
         latestUpdateDate = new Text();
         latestUpdateDate.setId("applicationWindowHighlightedText");
 
         releaseDate_HBox = new HBox();
-        releaseDate_Text = new Text("%ReleaseDate");
+        releaseDate_Text = new Text(SaveLoadManager.getTranslation("ReleaseDate"));
         releaseDate_Text.setId("applicationWindowNotHighlightedText");
         releaseDateDate = new Text();
         releaseDateDate.setId("applicationWindowHighlightedText");
 
         platform_HBox = new HBox();
         platform_HBox.setId("platform_HBox");
-        platform_Text = new Text("%Platform");
+        platform_Text = new Text(SaveLoadManager.getTranslation("Platform"));
         platform_Text.setId("applicationWindowNotHighlightedText");
         platformIcons_HBox = new HBox();
 
@@ -294,7 +295,7 @@ public class ApplicationWindow extends VBox implements InvalidationListener
                     {
                         doneOnce.set(true);
                         text.setWrappingWidth(newV.doubleValue()/1.3);
-                        text.setText("%Kindly hold on whilst " + openedApp.name() + " concludes its file validation procedure.");
+                        text.setText(MessageFormat.format(SaveLoadManager.getTranslation("KindlyHoldForValidationProcedure"), openedApp.name()));
                     }
                 });
                 validatingAppButton.setGraphic(text);
@@ -315,7 +316,7 @@ public class ApplicationWindow extends VBox implements InvalidationListener
                     {
                         doneOnce.set(true);
                         text.setWrappingWidth(newV.doubleValue()/1.3);
-                        text.setText("%Kindly hold on until " + openedApp.name() + "'s uninstall procedure finishes.");
+                        text.setText(MessageFormat.format(SaveLoadManager.getTranslation("KindlyHoldForUninstall"), openedApp.name()));
                     }
                 });
                 removingAppButton.setGraphic(text);
@@ -333,7 +334,7 @@ public class ApplicationWindow extends VBox implements InvalidationListener
                     ImageView buttonIcon = new ImageView(new Image(Main.class.getResource("img/icons/DownloadWhite.png").toString()));
                     buttonIcon.setFitHeight(24);
                     buttonIcon.setFitWidth(24);
-                    Text buttonText = new Text("%INSTALL");
+                    Text buttonText = new Text(SaveLoadManager.getTranslation("INSTALL"));
                     iconTextHolder.getChildren().setAll(buttonIcon, buttonText);
                     installUpdateButton.setGraphic(iconTextHolder);
                     installButtonsHolder.getChildren().add(installUpdateButton);
@@ -395,7 +396,7 @@ public class ApplicationWindow extends VBox implements InvalidationListener
                     ImageView buttonIcon = new ImageView(new Image(Main.class.getResource("img/icons/UpdateWhite.png").toString()));
                     buttonIcon.setFitHeight(22);
                     buttonIcon.setFitWidth(22);
-                    Text buttonText = new Text("%UPDATE");
+                    Text buttonText = new Text(SaveLoadManager.getTranslation("UPDATE"));
                     iconTextHolder.getChildren().setAll(buttonIcon, buttonText);
                     installUpdateButton.setGraphic(iconTextHolder);
 
@@ -406,7 +407,7 @@ public class ApplicationWindow extends VBox implements InvalidationListener
                     ImageView buttonIcon2 = new ImageView(new Image(Main.class.getResource("img/icons/Uninstall.png").toString()));
                     buttonIcon2.setFitHeight(22);
                     buttonIcon2.setFitWidth(22);
-                    Text buttonText2 = new Text("%UNINSTALL");
+                    Text buttonText2 = new Text(SaveLoadManager.getTranslation("UNINSTALL"));
                     iconTextHolder.getChildren().setAll(buttonIcon2, buttonText2);
                     installUpdateButton.setGraphic(iconTextHolder2);
 
@@ -518,7 +519,7 @@ public class ApplicationWindow extends VBox implements InvalidationListener
                     ImageView buttonIcon = new ImageView(new Image(Main.class.getResource("img/icons/Uninstall.png").toString()));
                     buttonIcon.setFitHeight(22);
                     buttonIcon.setFitWidth(22);
-                    Text buttonText = new Text("%UNINSTALL");
+                    Text buttonText = new Text(SaveLoadManager.getTranslation("UNINSTALL"));
                     iconTextHolder.getChildren().setAll(buttonIcon, buttonText);
                     removeButton.setGraphic(iconTextHolder);
 
@@ -529,7 +530,7 @@ public class ApplicationWindow extends VBox implements InvalidationListener
                     ImageView buttonIcon2 = new ImageView(new Image(Main.class.getResource("img/icons/PlayWhite.png").toString()));
                     buttonIcon2.setFitHeight(20);
                     buttonIcon2.setFitWidth(17);
-                    Text buttonText2 = new Text("%START");
+                    Text buttonText2 = new Text(SaveLoadManager.getTranslation("START"));
                     iconTextHolder2.getChildren().setAll(buttonIcon2, buttonText2);
                     playButton.setGraphic(iconTextHolder2);
 
@@ -596,14 +597,14 @@ public class ApplicationWindow extends VBox implements InvalidationListener
                 if (installUpdateButton.getWidth() > 0)
                 {
                     text.setWrappingWidth(installUpdateButton.getWidth()/1.3);
-                    text.setText("%Kindly hold on whilst " + model.getApp(model.getLastValidatingApp()).name() + " concludes its file validation procedure.");
+                    text.setText(MessageFormat.format(SaveLoadManager.getTranslation("KindlyHoldForValidationProcedure"), model.getApp(model.getLastValidatingApp()).name()));
                 }
                 installUpdateButton.widthProperty().addListener((obs, oldV, newV) ->
                 {
                     if (newV.doubleValue() > 0)
                     {
                         text.setWrappingWidth(newV.doubleValue()/1.3);
-                        text.setText("%Kindly hold on whilst " + model.getApp(model.getLastValidatingApp()).name() + " concludes its file validation procedure.");
+                        text.setText(MessageFormat.format(SaveLoadManager.getTranslation("KindlyHoldForValidationProcedure"), model.getApp(model.getLastValidatingApp()).name()));
                     }
                 });
                 installUpdateButton.setGraphic(text);
@@ -620,14 +621,15 @@ public class ApplicationWindow extends VBox implements InvalidationListener
                 if (installUpdateButton.getWidth() > 0)
                 {
                     text.setWrappingWidth(installUpdateButton.getWidth()/1.3);
-                    text.setText("%Kindly hold on until " + model.getApp(model.getLastRemovingApp()).name() + "'s uninstall procedure finishes.");
+                    text.setText(MessageFormat.format(SaveLoadManager.getTranslation("KindlyHoldForUninstall"), model.getApp(model.getLastRemovingApp()).name()));
+
                 }
                 installUpdateButton.widthProperty().addListener((obs, oldV, newV) ->
                 {
                     if (newV.doubleValue() > 0)
                     {
                         text.setWrappingWidth(newV.doubleValue()/1.3);
-                        text.setText("%Kindly hold on until " + model.getApp(model.getLastRemovingApp()).name() + "'s uninstall procedure finishes.");
+                        text.setText(MessageFormat.format(SaveLoadManager.getTranslation("KindlyHoldForUninstall"), model.getApp(model.getLastRemovingApp()).name()));
                     }
                 });
                 installUpdateButton.setGraphic(text);
@@ -660,7 +662,7 @@ public class ApplicationWindow extends VBox implements InvalidationListener
                     //wait
                 }
                 text.setWrappingWidth(installUpdateButton.getWidth() / 1.3);
-                text.setText("%Kindly hold on whilst " + model.getApp(model.getUpdatingApp()).name() + " concludes its installation procedure.");
+                text.setText(MessageFormat.format(SaveLoadManager.getTranslation("KindlyHoldForInstall"), model.getApp(model.getUpdatingApp()).name()));
                 installUpdateButton.setGraphic(text);
             }
         }
@@ -699,7 +701,7 @@ public class ApplicationWindow extends VBox implements InvalidationListener
             //endregion
 
             //region get hashes
-            updateMessage("%CALCULATING HASHES");
+            updateMessage(SaveLoadManager.getTranslation("CALCULATINGHASHES"));
 
             Hashes hashes = new Hashes();
             hashesLocal = hashes.calculateHashesForFilesInDirectory(appInstallationPath);
@@ -723,7 +725,7 @@ public class ApplicationWindow extends VBox implements InvalidationListener
             //endregion
 
             //region calculate files to remove and remove (hashesLocal verschil hashesCloud)
-            updateMessage("%REMOVING OLD FILES");
+            updateMessage("REMOVINGOLDFILES");
             HashMap<String, Path> differenceMap = new HashMap<>(hashesLocal);
             differenceMap.entrySet().removeAll(hashesCloud.entrySet());
 
@@ -745,7 +747,7 @@ public class ApplicationWindow extends VBox implements InvalidationListener
                 {
                     System.out.println("Downloading: " + fileToDownload);
                     filesDownloaded++;
-                    updateMessage("%DOWNLOADING" + " " + (Math.round((filesDownloaded/filesToDownload)*100) + "%"));
+                    updateMessage(SaveLoadManager.getTranslation("DOWNLOADING") + " " + (Math.round((filesDownloaded/filesToDownload)*100) + "%"));
                     updateProgress(filesDownloaded, filesToDownload);
                     FileUtils.copyURLToFile(new URL(appsBaseDownloadUrl + openedAppId + "/" + fileToDownload.toString().replace("\\", "/").replace(" ", "%20")), Path.of(appInstallationPath.toString(), fileToDownload.toString()).toFile(), 10000, 10000); //wth
                 }
@@ -758,7 +760,7 @@ public class ApplicationWindow extends VBox implements InvalidationListener
 
             //region In case there were splitted files, merge them
             FileSplitterCombiner fileSplitterCombiner = new FileSplitterCombiner();
-            updateMessage("%INSTALLING");
+            updateMessage(SaveLoadManager.getTranslation("INSTALLING"));
             fileSplitterCombiner.combineSplitFiles(appInstallationPath);
             createShortcut(model.getApp(openedAppId));
             //endregion
@@ -780,7 +782,7 @@ public class ApplicationWindow extends VBox implements InvalidationListener
         @Override
         protected Void call()
         {
-            updateMessage("%UNINSTALLING");
+            updateMessage(SaveLoadManager.getTranslation("UNINSTALLING"));
 
             model.removeRunningApp(openedAppId);
             String openedAppExecutableName = "";
@@ -810,7 +812,7 @@ public class ApplicationWindow extends VBox implements InvalidationListener
             }
             catch (IOException e)
             {
-                ErrorMessage errorMessage = new ErrorMessage(false, "%Please ensure that " + openedAppExecutableName + " is closed before proceeding with the uninstallation process. " + e.getMessage());
+                ErrorMessage errorMessage = new ErrorMessage(false, MessageFormat.format(SaveLoadManager.getTranslation("CloseOpenedAppBeforeUninstall"), openedAppExecutableName) + " " + e.getMessage());
                 errorMessage.show();
             }
 
@@ -821,7 +823,7 @@ public class ApplicationWindow extends VBox implements InvalidationListener
             }
             catch (IOException e)
             {
-                ErrorMessage errorMessage = new ErrorMessage(false, "%Please ensure that " + openedAppExecutableName + " is closed before proceeding with the uninstallation process. " + e.getMessage());
+                ErrorMessage errorMessage = new ErrorMessage(false, MessageFormat.format(SaveLoadManager.getTranslation("CloseOpenedAppBeforeUninstall"), openedAppExecutableName) + " " + e.getMessage());
                 errorMessage.show();
             }
 
@@ -882,7 +884,7 @@ public class ApplicationWindow extends VBox implements InvalidationListener
             createShortcuts.start();
         }
         catch (Exception e) {
-            ErrorMessage errorMessage = new ErrorMessage(false, "%Couldn't create shortcut. " + e.getMessage());
+            ErrorMessage errorMessage = new ErrorMessage(false, SaveLoadManager.getTranslation("CouldntCreateShortcut") + " " + e.getMessage());
             errorMessage.show();
         }
     }

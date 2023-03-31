@@ -31,18 +31,18 @@ public class SettingsWindow extends HBox
 
         rightSide = new InstallationLocationWindow(); //We don't use the `setRightSide` method here. Although we would prefer to use it for consistency's sake. But when we do that we get an error since in that method we clear the `rightSide` first. But at this point the `rightSide` variable isn't assigned yet, so we get a nullpointer exception
 
-        Label title = new Label("%Settings");
+        Label title = new Label(SaveLoadManager.getTranslation("Settings"));
         Label other = new Label("%Other");
 
-        Button installationLocation = new Button("%Installation Location");
-        Button language = new Button("%Language");
+        Button installationLocation = new Button(SaveLoadManager.getTranslation("InstallationLocation"));
+        Button language = new Button(SaveLoadManager.getTranslation("Language"));
 
         installationLocation.setOnAction( e -> setRightSide(new InstallationLocationWindow()));
         language.setOnAction( e -> setRightSide(new LanguageWindow(model.getSupportedLanguages())));
 
         leftBarTop.getChildren().addAll(title, other, installationLocation, language);
 
-        Label version = new Label("%Couldn't retrieve the launcher's version");
+        Label version = new Label(SaveLoadManager.getTranslation("CouldntRetrieveLauncherVersion"));
 
         Properties properties = new Properties();
         try (InputStream in = Main.class.getResourceAsStream("Jam54LauncherConfig.properties"))

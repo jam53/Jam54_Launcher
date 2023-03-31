@@ -5,6 +5,7 @@ import com.jam54.jam54_launcher.Animations.ComboBoxColor;
 import com.jam54.jam54_launcher.Animations.TextFieldColor;
 import com.jam54.jam54_launcher.Animations.ToggleButtonColor;
 import com.jam54.jam54_launcher.Data.Jam54LauncherModel;
+import com.jam54.jam54_launcher.Data.SaveLoad.SaveLoadManager;
 import com.jam54.jam54_launcher.Windows.Application.ApplicationButton;
 import com.jam54.jam54_launcher.database_access.Other.ApplicationInfo;
 import javafx.beans.InvalidationListener;
@@ -65,9 +66,9 @@ public class GamesProgramsWindow extends VBox implements InvalidationListener
 
         gamesToggle = new ToggleButton();
         gamesToggle.setSkin(new ToggleButtonColor(gamesToggle, Color.web("#0E112C"), Color.web("#2193D3"), Color.web("#494FD6")));
-        gamesToggle.setGraphic(new Text("%Games")); //By default the text inside a ToggleButton is displayed usinga "Label" object, which looks terrible and not smooth when using a custom font
+        gamesToggle.setGraphic(new Text(SaveLoadManager.getTranslation("Games"))); //By default the text inside a ToggleButton is displayed usinga "Label" object, which looks terrible and not smooth when using a custom font
         programsToggle = new ToggleButton();
-        programsToggle.setGraphic(new Text("%Programs"));
+        programsToggle.setGraphic(new Text(SaveLoadManager.getTranslation("Programs")));
         programsToggle.setSkin(new ToggleButtonColor(programsToggle, Color.web("#0E112C"), Color.web("#2193D3"), Color.web("#494FD6")));
 
 
@@ -79,13 +80,13 @@ public class GamesProgramsWindow extends VBox implements InvalidationListener
 
         toggleGroup.selectToggle(gamesToggle);
 
-        title = new Text("%Games");
+        title = new Text(SaveLoadManager.getTranslation("Games"));
         titleHolder = new HBox(title);
         titleHolder.prefWidthProperty().bind(buttonBar.prefWidthProperty().divide(3));
         titleHolder.getStyleClass().add("buttonBarTitle");
 
         TextField searchBar = new TextField();
-        searchBar.setPromptText("%Search");
+        searchBar.setPromptText(SaveLoadManager.getTranslation("Search"));
         searchBar.setSkin(new TextFieldColor(searchBar, Color.web("#141414"), Color.web("#3E3E3E"), Color.web("#595959")));
         searchBarHolder = new HBox(searchBar);
         searchBarHolder.prefWidthProperty().bind(buttonBar.prefWidthProperty().divide(3));
@@ -99,10 +100,10 @@ public class GamesProgramsWindow extends VBox implements InvalidationListener
 
         HBox.setHgrow(filtersHolder, Priority.ALWAYS);
 
-        sortOrder_comboBox = new ComboBoxColor(FXCollections.observableArrayList(List.of("%Alphabetical" + " ↓","%Alphabetical" + " ↑", "%Release Date" + " ↓", "%Release Date" + " ↑", "%Last Updated" + " ↓", "%Last Updated" + " ↑")), Color.web("#141414"), Color.web("#3E3E3E"), Color.web("#595959"));
-        selectedPlatforms_comboBox = new ComboBoxColor(FXCollections.observableArrayList(List.of("%All Platforms", "%Android", "%Windows", "%Web")), Color.web("#141414"), Color.web("#3E3E3E"), Color.web("#595959"));
+        sortOrder_comboBox = new ComboBoxColor(FXCollections.observableArrayList(List.of(SaveLoadManager.getTranslation("Alphabetical") + " ↓",SaveLoadManager.getTranslation("Alphabetical") + " ↑", SaveLoadManager.getTranslation("ReleaseDate") + " ↓", SaveLoadManager.getTranslation("ReleaseDate") + " ↑", SaveLoadManager.getTranslation("LastUpdated") + " ↓", SaveLoadManager.getTranslation("LastUpdated") + " ↑")), Color.web("#141414"), Color.web("#3E3E3E"), Color.web("#595959"));
+        selectedPlatforms_comboBox = new ComboBoxColor(FXCollections.observableArrayList(List.of(SaveLoadManager.getTranslation("AllPlatforms"), SaveLoadManager.getTranslation("Android"), SaveLoadManager.getTranslation("Windows"), SaveLoadManager.getTranslation("Web"))), Color.web("#141414"), Color.web("#3E3E3E"), Color.web("#595959"));
 
-        installedApplications_checkBox = new CheckBox("%Currently installed apps");
+        installedApplications_checkBox = new CheckBox(SaveLoadManager.getTranslation("CurrentlyInstalledApps"));
         installedApplications_checkBox.setSkin(new CheckBoxColor(installedApplications_checkBox, Color.web("#141414"), Color.web("#3E3E3E"), Color.web("#3D77C2")));
 
         sortOrder_comboBox.getSelectionModel().select(0);
@@ -117,7 +118,7 @@ public class GamesProgramsWindow extends VBox implements InvalidationListener
 
         searchBar.textProperty().addListener((obs, oldValue, newValue) -> model.filterAndSortVisibleApplicationInfos(selectedPlatforms_comboBox.getSelectionModel().getSelectedIndex(), installedApplications_checkBox.isSelected(), sortOrder_comboBox.getSelectionModel().getSelectedIndex(), gamesToggle.isSelected(), newValue));
 
-        filtersHolder.getChildren().setAll(new Text("%Sort By:"), sortOrder_comboBox, selectedPlatforms_comboBox, installedApplications_checkBox);
+        filtersHolder.getChildren().setAll(new Text(SaveLoadManager.getTranslation("SortBy")), sortOrder_comboBox, selectedPlatforms_comboBox, installedApplications_checkBox);
         filtersHolder.getStyleClass().add("filtersHolder");
         //endregion
 
@@ -194,12 +195,12 @@ public class GamesProgramsWindow extends VBox implements InvalidationListener
 
         if (applicationsHolder.getChildren().size() == 0)
         {
-            HBox noApplicationsMatched = new HBox(new Text("%There were no applications that matched the filters you specified."));
+            HBox noApplicationsMatched = new HBox(new Text(SaveLoadManager.getTranslation("NoAppsForFilters")));
             noApplicationsMatched.setId("noApplicationsMatched");
             applicationsHolder.getChildren().add(noApplicationsMatched);
         }
 
         int amountOfApps = model.getVisibleApplicationInfos().size();
-        title.setText((gamesToggle.isSelected() ? "%Games" : "%Programs") + (amountOfApps > 0 ? " (" + amountOfApps + ")" : ""));
+        title.setText((gamesToggle.isSelected() ? SaveLoadManager.getTranslation("Games") : SaveLoadManager.getTranslation("Programs")) + (amountOfApps > 0 ? " (" + amountOfApps + ")" : ""));
     }
 }

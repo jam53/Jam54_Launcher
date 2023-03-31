@@ -21,7 +21,7 @@ public class LanguageWindow extends VBox
 
     public LanguageWindow(ArrayList<Locale> supportedLanguages)
     {
-        Label title = new Label("%Language");
+        Label title = new Label(SaveLoadManager.getTranslation("Language"));
 
         languages = new ArrayList<>();
         mapDisplayNameToLocale = new HashMap<>();
@@ -42,7 +42,7 @@ public class LanguageWindow extends VBox
         Separator separator = new Separator(Orientation.HORIZONTAL);
 
         Button button = new Button();
-        button.setTooltip(new Tooltip("%Changing this setting will only take effect after a restart/Restart required to take effect"));
+        button.setTooltip(new Tooltip(SaveLoadManager.getTranslation("RestartRequiredForEffect")));
 
         this.getChildren().addAll(title, languagePicker, separator, button);
     }

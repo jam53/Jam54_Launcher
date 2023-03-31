@@ -25,7 +25,7 @@ public class InstallationLocationWindow extends VBox
 {
     public InstallationLocationWindow()
     {
-        Label title = new Label("%Games & Programs installation path");
+        Label title = new Label(SaveLoadManager.getTranslation("GamesProgramsInstallationPath"));
 
         Label dataFolderSize = new Label(getFolderSize(SaveLoadManager.getData().getDataPath()));
 
@@ -60,7 +60,7 @@ public class InstallationLocationWindow extends VBox
             }
             catch (IOException e)
             {
-                ErrorMessage errorMessage = new ErrorMessage(false, "%Please close all currently running apps that were installed using the Jam54Launcher and cancel any ongoing downloads. " + e.getMessage());
+                ErrorMessage errorMessage = new ErrorMessage(false, SaveLoadManager.getTranslation("CloseAppsAndDownloads") + " " + e.getMessage());
                 errorMessage.show();
             }
         }

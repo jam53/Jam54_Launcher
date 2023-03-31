@@ -34,7 +34,7 @@ public class OptionsWindow extends VBox
         HBox storePage_ButtonHolder = new HBox();
         Button storePage_Button = new Button();
         HBox.setHgrow(storePage_Button, Priority.ALWAYS);
-        storePage_Button.setGraphic(new Text("%Go To Store Page"));
+        storePage_Button.setGraphic(new Text(SaveLoadManager.getTranslation("GoToStorePage")));
         storePage_Button.setOnAction(e -> {applicationButton.selectApplicationWindow(null); applicationButton.closeOptionsWindow();});
         storePage_ButtonHolder.getChildren().add(storePage_Button);
 
@@ -56,7 +56,7 @@ public class OptionsWindow extends VBox
                 if (model.getUpdatingApp() == null) // if there isn't an app being updated
                 {
                     Button verifyFileIntegrity_Button = new Button();
-                    verifyFileIntegrity_Button.setGraphic(new Text("%Verify file integrity"));
+                    verifyFileIntegrity_Button.setGraphic(new Text(SaveLoadManager.getTranslation("VerifyFileIntegrity")));
                     HBox.setHgrow(verifyFileIntegrity_Button, Priority.ALWAYS);
                     verifyFileIntegrity_ButtonHolder.getChildren().add(verifyFileIntegrity_Button);
                     verifyFileIntegrity_Button.setOnAction(event ->
@@ -105,7 +105,7 @@ public class OptionsWindow extends VBox
                 }
 
                 Button createDesktopShortcut_Button = new Button();
-                createDesktopShortcut_Button.setGraphic(new Text("%Create Desktop Shortcut"));
+                createDesktopShortcut_Button.setGraphic(new Text(SaveLoadManager.getTranslation("CreateDesktopShortcut")));
                 createDesktopShortcut_Button.setOnAction(e ->
                 {
                     applicationButton.closeOptionsWindow();
@@ -118,7 +118,7 @@ public class OptionsWindow extends VBox
                 if (model.getUpdatingApp() == null) // if there isn't an app being updated
                 {
                     Button uninstall_Button = new Button();
-                    uninstall_Button.setGraphic(new Text("%Uninstall"));
+                    uninstall_Button.setGraphic(new Text(SaveLoadManager.getTranslation("Uninstall")));
                     uninstall_Button.setOnAction(event ->
                     {
                         applicationButton.closeOptionsWindow();
@@ -178,7 +178,7 @@ public class OptionsWindow extends VBox
 
                 versionHolder.setId("versionHolder");
                 Button version_Button = new Button();
-                version_Button.setGraphic(new Text("%Version"));
+                version_Button.setGraphic(new Text(SaveLoadManager.getTranslation("Version")));
                 version_Button.setId("noButtonStyling");
                 HBox appVersion_ButtonHolder = new HBox();
                 HBox.setHgrow(appVersion_ButtonHolder, Priority.ALWAYS);
@@ -224,7 +224,7 @@ public class OptionsWindow extends VBox
                 if (model.getUpdatingApp() == null) // if there isn't an app being updated
                 {
                     Button verifyFileIntegrity_Button = new Button();
-                    verifyFileIntegrity_Button.setGraphic(new Text("%Verify file integrity"));
+                    verifyFileIntegrity_Button.setGraphic(new Text(SaveLoadManager.getTranslation("VerifyFileIntegrity")));
                     HBox.setHgrow(verifyFileIntegrity_Button, Priority.ALWAYS);
                     verifyFileIntegrity_ButtonHolder.getChildren().add(verifyFileIntegrity_Button);
                     verifyFileIntegrity_Button.setOnAction(event ->
@@ -271,7 +271,7 @@ public class OptionsWindow extends VBox
                 }
 
                 Button createDesktopShortcut_Button = new Button();
-                createDesktopShortcut_Button.setGraphic(new Text("%Create Desktop Shortcut"));
+                createDesktopShortcut_Button.setGraphic(new Text(SaveLoadManager.getTranslation("CreateDesktopShortcut")));
                 createDesktopShortcut_Button.setOnAction(e ->
                 {
                     applicationWindow.closeOptionsWindow();
@@ -282,7 +282,7 @@ public class OptionsWindow extends VBox
                 if (model.getUpdatingApp() == null) // if there isn't an app being updated
                 {
                     Button uninstall_Button = new Button();
-                    uninstall_Button.setGraphic(new Text("%Uninstall"));
+                    uninstall_Button.setGraphic(new Text(SaveLoadManager.getTranslation("Uninstall")));
                     uninstall_Button.setOnAction(event ->
                     {
                         applicationWindow.closeOptionsWindow();
@@ -341,7 +341,7 @@ public class OptionsWindow extends VBox
 
                 versionHolder.setId("versionHolder");
                 Button version_Button = new Button();
-                version_Button.setGraphic(new Text("%Version"));
+                version_Button.setGraphic(new Text(SaveLoadManager.getTranslation("Version")));
                 version_Button.setId("noButtonStyling");
                 HBox appVersion_ButtonHolder = new HBox();
                 HBox.setHgrow(appVersion_ButtonHolder, Priority.ALWAYS);

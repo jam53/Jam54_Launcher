@@ -79,7 +79,7 @@ public class ApplicationButton extends VBox
 
         if (info.version() == null)
         {
-            status.setText("%Download");
+            status.setText(SaveLoadManager.getTranslation("Download"));
             statusImage = new ImageView(new Image(Main.class.getResource("img/icons/Download_ButtonIconUnselected.png").toString()));
 
             statusImage.setFitHeight(18);
@@ -87,7 +87,7 @@ public class ApplicationButton extends VBox
         }
         else if (info.updateAvailable())
         {
-            status.setText("%Update");
+            status.setText(SaveLoadManager.getTranslation("Update"));
             statusImage = new ImageView(new Image(Main.class.getResource("img/icons/Update_ButtonIconUnselected.png").toString()));
 
             statusImage.setFitHeight(18);
@@ -95,7 +95,7 @@ public class ApplicationButton extends VBox
         }
         else
         {
-            status.setText("%Launch");
+            status.setText(SaveLoadManager.getTranslation("Launch"));
             statusImage = new ImageView(new Image(Main.class.getResource("img/icons/Play_ButtonIconUnselected.png").toString()));
 
             statusImage.setFitHeight(14.72);

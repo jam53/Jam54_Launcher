@@ -1,5 +1,6 @@
 package com.jam54.jam54_launcher.Updating;
 
+import com.jam54.jam54_launcher.Data.SaveLoad.SaveLoadManager;
 import com.jam54.jam54_launcher.ErrorMessage;
 import org.apache.commons.io.FileUtils;
 
@@ -127,14 +128,14 @@ public class FileSplitterCombiner
                 }
                 catch (IOException e)
                 {
-                    ErrorMessage errorMessage = new ErrorMessage(false, "%Encountered an error while trying to merge splitted files" + e.getMessage());
+                    ErrorMessage errorMessage = new ErrorMessage(false, SaveLoadManager.getTranslation("ErrorMergeSplitFiles") + " " + e.getMessage());
                     errorMessage.show();
                 }
             }
         }
         catch (IOException e)
         {
-            ErrorMessage errorMessage = new ErrorMessage(false, "%Encountered an error while trying to read Split.txt" + e.getMessage());
+            ErrorMessage errorMessage = new ErrorMessage(false, SaveLoadManager.getTranslation("ErrorReadingSplitTXT") + " " + e.getMessage());
             errorMessage.show();
         }
     }

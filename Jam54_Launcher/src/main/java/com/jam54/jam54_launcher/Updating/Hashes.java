@@ -1,6 +1,7 @@
 package com.jam54.jam54_launcher.Updating;
 
 import com.google.gson.Gson;
+import com.jam54.jam54_launcher.Data.SaveLoad.SaveLoadManager;
 import com.jam54.jam54_launcher.ErrorMessage;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
@@ -32,11 +33,11 @@ public class Hashes
         }
         catch (IOException e)
         {
-            ErrorMessage errorMessage = new ErrorMessage(false, "%Couldn't calculate hash" + e.getMessage());
+            ErrorMessage errorMessage = new ErrorMessage(false, SaveLoadManager.getTranslation("CouldntCalculateHash") + e.getMessage());
             errorMessage.show();
         }
 
-        return "Couldn't calculate hash";
+        return SaveLoadManager.getTranslation("CouldntCalculateHash");
     }
 
     /**

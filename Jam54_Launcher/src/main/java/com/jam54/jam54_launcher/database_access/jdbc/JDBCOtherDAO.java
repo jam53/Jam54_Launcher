@@ -54,7 +54,7 @@ public class JDBCOtherDAO implements OtherDAO
         }
         catch (SQLException ex)
         {
-            ErrorMessage errorMessage = new ErrorMessage(true, SaveLoadManager.getTranslation("%CouldntLoadLanguages"));
+            ErrorMessage errorMessage = new ErrorMessage(true, SaveLoadManager.getTranslation("CouldntLoadLanguages"));
             errorMessage.show();
         }
 
