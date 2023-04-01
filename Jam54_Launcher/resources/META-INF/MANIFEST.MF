@@ -1,8 +1,8 @@
 Manifest-Version: 1.0
 Main-Class: com.jam54.jam54_launcher.Main
-Class-Path: javafx-graphics-17.0.1.jar javafx-base-17.0.1-win.jar gson-2
- .9.0.jar commons-lang3-3.12.0.jar commons-io-2.11.0.jar javafx-fxml-17.
- 0.1.jar javafx-controls-17.0.1.jar javafx-controls-17.0.1-win.jar javaf
- x-fxml-17.0.1-win.jar javafx-graphics-17.0.1-win.jar javafx-base-17.0.1
- .jar
+Class-Path: javafx-base-20.jar javafx-fxml-20-win.jar commons-lang3-3.12
+ .0.jar commons-codec-1.15.jar javafx-controls-20.jar commons-io-2.11.0.
+ jar javafx-graphics-20-win.jar javafx-base-20-win.jar javafx-graphics-2
+ 0.jar javafx-controls-20-win.jar javafx-fxml-20.jar gson-2.10.1.jar sql
+ ite-jdbc-3.40.1.0.jar
 
