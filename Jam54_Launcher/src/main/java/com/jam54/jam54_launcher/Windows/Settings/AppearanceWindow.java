@@ -35,10 +35,10 @@ public class AppearanceWindow extends VBox
     {
         this.getStyleClass().add("appearanceWindow");
 
-        Text titleTheme = new Text("%Theme");
+        Text titleTheme = new Text(SaveLoadManager.getTranslation("ColorTheme"));
         titleTheme.setId("HighlightedSettingsTitle");
 
-        Text descriptionTheme = new Text("%Customize the appearance of the Jam54 Launcher.");
+        Text descriptionTheme = new Text(SaveLoadManager.getTranslation("CustomizeAppearance"));
         descriptionTheme.setId("NotHighlightedSettingsDescription");
 
         ToggleGroup toggleGroup = new ToggleGroup();
@@ -52,13 +52,13 @@ public class AppearanceWindow extends VBox
         ToggleButton darkToggleButton = new ToggleButton();
         darkToggleButton.getStyleClass().add("appearanceWindowToggleButton");
         HBox darkToggleIndicator = new HBox(new HBox());
-        Text darkToggleButtonText = new Text("%Dark");
+        Text darkToggleButtonText = new Text(SaveLoadManager.getTranslation("Dark"));
         darkToggleButton.setGraphic(new HBox(darkToggleIndicator, darkToggleButtonText));
 
         ToggleButton lightToggleButton = new ToggleButton();
         lightToggleButton.getStyleClass().add("appearanceWindowToggleButton");
         HBox lightToggleIndicator = new HBox(new HBox());
-        Text lightToggleButtonText = new Text("%Light");
+        Text lightToggleButtonText = new Text(SaveLoadManager.getTranslation("Light"));
         lightToggleButton.setGraphic(new HBox(lightToggleIndicator, lightToggleButtonText));
 
         darkToggleButton.setOnAction(e ->
@@ -92,7 +92,7 @@ public class AppearanceWindow extends VBox
         Text titleLanguage = new Text(SaveLoadManager.getTranslation("Language"));
         titleLanguage.setId("HighlightedSettingsTitle");
 
-        Text descriptionLanguage = new Text("%Select a display language.");
+        Text descriptionLanguage = new Text(SaveLoadManager.getTranslation("SelectDisplayLangauge"));
         descriptionLanguage.setId("NotHighlightedSettingsDescription");
 
         languages = new ArrayList<>();
@@ -149,7 +149,7 @@ public class AppearanceWindow extends VBox
     private void showRestartRequiredAlert()
     {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("%Appearance");
+        alert.setTitle(SaveLoadManager.getTranslation("Appearance"));
         alert.setHeaderText(null);
         alert.setContentText(SaveLoadManager.getTranslation("RestartRequiredForEffect"));
 

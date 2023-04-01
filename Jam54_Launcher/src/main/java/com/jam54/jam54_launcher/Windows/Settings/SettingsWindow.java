@@ -60,7 +60,7 @@ public class SettingsWindow extends HBox
 
         ToggleButton appearance = new ToggleButton();
         appearance.setSkin(new ToggleButtonNotGradientColor(appearance, LoadCSSStyles.getCSSColor("-bg-main"), LoadCSSStyles.getCSSColor("-bg-selected"), LoadCSSStyles.getCSSColor("-hollow-button-clicked")));
-        Text languageText = new Text("%Appearance");
+        Text languageText = new Text(SaveLoadManager.getTranslation("Appearance"));
         appearance.setGraphic(languageText);
 
         installationLocation.setOnAction( e ->
@@ -115,7 +115,7 @@ public class SettingsWindow extends HBox
                 (new ProcessBuilder("cmd.exe", "/c", "start", "\"\" " + '"' + "https://youtube.com/c/jam54" + '"')).start();
             } catch (IOException ex)
             {
-                ErrorMessage errorMessage = new ErrorMessage(false, "%Couldn't open website." + " " + ex.getMessage());
+                ErrorMessage errorMessage = new ErrorMessage(false, SaveLoadManager.getTranslation("CouldntOpenWebsite") + " " + ex.getMessage());
                 errorMessage.show();
             }
         });
@@ -126,7 +126,7 @@ public class SettingsWindow extends HBox
                 (new ProcessBuilder("cmd.exe", "/c", "start", "\"\" " + '"' + "https://play.google.com/store/apps/details?id=com.jam54.AstroRun&hl=en" + '"')).start();
             } catch (IOException ex)
             {
-                ErrorMessage errorMessage = new ErrorMessage(false, "%Couldn't open website." + " " + ex.getMessage());
+                ErrorMessage errorMessage = new ErrorMessage(false, SaveLoadManager.getTranslation("CouldntOpenWebsite") + " " + ex.getMessage());
                 errorMessage.show();
             }
         });
@@ -137,7 +137,7 @@ public class SettingsWindow extends HBox
                 (new ProcessBuilder("cmd.exe", "/c", "start", "\"\" " + '"' + "https://discord.gg/z6wEvv7" + '"')).start();
             } catch (IOException ex)
             {
-                ErrorMessage errorMessage = new ErrorMessage(false, "%Couldn't open website." + " " + ex.getMessage());
+                ErrorMessage errorMessage = new ErrorMessage(false, SaveLoadManager.getTranslation("CouldntOpenWebsite") + " " + ex.getMessage());
                 errorMessage.show();
             }
         });
@@ -148,7 +148,7 @@ public class SettingsWindow extends HBox
                 (new ProcessBuilder("cmd.exe", "/c", "start", "\"\" " + '"' + "https://github.com/jam53" + '"')).start();
             } catch (IOException ex)
             {
-                ErrorMessage errorMessage = new ErrorMessage(false, "%Couldn't open website." + " " + ex.getMessage());
+                ErrorMessage errorMessage = new ErrorMessage(false, SaveLoadManager.getTranslation("CouldntOpenWebsite") + " " + ex.getMessage());
                 errorMessage.show();
             }
         });
@@ -159,7 +159,7 @@ public class SettingsWindow extends HBox
                 (new ProcessBuilder("cmd.exe", "/c", "start", "\"\" " + '"' + "mailto:jam54.help@outlook.com" + '"')).start();
             } catch (IOException ex)
             {
-                ErrorMessage errorMessage = new ErrorMessage(false, "%Couldn't open website." + " " + ex.getMessage());
+                ErrorMessage errorMessage = new ErrorMessage(false, SaveLoadManager.getTranslation("CouldntOpenWebsite") + " " + ex.getMessage());
                 errorMessage.show();
             }
         });

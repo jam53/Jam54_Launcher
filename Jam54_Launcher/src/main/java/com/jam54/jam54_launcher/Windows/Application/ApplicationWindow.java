@@ -866,7 +866,7 @@ public class ApplicationWindow extends VBox implements InvalidationListener
         }
         catch (IOException e)
         {
-            ErrorMessage errorMessage = new ErrorMessage(false, "%Couldn't launch application. " + e.getMessage());
+            ErrorMessage errorMessage = new ErrorMessage(false, SaveLoadManager.getTranslation("CouldntLaunchApplication") + " " + e.getMessage());
             errorMessage.show();
         }
     }
@@ -927,7 +927,7 @@ public class ApplicationWindow extends VBox implements InvalidationListener
             removeShortcuts.start();
         }
         catch (Exception e) {
-            ErrorMessage errorMessage = new ErrorMessage(false, "%Couldn't remove shortcut. " + e.getMessage());
+            ErrorMessage errorMessage = new ErrorMessage(false, SaveLoadManager.getTranslation("CouldntRemoveShortcut") + " " + e.getMessage());
             errorMessage.show();
         }
     }

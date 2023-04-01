@@ -39,7 +39,7 @@ public class InstallationLocationWindow extends VBox implements InvalidationList
         Text title = new Text(SaveLoadManager.getTranslation("GamesProgramsInstallationPath"));
         title.setId("HighlightedSettingsTitle");
 
-        Text description = new Text("%Choose a location for Games and Programs installs.");
+        Text description = new Text(SaveLoadManager.getTranslation("ChooseGamesProgramsInstallLocation"));
         description.setId("NotHighlightedSettingsDescription");
 
         VBox folderPickerHolder = new VBox();
