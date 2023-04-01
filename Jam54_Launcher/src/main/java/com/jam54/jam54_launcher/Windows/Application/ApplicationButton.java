@@ -22,7 +22,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 import javafx.stage.Modality;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
@@ -76,7 +78,8 @@ public class ApplicationButton extends VBox
         HBox optionsHolder = new HBox();
 
         Text title = new Text(info.name());
-        title.setWrappingWidth(130);
+        title.setText(getTruncatedString(title.getText(), title.getFont(), 80)); // Call a method to truncate the string with an ellipsis if necessary
+
 
         Text status = new Text();
         ImageView statusImage;
@@ -216,5 +219,20 @@ public class ApplicationButton extends VBox
     public void closeOptionsWindow()
     {
         popup.hide();
+    }
+
+    // Method to truncate the string with an ellipsis if necessary
+    private String getTruncatedString(String text, Font font, double maxWidth) {
+        Text tempText = new Text(text);
+        tempText.setFont(font);
+        if (tempText.getBoundsInLocal().getWidth() > maxWidth) {
+            int endIndex = text.length() - 3;
+            while (endIndex > 0 && tempText.getBoundsInLocal().getWidth() > maxWidth) {
+                endIndex--;
+                tempText.setText(text.substring(0, endIndex) + "...");
+            }
+            text = tempText.getText();
+        }
+        return text;
     }
 }
