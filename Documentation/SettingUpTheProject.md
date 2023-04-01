@@ -11,12 +11,8 @@
 ## Prerequisites
 
 ### Downloading the JDK
-This project uses OpenJDK 18.0.2, which may be downloaded from [here.](https://jdk.java.net/18/) This version is used for everything Java related in this repository, this includes but is not limited to:
-- The Jam54_Launcher project
-- The Updater project
-- JavaFX
-- The Scene Builder
-- The jpackage command
+It's recommend to use the latest version of OpenJDK which can be downloaded from [here.](https://jdk.java.net/)  
+However, at build time the code gets compiled to Java 20. This is because when the Jam54 Launcher was released initially, this was the latest version of Java at that time. This means that although we recommend the latest version of Java; any version higher than or equal to [OpenJDK 20](https://jdk.java.net/20/) should work.
 
 ### Download the Java IDE
 We recommend using the *IntelliJ IDEA* IDE, however, any other IDE should work fine.
