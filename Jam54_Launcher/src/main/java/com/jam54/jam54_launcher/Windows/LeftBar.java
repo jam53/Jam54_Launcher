@@ -3,6 +3,7 @@ package com.jam54.jam54_launcher.Windows;
 import com.jam54.jam54_launcher.Animations.ToggleButtonColor;
 import com.jam54.jam54_launcher.Animations.ToggleButtonNotGradientColor;
 import com.jam54.jam54_launcher.Data.Jam54LauncherModel;
+import com.jam54.jam54_launcher.LoadCSSStyles;
 import com.jam54.jam54_launcher.Main;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
@@ -52,8 +53,8 @@ public class LeftBar extends VBox implements InvalidationListener
         homeToggle.getStyleClass().add("homeToggle");
         settingsToggle.getStyleClass().add("settingsToggle");
 
-        homeToggle.setSkin(new ToggleButtonNotGradientColor(homeToggle, Color.web("#242424"), Color.web("#595959"), Color.web("#3E3E3E")));
-        settingsToggle.setSkin(new ToggleButtonNotGradientColor(settingsToggle, Color.web("#242424"), Color.web("#595959"), Color.web("#3E3E3E")));
+        homeToggle.setSkin(new ToggleButtonNotGradientColor(homeToggle, LoadCSSStyles.getCSSColor("-bg-foreground"), LoadCSSStyles.getCSSColor("-hollow-button-clicked"), LoadCSSStyles.getCSSColor("-bg-selected")));
+        settingsToggle.setSkin(new ToggleButtonNotGradientColor(settingsToggle, LoadCSSStyles.getCSSColor("-bg-foreground"), LoadCSSStyles.getCSSColor("-hollow-button-clicked"), LoadCSSStyles.getCSSColor("-bg-selected")));
 
 
         toggleGroup.selectToggle(homeToggle);

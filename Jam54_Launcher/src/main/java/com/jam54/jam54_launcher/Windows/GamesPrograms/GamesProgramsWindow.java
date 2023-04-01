@@ -6,6 +6,7 @@ import com.jam54.jam54_launcher.Animations.TextFieldColor;
 import com.jam54.jam54_launcher.Animations.ToggleButtonColor;
 import com.jam54.jam54_launcher.Data.Jam54LauncherModel;
 import com.jam54.jam54_launcher.Data.SaveLoad.SaveLoadManager;
+import com.jam54.jam54_launcher.LoadCSSStyles;
 import com.jam54.jam54_launcher.Windows.Application.ApplicationButton;
 import com.jam54.jam54_launcher.database_access.Other.ApplicationInfo;
 import javafx.beans.InvalidationListener;
@@ -65,11 +66,11 @@ public class GamesProgramsWindow extends VBox implements InvalidationListener
         }); //This makes it so that there always has to be at least one toggle selected
 
         gamesToggle = new ToggleButton();
-        gamesToggle.setSkin(new ToggleButtonColor(gamesToggle, Color.web("#0E112C"), Color.web("#2193D3"), Color.web("#494FD6")));
+        gamesToggle.setSkin(new ToggleButtonColor(gamesToggle, LoadCSSStyles.getCSSColor("-toggle-button-flat"), Color.web("#2193D3"), Color.web("#494FD6")));
         gamesToggle.setGraphic(new Text(SaveLoadManager.getTranslation("Games"))); //By default the text inside a ToggleButton is displayed usinga "Label" object, which looks terrible and not smooth when using a custom font
         programsToggle = new ToggleButton();
         programsToggle.setGraphic(new Text(SaveLoadManager.getTranslation("Programs")));
-        programsToggle.setSkin(new ToggleButtonColor(programsToggle, Color.web("#0E112C"), Color.web("#2193D3"), Color.web("#494FD6")));
+        programsToggle.setSkin(new ToggleButtonColor(programsToggle, LoadCSSStyles.getCSSColor("-toggle-button-flat"), Color.web("#2193D3"), Color.web("#494FD6")));
 
 
         gamesToggle.setToggleGroup(toggleGroup);
@@ -87,7 +88,7 @@ public class GamesProgramsWindow extends VBox implements InvalidationListener
 
         TextField searchBar = new TextField();
         searchBar.setPromptText(SaveLoadManager.getTranslation("Search"));
-        searchBar.setSkin(new TextFieldColor(searchBar, Color.web("#141414"), Color.web("#3E3E3E"), Color.web("#595959")));
+        searchBar.setSkin(new TextFieldColor(searchBar, LoadCSSStyles.getCSSColor("-bg-main"), LoadCSSStyles.getCSSColor("-hollow-button-hovered"), LoadCSSStyles.getCSSColor("-hollow-button-clicked")));
         searchBarHolder = new HBox(searchBar);
         searchBarHolder.prefWidthProperty().bind(buttonBar.prefWidthProperty().divide(3));
         searchBarHolder.getStyleClass().add("buttonBarSearchBar");
@@ -100,11 +101,11 @@ public class GamesProgramsWindow extends VBox implements InvalidationListener
 
         HBox.setHgrow(filtersHolder, Priority.ALWAYS);
 
-        sortOrder_comboBox = new ComboBoxColor(FXCollections.observableArrayList(List.of(SaveLoadManager.getTranslation("Alphabetical") + " ↓",SaveLoadManager.getTranslation("Alphabetical") + " ↑", SaveLoadManager.getTranslation("ReleaseDate") + " ↓", SaveLoadManager.getTranslation("ReleaseDate") + " ↑", SaveLoadManager.getTranslation("LastUpdated") + " ↓", SaveLoadManager.getTranslation("LastUpdated") + " ↑")), Color.web("#141414"), Color.web("#3E3E3E"), Color.web("#595959"));
-        selectedPlatforms_comboBox = new ComboBoxColor(FXCollections.observableArrayList(List.of(SaveLoadManager.getTranslation("AllPlatforms"), SaveLoadManager.getTranslation("Android"), SaveLoadManager.getTranslation("Windows"), SaveLoadManager.getTranslation("Web"))), Color.web("#141414"), Color.web("#3E3E3E"), Color.web("#595959"));
+        sortOrder_comboBox = new ComboBoxColor(FXCollections.observableArrayList(List.of(SaveLoadManager.getTranslation("Alphabetical") + " ↓",SaveLoadManager.getTranslation("Alphabetical") + " ↑", SaveLoadManager.getTranslation("ReleaseDate") + " ↓", SaveLoadManager.getTranslation("ReleaseDate") + " ↑", SaveLoadManager.getTranslation("LastUpdated") + " ↓", SaveLoadManager.getTranslation("LastUpdated") + " ↑")), LoadCSSStyles.getCSSColor("-bg-main"), LoadCSSStyles.getCSSColor("-hollow-button-hovered"), LoadCSSStyles.getCSSColor("-hollow-button-clicked"));
+        selectedPlatforms_comboBox = new ComboBoxColor(FXCollections.observableArrayList(List.of(SaveLoadManager.getTranslation("AllPlatforms"), SaveLoadManager.getTranslation("Android"), SaveLoadManager.getTranslation("Windows"), SaveLoadManager.getTranslation("Web"))), LoadCSSStyles.getCSSColor("-bg-main"), LoadCSSStyles.getCSSColor("-hollow-button-hovered"), LoadCSSStyles.getCSSColor("-hollow-button-clicked"));
 
         installedApplications_checkBox = new CheckBox(SaveLoadManager.getTranslation("CurrentlyInstalledApps"));
-        installedApplications_checkBox.setSkin(new CheckBoxColor(installedApplications_checkBox, Color.web("#141414"), Color.web("#3E3E3E"), Color.web("#3D77C2")));
+        installedApplications_checkBox.setSkin(new CheckBoxColor(installedApplications_checkBox, LoadCSSStyles.getCSSColor("-bg-main"), LoadCSSStyles.getCSSColor("-hollow-button-hovered"), LoadCSSStyles.getCSSColor("-accent-button-main")));
 
         sortOrder_comboBox.getSelectionModel().select(0);
         selectedPlatforms_comboBox.getSelectionModel().select(0);

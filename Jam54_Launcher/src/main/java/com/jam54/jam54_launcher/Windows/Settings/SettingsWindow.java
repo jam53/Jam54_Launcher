@@ -3,6 +3,7 @@ package com.jam54.jam54_launcher.Windows.Settings;
 import com.jam54.jam54_launcher.Animations.ToggleButtonNotGradientColor;
 import com.jam54.jam54_launcher.ErrorMessage;
 import com.jam54.jam54_launcher.Data.Jam54LauncherModel;
+import com.jam54.jam54_launcher.LoadCSSStyles;
 import com.jam54.jam54_launcher.Main;
 import com.jam54.jam54_launcher.Data.SaveLoad.SaveLoadManager;
 import javafx.scene.control.Button;
@@ -53,24 +54,29 @@ public class SettingsWindow extends HBox
         }); //This makes it so that there always has to be at least one toggle selected
 
         ToggleButton installationLocation = new ToggleButton();
-        installationLocation.setSkin(new ToggleButtonNotGradientColor(installationLocation, Color.web("#141414"), Color.web("#3E3E3E"), Color.web("#595959")));
+        installationLocation.setSkin(new ToggleButtonNotGradientColor(installationLocation, LoadCSSStyles.getCSSColor("-bg-main"), LoadCSSStyles.getCSSColor("-bg-selected"), LoadCSSStyles.getCSSColor("-hollow-button-clicked")));
         Text installationLocationText = new Text(SaveLoadManager.getTranslation("InstallationLocation"));
         installationLocation.setGraphic(installationLocationText);
 
-        ToggleButton language = new ToggleButton();
-        language.setSkin(new ToggleButtonNotGradientColor(language, Color.web("#141414"), Color.web("#3E3E3E"), Color.web("#595959")));
+        ToggleButton appearance = new ToggleButton();
+        appearance.setSkin(new ToggleButtonNotGradientColor(appearance, LoadCSSStyles.getCSSColor("-bg-main"), LoadCSSStyles.getCSSColor("-bg-selected"), LoadCSSStyles.getCSSColor("-hollow-button-clicked")));
         Text languageText = new Text("%Appearance");
-        language.setGraphic(languageText);
+        appearance.setGraphic(languageText);
 
-        installationLocation.setOnAction( e -> setRightSide(new InstallationLocationWindow()));
-        language.setOnAction( e -> setRightSide(new AppearanceWindow(model.getSupportedLanguages())));
+        installationLocation.setOnAction( e ->
+        {
+            InstallationLocationWindow installationLocationWindow = new InstallationLocationWindow();
+            installationLocationWindow.setModel(model);
+            setRightSide(installationLocationWindow);
+        });
+        appearance.setOnAction( e -> setRightSide(new AppearanceWindow(model.getSupportedLanguages())));
 
         installationLocation.setToggleGroup(toggleGroup);
-        language.setToggleGroup(toggleGroup);
+        appearance.setToggleGroup(toggleGroup);
 
         toggleGroup.selectToggle(installationLocation);
 
-        leftBarTop.getChildren().addAll(titleHolder, installationLocation, language);
+        leftBarTop.getChildren().addAll(titleHolder, installationLocation, appearance);
 
         Text version = new Text(SaveLoadManager.getTranslation("CouldntRetrieveLauncherVersion"));
 

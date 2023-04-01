@@ -4,6 +4,7 @@ import com.jam54.jam54_launcher.Animations.ButtonColor;
 import com.jam54.jam54_launcher.Data.Jam54LauncherModel;
 import com.jam54.jam54_launcher.Data.SaveLoad.ColorTheme;
 import com.jam54.jam54_launcher.Data.SaveLoad.SaveLoadManager;
+import com.jam54.jam54_launcher.LoadCSSStyles;
 import com.jam54.jam54_launcher.Main;
 import com.jam54.jam54_launcher.Windows.GamesPrograms.OptionsWindow;
 import com.jam54.jam54_launcher.database_access.Other.ApplicationInfo;
@@ -108,7 +109,7 @@ public class ApplicationButton extends VBox
 
         Button optionsButton = new Button();
         optionsButton.setOnMouseClicked(this::openOptionsWindow);
-        optionsButton.setSkin(new ButtonColor(optionsButton, Color.web("#242424"), Color.web("#595959"), Color.web("#595959")));
+        optionsButton.setSkin(new ButtonColor(optionsButton, LoadCSSStyles.getCSSColor("-bg-foreground"), LoadCSSStyles.getCSSColor("-hollow-button-clicked"), LoadCSSStyles.getCSSColor("-hollow-button-clicked")));
 
         optionsHolder.getChildren().add(optionsButton);
 

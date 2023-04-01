@@ -4,6 +4,9 @@ import com.jam54.jam54_launcher.Animations.ButtonColor;
 import com.jam54.jam54_launcher.Data.Jam54LauncherModel;
 import com.jam54.jam54_launcher.ErrorMessage;
 import com.jam54.jam54_launcher.Data.SaveLoad.SaveLoadManager;
+import com.jam54.jam54_launcher.LoadCSSStyles;
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
 import javafx.geometry.Orientation;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -25,8 +28,10 @@ import java.nio.file.StandardCopyOption;
 /**
  * This class is used to create the InstallationLocation window, at the right side within the settings window
  */
-public class InstallationLocationWindow extends VBox
+public class InstallationLocationWindow extends VBox implements InvalidationListener
 {
+    private final Text dataFolderSize;
+
     public InstallationLocationWindow()
     {
         this.getStyleClass().add("installationLocationWindow");
@@ -40,12 +45,12 @@ public class InstallationLocationWindow extends VBox
         VBox folderPickerHolder = new VBox();
         folderPickerHolder.getStyleClass().add("folderPickerHolder");
 
-        Text dataFolderSize = new Text(getFolderSize(SaveLoadManager.getData().getDataPath()));
+        dataFolderSize = new Text(getFolderSize(SaveLoadManager.getData().getDataPath()));
         HBox dataFolderSizeHolder = new HBox(dataFolderSize);
         dataFolderSizeHolder.setId("dataFolderSizeHolder");
 
         Button picker = new Button();
-        picker.setSkin(new ButtonColor(picker, Color.web("#242424"), Color.web("#3E3E3E"), Color.web("#3E3E3E")));
+        picker.setSkin(new ButtonColor(picker, LoadCSSStyles.getCSSColor("-bg-foreground"), LoadCSSStyles.getCSSColor("-bg-selected"), LoadCSSStyles.getCSSColor("-bg-selected")));
 
         HBox pickerContainer = new HBox();
         pickerContainer.setId("pickerContainer");
@@ -112,5 +117,19 @@ public class InstallationLocationWindow extends VBox
         {
             return sizeInBytes + " MB";
         }
+    }
+
+    public void setModel(Jam54LauncherModel model)
+    {
+        model.addListener(this);
+    }
+
+    /**
+     * When the model changes/get invalidated, it might be because an app was installed/removed/updated. In that case we ant to update the text of dataFolderSize
+     */
+    @Override
+    public void invalidated(Observable observable)
+    {
+        dataFolderSize.setText(getFolderSize(SaveLoadManager.getData().getDataPath()));
     }
 }

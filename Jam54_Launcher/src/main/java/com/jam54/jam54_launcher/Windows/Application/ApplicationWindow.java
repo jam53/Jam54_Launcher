@@ -6,6 +6,7 @@ import com.jam54.jam54_launcher.Data.Jam54LauncherModel;
 import com.jam54.jam54_launcher.Data.SaveLoad.ColorTheme;
 import com.jam54.jam54_launcher.Data.SaveLoad.SaveLoadManager;
 import com.jam54.jam54_launcher.ErrorMessage;
+import com.jam54.jam54_launcher.LoadCSSStyles;
 import com.jam54.jam54_launcher.Main;
 import com.jam54.jam54_launcher.Updating.FileSplitterCombiner;
 import com.jam54.jam54_launcher.Updating.Hashes;
@@ -102,7 +103,7 @@ public class ApplicationWindow extends VBox implements InvalidationListener
 
         backToLibrary = new ToggleButton();
         backToLibrary.setGraphic(new Text(SaveLoadManager.getTranslation("BackToLibrary"))); //By default the text inside a ToggleButton is displayed usinga "Label" object, which looks terrible and not smooth when using a custom font
-        backToLibrary.setSkin(new ToggleButtonColor(backToLibrary, Color.web("#0E112C"), Color.web("#2193D3"), Color.web("#494FD6")));
+        backToLibrary.setSkin(new ToggleButtonColor(backToLibrary, LoadCSSStyles.getCSSColor("-toggle-button-flat"), Color.web("#2193D3"), Color.web("#494FD6")));
         backToLibrary.setOnAction(this::backToLibrary);
         HBox backToLibraryHolder = new HBox(backToLibrary);
         backToLibraryHolder.prefWidthProperty().bind(topBar.prefWidthProperty().divide(3));
@@ -113,7 +114,7 @@ public class ApplicationWindow extends VBox implements InvalidationListener
         Button optionsButton = new Button();
         optionsButton.setId("optionsButton");
         optionsButton.setOnMouseClicked(this::openOptionsWindow);
-        optionsButton.setSkin(new ButtonColor(optionsButton, Color.web("#242424"), Color.web("#595959"), Color.web("#595959")));
+        optionsButton.setSkin(new ButtonColor(optionsButton, LoadCSSStyles.getCSSColor("-bg-foreground"), LoadCSSStyles.getCSSColor("-hollow-button-clicked"), LoadCSSStyles.getCSSColor("-hollow-button-clicked")));
         optionsButtonHolder.getChildren().add(optionsButton);
         optionsButtonHolder.getStyleClass().add("optionsButtonHolder");
 
@@ -287,7 +288,7 @@ public class ApplicationWindow extends VBox implements InvalidationListener
                 Button validatingAppButton = new Button();
                 validatingAppButton.setId("nonPrimaryButton");
                 validatingAppButton.setDisable(true);
-                validatingAppButton.setSkin(new ButtonColor(validatingAppButton, Color.web("#404040"), Color.web("#383838"), Color.web("#313131")));
+                validatingAppButton.setSkin(new ButtonColor(validatingAppButton, LoadCSSStyles.getCSSColor("-filled-button-unselected"), LoadCSSStyles.getCSSColor("-filled-button-hovered"), LoadCSSStyles.getCSSColor("-filled-button-clicked")));
                 Text text = new Text();
                 AtomicBoolean doneOnce = new AtomicBoolean(false);
                 validatingAppButton.widthProperty().addListener((obs, oldV, newV) ->
@@ -308,7 +309,7 @@ public class ApplicationWindow extends VBox implements InvalidationListener
                 Button removingAppButton = new Button();
                 removingAppButton.setId("nonPrimaryButton");
                 removingAppButton.setDisable(true);
-                removingAppButton.setSkin(new ButtonColor(removingAppButton, Color.web("#404040"), Color.web("#383838"), Color.web("#313131")));
+                removingAppButton.setSkin(new ButtonColor(removingAppButton, LoadCSSStyles.getCSSColor("-filled-button-unselected"), LoadCSSStyles.getCSSColor("-filled-button-hovered"), LoadCSSStyles.getCSSColor("-filled-button-clicked")));
                 Text text = new Text();
                 AtomicBoolean doneOnce = new AtomicBoolean(false);
                 removingAppButton.widthProperty().addListener((obs, oldV, newV) ->
@@ -328,7 +329,7 @@ public class ApplicationWindow extends VBox implements InvalidationListener
             {
                 installUpdateButton.textProperty().unbind();
                 installUpdateButton.setId("primaryButton");
-                installUpdateButton.setSkin(new ButtonColor(installUpdateButton, Color.web("#3D77C2"), Color.web("#3669AB"), Color.web("#2E5A93")));
+                installUpdateButton.setSkin(new ButtonColor(installUpdateButton, LoadCSSStyles.getCSSColor("-accent-button-main"), LoadCSSStyles.getCSSColor("-accent-button-hovered"), LoadCSSStyles.getCSSColor("-accent-button-clicked")));
                 if (openedApp.version() == null) //If the app isn't installed
                 {
                     HBox iconTextHolder = new HBox();
@@ -403,7 +404,7 @@ public class ApplicationWindow extends VBox implements InvalidationListener
 
                     Button removeButton = new Button();
                     removeButton.setId("nonPrimaryButton");
-                    removeButton.setSkin(new ButtonColor(removeButton, Color.web("#404040"), Color.web("#383838"), Color.web("#313131")));
+                    removeButton.setSkin(new ButtonColor(removeButton, LoadCSSStyles.getCSSColor("-filled-button-unselected"), LoadCSSStyles.getCSSColor("-filled-button-hovered"), LoadCSSStyles.getCSSColor("-filled-button-clicked")));
                     HBox iconTextHolder2 = new HBox();
                     ImageView buttonIcon2 = new ImageView(new Image(Main.class.getResource("img/icons/Uninstall.png").toString()));
                     buttonIcon2.setFitHeight(22);
@@ -515,7 +516,7 @@ public class ApplicationWindow extends VBox implements InvalidationListener
                 {
                     Button removeButton = new Button();
                     removeButton.setId("nonPrimaryButton");
-                    removeButton.setSkin(new ButtonColor(removeButton, Color.web("#404040"), Color.web("#383838"), Color.web("#313131")));
+                    removeButton.setSkin(new ButtonColor(removeButton, LoadCSSStyles.getCSSColor("-filled-button-unselected"), LoadCSSStyles.getCSSColor("-filled-button-hovered"), LoadCSSStyles.getCSSColor("-filled-button-clicked")));
                     HBox iconTextHolder = new HBox();
                     ImageView buttonIcon = new ImageView(new Image(Main.class.getResource("img/icons/Uninstall.png").toString()));
                     buttonIcon.setFitHeight(22);
@@ -526,7 +527,7 @@ public class ApplicationWindow extends VBox implements InvalidationListener
 
                     Button playButton = new Button();
                     playButton.setId("primaryButton");
-                    playButton.setSkin(new ButtonColor(playButton, Color.web("#3D77C2"), Color.web("#3669AB"), Color.web("#2E5A93")));
+                    playButton.setSkin(new ButtonColor(playButton, LoadCSSStyles.getCSSColor("-accent-button-main"), LoadCSSStyles.getCSSColor("-accent-button-hovered"), LoadCSSStyles.getCSSColor("-accent-button-clicked")));
                     HBox iconTextHolder2 = new HBox();
                     ImageView buttonIcon2 = new ImageView(new Image(Main.class.getResource("img/icons/PlayWhite.png").toString()));
                     buttonIcon2.setFitHeight(20);
@@ -592,7 +593,7 @@ public class ApplicationWindow extends VBox implements InvalidationListener
                 installUpdateButton.textProperty().unbind();
                 installUpdateButton.setId("nonPrimaryButton");
                 installUpdateButton.setDisable(true);
-                installUpdateButton.setSkin(new ButtonColor(installUpdateButton, Color.web("#404040"), Color.web("#383838"), Color.web("#313131")));
+                installUpdateButton.setSkin(new ButtonColor(installUpdateButton, LoadCSSStyles.getCSSColor("-filled-button-unselected"), LoadCSSStyles.getCSSColor("-filled-button-hovered"), LoadCSSStyles.getCSSColor("-filled-button-clicked")));
 
                 Text text = new Text("");
                 if (installUpdateButton.getWidth() > 0)
@@ -616,7 +617,7 @@ public class ApplicationWindow extends VBox implements InvalidationListener
                 installUpdateButton.textProperty().unbind();
                 installUpdateButton.setId("nonPrimaryButton");
                 installUpdateButton.setDisable(true);
-                installUpdateButton.setSkin(new ButtonColor(installUpdateButton, Color.web("#404040"), Color.web("#383838"), Color.web("#313131")));
+                installUpdateButton.setSkin(new ButtonColor(installUpdateButton, LoadCSSStyles.getCSSColor("-filled-button-unselected"), LoadCSSStyles.getCSSColor("-filled-button-hovered"), LoadCSSStyles.getCSSColor("-filled-button-clicked")));
 
                 Text text = new Text("");
                 if (installUpdateButton.getWidth() > 0)
@@ -655,7 +656,7 @@ public class ApplicationWindow extends VBox implements InvalidationListener
                 installUpdateButton.textProperty().unbind();
                 installUpdateButton.setId("nonPrimaryButton");
                 installUpdateButton.setDisable(true);
-                installUpdateButton.setSkin(new ButtonColor(installUpdateButton, Color.web("#404040"), Color.web("#383838"), Color.web("#313131")));
+                installUpdateButton.setSkin(new ButtonColor(installUpdateButton, LoadCSSStyles.getCSSColor("-filled-button-unselected"), LoadCSSStyles.getCSSColor("-filled-button-hovered"), LoadCSSStyles.getCSSColor("-filled-button-clicked")));
 
                 Text text = new Text("");
                 while (installUpdateButton.getWidth() <= 0)

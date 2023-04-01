@@ -4,6 +4,7 @@ import com.jam54.jam54_launcher.Animations.ComboBoxColor;
 import com.jam54.jam54_launcher.Animations.ToggleButtonNotGradientColor;
 import com.jam54.jam54_launcher.Data.SaveLoad.ColorTheme;
 import com.jam54.jam54_launcher.Data.SaveLoad.SaveLoadManager;
+import com.jam54.jam54_launcher.LoadCSSStyles;
 import javafx.collections.FXCollections;
 import javafx.geometry.Orientation;
 import javafx.scene.control.*;
@@ -104,7 +105,7 @@ public class AppearanceWindow extends VBox
         }
         languages.sort(String::compareTo);
 
-        ComboBox<String> languagePicker = new ComboBoxColor(FXCollections.observableArrayList(languages), Color.web("#242424"), Color.web("#383838"), Color.web("#313131"));
+        ComboBox<String> languagePicker = new ComboBoxColor(FXCollections.observableArrayList(languages), LoadCSSStyles.getCSSColor("-bg-foreground"), LoadCSSStyles.getCSSColor("-bg-selected"), LoadCSSStyles.getCSSColor("-bg-selected"));
 
         languagePicker.getSelectionModel().select(languages.indexOf(getDisplayName(SaveLoadManager.getData().getLocale())));
 
