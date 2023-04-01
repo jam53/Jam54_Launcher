@@ -35,7 +35,7 @@ Once we have built both of our projects, we can create an installer by following
 Following the guide should yield this command:
 - Windows
     ```
-    jpackage --input . --module-path "D:\Program Files\openjfx-18.0.2_windows-x64_bin-jmods\javafx-jmods-18.0.2" --add-modules javafx.controls,javafx.fxml,jdk.crypto.ec,java.sql --name "Jam54 Launcher" --icon "D:\GitHub\Jam54_Launcher\Jam54_Launcher\src\main\resources\com\jam54\jam54_launcher\img\jam54Icon.ico" --app-version 0.1.0 --vendor "jam54" --copyright "Copyright © 2022 jam54" --win-dir-chooser --win-shortcut --win-per-user-install --win-menu --description "The Jam54 Launcher is used to install and update all of the software developed by jam54." --main-jar Jam54_Launcher.jar --main-class com.jam54.jam54_launcher.Main --type msi
+    jpackage --input . --module-path "D:\Program Files\javafx-jmods-20" --add-modules javafx.controls,javafx.fxml,jdk.crypto.ec,java.sql --name "Jam54 Launcher" --icon "D:\GitHub\Jam54_Launcher\Jam54_Launcher\src\main\resources\com\jam54\jam54_launcher\img\jam54Icon.ico" --app-version 0.1.0 --vendor "jam54" --copyright "Copyright © 2022-2023 jam54" --win-dir-chooser --win-shortcut --win-per-user-install --win-menu --description "The Jam54 Launcher is used to install and update all of the software developed by jam54." --main-jar Jam54_Launcher.jar --main-class com.jam54.jam54_launcher.Main --type msi
     ```
 
 > ### Note:
