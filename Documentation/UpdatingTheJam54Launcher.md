@@ -20,4 +20,4 @@ Prepare the following files:
 
 ---
 
-Upload the files listed above to GitHub, and create a new release
+Upload the files listed above to GitHub, and create a new release. You may also want to upload those files to OneDrive or something similar in order to have a backup.
