@@ -263,18 +263,31 @@ public class ApplicationWindow extends VBox implements InvalidationListener
             for (Platforms platform : openedApp.platforms())
             {
                 Image platformIcon;
+                ColorTheme colorTheme = SaveLoadManager.getData().getColorTheme();
 
-                if (platform == Platforms.ANDROID)
+                if (platform == Platforms.ANDROID && colorTheme == ColorTheme.DARK)
                 {
                     platformIcon = new Image("/com/jam54/jam54_launcher/img/icons/Mobile.png", 44, 44, true, true);
                 }
-                else if (platform == Platforms.WINDOWS)
+                else if (platform == Platforms.ANDROID && colorTheme == ColorTheme.LIGHT)
+                {
+                    platformIcon = new Image("/com/jam54/jam54_launcher/img/icons/Mobile-whiteTheme.png", 44, 44, true, true);
+                }
+                else if (platform == Platforms.WINDOWS && colorTheme == ColorTheme.DARK)
                 {
                     platformIcon = new Image("/com/jam54/jam54_launcher/img/icons/Desktop.png", 44, 44, true, true);
                 }
-                else
+                else if (platform == Platforms.WINDOWS && colorTheme == ColorTheme.LIGHT)
+                {
+                    platformIcon = new Image("/com/jam54/jam54_launcher/img/icons/Desktop-whiteTheme.png", 44, 44, true, true);
+                }
+                else if (platform == Platforms.WEB && colorTheme == ColorTheme.DARK)
                 {
                     platformIcon = new Image("/com/jam54/jam54_launcher/img/icons/Web.png", 44, 44, true, true);
+                }
+                else
+                {
+                    platformIcon = new Image("/com/jam54/jam54_launcher/img/icons/Web-whiteTheme.png", 44, 44, true, true);
                 }
 
                 platformIcons_HBox.getChildren().add(new ImageView(platformIcon));
