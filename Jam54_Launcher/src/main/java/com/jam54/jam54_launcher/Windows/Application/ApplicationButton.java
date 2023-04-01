@@ -8,6 +8,10 @@ import com.jam54.jam54_launcher.LoadCSSStyles;
 import com.jam54.jam54_launcher.Main;
 import com.jam54.jam54_launcher.Windows.GamesPrograms.OptionsWindow;
 import com.jam54.jam54_launcher.database_access.Other.ApplicationInfo;
+import javafx.animation.FadeTransition;
+import javafx.animation.PauseTransition;
+import javafx.animation.ScaleTransition;
+import javafx.animation.SequentialTransition;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -23,6 +27,7 @@ import javafx.stage.Modality;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Duration;
 
 /**
  * This class is used to create the buttons on the Games/Programs windows
@@ -36,7 +41,7 @@ public class ApplicationButton extends VBox
 
     private Popup popup;
 
-    public ApplicationButton(ApplicationInfo info)
+    public ApplicationButton(ApplicationInfo info, boolean useFadeInTransition, Duration fadeTransitionDelay)
     {
         this.getStyleClass().add("applicationButton");
         this.info = info;
@@ -117,6 +122,40 @@ public class ApplicationButton extends VBox
         this.getChildren().addAll(finalImage, bottom);
 
         this.setOnMouseClicked(this::selectApplicationWindow);
+
+        //region Scale transition on hover
+        final ScaleTransition scaleIn = new ScaleTransition(Duration.millis(100));
+        scaleIn.setNode(this);
+        scaleIn.setByX(0.03);
+        scaleIn.setByY(0.03);
+        this.setOnMouseEntered(e -> scaleIn.playFromStart());
+
+        final ScaleTransition scaleOut = new ScaleTransition(Duration.millis(100));
+        scaleOut.setNode(this);
+        scaleOut.setToX(1);
+        scaleOut.setToY(1);
+        this.setOnMouseExited(e -> scaleOut.playFromStart());
+        //endregion
+
+        //region Fade transition on spawn in of this node
+        final FadeTransition fadeStart = new FadeTransition(Duration.ZERO);
+        fadeStart.setNode(this);
+        fadeStart.setFromValue(0);
+        fadeStart.setToValue(0);
+
+        final FadeTransition fadeIn = new FadeTransition(Duration.millis(useFadeInTransition ? 500 : 0));
+        fadeIn.setNode(this);
+        fadeIn.setFromValue(0);
+        fadeIn.setToValue(1);
+
+        // Create a pause transition to delay the start of the fade transition
+        PauseTransition pauseTransition = new PauseTransition(fadeTransitionDelay);
+
+        // Combine the pause and fade transitions into a sequential transition
+        SequentialTransition sequentialTransition = new SequentialTransition(fadeStart, pauseTransition, fadeIn);
+
+        sequentialTransition.playFromStart();
+        //endregion
     }
 
     public void setModel(Jam54LauncherModel model)

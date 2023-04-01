@@ -25,6 +25,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
 
 import java.sql.SQLOutput;
 import java.util.List;
@@ -182,10 +183,12 @@ public class GamesProgramsWindow extends VBox implements InvalidationListener
     {
         applicationsHolder.getChildren().clear();
 
+        int appplicationsAdded = 0;
         for (ApplicationInfo application : model.getVisibleApplicationInfos())
         {
-            ApplicationButton button = new ApplicationButton(application);
+            ApplicationButton button = new ApplicationButton(application, true, Duration.millis(appplicationsAdded * 100));
             button.setModel(model);
+            appplicationsAdded++;
 
             VBox appButtonHolder = new VBox(); //See explanation for this extra holder in the `applicationButtonHolder` styleclass inside the stylesheet
             appButtonHolder.getStyleClass().add("applicationButtonHolder");
