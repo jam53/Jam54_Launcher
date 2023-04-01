@@ -87,6 +87,7 @@ public class ApplicationWindow extends VBox implements InvalidationListener
     private Button installUpdateButton;
     private InstallApp installApp;
     private Popup popup;
+    private HBox optionsButtonHolder;
 
     public ApplicationWindow()
     {
@@ -109,7 +110,7 @@ public class ApplicationWindow extends VBox implements InvalidationListener
         backToLibraryHolder.prefWidthProperty().bind(topBar.prefWidthProperty().divide(3));
         backToLibraryHolder.getStyleClass().add("buttonBarToggles");
 
-        HBox optionsButtonHolder = new HBox();
+        optionsButtonHolder = new HBox();
         optionsButtonHolder.prefWidthProperty().bind(topBar.prefWidthProperty().divide(3));
         Button optionsButton = new Button();
         optionsButton.setId("optionsButton");
@@ -244,6 +245,15 @@ public class ApplicationWindow extends VBox implements InvalidationListener
     @Override
     public void invalidated(Observable observable)
     {
+        if (model.getOpenedApplication() != null && model.getOpenedApplication().version() != null)
+        {//If the current opened app is installed
+            optionsButtonHolder.setVisible(true);
+        }
+        else
+        {
+            optionsButtonHolder.setVisible(false);
+        }
+
         if (model.getOpenedApplication() != null)
         {
             ApplicationInfo openedApp = model.getOpenedApplication();
