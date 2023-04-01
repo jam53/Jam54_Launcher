@@ -1,29 +1,30 @@
 {
-    -bg-main: #141414;
-    -bg-foreground: #242424;
-    -bg-selected: #3E3E3E;
+    -bg-main: #FFFFFF;
+    -bg-foreground: #F5F5F5;
+    -bg-selected: #D8D8D8;
 
     -accent-button-main: #3D77C2;
     -accent-button-hovered: #3669AB;
     -accent-button-clicked: #2E5A93;
 
     -hollow-button-unselected: rgba(255, 255, 255, 0);
-    -hollow-button-hovered: #3E3E3E;
-    -hollow-button-clicked: #595959;
+    -hollow-button-hovered: #D8D8D8;
+    -hollow-button-clicked: #BABABA;
 
     -filled-button-unselected: #404040;
     -filled-button-hovered: #383838;
     -filled-button-clicked: #313131;
 
-    -button-icon-unselected: #7C7C7C;
-    -button-icon-hovered: #C9C9C9;
-    -button-icon-clicked: #D1D1D1;
+    -button-icon-unselected: #939393;
+    -button-icon-hovered: #3C3C3C;
+    -button-icon-clicked: #343434;
 
-    -text-highlighted: #FFFFFF;
-    -text-not-highlighted: #BDBDBD;
+    -text-highlighted: #000000;
+    -text-not-highlighted: #474747;
 
-    -other-border-division-scrollbar: #404040;
-    -other-blur: rgba(255, 255, 255, 0.25);
+    -other-border-division-scrollbar: #EBEBEB;
+    -other-blur: rgba(0, 0, 0, 0.25)
+;
     -toggle-button-gradient: linear-gradient(from 25% 25% to 100% 100%, #2193D3, #494FD6);
     -toggle-button-flat: #0E112C
 }
@@ -960,7 +961,7 @@ To circumvent/get around this, we put the applicationButton in another VBox whic
 }
 
 .appearanceWindowToggleButton:selected HBox HBox HBox {
-    -fx-background-color: -text-highlighted;
+    -fx-background-color: #FFFFFF;
 }
 
 .appearanceWindowToggleButton HBox Text {

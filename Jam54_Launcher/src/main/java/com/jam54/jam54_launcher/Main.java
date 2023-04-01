@@ -1,6 +1,7 @@
 package com.jam54.jam54_launcher;
 
 import com.jam54.jam54_launcher.Data.Jam54LauncherModel;
+import com.jam54.jam54_launcher.Data.SaveLoad.ColorTheme;
 import com.jam54.jam54_launcher.Data.SaveLoad.SaveLoadManager;
 import com.jam54.jam54_launcher.Updating.LauncherUpdater;
 import com.jam54.jam54_launcher.Data.Loaders.ApplicationsLoader;
@@ -39,6 +40,14 @@ public class Main extends Application
         fxmlLoader.setController(controller);
 
         Scene scene = new Scene(fxmlLoader.load(), 1228, 754); //If we set for example, 300 as prefWidth inside the FXML. The we could make our window bigger and the hboxes, vboxes, flowplanes etc. would resize accordingly. But anything smaller than 300 after resizing. Would just cut of the side of the window. By setting both the prefWidth and prefHeight to 1 inside the FXML. Followed by choosing the correct widht/height inside Java. The window resizes correctly, even at smaller resolutions
+        if (SaveLoadManager.getData().getColorTheme() == ColorTheme.DARK)
+        {
+            scene.getStylesheets().add(Main.class.getResource("css/mainDark.css").toString());
+        }
+        else
+        {
+            scene.getStylesheets().add(Main.class.getResource("css/mainLight.css").toString());
+        }
         stage.setMinWidth(1228);
         stage.setMinHeight(785);
         stage.setTitle("Jam54 Launcher");

@@ -12,6 +12,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.stage.Popup;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
@@ -23,8 +24,11 @@ import java.util.Locale;
  */
 public class AppearanceWindow extends VBox
 {
-    ArrayList<String> languages;
-    HashMap<String, Locale> mapDisplayNameToLocale;
+    private ArrayList<String> languages;
+    private HashMap<String, Locale> mapDisplayNameToLocale;
+
+    private boolean themeRestartAlertHasBeenShown;
+    private boolean langaugeRestartAlertHasBeenShown;
 
     public AppearanceWindow(ArrayList<Locale> supportedLanguages)
     {
@@ -56,8 +60,24 @@ public class AppearanceWindow extends VBox
         Text lightToggleButtonText = new Text("%Light");
         lightToggleButton.setGraphic(new HBox(lightToggleIndicator, lightToggleButtonText));
 
-        darkToggleButton.setOnAction( e -> System.out.println("Dark theme selected"));
-        lightToggleButton.setOnAction( e -> System.out.println("White theme selected"));
+        darkToggleButton.setOnAction(e ->
+        {
+            SaveLoadManager.getData().setColorTheme(ColorTheme.DARK);
+            if (!themeRestartAlertHasBeenShown)
+            {
+                themeRestartAlertHasBeenShown = true;
+                showRestartRequiredAlert();
+            }
+        });
+        lightToggleButton.setOnAction(e ->
+        {
+            SaveLoadManager.getData().setColorTheme(ColorTheme.LIGHT);
+            if (!themeRestartAlertHasBeenShown)
+            {
+                themeRestartAlertHasBeenShown = true;
+                showRestartRequiredAlert();
+            }
+        });
 
         darkToggleButton.setToggleGroup(toggleGroup);
         lightToggleButton.setToggleGroup(toggleGroup);
@@ -88,7 +108,15 @@ public class AppearanceWindow extends VBox
 
         languagePicker.getSelectionModel().select(languages.indexOf(getDisplayName(SaveLoadManager.getData().getLocale())));
 
-        languagePicker.setOnAction(e -> SaveLoadManager.getData().setLocale(getLocale(languages.get(languagePicker.getSelectionModel().getSelectedIndex()))));
+        languagePicker.setOnAction(e ->
+        {
+            SaveLoadManager.getData().setLocale(getLocale(languages.get(languagePicker.getSelectionModel().getSelectedIndex())));
+            if (!langaugeRestartAlertHasBeenShown)
+            {
+                langaugeRestartAlertHasBeenShown = true;
+                showRestartRequiredAlert();
+            }
+        });
 
         languagePicker.setTooltip(new Tooltip(SaveLoadManager.getTranslation("RestartRequiredForEffect")));
 
@@ -112,5 +140,21 @@ public class AppearanceWindow extends VBox
     private Locale getLocale(String displayName)
     {
         return mapDisplayNameToLocale.get(displayName);
+    }
+
+    /**
+     * This function will show an alert/popup/dialog to the user, telling the user that a restart is required in order for the changes to take effect
+     */
+    private void showRestartRequiredAlert()
+    {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("%Appearance");
+        alert.setHeaderText(null);
+        alert.setContentText(SaveLoadManager.getTranslation("RestartRequiredForEffect"));
+
+        ButtonType okButtonType = new ButtonType(SaveLoadManager.getTranslation("Ok"), ButtonBar.ButtonData.OK_DONE);
+        alert.getButtonTypes().setAll(okButtonType);
+
+        alert.showAndWait();
     }
 }

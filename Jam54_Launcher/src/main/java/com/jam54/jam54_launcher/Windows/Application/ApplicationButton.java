@@ -2,6 +2,7 @@ package com.jam54.jam54_launcher.Windows.Application;
 
 import com.jam54.jam54_launcher.Animations.ButtonColor;
 import com.jam54.jam54_launcher.Data.Jam54LauncherModel;
+import com.jam54.jam54_launcher.Data.SaveLoad.ColorTheme;
 import com.jam54.jam54_launcher.Data.SaveLoad.SaveLoadManager;
 import com.jam54.jam54_launcher.Main;
 import com.jam54.jam54_launcher.Windows.GamesPrograms.OptionsWindow;
@@ -153,7 +154,14 @@ public class ApplicationButton extends VBox
     private void openOptionsWindow(MouseEvent event)
     {
         OptionsWindow optionsWindow = new OptionsWindow(info, this, model);
-        optionsWindow.getStylesheets().add(Main.class.getResource("css/mainDark.css").toString());
+        if (SaveLoadManager.getData().getColorTheme() == ColorTheme.DARK)
+        {
+            optionsWindow.getStylesheets().add(Main.class.getResource("css/mainDark.css").toString());
+        }
+        else
+        {
+            optionsWindow.getStylesheets().add(Main.class.getResource("css/mainLight.css").toString());
+        }
 
         popup = new Popup();
         popup.getContent().add(optionsWindow);
