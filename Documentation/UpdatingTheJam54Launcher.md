@@ -14,7 +14,7 @@ Prepare the following files:
 - Jam54_Launcher.jar
     - A newly built jar, that contains the new version of the Jam54Launcher
 - version.txt
-    - This file should contain one line only, and this line should represent the current version number of the launcher. This has to be the same value as the `version` variable inside *Jam54LauncherData.java*.
+    - This file should contain one line only, and this line should represent the current version number of the launcher. This has to be the same value as the `version` variable inside *Jam54LauncherConfig.properties*.
 - applicationsVersions.properties
     - Copy this file from `Jam54_Launcher/src/main/resources/com/jam54/jam54_launcher/applicationsVersions.properties`
 
