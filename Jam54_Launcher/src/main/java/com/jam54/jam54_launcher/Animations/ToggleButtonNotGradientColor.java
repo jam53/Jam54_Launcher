@@ -64,11 +64,19 @@ public class ToggleButtonNotGradientColor extends ToggleButtonSkin
                 new KeyFrame(Duration.ZERO, new KeyValue(color, hoverColor)),
                 new KeyFrame(Duration.millis(200), new KeyValue(color, selectColor)));
 
+        final Timeline hoveredColor = new Timeline(
+                new KeyFrame(Duration.ZERO, new KeyValue(color, hoverColor)),
+                new KeyFrame(Duration.millis(200), new KeyValue(color, hoverColor)));
+
         control.setOnMouseEntered(event ->
         {
             if (!control.isSelected())
             {
                 hoverIn.play();
+            }
+            else
+            {
+                hoveredColor.play();
             }
         });
         control.setOnMouseExited(event ->
@@ -76,6 +84,10 @@ public class ToggleButtonNotGradientColor extends ToggleButtonSkin
             if (!control.isSelected())
             {
                 hoverOut.play();
+            }
+            else
+            {
+                focusedColor.play();
             }
         });
         control.selectedProperty().addListener((observableValue, notSelected, t1) ->
