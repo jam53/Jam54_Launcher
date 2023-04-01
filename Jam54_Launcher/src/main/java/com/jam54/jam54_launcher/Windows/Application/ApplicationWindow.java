@@ -46,10 +46,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Properties;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -368,20 +365,39 @@ public class ApplicationWindow extends VBox implements InvalidationListener
 
                     installUpdateButton.setOnAction(e ->
                     {
-                        model.setUpdatingApp(openedApp.id());
-                        new Thread(installApp).start();
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                        alert.setTitle(SaveLoadManager.getTranslation("INSTALL"));
+                        alert.setHeaderText(null);
+                        alert.getDialogPane().setContent(new Label(SaveLoadManager.getTranslation("ApplicationWillBeInstalledAt") + SaveLoadManager.getData().getDataPath() + "\n" + SaveLoadManager.getTranslation("ChangeInstallLocationInSettings")));
 
-                        installButtonsHolder.getChildren().clear();
-                        VBox installProgressHolder = new VBox();
+                        ButtonType okButtonType = new ButtonType(SaveLoadManager.getTranslation("Ok"), ButtonBar.ButtonData.OK_DONE);
+                        ButtonType cancelButton = new ButtonType(SaveLoadManager.getTranslation("Cancel"), ButtonBar.ButtonData.CANCEL_CLOSE);
+                        alert.getButtonTypes().setAll(okButtonType, cancelButton);
 
-                        Text installProgress_Text = new Text();
-                        ProgressBar progressBar = new ProgressBar();
+                        Optional<ButtonType> result = Optional.empty();
+                        if (!SaveLoadManager.getData().isChangeInstallLocationAlertWasShown())
+                        {
+                            result = alert.showAndWait();
+                        }
+                        if (SaveLoadManager.getData().isChangeInstallLocationAlertWasShown() || result.isPresent() && result.get() == okButtonType)
+                        {// user clicked ok button, do something here after the dialog is closed
+                            SaveLoadManager.getData().setChangeInstallLocationAlertWasShown(true);
 
-                        installProgressHolder.getChildren().addAll(installProgress_Text, progressBar);
-                        installButtonsHolder.getChildren().add(installProgressHolder);
+                            model.setUpdatingApp(openedApp.id());
+                            new Thread(installApp).start();
 
-                        installProgress_Text.textProperty().bind(installApp.messageProperty()); //Update button's text with progress message
-                        progressBar.progressProperty().bind(installApp.progressProperty()); //Update the progressBar's progress with the progress
+                            installButtonsHolder.getChildren().clear();
+                            VBox installProgressHolder = new VBox();
+
+                            Text installProgress_Text = new Text();
+                            ProgressBar progressBar = new ProgressBar();
+
+                            installProgressHolder.getChildren().addAll(installProgress_Text, progressBar);
+                            installButtonsHolder.getChildren().add(installProgressHolder);
+
+                            installProgress_Text.textProperty().bind(installApp.messageProperty()); //Update button's text with progress message
+                            progressBar.progressProperty().bind(installApp.progressProperty()); //Update the progressBar's progress with the progress
+                        }
                     });
                     installApp.setOnSucceeded(e ->
                     {

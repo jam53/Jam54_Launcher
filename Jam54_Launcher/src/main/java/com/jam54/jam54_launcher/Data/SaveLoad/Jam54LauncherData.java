@@ -17,6 +17,7 @@ public class Jam54LauncherData
     private String locale = "en"; //The locale/language that should be used when displaying the application
     private String[] installedApplicationVersions = new String[10]; //The version numbers of the installed applications, null in case the application isn't installed
     private ColorTheme colorTheme = ColorTheme.DARK; //Holds the value of the selected colortheme, Dark by default
+    private boolean changeInstallLocationAlertWasShown; //Default false, once the user has told once that the install location can be changed in settings this will be true
     //endregion
 
     private void fireInvalidationEvent()
@@ -98,6 +99,23 @@ public class Jam54LauncherData
     public void setColorTheme(ColorTheme colorTheme)
     {
         this.colorTheme = colorTheme;
+        fireInvalidationEvent();
+    }
+
+    /**
+      * @return True if the user has been told in the past that the install location can be changed in settings
+     */
+    public boolean isChangeInstallLocationAlertWasShown()
+    {
+        return changeInstallLocationAlertWasShown;
+    }
+
+    /**
+     * Set the value for whether or not the user has been shown the change install location window
+     */
+    public void setChangeInstallLocationAlertWasShown(boolean changeInstallLocationAlertWasShown)
+    {
+        this.changeInstallLocationAlertWasShown = changeInstallLocationAlertWasShown;
         fireInvalidationEvent();
     }
     //endregion
