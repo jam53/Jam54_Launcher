@@ -132,7 +132,27 @@ public class AppearanceWindow extends VBox
      */
     private String getDisplayName(Locale locale)
     {
-        return StringUtils.capitalize(locale.getDisplayLanguage(locale));
+        String languageCode = locale.getLanguage();
+        String displayName = switch (languageCode)
+                {
+                    case "ar" -> "العربية";
+                    case "de" -> "Deutsch";
+                    case "en" -> "English";
+                    case "es" -> "Español";
+                    case "et" -> "Eesti";
+                    case "fr" -> "Français";
+                    case "hi" -> "हिन्दी";
+                    case "id" -> "Indonesia";
+                    case "ja" -> "日本語";
+                    case "ko" -> "한국어";
+                    case "nl" -> "Nederlands";
+                    case "pt" -> "Português";
+                    case "ru" -> "Русский";
+                    case "tr" -> "Türkçe";
+                    case "zh" -> "中文";
+                    default -> StringUtils.capitalize(locale.getDisplayLanguage(locale));
+                };
+        return displayName;
     }
 
     /**
