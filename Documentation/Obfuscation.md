@@ -42,11 +42,8 @@ In order to obfuscate our .jar files, we will use a tool called *Proguard*. We w
         -keep,allowobfuscation class javafx_and_proguard.** {
         }
 
-        # Dont obfuscate these classes, otherwise the UI doesn't look right
-        -keep class com.jam54.jam54_launcher.Animations.** { *; }
-        -keep class com.jam54.jam54_launcher.Windows.** { *; }
-        -keep class com.jam54.jam54_launcher.MainController { *; }
-        -keep class com.jam54.jam54_launcher.ErrorMessage { *; }
+        # Dont obfuscate these classes, otherwise the UI doesn't look right or some of the functionality doesn't work
+        -keep class com.jam54.jam54_launcher.** { *; }
       ``` 
 
 ## Obfuscating the jar
