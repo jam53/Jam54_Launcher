@@ -44,16 +44,7 @@ In order to obfuscate our .jar files, we will use a tool called *Proguard*. We w
 
         # Dont obfuscate these classes, otherwise the UI doesn't look right
         -keep class com.jam54.jam54_launcher.Animations.** { *; }
-        -keep class com.jam54.jam54_launcher.Windows.Application.ApplicationButton { 
-            public ApplicationButton(ApplicationInfo, boolean, Duration);
-        }
-        -keep class com.jam54.jam54_launcher.Windows.Application.ApplicationWindow { *; }
-        -keep class com.jam54.jam54_launcher.Windows.GamesPrograms.GamesProgramsWindow { 
-            public GamesProgramsWindow();
-        }
-        -keep class com.jam54.jam54_launcher.Windows.Settings.SettingsWindow { 
-            public SettingsWindow();
-        }
+        -keep class com.jam54.jam54_launcher.Windows.** { *; }
         -keep class com.jam54.jam54_launcher.MainController { *; }
         -keep class com.jam54.jam54_launcher.ErrorMessage { *; }
       ``` 
