@@ -449,8 +449,8 @@ public class ApplicationWindow extends VBox implements InvalidationListener
                     buttonIcon2.setFitHeight(22);
                     buttonIcon2.setFitWidth(22);
                     Text buttonText2 = new Text(SaveLoadManager.getTranslation("UNINSTALL"));
-                    iconTextHolder.getChildren().setAll(buttonIcon2, buttonText2);
-                    installUpdateButton.setGraphic(iconTextHolder2);
+                    iconTextHolder2.getChildren().setAll(buttonIcon2, buttonText2);
+                    removeButton.setGraphic(iconTextHolder2);
 
                     if (model.getUpdatingApp() == null && model.getLastValidatingApp() == null && model.getLastRemovingApp() == null)
                     { //You can only remove an app, while there is no other app being downloaded, validated or removed. So we only add the uninstall button when that is the case
