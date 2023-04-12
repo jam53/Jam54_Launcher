@@ -324,6 +324,10 @@ Increment the size of the `installedApplicationVersions` array constructor by on
 - Create an empty file called `.nojekyll` in the root of the repository. Otherwise files/folders starting with `_` will be seen as jekyll files by GitHub pages
 - Also place a copy of the "root" folder in: `OneDrive\Documenten\Scripts\Builds\Jam54Launcher\AppBuilds`
 
+---
+
+Finally rebuild and republish the launcher's binaries following the steps described in [Updating the Jam54Launcher.](./UpdatingTheJam54Launcher.md)
+
 <br>
 
 ## Updating an application
@@ -336,8 +340,14 @@ sqlite3 applications.sqlite
 UPDATE applications SET name="newName" WHERE id=0;
 ```
 
+> After changing the contents of `applications.sqlite`, the `Jam54_Launcher.jar` and `Jam54LauncherSetup.msi` files will need to be reuploaded. I.e. the launcher will have to be rebuild.  
+> Follow the steps described in [Updating the Jam54Launcher](./UpdatingTheJam54Launcher.md) to rebuild and upload the launcher's binaries.
+
 ### applicationsVersions.properties
 Open the `applicationsVersions.properties` file, and update the value behind the = of the application in question.
+
+> After changing the contents of `applicationsVersions.properties`, this file will need to be reuploaded. However, rebuilding and reuploading the launcher's binaries is not required.  
+> Follow the steps described in [Updating the Jam54Launcher](./UpdatingTheJam54Launcher.md)
 
 ### Hosting & hashing the application files
 
