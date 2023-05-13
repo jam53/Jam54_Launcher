@@ -76,11 +76,11 @@ public class GamesProgramsWindow extends VBox implements InvalidationListener
 
         gamesToggle.setToggleGroup(toggleGroup);
         programsToggle.setToggleGroup(toggleGroup);
-        gamesProgramsTogglesHolder = new HBox(gamesToggle, programsToggle);
+        gamesProgramsTogglesHolder = new HBox(programsToggle, gamesToggle);
         gamesProgramsTogglesHolder.prefWidthProperty().bind(buttonBar.prefWidthProperty().divide(3));
         gamesProgramsTogglesHolder.getStyleClass().add("buttonBarToggles");
 
-        toggleGroup.selectToggle(gamesToggle);
+        toggleGroup.selectToggle(programsToggle);
 
         title = new Text(SaveLoadManager.getTranslation("Games"));
         titleHolder = new HBox(title);

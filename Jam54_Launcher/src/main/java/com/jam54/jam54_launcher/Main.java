@@ -27,7 +27,7 @@ public class Main extends Application
 
         model.setAllApplications(applicationsLoader.getApplicationInfos());
         model.setVisibleApplicationInfos(model.getAllApplications());
-        model.filterAndSortVisibleApplicationInfos(0, false, 0, true, ""); //If we don't sort the application infos initially, they will appear in the wrong order upon startup until the user selects a different sort order. Since platform=0 (all platforms) and installedOnly=false, gamesOnly=true and searchText="" all games will be shown
+        model.filterAndSortVisibleApplicationInfos(0, false, 0, false, ""); //If we don't sort the application infos initially, they will appear in the wrong order upon startup until the user selects a different sort order. Since platform=0 (all platforms) and installedOnly=false, gamesOnly=false and searchText="" all programs will be shown
 
         OtherLoader otherLoader = new OtherLoader();
 

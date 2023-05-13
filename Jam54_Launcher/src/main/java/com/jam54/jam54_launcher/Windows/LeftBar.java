@@ -83,9 +83,9 @@ public class LeftBar extends VBox implements InvalidationListener
 
     private void selectHomeToggle(ActionEvent actionEvent)
     {
-        model.setGamesWindowSelected(true);
+        model.setProgramsWindowSelected(true);
 
-        model.setProgramsWindowSelected(false);
+        model.setGamesWindowSelected(false);
         model.setSettingsWindowSelected(false);
         model.setApplicationWindowSelected(false);
     }

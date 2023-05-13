@@ -38,7 +38,8 @@ public class MainController implements InvalidationListener
     {
         borderPane.setLeft(leftBar);
 
-        model.setGamesWindowSelected(true); //When the program opens, we want to show the games/programs window
+        model.setGamesWindowSelected(false);
+        model.setProgramsWindowSelected(true); //When the program opens, we want to show the games/programs window
     }
 
     public void setModel(Jam54LauncherModel model)
