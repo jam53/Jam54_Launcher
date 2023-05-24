@@ -9,7 +9,7 @@ This build process should result in folder called *out* to be created, in which 
 Move the contents of the *Jam54_Launcher_jar* folder to a new folder.
 
 ## Obfuscating `Jam54_Launcher.jar`
-Once we built the *Jam54Launcher*, we should obfuscate the main jar that contains our code. Follow the steps descripd in [Obfuscation.md](./Obfuscation.md).
+Once we built the *Jam54Launcher*, we should obfuscate the main jar that contains our code. Follow the steps described in [Obfuscation.md](./Obfuscation.md).
 
 ## Building The Updater
 - Right click on the `Updater` project and select *Publish*
