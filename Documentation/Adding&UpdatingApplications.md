@@ -5,6 +5,8 @@
 - The project should already come with an existing sqlite3 database. If this isn't the case, navigate to the following folder: `\Jam54_Launcher\src\main\resources\com\jam54\jam54_launcher`
 
 - Open WSL (not CMD) and run the following commands to create a new database:
+    - > We use WSL since the sqlite3 binary on Windows only supports ASCII characters.  
+      > Working with the database in CMD (i.e. Windows binary) would cause issues since the database will contain none ASCII characters.
 -   ```
     sqlite3 applications.sqlite
     ```
@@ -51,7 +53,7 @@ sqlite3 applications.sqlite
 ```
 
 ```sql
-INSERT INTO applications VALUES(0, 'Stelexo', 'com/jam54/jam54_launcher/img/applicationLogos/Stelexo.png', 0, 0, 1, 1530835200, 1609549200, 1);
+INSERT INTO applications VALUES(0, 'Stelexo', 'com/jam54/jam54_launcher/img/applicationLogos/Stelexo.png', 0, 0, 1, 1530835200, 1684925160, 1);
 
 INSERT INTO applications VALUES(1, 'IToW', 'com/jam54/jam54_launcher/img/applicationLogos/IToW.png', 0, 0, 1, 1533340800, 1533340800, 0);
 
@@ -65,7 +67,7 @@ INSERT INTO applications VALUES(5, 'AutoEditor', 'com/jam54/jam54_launcher/img/a
 
 INSERT INTO applications VALUES(6, 'ImageSearcher', 'com/jam54/jam54_launcher/img/applicationLogos/ImageSearcher.png', 0, 0, 1, 1582765200, 1587168000, 0);
 
-INSERT INTO applications VALUES(7, 'AstroRun', 'com/jam54/jam54_launcher/img/applicationLogos/AstroRun.png', 1, 0, 0, 1589500800, 1654732800, 1);
+INSERT INTO applications VALUES(7, 'AstroRun', 'com/jam54/jam54_launcher/img/applicationLogos/AstroRun.png', 1, 0, 0, 1589500800, 1684936200, 1);
 
 INSERT INTO applications VALUES(8, 'Flash', 'com/jam54/jam54_launcher/img/applicationLogos/Flash.png', 0, 0, 1, 1649808000, 1653004800, 0);
 
@@ -244,14 +246,14 @@ app<id>=<version>
 
 The contents of this file may look something like this:
 ```
-app0=0.3.0
+app0=0.3.1
 app1=1.0.0
 app2=1.0.0
 app3=1.0.0
 app4=0.10.0
 app5=1.0.0
 app6=1.0.0
-app7=1.4.0
+app7=1.4.1
 app8=1.9.0
 app9=1.1.9
 ```
@@ -261,10 +263,11 @@ Increment the size of the `installedApplicationVersions` array constructor by on
 
 ### Hosting & hashing the application files
 
-> Just as a small tl:dr on how the files are hosted. Basically the files are hosted as a website, the root folder of the website contains the several subfolders.  
+> Just as a small tl:dr on how the files are hosted. Basically the files are hosted as a website, the root folder of the website contains several subfolders.  
 > These subfolders have the names 0 1 2 etc., which corresponds to the application id's defined inside the `applications.sqlite` database  
 > 
 > Each subfolder then contains all the binaries for that application  
+> \+ a file called `EntryPoint.txt`. This file contains one line and points to the executable of the app.  
 > \+ a file called `Hashes.txt`. This file contains all the hashes for the binaries of that application.  
 > \+ a file called `Split.txt`, which may or may not be empty. It contains the path to files that were bigger than a certain amount in megabytes and that have been split into smaller chunks.
 > > We split files that are larger than 99MBs into smaller chunks in order to stay below the 100MB size limit that GitHub imposes. (We host the binaries of the applications using GitHub pages)
@@ -293,7 +296,7 @@ Increment the size of the `installedApplicationVersions` array constructor by on
 
 ---
 
-- Inside the `Main.java` file, place the following code in the beginning of the main method:
+- Inside the `Main.java` file, place the following code at the beginning of the main method:
     - ```java
       ArrayList<Path> paths = new ArrayList<>();
 
@@ -309,7 +312,7 @@ Increment the size of the `installedApplicationVersions` array constructor by on
       ```
 - Run the application
 - Remove the lines you added to the `Main.java` file in the previous step
-- Each of the subfolders should now contain both a Hashes.txt file and a Split.txt file
+- Each of the subfolders should now contain both a `Hashes.txt` file and a `Split.txt` file
 - In root directory containing all of the subfolders, run the following command (adjust the name of the subfolders in the for loop, so that it contains all of the subfolders)
   - `for folder in 0 1 2 3 4 5 6 7 8 9; do cd "$folder" && grep -F -f Split.txt Hashes.txt | grep .part -v | tee linesToRemove.txt && grep -F -f linesToRemove.txt Hashes.txt -v | tee newHashes.txt && rm linesToRemove.txt && mv newHashes.txt Hashes.txt && cd ..; done`
     > This command will remove the lines in `Hashes.txt` that point to the original unsplitted files that were larger than the specified treshold to the `splitFilesLargerThan()` function
@@ -337,7 +340,7 @@ You can update an existing application's details by entering the following comma
 ```sql
 sqlite3 applications.sqlite
 
-UPDATE applications SET name="newName" WHERE id=0;
+UPDATE applications SET latestUpdate=1609549200 WHERE id=0;
 ```
 
 > After changing the contents of `applications.sqlite`, the `Jam54_Launcher.jar` and `Jam54LauncherSetup.msi` files will need to be reuploaded. I.e. the launcher will have to be rebuild.  
@@ -353,11 +356,12 @@ Open the `applicationsVersions.properties` file, and update the value behind the
 
 #### Hashing & splitting the files
 - Navigate to the "root" folder containing all of the apps: `OneDrive\Documenten\Scripts\Builds\Jam54Launcher\AppBuilds`
-- Remove all of the files in the subfolder of the file which you want to update, and place the new binaries in the subfolder
+- Remove all of the files apart from `EntryPoint.txt` in the subfolder of the app which you want to update, and place the new binaries in the subfolder. 
+    - > Make sure to update the `EntryPoint.txt` file if necessary. 
 
 ---
 
-- Inside the `Main.java` file, place the following code in the beginning of the main method:
+- Inside the `Main.java` file, place the following code at the beginning of the main method:
     - ```java
       ArrayList<Path> paths = new ArrayList<>();
       paths.add(Path.of("pathToRootFolder\\0")); //Name of subfolder that corresponds to the app that we want to update
@@ -370,7 +374,7 @@ Open the `applicationsVersions.properties` file, and update the value behind the
       ```
 - Run the application
 - Remove the lines you added to the `Main.java` file in the previous step
-- Each of the subfolders should now contain both a Hashes.txt file and a Split.txt file
+- Each of the subfolders should now contain both a `Hashes.txt` file and a `Split.txt` file
 - In root directory containing all of the subfolders, run the following command (adjust the name of the subfolders in the for loop, so that it contains all of the subfolders)
   - `for folder in 0 1 2 3 5 6 8; do cd "$folder" && grep -F -f Split.txt Hashes.txt | grep .part -v | tee linesToRemove.txt && grep -F -f linesToRemove.txt Hashes.txt -v | tee newHashes.txt && rm linesToRemove.txt && mv newHashes.txt Hashes.txt && cd ..; done`
     > This command will remove the lines in `Hashes.txt` that point to the original unsplitted files that were larger than the specified treshold to the `splitFilesLargerThan()` function
