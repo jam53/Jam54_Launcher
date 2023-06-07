@@ -164,7 +164,7 @@ public class SettingsWindow extends HBox
             }
         });
 
-        socials.getChildren().addAll(youtube, discord, playstore, github, mail);
+        socials.getChildren().addAll(youtube, playstore, discord, github, mail);
 
         leftBarBottom.getChildren().addAll(versionHolder, socials);
 
