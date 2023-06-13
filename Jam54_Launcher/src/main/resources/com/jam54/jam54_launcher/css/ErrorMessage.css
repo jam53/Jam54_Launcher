@@ -35,6 +35,8 @@ ErrorMessage Button {
     -fx-text-fill: black;
 
     -fx-skin: "com.jam54.jam54_launcher.Animations.ButtonScale";
+
+    -fx-cursor: hand;
 }
 
 ErrorMessage Button:hover {

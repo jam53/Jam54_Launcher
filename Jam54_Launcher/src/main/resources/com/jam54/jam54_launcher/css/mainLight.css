@@ -23,11 +23,9 @@
     -text-not-highlighted: #474747;
 
     -other-border-division-scrollbar: #EBEBEB;
-    -other-blur: rgba(0, 0, 0, 0.25)
-;
+    -other-blur: rgba(0, 0, 0, 0.25);
     -toggle-button-gradient: linear-gradient(from 25% 25% to 100% 100%, #2193D3, #494FD6);
-    -toggle-button-flat: #21276b
-;
+    -toggle-button-flat: #21276b;
 }
 
 BorderPane {
@@ -62,6 +60,8 @@ GamesProgramsWindow, ApplicationWindow, SettingsWindow {
 
     -fx-background-color: -hollow-button-unselected;
     -fx-padding: 0;
+
+    -fx-cursor: hand;
 }
 
 .leftBar ToggleButton:selected {
@@ -116,6 +116,7 @@ GamesProgramsWindow, ApplicationWindow, SettingsWindow {
     -fx-pref-height: 1000000;
     -fx-text-fill: white;
     -fx-skin: "com.jam54.jam54_launcher.Animations.ButtonScale";
+    -fx-cursor: hand;
 }
 
 .buttonBar {
@@ -148,6 +149,7 @@ GamesProgramsWindow, ApplicationWindow, SettingsWindow {
     -fx-font-size: 24;
     -fx-font-family: 'New Rubrik TRIAL';
     -fx-padding: 2 20;
+    -fx-cursor: hand;
 }
 
 .buttonBarToggles ToggleButton:selected, .applicationWindow ToggleButton:selected {
@@ -226,6 +228,7 @@ GamesProgramsWindow, ApplicationWindow, SettingsWindow {
     -fx-background-repeat: no-repeat;
     -fx-background-image:url('../img/icons/UpDownChevrons_ButtonIconUnselected-whiteTheme.png');
     -fx-background-size: 21;
+    -fx-cursor: hand;
 }
 
 .filtersHolder ComboBoxColor > * {
@@ -265,6 +268,7 @@ GamesProgramsWindow, ApplicationWindow, SettingsWindow {
     -fx-text-fill: -text-not-highlighted;
     -fx-border-width: 1 0 0 0;
     -fx-border-color: -other-border-division-scrollbar;
+    -fx-cursor: hand;
 }
 
 .combo-box .list-view .list-cell:selected, .combo-box .list-view .list-cell:hover {
@@ -280,6 +284,7 @@ GamesProgramsWindow, ApplicationWindow, SettingsWindow {
     -fx-font-size: 16;
     -fx-font-family: 'Lato';
     -fx-text-fill: -button-icon-unselected;
+    -fx-cursor: hand;
 }
 
 .filtersHolder .check-box .box {
@@ -359,6 +364,7 @@ GamesProgramsWindow, ApplicationWindow, SettingsWindow {
     -fx-background-color : -bg-foreground;
     -fx-background-insets : 2.0, 0.0, 0.0;
     -fx-background-radius : 2.0em;
+    -fx-cursor: hand;
 }
 
 .scroll-bar:horizontal .thumb:hover,
@@ -396,6 +402,7 @@ GamesProgramsWindow, ApplicationWindow, SettingsWindow {
     -fx-border-radius: 5;
     -fx-border-color: -other-border-division-scrollbar;
     -fx-pref-width: 188;
+    -fx-cursor: hand;
 }
 
 .applicationButtonHolder:hover ApplicationButton {
@@ -495,6 +502,7 @@ To circumvent/get around this, we put the applicationButton in another VBox whic
     -fx-background-color: transparent;
     -fx-max-width: 1000000;
     -fx-alignment: center-left;
+    -fx-cursor: hand;
 }
 
 .optionsWindow Button Text {
@@ -629,6 +637,7 @@ To circumvent/get around this, we put the applicationButton in another VBox whic
     -fx-background-radius: 9;
     -fx-pref-width: 100000000;
     -fx-alignment: center;
+    -fx-cursor: hand;
 }
 
 .rightSideApplicationWindow HBox Button HBox {
@@ -727,6 +736,7 @@ To circumvent/get around this, we put the applicationButton in another VBox whic
     -fx-padding: 2 10 3 10;
     -fx-min-height: 28;
     -fx-background-color: -hollow-button-unselected;
+    -fx-cursor: hand;
 }
 
 .settingsWindowLeftBar ToggleButton:hover {
@@ -786,6 +796,7 @@ To circumvent/get around this, we put the applicationButton in another VBox whic
     -fx-pref-width: 18;
     -fx-pref-height: 18;
     -fx-padding: 0;
+    -fx-cursor: hand;
 }
 
 #youtubeButton {
@@ -886,6 +897,7 @@ To circumvent/get around this, we put the applicationButton in another VBox whic
     -fx-background-color: -bg-foreground;
     -fx-background-radius: 4;
     -fx-background-insets: 0;
+    -fx-cursor: hand;
 }
 
 .folderPickerHolder Button:hover {
@@ -923,6 +935,7 @@ To circumvent/get around this, we put the applicationButton in another VBox whic
 
 .appearanceWindowToggleButton {
     -fx-background-color: -hollow-button-unselected;
+    -fx-cursor: hand;
 }
 
 .appearanceWindowToggleButton HBox{
@@ -999,6 +1012,7 @@ To circumvent/get around this, we put the applicationButton in another VBox whic
     -fx-background-repeat: no-repeat;
     -fx-background-image:url('../img/icons/ChevronDown_ButtonIconUnselected-whiteTheme.png');
     -fx-background-size: 14;
+    -fx-cursor: hand;
 }
 
 .languagePickerHolder ComboBoxColor > * {
