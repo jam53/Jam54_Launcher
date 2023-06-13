@@ -347,6 +347,7 @@ public class ApplicationWindow extends VBox implements InvalidationListener
             }
             else if ((model.getUpdatingApp() == null && model.getLastValidatingApp() == null && model.getLastRemovingApp() == null) || !openedApp.updateAvailable()) //Check if there isn't another app updating/downloading files && there isn't another app validating its files && there isn't another app being removed
             {
+                installUpdateButton.setDisable(false);
                 installUpdateButton.textProperty().unbind();
                 installUpdateButton.setId("primaryButton");
                 installUpdateButton.setSkin(new ButtonColor(installUpdateButton, LoadCSSStyles.getCSSColor("-accent-button-main"), LoadCSSStyles.getCSSColor("-accent-button-hovered"), LoadCSSStyles.getCSSColor("-accent-button-clicked")));
