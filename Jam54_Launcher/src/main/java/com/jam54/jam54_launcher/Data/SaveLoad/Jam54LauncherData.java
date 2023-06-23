@@ -16,6 +16,7 @@ public class Jam54LauncherData
     private String dataPath = Paths.get(System.getenv("LOCALAPPDATA"), "Jam54Launcher").toString(); //A path where the launcher can place the downloaded apps
     private String locale = "en"; //The locale/language that should be used when displaying the application
     private String[] installedApplicationVersions = new String[10]; //The version numbers of the installed applications, null in case the application isn't installed
+    private long[] installedApplicationLatestUpdates = new long[10]; //The latest update of the installed applications in unix seconds
     private ColorTheme colorTheme = ColorTheme.DARK; //Holds the value of the selected colortheme, Dark by default
     private boolean changeInstallLocationAlertWasShown; //Default false, once the user has told once that the install location can be changed in settings this will be true
     //endregion
@@ -67,7 +68,7 @@ public class Jam54LauncherData
 
     /**
      * This function returns and array, where each index corresponds with the id of every app.
-     * The array holds the version number of the installed applications, an empty string means the application isn't installed
+     * The array holds the version number of the installed applications, an empty string means the application isn't installed.
      *
      * So index 0, would equal to the application with index 0, which is Stelexo in this case
      */
@@ -82,6 +83,26 @@ public class Jam54LauncherData
     public void setInstalledApplicationVersions(String[] installedApplicationVersions)
     {
         this.installedApplicationVersions = installedApplicationVersions;
+        fireInvalidationEvent();
+    }
+
+    /**
+     * This function returns and array, where each index corresponds with the id of every app.
+     * The array holds the latestUpdate of the installed applications in unix seconds.
+     *
+     * So index 0, would equal to the application with index 0, which is Stelexo in this case
+     */
+    public long[] getInstalledApplicationLatestUpdates()
+    {
+        return installedApplicationLatestUpdates;
+    }
+
+    /**
+     * Sets the array that holds the latestUpdate in unix seconds of the installed applications.
+     */
+    public void setInstalledApplicationLatestUpdates(long[] installedApplicationLatestUpdates)
+    {
+        this.installedApplicationLatestUpdates = installedApplicationLatestUpdates;
         fireInvalidationEvent();
     }
 

@@ -20,7 +20,10 @@
 <br>
 
 ## Adding an application
-We will need to insert a tuple in the database `applications.sqlite` that comes with the launcher, and also insert a line in the `applicationsVersions.properties` file that is stored online. The former contains details about the application, the latter is used to check whether or not the application in question has a new update.
+> After adding a new application, the `Jam54_Launcher.jar` and `Jam54LauncherSetup.msi` files will need to be rebuild and reuploaded. 
+> Follow the steps described in [Updating the Jam54Launcher](./UpdatingTheJam54Launcher.md) to rebuild and upload the launcher's binaries.
+
+We will need to insert a tuple in the database `applications.sqlite` that comes with the launcher, and also insert two lines in the `applicationsVersions.properties` file that is stored online. The former contains details about the application, the latter is used to check whether or not the application in question has a new update.
 
 ### applications.sqlite
 
@@ -238,28 +241,39 @@ INSERT INTO application_description VALUES('ZH', 9, "深入了解您的 Sky 游�
 </details>
 
 ### applicationsVersions.properties
-To add a new application, add a new line to the `applicationsVersions.properties` file
+To add a new application, add two new lines to the `applicationsVersions.properties` file.
 > The id for this application should be the same one that is used inside the `applications.sqlite` database:
 ```
-app<id>=<version>
+appVersion<id>=<version>
+appLatestUpdate<id>=<latest update in unix seconds>
 ```
 
 The contents of this file may look something like this:
 ```
-app0=0.3.1
-app1=1.0.0
-app2=1.0.0
-app3=1.0.0
-app4=0.10.0
-app5=1.0.0
-app6=1.0.0
-app7=1.4.1
-app8=1.9.0
-app9=1.1.9
+appVersion0=0.3.1
+appLatestUpdate0=1684925160
+appVersion1=1.0.0
+appLatestUpdate1=1533340800
+appVersion2=1.0.0
+appLatestUpdate2=1533340800
+appVersion3=1.0.0
+appLatestUpdate3=1534291200
+appVersion4=0.10.0
+appLatestUpdate4=1574643600
+appVersion5=1.0.0
+appLatestUpdate5=1616029200
+appVersion6=1.0.0
+appLatestUpdate6=1587168000
+appVersion7=1.4.1
+appLatestUpdate7=1684936200
+appVersion8=1.9.0
+appLatestUpdate8=1653004800
+appVersion9=1.1.9
+appLatestUpdate9=1657238400
 ```
 
 ### Jam54LauncherData.java
-Increment the size of the `installedApplicationVersions` array constructor by one.
+Increment the size of the `installedApplicationVersions` and `installedApplicationLatestUpdates` arrays by one.
 
 ### Hosting & hashing the application files
 
@@ -343,8 +357,19 @@ sqlite3 applications.sqlite
 UPDATE applications SET latestUpdate=1609549200 WHERE id=0;
 ```
 
-> After changing the contents of `applications.sqlite`, the `Jam54_Launcher.jar` and `Jam54LauncherSetup.msi` files will need to be reuploaded. I.e. the launcher will have to be rebuild.  
+> After changing the contents of `applications.sqlite`, the `Jam54_Launcher.jar` and `Jam54LauncherSetup.msi` files will need to be rebuild and reuploaded. 
 > Follow the steps described in [Updating the Jam54Launcher](./UpdatingTheJam54Launcher.md) to rebuild and upload the launcher's binaries.
+> > However, this is only the case if a field other than `latestUpdate` was changed. It would be cumbersome to have to release an entire update for the launcher, just for updating an application (therefore changing the `latestUpdate` field of said application). That's why we also include the value of `latestUpdate` in the `applicationsVersions.properties` file. This file can be changed and uploaded independently from the launcher. The launcher then downloads this file on launch and will use the `latestUpdate` value in there instead of the one in the `applications.sqlite` database. In the application we take the largest `latestUpdate` value from `applications.sqlite` and `applicationsVersions.properties`. This way we always have the correct release date:
+> > - When online with the launcher including an up to date version of `applicationsVersions.properties` 
+> >   - max(`applicationsVersions.properties`, `applications.sqlite`) = either one
+> > - When online with the launcher including an outdated version of `applicationsVersions.properties` 
+> >   - max(`applicationsVersions.properties`, `applications.sqlite`) = `applicationsVersions.properties`
+> > - When offline with the launcher including an up to date version of `applicationsVersions.properties` 
+> >   - max(`applicationsVersions.properties`, `applications.sqlite`) = `applications.sqlite` 
+> > - When offline with the launcher including an outdated version of `applicationsVersions.properties` 
+> >   - max(`applicationsVersions.properties`, `applications.sqlite`) = old value of `applicationsVersions.properties` from the last time it was downloaded or `applications.sqlite` in case `applicationsVersions.properties` was never downloaded.
+> > > When we are offline we can't download the `applicationsVersions.properties` file, meaning it will return `0` for a given applications `latestUpdate`. This might lead to the assumption that in the last situation, we would use an outdated `latestUpdate` from the `applications.sqlite` database.  
+> > > However, we also save the `latestUpdate` value to disk everytime we download the `applicationsVersions.properties` file. So if we did download the `applicationsVersions.properties` previously when we had internet and it had an the up to date `latestUpdate` value. We will still use that when offline. You might argue that when we are never online, we will have a wrong `latestUpdate` value. Because we would have never downloaded the `applicationsVersions.properties` file. But in that case we would also never receive an update of the jam54Launcher which would include an updated `applications.sqlite` database.
 
 ### applicationsVersions.properties
 Open the `applicationsVersions.properties` file, and update the value behind the = of the application in question.

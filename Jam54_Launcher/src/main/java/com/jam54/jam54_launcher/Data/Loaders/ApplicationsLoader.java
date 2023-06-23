@@ -37,8 +37,8 @@ public class ApplicationsLoader
         try
         {
             Path tempFile = Files.createTempFile("applications", ".sqlite"); //We can't interact with the database when it's stored inside the jar,
-                //it needs to be a separate file; see: https://stackoverflow.com/questions/6499218/how-to-use-sqlite-database-inside-jar-file
-                //Therefore we will copy the contents of the database stored inside the jar, to a temporary file outside the jar
+            //it needs to be a separate file; see: https://stackoverflow.com/questions/6499218/how-to-use-sqlite-database-inside-jar-file
+            //Therefore we will copy the contents of the database stored inside the jar, to a temporary file outside the jar
 
             URL databaseInJar = Main.class.getResource("applications.sqlite");
             FileUtils.copyURLToFile(databaseInJar, tempFile.toFile());
@@ -85,7 +85,7 @@ public class ApplicationsLoader
                     apps.get(i).descriptions(),
                     apps.get(i).platforms(),
                     apps.get(i).releaseDate(),
-                    apps.get(i).lastUpdate(),
+                    Math.max(SaveLoadManager.getData().getInstalledApplicationLatestUpdates()[i], apps.get(i).lastUpdate()),
                     apps.get(i).isGame()
             ));
         }
@@ -117,29 +117,33 @@ public class ApplicationsLoader
                 applicationsVersionsProperties.load(in2);
             }
 
+            long[] installedApplicationLatestUpdates = new long[apps.size()];
             for (int i = 0; i < apps.size(); i++)
             {
                 updatedApps.add(new ApplicationInfo(
                         apps.get(i).id(),
                         apps.get(i).name(),
                         apps.get(i).image(),
-                        ! (applicationsVersionsProperties.getProperty("app" + i).equals(apps.get(i).version())), //If the version number in the cloud doesn't equal
-                            //the version number stored locally. Then it means there is either a new update available/the app isn't download.
-                            //So in both cases we can show the install button, and therefore put this variable, "updateAvailable" to true.
-                        applicationsVersionsProperties.getProperty("app" + i),
+                        ! (applicationsVersionsProperties.getProperty("appVersion" + i).equals(apps.get(i).version())), //If the version number in the cloud doesn't equal
+                        //the version number stored locally. Then it means there is either a new update available/the app isn't download.
+                        //So in both cases we can show the install button, and therefore put this variable, "updateAvailable" to true.
+                        applicationsVersionsProperties.getProperty("appVersion" + i),
                         apps.get(i).version(),
                         apps.get(i).descriptions(),
                         apps.get(i).platforms(),
                         apps.get(i).releaseDate(),
-                        apps.get(i).lastUpdate(),
+                        Long.parseLong(applicationsVersionsProperties.getProperty("appLatestUpdate" + i)),
                         apps.get(i).isGame()
                 ));
+
+                installedApplicationLatestUpdates[i] = Long.parseLong(applicationsVersionsProperties.getProperty("appLatestUpdate" + i));
             }
+            SaveLoadManager.getData().setInstalledApplicationLatestUpdates(installedApplicationLatestUpdates);
         }
         catch (IOException e)
         {
             updatedApps = apps; //If we don't have an internet connection, we won't be able to check for updates.
-                //In that case, we will return the originel list of ApplicationInfo objects, and leave the "updateAvailable" variable on false
+            //In that case, we will return the original list of ApplicationInfo objects, and leave the "updateAvailable" variable on false
         }
 
         return updatedApps;
