@@ -477,6 +477,7 @@ To circumvent/get around this, we put the applicationButton in another VBox whic
     -fx-min-width: 45;
     -fx-min-height: 45;
     -fx-background-size: 45;
+    -fx-cursor: hand;
 }
 
 .applicationButton HBox HBox Button:hover, #optionsButton:hover {
@@ -547,6 +548,7 @@ To circumvent/get around this, we put the applicationButton in another VBox whic
 
 #noButtonStyling:hover {
     -fx-background-color: transparent;
+    -fx-cursor: default;
 }
 
 #noButtonStyling:hover Text {
