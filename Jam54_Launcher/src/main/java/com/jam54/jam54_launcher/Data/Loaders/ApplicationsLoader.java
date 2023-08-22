@@ -73,6 +73,8 @@ public class ApplicationsLoader
     {
         ArrayList<ApplicationInfo> updatedApps = new ArrayList<>();
 
+        int amountOfAppsInSavefileCurrently = SaveLoadManager.getData().getInstalledApplicationVersions().length;
+
         for (int i = 0; i < apps.size(); i++)
         {
             updatedApps.add(new ApplicationInfo(
@@ -81,11 +83,11 @@ public class ApplicationsLoader
                     apps.get(i).image(),
                     apps.get(i).updateAvailable(),
                     apps.get(i).availableVersion(),
-                    SaveLoadManager.getData().getInstalledApplicationVersions()[i],
+                    i < amountOfAppsInSavefileCurrently ? SaveLoadManager.getData().getInstalledApplicationVersions()[i] : null, //Choosing for null would mean a new app has been added to the launcher. Therefore we put null as the default value
                     apps.get(i).descriptions(),
                     apps.get(i).platforms(),
                     apps.get(i).releaseDate(),
-                    Math.max(SaveLoadManager.getData().getInstalledApplicationLatestUpdates()[i], apps.get(i).lastUpdate()),
+                    i < amountOfAppsInSavefileCurrently ? Math.max(SaveLoadManager.getData().getInstalledApplicationLatestUpdates()[i], apps.get(i).lastUpdate()) : 0, //Choosing for null would mean a new app has been added to the launcher. Therefore we put 0 as the default value
                     apps.get(i).isGame()
             ));
         }

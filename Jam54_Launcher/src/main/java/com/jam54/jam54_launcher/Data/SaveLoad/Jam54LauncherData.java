@@ -68,7 +68,7 @@ public class Jam54LauncherData
 
     /**
      * This function returns and array, where each index corresponds with the id of every app.
-     * The array holds the version number of the installed applications, an empty string means the application isn't installed.
+     * The array holds the version number of the installed applications, null means the application isn't installed.
      *
      * So index 0, would equal to the application with index 0, which is Stelexo in this case
      */
