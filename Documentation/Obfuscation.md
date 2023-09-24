@@ -10,7 +10,7 @@ In order to obfuscate our .jar files, we will use a tool called *Proguard*. We w
         -injars       Jam54_Launcher.jar
         -outjars      Jam54_Launcher_obf.jar
         -libraryjars  D:\Deniz\GitHub\Jam54_Launcher\Jam54_Launcher\out\artifacts\Jam54_Launcher_jar
-        -libraryjars  D:\Program Files\jdk-20\jmods
+        -libraryjars  D:\Program Files\jdk-21\jmods
 
         -dontshrink
         -dontoptimize

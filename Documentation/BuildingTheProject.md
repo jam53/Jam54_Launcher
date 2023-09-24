@@ -19,13 +19,12 @@ Once we built the *Jam54Launcher*, we should obfuscate the main jar that contain
     - Target framework: net6.0
     - Deployment mode: Self-contained
     - Target runtime: win-x64
-    - Produce single file: false
+    - Produce single file: true
     - Enable ReadyToRun compilation: true
     - Trim unused code: true
 - Click on the *Publish* button
-- The build will be placed inside: `bin\Release\net6.0\win-x64\`
-- Create a subfolder called `Updater` inside the new folder that contains the files produced by building the Jam54_Launcher project
-- Move the files produced during this build, into the subfolder called Updater. Place this Updater folder in the folder that contains the jars from building the Jam54_Launcher.
+- The build will be placed inside: `bin\Release\net6.0\publish\win-x64\`
+- Place the `Updater.exe` file inside the folder that contains the jar files produced by building the Jam54_Launcher project.
 
 ## Creating An Installer
 Once we have built both of our projects, we can create an installer by following the steps described in [creating an installer.](./CreatingAnInstaller.md) 
@@ -35,11 +34,11 @@ Once we have built both of our projects, we can create an installer by following
 Following the guide should yield this command:
 - Windows
     ```
-    jpackage --input . --module-path "D:\Program Files\javafx-jmods-20" --add-modules javafx.controls,javafx.fxml,jdk.crypto.ec,java.sql --name "Jam54 Launcher" --icon "D:\GitHub\Jam54_Launcher\Jam54_Launcher\src\main\resources\com\jam54\jam54_launcher\img\jam54Icon.ico" --app-version 0.1.0 --vendor "jam54" --copyright "Copyright © 2021 jam54" --win-dir-chooser --win-shortcut --win-per-user-install --win-menu --license-file "D:\GitHub\Jam54_Launcher\LICENSE" --description "The Jam54 Launcher is used to install and update all of the software developed by jam54." --main-jar Jam54_Launcher.jar --main-class com.jam54.jam54_launcher.Main --type msi
+    jpackage --input . --module-path "D:\Program Files\javafx-jmods-21" --add-modules javafx.controls,javafx.fxml,jdk.crypto.ec,java.sql --name "Jam54 Launcher" --icon "D:\GitHub\Jam54_Launcher\Jam54_Launcher\src\main\resources\com\jam54\jam54_launcher\img\jam54Icon.ico" --app-version 0.1.0 --vendor "jam54" --copyright "Copyright © 2021 jam54" --win-dir-chooser --win-shortcut --win-per-user-install --win-menu --license-file "D:\GitHub\Jam54_Launcher\LICENSE" --description "The Jam54 Launcher is used to install and update all of the software developed by jam54." --main-jar Jam54_Launcher.jar --main-class com.jam54.jam54_launcher.Main --type msi
     ```
 
 > ### Note:
-> - `--input .` means that all the files/folders in the current folder will be packed into the installer. Therefore we should run this command in the folder where we placed the Updater subfolder + the output of building our Jam54_Launcher project.
+> - `--input .` means that all the files/folders in the current folder will be packed into the installer. Therefore we should run this command in the folder where we placed the `Updater.exe` file + the output of building our Jam54_Launcher project.
 > - Make sure to use the `Jam54_Launcher.jar` as the "main jar".
 > - The Jam54Launcher is for Windows only, so we tell jpackage to create an .msi installer
 

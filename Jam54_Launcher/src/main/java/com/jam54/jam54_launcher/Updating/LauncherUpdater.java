@@ -96,7 +96,7 @@ public class LauncherUpdater
     {
         try
         {
-            String updaterFolder = Paths.get(new File(LauncherUpdater.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParentFile().getPath(), "Updater").normalize().toString(); //Gets the path to the folder that contains the Updater.exe executable
+            String updaterFolder = Paths.get(new File(LauncherUpdater.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParentFile().getPath()).normalize().toString(); //Gets the path to the folder that contains the Updater.exe executable
             String updaterExecutable = Paths.get(updaterFolder, "Updater.exe").normalize().toString(); //Get the path to the Updater.exe executable
 
             final ProcessBuilder pb = new ProcessBuilder(updaterExecutable);

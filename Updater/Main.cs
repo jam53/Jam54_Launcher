@@ -7,10 +7,10 @@ class Updater
     {
         Thread.Sleep(5000); //Wait for the Jam54Launcher to close
 
-        string oldLauncher = Path.Combine(Directory.GetCurrentDirectory(), "..", "Jam54_Launcher.jar"); //This goes one directory up, and then grabs the path to the old version of the launcher
-        string newLauncher = Path.Combine(Directory.GetCurrentDirectory(), "..", "Jam54_Launcher_New.jar"); //This goes one directory up, and then grabs the path to the new version of the launcher
+        string oldLauncher = Path.Combine(Directory.GetCurrentDirectory(), "Jam54_Launcher.jar"); //This grabs the path to the old version of the launcher
+        string newLauncher = Path.Combine(Directory.GetCurrentDirectory(), "Jam54_Launcher_New.jar"); //This grabs the path to the new version of the launcher
 
-        string jam54Launcher = Path.Combine(Directory.GetCurrentDirectory(), "..", "..", "Jam54 Launcher.exe"); //This goes up 2 directories, and grabs the path to the executable, used to run the Jam54 Launcher
+        string jam54Launcher = Path.Combine(Directory.GetCurrentDirectory(), "..", "Jam54 Launcher.exe"); //This goes up 1 directory, and grabs the path to the executable, used to run the Jam54 Launcher
 
         if (File.Exists(newLauncher))
         {//Only perform the update process, if there is a new version downloaded
