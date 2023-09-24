@@ -8,19 +8,19 @@
         </element>
         <element id="module-output" name="Jam54_Launcher" />
       </element>
-      <element id="library" level="project" name="Maven: org.openjfx:javafx-base:20" />
-      <element id="library" level="project" name="Maven: org.openjfx:javafx-fxml:win:20" />
-      <element id="library" level="project" name="Maven: org.apache.commons:commons-lang3:3.12.0" />
-      <element id="library" level="project" name="Maven: commons-codec:commons-codec:1.15" />
-      <element id="library" level="project" name="Maven: org.openjfx:javafx-controls:20" />
-      <element id="library" level="project" name="Maven: commons-io:commons-io:2.11.0" />
-      <element id="library" level="project" name="Maven: org.openjfx:javafx-graphics:win:20" />
-      <element id="library" level="project" name="Maven: org.openjfx:javafx-base:win:20" />
-      <element id="library" level="project" name="Maven: org.openjfx:javafx-graphics:20" />
-      <element id="library" level="project" name="Maven: org.openjfx:javafx-controls:win:20" />
-      <element id="library" level="project" name="Maven: org.openjfx:javafx-fxml:20" />
       <element id="library" level="project" name="Maven: com.google.code.gson:gson:2.10.1" />
-      <element id="library" level="project" name="Maven: org.xerial:sqlite-jdbc:3.40.1.0" />
+      <element id="library" level="project" name="Maven: commons-codec:commons-codec:1.16.0" />
+      <element id="library" level="project" name="Maven: commons-io:commons-io:2.13.0" />
+      <element id="library" level="project" name="Maven: org.apache.commons:commons-lang3:3.13.0" />
+      <element id="library" level="project" name="Maven: org.xerial:sqlite-jdbc:3.43.0.0" />
+      <element id="library" level="project" name="Maven: org.openjfx:javafx-controls:win:21" />
+      <element id="library" level="project" name="Maven: org.openjfx:javafx-fxml:win:21" />
+      <element id="library" level="project" name="Maven: org.openjfx:javafx-base:21" />
+      <element id="library" level="project" name="Maven: org.openjfx:javafx-controls:21" />
+      <element id="library" level="project" name="Maven: org.openjfx:javafx-base:win:21" />
+      <element id="library" level="project" name="Maven: org.openjfx:javafx-fxml:21" />
+      <element id="library" level="project" name="Maven: org.openjfx:javafx-graphics:21" />
+      <element id="library" level="project" name="Maven: org.openjfx:javafx-graphics:win:21" />
     </root>
   </artifact>
 </component>

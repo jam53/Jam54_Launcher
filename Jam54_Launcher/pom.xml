@@ -19,14 +19,15 @@
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
-            <version>20</version>
+            <version>21</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.openjfx/javafx-fxml -->
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
-            <version>20</version>
+            <version>21</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/com.google.code.gson/gson-->
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
@@ -36,37 +37,38 @@
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
-            <version>2.11.0</version>
+            <version>2.13.0</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <version>3.12.0</version>
+            <version>3.13.0</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/commons-codec/commons-codec -->
         <dependency>
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>
-            <version>1.15</version>
+            <version>1.16.0</version>
         </dependency>
         <dependency>
             <groupId>org.xerial</groupId>
             <artifactId>sqlite-jdbc</artifactId>
-            <version>3.40.1.0</version>
+            <version>3.43.0.0</version>
             <scope>runtime</scope>
         </dependency>
     </dependencies>
 
     <build>
         <plugins>
+            <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-compiler-plugin-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.10.1</version>
+                <version>3.11.0</version>
                 <configuration>
-                    <source>20</source>
-                    <target>20</target>
+                    <source>21</source>
+                    <target>21</target>
 <!--                    Dit zijn de versies die gebruikt worden voor de source code in het project en voor de bytecode die gecompileerd wordt. Men gebruikt best dezelfde versie voor source & target.-->
 
 <!--                    Waarom zetten we versie vast? Stel we publiceren de jam54 launcher met Java 17 en brengen wat later een update uit met Java 18. Sinds we bij het updaten van de jam54 launcher alleen de jar vernieuwen zal dit tot problemen leiden. De jar zal nu in Java 18 gecompileerd zijn, terwijl de JRE die bij de jam54 launcher nog versie 17 zal hebben. Sinds de versie van onze jam54 launcher jar hoger is dan de JRE waarmee het gerunned wordt lukt dit niet. Dit geeft een error van de vorm:-->
@@ -80,10 +82,11 @@
 
 <!--                    De JDK die wordt gebruikt door `maven-compiler-plugin` om onze jar te builden, is degene die staat in ons PATH-->
 
-<!--                    We gebruiken Java 20 als doel omdat dit de meest recente versie van Java was op het moment dat we de launcher voor het eerst publiceerden, dat is dus de versie van de JRE die op mensen hun apparaat staat. Het spreekt dus voor zich dat we versie van source/target en/of de versie van de dependencies niet meer willen veranderen. Want tijdens het updaten van de launcher wordt enkel de Jam54Launcher.jar upgedate. De JRE/jar's van de dependencies blijven ongewijzigd.-->
+<!--                    We gebruiken Java 21 als doel omdat dit de meest recente versie van Java was op het moment dat we de launcher voor het eerst publiceerden, dat is dus de versie van de JRE die op mensen hun apparaat staat. Het spreekt dus voor zich dat we versie van source/target en/of de versie van de dependencies niet meer willen veranderen. Want tijdens het updaten van de launcher wordt enkel de Jam54Launcher.jar upgedate. De JRE/jar's van de dependencies blijven ongewijzigd.-->
 
                 </configuration>
             </plugin>
+            <!-- https://mvnrepository.com/artifact/org.openjfx/javafx-maven-plugin-->
             <plugin>
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>
