@@ -12,31 +12,27 @@ import com.jam54.jam54_launcher.Updating.FileSplitterCombiner;
 import com.jam54.jam54_launcher.Updating.Hashes;
 import com.jam54.jam54_launcher.Windows.GamesPrograms.OptionsWindow;
 import com.jam54.jam54_launcher.database_access.Other.ApplicationInfo;
+import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.geometry.Bounds;
-import javafx.geometry.Orientation;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Popup;
-import javafx.stage.Stage;
-import javafx.stage.Window;
 import org.apache.commons.io.FileUtils;
 
 import java.io.*;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -48,7 +44,6 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * This window displays more detail about a specific app.
@@ -184,14 +179,14 @@ public class ApplicationWindow extends VBox implements InvalidationListener
         // Get the position and size of the viewport
         descriptionHolder.heightProperty().addListener(e -> {
 
-        Bounds viewportBounds = descriptionScrollPane.getViewportBounds();
-        double viewportHeight = viewportBounds.getHeight();
+            Bounds viewportBounds = descriptionScrollPane.getViewportBounds();
+            double viewportHeight = viewportBounds.getHeight();
 
-        // Get the size of the content
-        double contentHeight = descriptionHolder.getBoundsInLocal().getHeight();
+            // Get the size of the content
+            double contentHeight = descriptionHolder.getBoundsInLocal().getHeight();
 
-        // Check if there is content that isn't being shown
-        boolean hasUnshownContent = contentHeight > viewportHeight;
+            // Check if there is content that isn't being shown
+            boolean hasUnshownContent = contentHeight > viewportHeight;
 
             if (hasUnshownContent)
             {
@@ -431,6 +426,11 @@ public class ApplicationWindow extends VBox implements InvalidationListener
                         installedApplicationVersions[updatedApp.id()] = updatedApp.version();
                         SaveLoadManager.getData().setInstalledApplicationVersions(installedApplicationVersions);
                     });
+                    installApp.setOnCancelled(e ->
+                    {
+                        model.setUpdatingApp(null);
+                        installUpdateButton.setDisable(false); //When the task finishes, enable the button again
+                    });
                 }
                 else if (openedApp.updateAvailable()) //If the app is installed but if there is an update available
                 {
@@ -510,6 +510,12 @@ public class ApplicationWindow extends VBox implements InvalidationListener
                         String[] installedApplicationVersions = SaveLoadManager.getData().getInstalledApplicationVersions();
                         installedApplicationVersions[updatedApp.id()] = updatedApp.version();
                         SaveLoadManager.getData().setInstalledApplicationVersions(installedApplicationVersions);
+                    });
+                    installApp.setOnCancelled(e ->
+                    {
+                        model.setUpdatingApp(null);
+                        installUpdateButton.setDisable(false); //When the task finishes, enable the button again
+                        removeButton.setDisable(false);
                     });
 
                     removeButton.setOnAction(e ->
@@ -781,22 +787,48 @@ public class ApplicationWindow extends VBox implements InvalidationListener
             differenceMap = new HashMap<>(hashesCloud);
             differenceMap.entrySet().removeAll(hashesLocal.entrySet());
 
-            try
+            float filesDownloaded = 0;
+            float filesToDownload = differenceMap.size();
+            for (Path fileToDownload : differenceMap.values())
             {
-                float filesDownloaded = 0;
-                float filesToDownload = differenceMap.size();
-                for (Path fileToDownload : differenceMap.values())
+                System.out.println("Downloading: " + fileToDownload);
+                filesDownloaded++;
+                updateMessage(SaveLoadManager.getTranslation("DOWNLOADING") + " " + (Math.round((filesDownloaded/filesToDownload)*100) + "%"));
+                updateProgress(filesDownloaded, filesToDownload);
+
+                int maxRetries = 10;
+                int retryCount = 0;
+                while (retryCount < maxRetries) //Even though the IDE says this is always true, this isn't the case since we increment `retryCount` in the catch block. And if we never reach the catch block, we break out of the while loop at the end of the try block
                 {
-                    System.out.println("Downloading: " + fileToDownload);
-                    filesDownloaded++;
-                    updateMessage(SaveLoadManager.getTranslation("DOWNLOADING") + " " + (Math.round((filesDownloaded/filesToDownload)*100) + "%"));
-                    updateProgress(filesDownloaded, filesToDownload);
-                    FileUtils.copyURLToFile(new URL(appsBaseDownloadUrl + openedAppId + "/" + fileToDownload.toString().replace("\\", "/").replace(" ", "%20")), Path.of(appInstallationPath.toString(), fileToDownload.toString()).toFile(), 10000, 10000); //wth
+                    try
+                    {
+                        // Attempt to download the file
+                        saveUrlToFile(new URL(appsBaseDownloadUrl + openedAppId + "/" + fileToDownload.toString().replace("\\", "/").replace(" ", "%20")), Path.of(appInstallationPath.toString(), fileToDownload.toString()), 10000, 10000);
+
+                        // If the download is successful, break out of the loop
+                        break;
+                    }
+                    catch (IOException e)
+                    {
+                        // Handle the exception (connection/read timeouts)
+                        retryCount++;
+
+                        if (retryCount < maxRetries)
+                        {
+                            // Log the retry attempt
+                            System.out.println("Retry download attempt " + retryCount + " for file: " + fileToDownload);
+                        }
+                        else
+                        {// Log that the maximum number of retries has been reached
+                            Platform.runLater(() -> {//Since we are here in a Task i.e. a separate thread we need to make any GUI related calls using Platform.runLater()
+                                ErrorMessage errorMessage = new ErrorMessage(false, SaveLoadManager.getTranslation("FailedDownloadingFiles"));
+                                errorMessage.show();
+                            });
+                            super.cancel(); //Makes it so the "endresult" of the Task was "CANCELLED" and not SUCCESFUL"
+                            return null; //Exit/close and stop further execution of the Task
+                        }
+                    }
                 }
-            }
-            catch (IOException e)
-            {
-                throw new RuntimeException(e);
             }
             //endregion
 
@@ -808,6 +840,34 @@ public class ApplicationWindow extends VBox implements InvalidationListener
             //endregion
 
             return null;
+        }
+
+        /**
+         * This method is used to download a file from a URL source to a file destination.
+         * This method is basically a reimplementation of the `FileUtils.copyURLToFile()` method. However, the `FileUtils.copyURLToFile()` method doesn't throw an error when a connection/read timeout takes place (which it should do), hence why we reimplement it ourselves to achieve that functionality.
+         * @param source The URL to copy bytes from, must not be null
+         * @param destination The non-directory Path to write bytes to (possibly overwriting), must not be null
+         * @param connectionTimeoutMillis The number of milliseconds until this method will time out if no connection could be established to the source
+         * @param readTimeoutMillis The number of milliseconds until this method will time out if no data could be read from the source
+         * @throws IOException An IoException is thrown when a read or connection timeout occurs
+         */
+        private void saveUrlToFile(URL source, Path destination, int connectionTimeoutMillis, int readTimeoutMillis) throws IOException
+        {
+            HttpURLConnection connection = (HttpURLConnection) source.openConnection();
+
+            connection.setConnectTimeout(connectionTimeoutMillis);
+            connection.setReadTimeout(readTimeoutMillis);
+
+            try (InputStream in = connection.getInputStream())
+            {
+                // Use the InputStream to read data and save it to a file
+                Files.createDirectories(destination.getParent());
+                Files.copy(in, destination);
+            }
+            finally
+            {
+                connection.disconnect();
+            }
         }
     }
 

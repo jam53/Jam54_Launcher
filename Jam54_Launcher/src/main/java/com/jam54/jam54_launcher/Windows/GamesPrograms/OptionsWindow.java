@@ -101,6 +101,10 @@ public class OptionsWindow extends VBox
                             installedApplicationVersions[updatedApp.id()] = updatedApp.version();
                             SaveLoadManager.getData().setInstalledApplicationVersions(installedApplicationVersions);
                         });
+                        installApp.setOnCancelled(e ->
+                        {
+                            model.removeValidatingApp(info.id());
+                        });
                     });
                 }
 
@@ -266,6 +270,10 @@ public class OptionsWindow extends VBox
                             String[] installedApplicationVersions = SaveLoadManager.getData().getInstalledApplicationVersions();
                             installedApplicationVersions[updatedApp.id()] = updatedApp.version();
                             SaveLoadManager.getData().setInstalledApplicationVersions(installedApplicationVersions);
+                        });
+                        installApp.setOnCancelled(e ->
+                        {
+                            model.removeValidatingApp(info.id());
                         });
                     });
                 }
