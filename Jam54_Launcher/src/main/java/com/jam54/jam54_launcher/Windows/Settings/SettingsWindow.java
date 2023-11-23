@@ -97,13 +97,11 @@ public class SettingsWindow extends HBox
         socials.getStyleClass().add("socials");
 
         Button youtube = new Button();
-        Button playstore = new Button();
         Button discord = new Button();
         Button github = new Button();
         Button mail = new Button();
 
         youtube.setId("youtubeButton");
-        playstore.setId("playstoreButton");
         discord.setId("discordButton");
         github.setId("githubButton");
         mail.setId("mailButton");
@@ -113,17 +111,6 @@ public class SettingsWindow extends HBox
             try
             {
                 (new ProcessBuilder("cmd.exe", "/c", "start", "\"\" " + '"' + "https://youtube.com/c/jam54" + '"')).start();
-            } catch (IOException ex)
-            {
-                ErrorMessage errorMessage = new ErrorMessage(false, SaveLoadManager.getTranslation("CouldntOpenWebsite") + " " + ex.getMessage());
-                errorMessage.show();
-            }
-        });
-        playstore.setOnAction(e ->
-        {
-            try
-            {
-                (new ProcessBuilder("cmd.exe", "/c", "start", "\"\" " + '"' + "https://play.google.com/store/apps/details?id=com.jam54.AstroRun&hl=en" + '"')).start();
             } catch (IOException ex)
             {
                 ErrorMessage errorMessage = new ErrorMessage(false, SaveLoadManager.getTranslation("CouldntOpenWebsite") + " " + ex.getMessage());
@@ -164,7 +151,7 @@ public class SettingsWindow extends HBox
             }
         });
 
-        socials.getChildren().addAll(youtube, playstore, discord, github, mail);
+        socials.getChildren().addAll(youtube, discord, github, mail);
 
         leftBarBottom.getChildren().addAll(versionHolder, socials);
 
