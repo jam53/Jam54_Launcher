@@ -40,6 +40,7 @@ public class ApplicationsLoader
             Path tempFile = Files.createTempFile("applications", ".sqlite"); //We can't interact with the database when it's stored inside the jar,
             //it needs to be a separate file; see: https://stackoverflow.com/questions/6499218/how-to-use-sqlite-database-inside-jar-file
             //Therefore we will copy the contents of the database stored inside the jar, to a temporary file outside the jar
+            tempFile.toFile().deleteOnExit();
 
             URL databaseInJar = Main.class.getResource("applications.sqlite");
             FileUtils.copyURLToFile(databaseInJar, tempFile.toFile());
@@ -113,6 +114,7 @@ public class ApplicationsLoader
             jam54LauncherConfigProperties.load(in);
 
             Path applicationsVersions = Files.createTempFile("applicationsVersions", ".properties");
+            applicationsVersions.toFile().deleteOnExit();
             DownloadFile.saveUrlToFile(new URL(jam54LauncherConfigProperties.getProperty("applicationVersions")), applicationsVersions, 10000, 10000, 10);
 
             try (InputStream in2 = Files.newInputStream(applicationsVersions))

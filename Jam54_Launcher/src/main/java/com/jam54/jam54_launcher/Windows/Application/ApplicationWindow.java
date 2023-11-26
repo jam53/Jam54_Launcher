@@ -759,6 +759,7 @@ public class ApplicationWindow extends VBox implements InvalidationListener
             {
                 Path tempFile = Files.createTempFile("Hashes", ".txt");
                 FileUtils.copyURLToFile(new URL(appsBaseDownloadUrl + openedAppId + "/" + "Hashes.txt"), tempFile.toFile(), 10000, 10000);
+                tempFile.toFile().deleteOnExit();
 
                 for(String line : FileUtils.readLines(tempFile.toFile(), StandardCharsets.UTF_8))
                 {
@@ -977,6 +978,7 @@ public class ApplicationWindow extends VBox implements InvalidationListener
             String startMenuShortcutCommand = "cmd.exe /c powershell.exe -Command \"$WshShell = New-Object -comObject WScript.Shell; $Shortcut = $WshShell.CreateShortcut(\\\"%userprofile%\\\\\\\\AppData\\\\\\\\Roaming\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\Start Menu\\\\\\\\Programs\\\\\\\\\\\\" + info.name() + ".lnk\\\"); $Shortcut.TargetPath = \\\"" + fullPathToApp.replace("\\", "\\\\") + "\\\"; $Shortcut.Save()\"";
 
             File scriptFile = File.createTempFile ("createShortcuts", ".bat");
+            scriptFile.deleteOnExit();
             try (PrintWriter script = new PrintWriter(scriptFile)) {
                 script.println(desktopShortcutCommand);
                 script.println(startMenuShortcutCommand);
@@ -1005,6 +1007,7 @@ public class ApplicationWindow extends VBox implements InvalidationListener
             String startMenuShortcutCommand = "cmd.exe /c powershell.exe -Command \"Remove-Item \\\"%userprofile%\\\\\\\\AppData\\\\\\\\Roaming\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\Start Menu\\\\\\\\Programs\\\\\\\\\\\\" + info.name() + ".lnk\\\"";
 
             File scriptFile = File.createTempFile ("removeShortcuts", ".bat");
+            scriptFile.deleteOnExit();
             try (PrintWriter script = new PrintWriter(scriptFile)) {
                 script.println(desktopShortcutCommand);
                 script.println(startMenuShortcutCommand);

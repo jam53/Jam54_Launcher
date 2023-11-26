@@ -48,6 +48,7 @@ public class LauncherUpdater
         try
         {
             Path tempFile = Files.createTempFile("version", ".txt");
+            tempFile.toFile().deleteOnExit();
             DownloadFile.saveUrlToFile(new URL(properties.getProperty("versionUrl")), tempFile, 10000, 10000, 10);
             versionInCloud = FileUtils.readFileToString(tempFile.toFile(), StandardCharsets.UTF_8);
         }

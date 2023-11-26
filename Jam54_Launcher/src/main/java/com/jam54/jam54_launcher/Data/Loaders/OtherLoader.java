@@ -26,6 +26,7 @@ public class OtherLoader
             //it needs to be a separate file; see: https://stackoverflow.com/questions/6499218/how-to-use-sqlite-database-inside-jar-file
             //Therefore we will copy the contents of the database stored inside the jar, to a temporary file outside the jar
 
+            tempFile.toFile().deleteOnExit();
             URL databaseInJar = Main.class.getResource("applications.sqlite");
             FileUtils.copyURLToFile(databaseInJar, tempFile.toFile());
 
