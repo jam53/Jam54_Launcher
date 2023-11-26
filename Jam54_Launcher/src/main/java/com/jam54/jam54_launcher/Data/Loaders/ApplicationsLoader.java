@@ -3,6 +3,7 @@ package com.jam54.jam54_launcher.Data.Loaders;
 import com.jam54.jam54_launcher.ErrorMessage;
 import com.jam54.jam54_launcher.Main;
 import com.jam54.jam54_launcher.Data.SaveLoad.SaveLoadManager;
+import com.jam54.jam54_launcher.Updating.DownloadFile;
 import com.jam54.jam54_launcher.database_access.ApplicationDAO;
 import com.jam54.jam54_launcher.database_access.DataAccessContext;
 import com.jam54.jam54_launcher.database_access.DataAccessException;
@@ -112,7 +113,7 @@ public class ApplicationsLoader
             jam54LauncherConfigProperties.load(in);
 
             Path applicationsVersions = Files.createTempFile("applicationsVersions", ".properties");
-            FileUtils.copyURLToFile(new URL(jam54LauncherConfigProperties.getProperty("applicationVersions")), applicationsVersions.toFile(), 10000, 10000);
+            DownloadFile.saveUrlToFile(new URL(jam54LauncherConfigProperties.getProperty("applicationVersions")), applicationsVersions, 10000, 10000, 10);
 
             try (InputStream in2 = Files.newInputStream(applicationsVersions))
             {

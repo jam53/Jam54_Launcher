@@ -48,7 +48,7 @@ public class LauncherUpdater
         try
         {
             Path tempFile = Files.createTempFile("version", ".txt");
-            FileUtils.copyURLToFile(new URL(properties.getProperty("versionUrl")), tempFile.toFile(), 10000, 10000);
+            DownloadFile.saveUrlToFile(new URL(properties.getProperty("versionUrl")), tempFile, 10000, 10000, 10);
             versionInCloud = FileUtils.readFileToString(tempFile.toFile(), StandardCharsets.UTF_8);
         }
         catch (IOException e)
@@ -78,7 +78,7 @@ public class LauncherUpdater
         {//If true, this means there is a new version available
             try
             {
-                FileUtils.copyURLToFile(new URL(properties.getProperty("Jam54LauncherUrl")), newJarLocation.toFile(), 10000, 10000); //Download the new version of the launcher
+                DownloadFile.saveUrlToFile(new URL(properties.getProperty("Jam54LauncherUrl")), newJarLocation, 10000, 10000, 10); //Download the new version of the launcher
                 model.setNewVersionDownloaded(true);
             } catch (IOException e)
             {
