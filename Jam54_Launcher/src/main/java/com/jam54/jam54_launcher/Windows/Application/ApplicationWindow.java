@@ -8,6 +8,7 @@ import com.jam54.jam54_launcher.Data.SaveLoad.SaveLoadManager;
 import com.jam54.jam54_launcher.ErrorMessage;
 import com.jam54.jam54_launcher.LoadCSSStyles;
 import com.jam54.jam54_launcher.Main;
+import com.jam54.jam54_launcher.Updating.DownloadFile;
 import com.jam54.jam54_launcher.Updating.FileSplitterCombiner;
 import com.jam54.jam54_launcher.Updating.Hashes;
 import com.jam54.jam54_launcher.Windows.GamesPrograms.OptionsWindow;
@@ -32,7 +33,6 @@ import javafx.stage.Popup;
 import org.apache.commons.io.FileUtils;
 
 import java.io.*;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -742,13 +742,18 @@ public class ApplicationWindow extends VBox implements InvalidationListener
                 appsBaseDownloadUrl = properties.getProperty("appsBaseDownloadUrl") + "/";
             }
             catch (IOException e)
-            {
-                ErrorMessage errorMessage = new ErrorMessage(false, SaveLoadManager.getTranslation("ErrorLoadingJam54LauncherConfig"));
-                errorMessage.show();
+            {//Normally this should never throw an error, since this file is packed within the JAR, so it should never be missing for example. But we still try-catch it anyway
+
+                Platform.runLater(() -> {//Since we are here in a Task i.e. a separate thread we need to make any GUI related calls using Platform.runLater()
+                    ErrorMessage errorMessage = new ErrorMessage(false, SaveLoadManager.getTranslation("ErrorLoadingJam54LauncherConfig"));
+                    errorMessage.show();
+                });
+                super.cancel(); //Makes it so the "endresult" of the Task was "CANCELLED" and not SUCCESFUL"
+                return null; //Exit/close and stop further execution of the Task
             }
             //endregion
 
-            //region get hashes
+            //region get hashes for local files and files in the cloud
             updateMessage(SaveLoadManager.getTranslation("CALCULATINGHASHES"));
 
             Hashes hashes = new Hashes();
@@ -758,8 +763,8 @@ public class ApplicationWindow extends VBox implements InvalidationListener
             try
             {
                 Path tempFile = Files.createTempFile("Hashes", ".txt");
-                FileUtils.copyURLToFile(new URL(appsBaseDownloadUrl + openedAppId + "/" + "Hashes.txt"), tempFile.toFile(), 10000, 10000);
                 tempFile.toFile().deleteOnExit();
+                DownloadFile.saveUrlToFile(new URL(appsBaseDownloadUrl + openedAppId + "/" + "Hashes.txt"), tempFile, 10000, 10000, 10);
 
                 for(String line : FileUtils.readLines(tempFile.toFile(), StandardCharsets.UTF_8))
                 {
@@ -769,58 +774,133 @@ public class ApplicationWindow extends VBox implements InvalidationListener
             }
             catch (IOException e)
             {
-                throw new RuntimeException(e);
+                // Handle the exception (connection/read timeouts)
+
+                Platform.runLater(() -> {//Since we are here in a Task i.e. a separate thread we need to make any GUI related calls using Platform.runLater()
+                    ErrorMessage errorMessage = new ErrorMessage(false, SaveLoadManager.getTranslation("FailedDownloadingFiles"));
+                    errorMessage.show();
+                });
+                super.cancel(); //Makes it so the "endresult" of the Task was "CANCELLED" and not SUCCESFUL"
+                return null; //Exit/close and stop further execution of the Task
             }
             //endregion
 
-            //region calculate files to remove and remove (hashesLocal verschil hashesCloud)
-            updateMessage("REMOVINGOLDFILES");
+            //region calculate obsolete files that either have to be removed or updated (hashesLocal - hashesCloud)
             HashMap<String, Path> differenceMap = new HashMap<>(hashesLocal);
             differenceMap.entrySet().removeAll(hashesCloud.entrySet());
+            Set<Path> obsoleteFiles = new HashSet<>(differenceMap.values());
+            //endregion
 
-            for (Path fileToRemove : differenceMap.values())
+            //region calculate changed files that either have to be downloaded or updated (hashesCloud - hashesLocal)
+            differenceMap = new HashMap<>(hashesCloud);
+            differenceMap.entrySet().removeAll(hashesLocal.entrySet());
+            Set<Path> changedFiles = new HashSet<>(differenceMap.values());
+            //endregion
+
+            //region Calculate the filesToBeDeleted, filesToBeDownloaded and filesToBeUpdated
+            Set<Path> filesToBeDeleted = new HashSet<>(obsoleteFiles);
+            filesToBeDeleted.removeAll(changedFiles);
+
+            Set<Path> filesToBeDownloaded = new HashSet<>(changedFiles);
+            filesToBeDownloaded.removeAll(obsoleteFiles);
+
+            Set<Path> filesToBeUpdated = new HashSet<>(obsoleteFiles);
+            filesToBeUpdated.retainAll(changedFiles);
+            //endregion
+
+            //region Delete the files that are no longer needed
+            updateMessage(SaveLoadManager.getTranslation("REMOVINGOLDFILES"));
+
+            for (Path fileToRemove : filesToBeDeleted)
             {
                 Path.of(appInstallationPath.toString(), fileToRemove.toString()).toFile().delete();
             }
             //endregion
 
-            //region calculate files that are either missing or changed and download them (hashesCloud verschil hashesLocal)
-            differenceMap = new HashMap<>(hashesCloud);
-            differenceMap.entrySet().removeAll(hashesLocal.entrySet());
-
+            //region Download the missing/new files
             float filesDownloaded = 0;
-            float filesToDownload = differenceMap.size();
-            for (Path fileToDownload : differenceMap.values())
+            float filesToDownload = filesToBeDownloaded.size();
+            for (Path fileToDownload : filesToBeDownloaded)
             {
                 System.out.println("Downloading: " + fileToDownload);
                 filesDownloaded++;
                 updateMessage(SaveLoadManager.getTranslation("DOWNLOADING") + " " + (Math.round((filesDownloaded/filesToDownload)*100) + "%"));
                 updateProgress(filesDownloaded, filesToDownload);
 
-                int maxRetries = 10;
-                int retryCount = 0;
-                while (retryCount < maxRetries) //Even though the IDE says this is always true, this isn't the case since we increment `retryCount` in the catch block. And if we never reach the catch block, we break out of the while loop at the end of the try block
+                try
                 {
-                    try
-                    {
-                        // Attempt to download the file
-                        saveUrlToFile(new URL(appsBaseDownloadUrl + openedAppId + "/" + fileToDownload.toString().replace("\\", "/").replace(" ", "%20")), Path.of(appInstallationPath.toString(), fileToDownload.toString()), 10000, 10000);
+                    // Attempt to download the file
+                    DownloadFile.saveUrlToFile(new URL(appsBaseDownloadUrl + openedAppId + "/" + fileToDownload.toString().replace("\\", "/").replace(" ", "%20")), Path.of(appInstallationPath.toString(), fileToDownload.toString()), 10000, 10000, 10);
+                }
+                catch (IOException e)
+                {
+                    // Handle the exception (connection/read timeouts)
 
-                        // If the download is successful, break out of the loop
-                        break;
+                    Platform.runLater(() -> {//Since we are here in a Task i.e. a separate thread we need to make any GUI related calls using Platform.runLater()
+                        ErrorMessage errorMessage = new ErrorMessage(false, SaveLoadManager.getTranslation("FailedDownloadingFiles"));
+                        errorMessage.show();
+                    });
+                    super.cancel(); //Makes it so the "endresult" of the Task was "CANCELLED" and not SUCCESFUL"
+                    return null; //Exit/close and stop further execution of the Task
+                }
+            }
+            //endregion
+
+            //region Update the changed files
+            Map<Integer, String> hashesChunksLocal = null;
+            Map<Integer, String> hashesChunksCloud = null;
+            Map<Integer, String> chunksToReplace = null;
+
+            for (Path fileToBeUpdated : filesToBeUpdated)
+            {
+                hashesChunksLocal = hashes.calculateChunkHashes(Path.of(appInstallationPath.toString(), fileToBeUpdated.toString()));
+
+                try
+                {
+                    Path tempFile = Files.createTempFile("HashesChunksCloud", ".txt");
+                    tempFile.toFile().deleteOnExit();
+                    DownloadFile.saveUrlToFile(new URL(appsBaseDownloadUrl + openedAppId + "/" + fileToBeUpdated.toString().replace("\\", "/").replace(" ", "%20") + ".hashes"), tempFile, 10000, 10000, 10);
+
+                    hashesChunksCloud = new HashMap<>();
+                    for (String line : FileUtils.readLines(tempFile.toFile(), StandardCharsets.UTF_8))
+                    {
+                        String[] keyValue = line.split("\\|"); //Escaped '|' character
+                        hashesChunksCloud.put(Integer.parseInt(keyValue[1]), keyValue[0]);
                     }
-                    catch (IOException e)
-                    {
-                        // Handle the exception (connection/read timeouts)
-                        retryCount++;
+                }
+                catch (IOException e)
+                {
+                    // Handle the exception (connection/read timeouts)
 
-                        if (retryCount < maxRetries)
+                    Platform.runLater(() -> {//Since we are here in a Task i.e. a separate thread we need to make any GUI related calls using Platform.runLater()
+                        ErrorMessage errorMessage = new ErrorMessage(false, SaveLoadManager.getTranslation("FailedDownloadingFiles"));
+                        errorMessage.show();
+                    });
+                    super.cancel(); //Makes it so the "endresult" of the Task was "CANCELLED" and not SUCCESFUL"
+                    return null; //Exit/close and stop further execution of the Task
+                }
+
+                chunksToReplace = hashesChunksCloud; //No need to make a deep copy, we will replace `hashesChunksCloud` in the next iteration of the loop
+                chunksToReplace.entrySet().removeAll(hashesChunksLocal.entrySet());
+
+                try (RandomAccessFile localFileToUpdate = new RandomAccessFile(Path.of(appInstallationPath.toString(), fileToBeUpdated.toString()).toFile(), "rw"))
+                {
+                    for(Map.Entry<Integer, String> chunkToReplace : chunksToReplace.entrySet())
+                    {
+                        byte[] newBytes;
+
+                        try
                         {
-                            // Log the retry attempt
-                            System.out.println("Retry download attempt " + retryCount + " for file: " + fileToDownload);
+                            Path tempFile = Files.createTempFile("newBytes", ".bin");
+                            tempFile.toFile().deleteOnExit();
+                            DownloadFile.saveUrlToFile(new URL(appsBaseDownloadUrl + openedAppId + "/" + "Chunks/" + chunkToReplace.getValue()), tempFile, 10000, 10000, 10);
+
+                            newBytes = FileUtils.readFileToByteArray(tempFile.toFile());
                         }
-                        else
-                        {// Log that the maximum number of retries has been reached
+                        catch (IOException e)
+                        {
+                            // Handle the exception (connection/read timeouts)
+
                             Platform.runLater(() -> {//Since we are here in a Task i.e. a separate thread we need to make any GUI related calls using Platform.runLater()
                                 ErrorMessage errorMessage = new ErrorMessage(false, SaveLoadManager.getTranslation("FailedDownloadingFiles"));
                                 errorMessage.show();
@@ -828,7 +908,25 @@ public class ApplicationWindow extends VBox implements InvalidationListener
                             super.cancel(); //Makes it so the "endresult" of the Task was "CANCELLED" and not SUCCESFUL"
                             return null; //Exit/close and stop further execution of the Task
                         }
+
+                        localFileToUpdate.seek(chunkToReplace.getKey());
+                        localFileToUpdate.write(newBytes);
+
+                        // If the new chunk isn't a "full sized" chunk. This means that this chunk is the last chunk in the file. Now if this last chunk is smaller than the previous last chunk in the local file. The new chunk would overwrite the new bytes, but wouldn't remove the old excess bytes of the larger previous chunk. In that case we will need to truncate the excess bytes in the local file.
+                        if (newBytes.length < Hashes.CHUNK_SIZE)
+                        {
+                            localFileToUpdate.setLength(chunkToReplace.getKey() + newBytes.length);
+                        }
                     }
+
+                    //If the chunksToReplace Map is empty, this means that the file in the cloud is an empty file without any content. In that case we don't have any chunks to replace the old chunks of this file with on the user's disk. That's why we do `.setLength(0)` to remove the contents of the file.
+                    if (chunksToReplace.isEmpty())
+                    {
+                        localFileToUpdate.setLength(0);
+                    }
+                } catch (IOException e)
+                {
+                    throw new RuntimeException(e);
                 }
             }
             //endregion
@@ -841,34 +939,6 @@ public class ApplicationWindow extends VBox implements InvalidationListener
             //endregion
 
             return null;
-        }
-
-        /**
-         * This method is used to download a file from a URL source to a file destination.
-         * This method is basically a reimplementation of the `FileUtils.copyURLToFile()` method. However, the `FileUtils.copyURLToFile()` method doesn't throw an error when a connection/read timeout takes place (which it should do), hence why we reimplement it ourselves to achieve that functionality.
-         * @param source The URL to copy bytes from, must not be null
-         * @param destination The non-directory Path to write bytes to (possibly overwriting), must not be null
-         * @param connectionTimeoutMillis The number of milliseconds until this method will time out if no connection could be established to the source
-         * @param readTimeoutMillis The number of milliseconds until this method will time out if no data could be read from the source
-         * @throws IOException An IoException is thrown when a read or connection timeout occurs
-         */
-        private void saveUrlToFile(URL source, Path destination, int connectionTimeoutMillis, int readTimeoutMillis) throws IOException
-        {
-            HttpURLConnection connection = (HttpURLConnection) source.openConnection();
-
-            connection.setConnectTimeout(connectionTimeoutMillis);
-            connection.setReadTimeout(readTimeoutMillis);
-
-            try (InputStream in = connection.getInputStream())
-            {
-                // Use the InputStream to read data and save it to a file
-                Files.createDirectories(destination.getParent());
-                Files.copy(in, destination);
-            }
-            finally
-            {
-                connection.disconnect();
-            }
         }
     }
 

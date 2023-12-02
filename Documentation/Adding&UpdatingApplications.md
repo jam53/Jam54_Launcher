@@ -343,6 +343,7 @@ Increment the size of the `installedApplicationVersions` and `installedApplicati
 
       Hashes hashes = new Hashes();
       hashes.calculateHashesTXTFiles(paths);
+      hashes.createAndCalculateChunkHashesTXTFiles(paths);
       ```
 - Run the application
   - You may get an error along the lines of `Caused by: java.lang.NullPointerException: Cannot invoke "String.equals(Object)" because the return value of "java.util.Properties.getProperty(String)" is null`. This is fine. We just need to execute the code snippet we pasted to hash the files of the newly added app. The code that comes after it throws an error in this case because the `applicationsVersions.properties` gets downloaded from where our files are hosted. But that `applicationsVersions.properties` file is obviously still missing the entry for the newly added app. Hence why we get an error
@@ -402,7 +403,7 @@ Open the `applicationsVersions.properties` file, and update the value behind the
 
 #### Hashing & splitting the files
 - Navigate to the "root" folder containing all of the apps: `OneDrive\Documenten\Scripts\Builds\Jam54Launcher\AppBuilds`
-- Remove all of the files apart from `EntryPoint.txt` and `LICENSE` in the subfolder of the app which you wish to update, and place the new binaries in the subfolder. 
+- Remove all the files and folders apart from `EntryPoint.txt` and `LICENSE` in the subfolder of the app which you wish to update, and place the new binaries in the subfolder. 
     - > Make sure to update the `EntryPoint.txt` file if necessary. 
 
 ---
@@ -417,6 +418,7 @@ Open the `applicationsVersions.properties` file, and update the value behind the
 
       Hashes hashes = new Hashes();
       hashes.calculateHashesTXTFiles(paths);
+      hashes.createAndCalculateChunkHashesTXTFiles(paths);
       ```
 - Run the application
 - Remove the lines you added to the `Main.java` file in the previous step

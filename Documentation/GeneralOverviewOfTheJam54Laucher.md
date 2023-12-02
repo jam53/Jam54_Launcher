@@ -118,23 +118,47 @@ I first did some research and as far as I understand most people/companies tend 
 > Another thing I thought about was the fact that you not only have to host patch packages to go from lets say version 1.3 to 1.4. But also patch packages to go from any of the even older version to the most recent one. So I would have to create a ton of patch packages to support people updating from not only 1.3 -> 1.4 but also 1.2 -> 1.4, 1.1 -> 1.4 and so on.
 
 Eventually I implemented the delta updates like so:
-- For any new version of an application, hash all of the files and store them in a file called `Hashes.txt` and place this `Hashes.txt` file in the root directory of the appication's files
+- For any new version of an application, hash all of the files and store them in a file called `Hashes.txt` and place this `Hashes.txt` file in the root directory of the application's files
     - Example of `Hashes.txt`
 ```
 10521fe73fe05f2ba95d40757d9f676f2091e2ed578da9d5cdef352f986f3bcd|runtime\bin\ucrtbase.dll
 2afbfa1d77969d0f4cee4547870355498d5c1da81d241e09556d0bd1d6230f8c|runtime\bin\api-ms-win-core-console-l1-1-0.dll
 ...
 ```
-- Host the application's file somewhere, along with the `Hashes.txt` file.
+- For each file that's part of the application, split the file into chunks of 1MB (1024^2 bytes) and store these in a folder called `Chunks` in the root directory of the application's files. Where the filename of each 1MB chunk is the hash of the 1MB file.
+  - For each file of the application, create a file of the same name in the same location with `.hashes` appended to the end of the filename. All of the 1MB chunks that are associated with this file should be stored in the `applicationFile.extension.hashes` file. Where the first value represents the hash of the 1MB chunk and the second value stands for the start index of this 1MB chunk.
+    - Example of `applicationFile.extension.hashes`
+```
+4aee721b7c796ae3c2a4b54de7efefd0b39a9f673c3b96f0e2ab30c19bd360e0|1048576
+5cbf1868b078cd5bc622f0f9656dc4221e7dc5497c2f96c039bb480b16953495|3145728
+af02b5b12c2c3512dcbc197cf6fa19ecf7539a33f0bb4bbd024717b7832b890b|0
+a8581dda005d9cbcfce573ea4c3aacdf6db40837421fb77018baf0d944828ba0|4194304
+...
+```
+> Make sure the `Hashes.txt` file is computed first. Otherwise the `Hashes.txt` file will also contain the hashes of each of the `applicationFile.extension.hashes` files.
+- Host the application's file somewhere, along with the `Hashes.txt` file, the `Chunks` directory and the `applicationFile.extension.hashes` associated with each file.
 - If the user wants to download an application that isn't installed yet or update an already existing one. First download the `Hashes.txt` file of said application.
     - Save those hashes to a Dictionary/Map called `hashesCloud` (key: hash, value: path to the file)
-- Calculate the hashes of all of the files which are already on the users disk. And store them in a Dictionary/Map called `hashedLocal` (key: hash, value: path to file)
-    - > Note: In the case of downloading an application that isn't installed yet. The `hashedLocal` Dictionary/Map would be empty.
-- Calculate the set difference of `hashesLocal` - `hashesCloud`. This yields us all the files that are on the user's filesystem, but aren't part of the most recent version of the application we are downloading/updating. So in other words, remove those files.
+- Calculate the hashes of all of the files which are already on the user's disk. And store them in a Dictionary/Map called `hashesLocal` (key: hash, value: path to file)
+    - > Note: In the case of downloading an application that isn't installed yet. The `hashesLocal` Dictionary/Map would be empty.
+- Calculate the set difference between `hashesLocal` - `hashesCloud` and save the remaining values (=without the keys i.e. the path to the files) in a set called `obsoleteFiles`. This yields us all the files that are on the user's filesystem, that have either been modified or removed in the most recent version of the application we are downloading/updating to.
     - The set difference (subtraction) is defined as follows. The set `hashesLocal`−`hashesCloud` consists of elements that are in `hashesLocal` but not in `hashesCloud`. 
         - > Note: This set difference would be ∅ (empty) if we are downloading an application that isn't installed yet.
-- Calculate the set difference of `hashesCloud` - `hashesLocal`. These are all the files that are new and should be downloaded.
+- Calculate the set difference of `hashesCloud` - `hashesLocal` and store the remaining values (=without the keys i.e. the path to the files) in a set called `changedFiles`. These are all the files that are new and should either be downloaded or updated.
     - > Note: When downloading an application that isn't installed yet, `hashesCloud` - `hashesLocal` will be equal to `hashesCloud`.
+- Store the set difference of `obsoleteFiles` - `changedFiles` in a set called `filesToBeDeleted`.
+  - These files are no longer part of the new version and may hence be deleted.
+- Store the set difference of `changedFiles` - `obsoleteFiles` in a set called `filesToBeDownloaded`.
+  - These files weren't part of the previous version and have to be downloaded.
+- Store the set intersection of `changedFiles` and `obsoleteFiles` in a set called `filesToBeUpdated`.
+  - These are the files that changed from one version to the next. In this case we only need to update the part of the file that changed. Rather than having to download the entire file. For each file path in `filesToBeUpdated`:
+    - Split the file into 1MB chunks and calculate the hash for each chunk. Store the start index of the chunk(key) and hash(value) in a Dictionary/Map called `hashesChunksLocal`
+    - Download the `applicationFile.extension.hashes` file and store its content in a Dictionary/Map called `hashesChunksCloud` where the start index of the chunk is used for the key and the hash for the value.
+    - Calculate the set difference between `hashesChunksCloud` - `hashesChunksLocal`, the resulting set `chunksToReplace` contains all the chunks in the file that have to be replaced.
+    - Load the file that needs to be updated into memory.
+    - For each key-value pair of the `chunksToReplace` Map:
+      - Use the *hash*(value) of the key-value pair to download the file with the filename *hash* from the `Chunks` directory and load the file into a byte array `newBytes`.
+      - Use the `newBytes` byte array and the *startIndex*(key) of the key-value pair, to replace the bytes starting from the startIndex with the `newBytes` in the file that needs to be updated that's already loaded into memory and write the file to disk again.
 
 Following the steps above, should result in the most recent version of a given application. Without having to host patch packages.
 
@@ -142,7 +166,7 @@ Following the steps above, should result in the most recent version of a given a
 I also implemented a rather simple piece functionality that limits the filesize of an application's files. If a given file is larger than $x$ megabytes, then we split the file into chunks that are each $< x$ megabytes. Once we downloaded all of the application's files, we merge those chunks into one file again.
 
 ## Verifying the file integrity of the installed applications
-Here we hash all the files of a given application on the user's filesystem and compare those to the `Hashes.txt` file hosted in the cloud. In the case that certain files are missing/have a different content, we redownload them. If there are files present locally that aren't in `Hashes.txt` we remove them.
+Here we hash all the files of a given application on the user's filesystem and compare those to the `Hashes.txt` file hosted in the cloud. In the case that certain files are missing/have a different content, we redownload/update them. If there are files present locally that aren't in `Hashes.txt` we remove them.
 
 ## Obfuscation of the launcher's bytecode
 Not that anyone would bother to decompile the Java bytecode of the launcher. But in case someone would try, it would hopefully make it a bit harder for them to understand how everything works because of the obfuscation.
