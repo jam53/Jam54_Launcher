@@ -143,7 +143,7 @@ public class SettingsWindow extends HBox
         {
             try
             {
-                (new ProcessBuilder("cmd.exe", "/c", "start", "\"\" " + '"' + "mailto:jam54.help@outlook.com" + '"')).start();
+                (new ProcessBuilder("cmd.exe", "/c", "start", "\"\" " + '"' + "mailto:info@jam54.com" + '"')).start();
             } catch (IOException ex)
             {
                 ErrorMessage errorMessage = new ErrorMessage(false, SaveLoadManager.getTranslation("CouldntOpenWebsite") + " " + ex.getMessage());
