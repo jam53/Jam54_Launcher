@@ -599,7 +599,7 @@ To circumvent/get around this, we put the applicationButton in another VBox whic
 }
 
 .rightSideApplicationWindow {
-    -fx-padding: 0 70 0 0;
+    -fx-padding: 0 30 0 0;
     -fx-alignment: bottom-center;
 }
 
