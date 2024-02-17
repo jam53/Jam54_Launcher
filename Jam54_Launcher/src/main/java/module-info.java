@@ -7,4 +7,5 @@ open module com.jam54.jam54_launcher {
     requires org.apache.commons.codec;
     requires jdk.crypto.ec;
     requires java.sql;
+    requires java.desktop;
 }

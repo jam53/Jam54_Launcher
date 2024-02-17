@@ -1,66 +1,31 @@
 package com.jam54.jam54_launcher;
 
-import com.jam54.jam54_launcher.Data.Jam54LauncherModel;
-import com.jam54.jam54_launcher.Data.SaveLoad.ColorTheme;
-import com.jam54.jam54_launcher.Data.SaveLoad.SaveLoadManager;
-import com.jam54.jam54_launcher.Updating.LauncherUpdater;
-import com.jam54.jam54_launcher.Data.Loaders.ApplicationsLoader;
-import com.jam54.jam54_launcher.Data.Loaders.OtherLoader;
-import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
-import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
-import java.io.IOException;
+import java.awt.*;
 
-public class Main extends Application
+/**
+ * This is the entry point to our application.
+ *
+ * Because of the scaling that can be set in Windows settings, the Jam54Launcher may appear very large and even overflow the screen. In order to circumvent this we can dynamically calculate the scale that should be used for this application and override the value from Windows settings.
+ * This needs to be done before any JavaFX stuff has been initialized however, otherwise the scaling won't be applied. That's why we set the correct scaling here, and only then call the {@link MainApplication} which launches the actual application. Because {@link MainApplication} extends the {@link javafx.application.Application} class, setting the scaling in {@link MainApplication} would already be too late, even if we did it in the {@link MainApplication#run(String[])} method rather than the {@link MainApplication#start(Stage)} method.
+ */
+public class Main
 {
-    @Override
-    public void start(Stage stage) throws IOException
-    {
-        (new LoadInFonts()).loadFonts();
-
-        Jam54LauncherModel model = new Jam54LauncherModel();
-
-        ApplicationsLoader applicationsLoader = new ApplicationsLoader();
-
-        model.setAllApplications(applicationsLoader.getApplicationInfos());
-        model.setVisibleApplicationInfos(model.getAllApplications());
-        model.filterAndSortVisibleApplicationInfos(0, false, 0, false, ""); //If we don't sort the application infos initially, they will appear in the wrong order upon startup until the user selects a different sort order. Since platform=0 (all platforms) and installedOnly=false, gamesOnly=false and searchText="" all programs will be shown
-
-        OtherLoader otherLoader = new OtherLoader();
-
-        model.setSupportedLanguages(otherLoader.getSupportedLanguages());
-
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("main.fxml"), SaveLoadManager.getResourceBundle());
-
-        MainController controller = new MainController();
-        controller.setModel(model);
-        fxmlLoader.setController(controller);
-
-        Scene scene = new Scene(fxmlLoader.load(), 1228, 754); //If we set for example, 300 as prefWidth inside the FXML. The we could make our window bigger and the hboxes, vboxes, flowplanes etc. would resize accordingly. But anything smaller than 300 after resizing. Would just cut of the side of the window. By setting both the prefWidth and prefHeight to 1 inside the FXML. Followed by choosing the correct widht/height inside Java. The window resizes correctly, even at smaller resolutions
-        if (SaveLoadManager.getData().getColorTheme() == ColorTheme.DARK)
-        {
-            scene.getStylesheets().add(Main.class.getResource("css/mainDark.css").toString());
-        }
-        else
-        {
-            scene.getStylesheets().add(Main.class.getResource("css/mainLight.css").toString());
-        }
-        stage.setMinWidth(1228);
-        stage.setMinHeight(785);
-        stage.setTitle("Jam54 Launcher");
-        stage.getIcons().add(new Image(Main.class.getResource("img/jam54Icon.png").toString()));
-        stage.setScene(scene);
-        stage.show();
-
-        LauncherUpdater launcherUpdater = new LauncherUpdater(model);
-        launcherUpdater.checkForUpdates();
-    }
-
     public static void main(String[] args)
     {
-        launch();
+        float userMonitorHeight = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0].getDefaultConfiguration().getDevice().getDisplayMode().getHeight();
+        float userMonitorWidth = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0].getDefaultConfiguration().getDevice().getDisplayMode().getWidth();
+
+        int scaleToApply = (int)(((userMonitorWidth * 0.70) / MainApplication.WINDOW_WIDTH) * 100);
+
+        if ((scaleToApply/100f) * MainApplication.WINDOW_HEIGHT > userMonitorHeight * 0.8) //If the user is on an ultra wide display
+        {
+            scaleToApply = (int)(((userMonitorHeight * 0.70) / MainApplication.WINDOW_HEIGHT) * 100);
+        }
+
+        System.setProperty("glass.win.uiScale", scaleToApply + "%");
+
+        MainApplication.run(args);
     }
 }
