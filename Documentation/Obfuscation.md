@@ -55,5 +55,14 @@ Once the steps above are done, you can obfuscate the jar by navigating to `progu
 > In case you encounter errors with the obfuscated jar, you can use the following command to run the jar from the command line in order to debug: `java --module-path "D:\GitHub\Jam54_Launcher\Jam54_Launcher\out\artifacts\Jam54_Launcher_jar" --add-modules javafx.controls,javafx.fxml -cp Jam54_Launcher.jar;commons-codec-1.15.jar;commons-io-2.11.0.jar;commons-lang3-3.12.0.jar;gson-2.10.1.jar;javafx-base-20.jar;javafx-base-20-win.jar;javafx-controls-20.jar;javafx-controls-20-win.jar;javafx-fxml-20.jar;javafx-fxml-20-win.jar;javafx-graphics-20.jar;javafx-graphics-20-win.jar;sqlite-jdbc-3.40.1.0.jar com.jam54.jam54_launcher.Main`  
 > > Make sure the jars located in `D:\GitHub\Jam54_Launcher\Jam54_Launcher\out\artifacts\Jam54_Launcher_jar` are also placed in the current folder that you are running the command from
 
-## Cleanup
-Replace the original jar with the obfuscated one
+## Obfuscating the jar produced by Proguard
+We will now further obfuscate the `Jam54_Launcher_obf.jar` file Proguard produced with [skidfuscator](https://github.com/skidfuscatordev/skidfuscator-java-obfuscator).
+
+Once `Skidfuscator.Community.X.Y.Z.jar` has been downloaded, place it in the same folder that contains `Jam54_Launcher_obf.jar`. Finally run the command below to obfuscate the obfuscated `Jam54_Launcher_obf.jar` once more, this time using skidfuscator.
+
+```
+java -jar Skidfuscator.Community.2.0.8.jar obfuscate Jam54_Launcher_obf.jar -li="/path/to/folder/containing/dependencies"
+```
+> `-li="/folder"` is used to add the dependencies of the jar that's being obfuscated, in the case of the Jam54Launcher this would be the directory that contains the jars `gson-X.Y.Z.jar`, `javafx-base-XY.jar`, and so on.
+
+Replace the original `Jam54_Launcher.jar` with the produced `Jam54_Launcher_obf.jar-out.jar` and rename it to `Jam54_Launcher.jar`.
