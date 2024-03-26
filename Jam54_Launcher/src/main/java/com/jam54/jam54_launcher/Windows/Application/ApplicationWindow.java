@@ -31,6 +31,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Popup;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.*;
 import java.net.URL;
@@ -366,16 +367,16 @@ public class ApplicationWindow extends VBox implements InvalidationListener
                         alert.setHeaderText(null);
                         alert.getDialogPane().setContent(new Label(SaveLoadManager.getTranslation("ApplicationWillBeInstalledAt") + SaveLoadManager.getData().getDataPath() + "\n" + SaveLoadManager.getTranslation("ChangeInstallLocationInSettings")));
 
-                        ButtonType okButtonType = new ButtonType(SaveLoadManager.getTranslation("Ok"), ButtonBar.ButtonData.OK_DONE);
+                        ButtonType installButtonType = new ButtonType(StringUtils.capitalize(SaveLoadManager.getTranslation("INSTALL").toLowerCase()), ButtonBar.ButtonData.OK_DONE);
                         ButtonType cancelButton = new ButtonType(SaveLoadManager.getTranslation("Cancel"), ButtonBar.ButtonData.CANCEL_CLOSE);
-                        alert.getButtonTypes().setAll(okButtonType, cancelButton);
+                        alert.getButtonTypes().setAll(installButtonType, cancelButton);
 
                         Optional<ButtonType> result = Optional.empty();
                         if (!SaveLoadManager.getData().isChangeInstallLocationAlertWasShown())
                         {
                             result = alert.showAndWait();
                         }
-                        if (SaveLoadManager.getData().isChangeInstallLocationAlertWasShown() || result.isPresent() && result.get() == okButtonType)
+                        if (SaveLoadManager.getData().isChangeInstallLocationAlertWasShown() || result.isPresent() && result.get() == installButtonType)
                         {// user clicked ok button, do something here after the dialog is closed
                             SaveLoadManager.getData().setChangeInstallLocationAlertWasShown(true);
 
