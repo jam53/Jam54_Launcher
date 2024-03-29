@@ -626,9 +626,9 @@ public class ApplicationWindow extends VBox implements InvalidationListener
                         else
                         {
                             new Thread(removeApp).start();
-                            installUpdateButton.setDisable(true);
+                            playButton.setDisable(true);
                             removeButton.setDisable(true);
-                            buttonText2.textProperty().bind(removeApp.messageProperty()); //Update button's text with progress
+                            buttonText.textProperty().bind(removeApp.messageProperty()); //Update button's text with progress
                         }
                     });
 
