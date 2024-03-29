@@ -38,6 +38,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.MessageFormat;
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -1068,6 +1069,11 @@ public class ApplicationWindow extends VBox implements InvalidationListener
     public void createShortcut(ApplicationInfo info)
     {
         int appId = info.id();
+
+        Path launcherEntryPoint = Path.of(System.getProperty("user.dir")); //Path to the executable that is used to launch the launcher
+        launcherEntryPoint = launcherEntryPoint.getFileName().toString().equals("app") ? launcherEntryPoint.getParent() : launcherEntryPoint; //If the launcher launched itself, this happens when there was an update for the launcher and the user clicked on "restart to update". In that case user.dir will return the subdirectory "app". We actually want the directory above that contains the Jam54 Launcher executable. If the Jam54 Launcher was launched "normally" the path user.dir returns will be correct and not to the subfolder "app".
+        launcherEntryPoint = Path.of(launcherEntryPoint.toString(), "Jam54 Launcher.exe");
+
         Path appInstallationPath = Path.of(SaveLoadManager.getData().getDataPath().toString(), appId + "");
 
         try
@@ -1076,9 +1082,9 @@ public class ApplicationWindow extends VBox implements InvalidationListener
 
             String fullPathToApp = entryPoint.contains(":") ? entryPoint : Path.of(appInstallationPath.toString(), entryPoint).toString(); //If the entrypoint contains a ":" character. Then it means it isn't a path to a file, but rather an URL to a website or an URL to send a mail. In such cases we don't want to use Path.of() but just the raw string
 
-            String desktopShortcutCommand = "cmd.exe /c powershell.exe -Command \"$WshShell = New-Object -comObject WScript.Shell; $Shortcut = $WshShell.CreateShortcut(\\\"$([System.Environment]::GetFolderPath([System.Environment+SpecialFolder]::Desktop))\\\\" + info.name() + ".lnk\\\"); $Shortcut.TargetPath = \\\"" + fullPathToApp.replace("\\", "\\\\") + "\\\"; $Shortcut.Save()\"";
-
-            String startMenuShortcutCommand = "cmd.exe /c powershell.exe -Command \"$WshShell = New-Object -comObject WScript.Shell; $Shortcut = $WshShell.CreateShortcut(\\\"%userprofile%\\\\\\\\AppData\\\\\\\\Roaming\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\Start Menu\\\\\\\\Programs\\\\\\\\\\\\" + info.name() + ".lnk\\\"); $Shortcut.TargetPath = \\\"" + fullPathToApp.replace("\\", "\\\\") + "\\\"; $Shortcut.Save()\"";
+            String desktopShortcutCommand = "cmd.exe /c powershell.exe -Command \"$WshShell = New-Object -comObject WScript.Shell; $Shortcut = $WshShell.CreateShortcut(\\\"$([System.Environment]::GetFolderPath([System.Environment+SpecialFolder]::Desktop))\\\\" + info.name() + ".lnk\\\"); $Shortcut.TargetPath = \\\"" + launcherEntryPoint.toString().replace("\\", "\\\\") + "\\\"; $Shortcut.Arguments = '" + appId + "'; $Shortcut.IconLocation = '" + fullPathToApp.replace("\\", "\\\\") + "'; $Shortcut.Save()\"";
+            //Rather than creating an actual shortcut to the application in question. We create a shortcut to the Jam54Launcher and pass the id of the application that we want to start as a CLI argument. This way shortcuts will still work, even if we move the installation directory of the applications after we created a shortcut
+            String startMenuShortcutCommand = "cmd.exe /c powershell.exe -Command \"$WshShell = New-Object -comObject WScript.Shell; $Shortcut = $WshShell.CreateShortcut(\\\"%userprofile%\\\\\\\\AppData\\\\\\\\Roaming\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\Start Menu\\\\\\\\Programs\\\\\\\\\\\\" + info.name() + ".lnk\\\"); $Shortcut.TargetPath = \\\"" + launcherEntryPoint.toString().replace("\\", "\\\\") + "\\\"; $Shortcut.Arguments = '" + appId + "'; $Shortcut.IconLocation = '" + fullPathToApp.replace("\\", "\\\\") + "'; $Shortcut.Save()\"";
 
             File scriptFile = File.createTempFile ("createShortcuts", ".bat");
             scriptFile.deleteOnExit();
