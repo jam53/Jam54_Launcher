@@ -16,6 +16,7 @@ import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -48,6 +49,8 @@ public class ApplicationButton extends VBox
         this.getStyleClass().add("applicationButton");
         this.info = info;
 
+        Tooltip.install(this, new Tooltip(info.name()));
+
         //region image with rounded corners at the top
         //Just setting a radius through css didn't work. So basically we create 2 images, which we will then lay on top of each other using a stackpane.
         //For the upperHalf image, we create a rectangle and sest the Arc which creates a rectangle with rounded corners. We then use this rectangle to clip the upperHalf image
@@ -79,7 +82,6 @@ public class ApplicationButton extends VBox
 
         Text title = new Text(info.name());
         title.setText(getTruncatedString(title.getText(), title.getFont(), 80)); // Call a method to truncate the string with an ellipsis if necessary
-
 
         Text status = new Text();
         ImageView statusImage;
