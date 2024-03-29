@@ -2,6 +2,7 @@ package com.jam54.jam54_launcher.Windows.GamesPrograms;
 
 import com.jam54.jam54_launcher.Data.Jam54LauncherModel;
 import com.jam54.jam54_launcher.Data.SaveLoad.SaveLoadManager;
+import com.jam54.jam54_launcher.ErrorMessage;
 import com.jam54.jam54_launcher.Windows.Application.ApplicationButton;
 import com.jam54.jam54_launcher.Windows.Application.ApplicationWindow;
 import com.jam54.jam54_launcher.database_access.Other.ApplicationInfo;
@@ -15,7 +16,9 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import org.apache.commons.io.FileUtils;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 
 /**
@@ -61,50 +64,58 @@ public class OptionsWindow extends VBox
                     verifyFileIntegrity_ButtonHolder.getChildren().add(verifyFileIntegrity_Button);
                     verifyFileIntegrity_Button.setOnAction(event ->
                     {
-                        applicationButton.closeOptionsWindow();
-                        model.addValidatingApp(info.id());
-
-                        ApplicationWindow applicationWindow = new ApplicationWindow();
-                        applicationWindow.setModel(model);
-                        ApplicationWindow.InstallApp installApp = applicationWindow.new InstallApp();
-                        new Thread(installApp).start();
-
-                        installApp.setOnSucceeded(e ->
+                        if (!Files.isWritable(SaveLoadManager.getData().getDataPath()))
                         {
-                            model.removeValidatingApp(info.id());
+                            ErrorMessage errorMessage = new ErrorMessage(false, MessageFormat.format(SaveLoadManager.getTranslation("InsufficientPrivileges"), SaveLoadManager.getData().getDataPath()));
+                            errorMessage.show();
+                        }
+                        else
+                        {
+                            applicationButton.closeOptionsWindow();
+                            model.addValidatingApp(info.id());
 
-                            ApplicationInfo openedApp = info;
+                            ApplicationWindow applicationWindow = new ApplicationWindow();
+                            applicationWindow.setModel(model);
+                            ApplicationWindow.InstallApp installApp = applicationWindow.new InstallApp();
+                            new Thread(installApp).start();
 
-                            ApplicationInfo updatedApp = new ApplicationInfo(openedApp.id(), openedApp.name(), openedApp.image(), false, openedApp.availableVersion(), openedApp.availableVersion(), openedApp.descriptions(), openedApp.platforms(), openedApp.releaseDate(), openedApp.lastUpdate(), openedApp.isGame());
-                            model.setOpenedApplication(updatedApp);
-
-                            ArrayList<ApplicationInfo> applicationsInModel = model.getAllApplications();
-                            applicationsInModel.remove(openedApp);
-                            applicationsInModel.add(updatedApp);
-                            model.setAllApplications(applicationsInModel);
-
-                            ArrayList<ApplicationInfo> newVisibleApplicationsInModel = new ArrayList<>();
-                            for (ApplicationInfo visibleApp : model.getVisibleApplicationInfos())
+                            installApp.setOnSucceeded(e ->
                             {
-                                if (visibleApp.id() == (openedApp.id()))
-                                {
-                                    newVisibleApplicationsInModel.add(updatedApp);
-                                }
-                                else
-                                {
-                                    newVisibleApplicationsInModel.add(visibleApp);
-                                }
-                            }
-                            model.setVisibleApplicationInfos(newVisibleApplicationsInModel);
+                                model.removeValidatingApp(info.id());
 
-                            String[] installedApplicationVersions = SaveLoadManager.getData().getInstalledApplicationVersions();
-                            installedApplicationVersions[updatedApp.id()] = updatedApp.version();
-                            SaveLoadManager.getData().setInstalledApplicationVersions(installedApplicationVersions);
-                        });
-                        installApp.setOnCancelled(e ->
-                        {
-                            model.removeValidatingApp(info.id());
-                        });
+                                ApplicationInfo openedApp = info;
+
+                                ApplicationInfo updatedApp = new ApplicationInfo(openedApp.id(), openedApp.name(), openedApp.image(), false, openedApp.availableVersion(), openedApp.availableVersion(), openedApp.descriptions(), openedApp.platforms(), openedApp.releaseDate(), openedApp.lastUpdate(), openedApp.isGame());
+                                model.setOpenedApplication(updatedApp);
+
+                                ArrayList<ApplicationInfo> applicationsInModel = model.getAllApplications();
+                                applicationsInModel.remove(openedApp);
+                                applicationsInModel.add(updatedApp);
+                                model.setAllApplications(applicationsInModel);
+
+                                ArrayList<ApplicationInfo> newVisibleApplicationsInModel = new ArrayList<>();
+                                for (ApplicationInfo visibleApp : model.getVisibleApplicationInfos())
+                                {
+                                    if (visibleApp.id() == (openedApp.id()))
+                                    {
+                                        newVisibleApplicationsInModel.add(updatedApp);
+                                    }
+                                    else
+                                    {
+                                        newVisibleApplicationsInModel.add(visibleApp);
+                                    }
+                                }
+                                model.setVisibleApplicationInfos(newVisibleApplicationsInModel);
+
+                                String[] installedApplicationVersions = SaveLoadManager.getData().getInstalledApplicationVersions();
+                                installedApplicationVersions[updatedApp.id()] = updatedApp.version();
+                                SaveLoadManager.getData().setInstalledApplicationVersions(installedApplicationVersions);
+                            });
+                            installApp.setOnCancelled(e ->
+                            {
+                                model.removeValidatingApp(info.id());
+                            });
+                        }
                     });
                 }
 
@@ -126,45 +137,54 @@ public class OptionsWindow extends VBox
                     uninstall_Button.setOnAction(event ->
                     {
                         applicationButton.closeOptionsWindow();
-                        model.addRemovingApp(info.id());
 
-                        ApplicationWindow applicationWindow = new ApplicationWindow();
-                        applicationWindow.setModel(model);
-                        ApplicationWindow.RemoveApp removeApp = applicationWindow.new RemoveApp();
-                        new Thread(removeApp).start();
-
-                        removeApp.setOnSucceeded(e ->
+                        if (!Files.isWritable(SaveLoadManager.getData().getDataPath()))
                         {
-                            model.removeRemovingApp(info.id());
+                            ErrorMessage errorMessage = new ErrorMessage(false, MessageFormat.format(SaveLoadManager.getTranslation("InsufficientPrivileges"), SaveLoadManager.getData().getDataPath()));
+                            errorMessage.show();
+                        }
+                        else
+                        {
+                            model.addRemovingApp(info.id());
 
-                            ApplicationInfo openedApp = info;
+                            ApplicationWindow applicationWindow = new ApplicationWindow();
+                            applicationWindow.setModel(model);
+                            ApplicationWindow.RemoveApp removeApp = applicationWindow.new RemoveApp();
+                            new Thread(removeApp).start();
 
-                            ApplicationInfo updatedApp = new ApplicationInfo(openedApp.id(), openedApp.name(), openedApp.image(), openedApp.updateAvailable(), openedApp.availableVersion(), null, openedApp.descriptions(), openedApp.platforms(), openedApp.releaseDate(), openedApp.lastUpdate(), openedApp.isGame());
-                            model.setOpenedApplication(updatedApp);
-
-                            ArrayList<ApplicationInfo> applicationsInModel = model.getAllApplications();
-                            applicationsInModel.remove(openedApp);
-                            applicationsInModel.add(updatedApp);
-                            model.setAllApplications(applicationsInModel);
-
-                            ArrayList<ApplicationInfo> newVisibleApplicationsInModel = new ArrayList<>();
-                            for (ApplicationInfo visibleApp : model.getVisibleApplicationInfos())
+                            removeApp.setOnSucceeded(e ->
                             {
-                                if (visibleApp.id() == (openedApp.id()))
-                                {
-                                    newVisibleApplicationsInModel.add(updatedApp);
-                                }
-                                else
-                                {
-                                    newVisibleApplicationsInModel.add(visibleApp);
-                                }
-                            }
-                            model.setVisibleApplicationInfos(newVisibleApplicationsInModel);
+                                model.removeRemovingApp(info.id());
 
-                            String[] installedApplicationVersions = SaveLoadManager.getData().getInstalledApplicationVersions();
-                            installedApplicationVersions[updatedApp.id()] = updatedApp.version();
-                            SaveLoadManager.getData().setInstalledApplicationVersions(installedApplicationVersions);
-                        });
+                                ApplicationInfo openedApp = info;
+
+                                ApplicationInfo updatedApp = new ApplicationInfo(openedApp.id(), openedApp.name(), openedApp.image(), openedApp.updateAvailable(), openedApp.availableVersion(), null, openedApp.descriptions(), openedApp.platforms(), openedApp.releaseDate(), openedApp.lastUpdate(), openedApp.isGame());
+                                model.setOpenedApplication(updatedApp);
+
+                                ArrayList<ApplicationInfo> applicationsInModel = model.getAllApplications();
+                                applicationsInModel.remove(openedApp);
+                                applicationsInModel.add(updatedApp);
+                                model.setAllApplications(applicationsInModel);
+
+                                ArrayList<ApplicationInfo> newVisibleApplicationsInModel = new ArrayList<>();
+                                for (ApplicationInfo visibleApp : model.getVisibleApplicationInfos())
+                                {
+                                    if (visibleApp.id() == (openedApp.id()))
+                                    {
+                                        newVisibleApplicationsInModel.add(updatedApp);
+                                    }
+                                    else
+                                    {
+                                        newVisibleApplicationsInModel.add(visibleApp);
+                                    }
+                                }
+                                model.setVisibleApplicationInfos(newVisibleApplicationsInModel);
+
+                                String[] installedApplicationVersions = SaveLoadManager.getData().getInstalledApplicationVersions();
+                                installedApplicationVersions[updatedApp.id()] = updatedApp.version();
+                                SaveLoadManager.getData().setInstalledApplicationVersions(installedApplicationVersions);
+                            });
+                        }
                     });
 
                     HBox appSize_TextHolder = new HBox();
@@ -234,47 +254,56 @@ public class OptionsWindow extends VBox
                     verifyFileIntegrity_Button.setOnAction(event ->
                     {
                         applicationWindow.closeOptionsWindow();
-                        model.addValidatingApp(info.id());
 
-                        ApplicationWindow.InstallApp installApp = applicationWindow.new InstallApp();
-                        new Thread(installApp).start();
-
-                        installApp.setOnSucceeded(e ->
+                        if (!Files.isWritable(SaveLoadManager.getData().getDataPath()))
                         {
-                            model.removeValidatingApp(info.id());
+                            ErrorMessage errorMessage = new ErrorMessage(false, MessageFormat.format(SaveLoadManager.getTranslation("InsufficientPrivileges"), SaveLoadManager.getData().getDataPath()));
+                            errorMessage.show();
+                        }
+                        else
+                        {
+                            model.addValidatingApp(info.id());
 
-                            ApplicationInfo openedApp = info;
+                            ApplicationWindow.InstallApp installApp = applicationWindow.new InstallApp();
+                            new Thread(installApp).start();
 
-                            ApplicationInfo updatedApp = new ApplicationInfo(openedApp.id(), openedApp.name(), openedApp.image(), false, openedApp.availableVersion(), openedApp.availableVersion(), openedApp.descriptions(), openedApp.platforms(), openedApp.releaseDate(), openedApp.lastUpdate(), openedApp.isGame());
-                            model.setOpenedApplication(updatedApp);
-
-                            ArrayList<ApplicationInfo> applicationsInModel = model.getAllApplications();
-                            applicationsInModel.remove(openedApp);
-                            applicationsInModel.add(updatedApp);
-                            model.setAllApplications(applicationsInModel);
-
-                            ArrayList<ApplicationInfo> newVisibleApplicationsInModel = new ArrayList<>();
-                            for (ApplicationInfo visibleApp : model.getVisibleApplicationInfos())
+                            installApp.setOnSucceeded(e ->
                             {
-                                if (visibleApp.id() == (openedApp.id()))
-                                {
-                                    newVisibleApplicationsInModel.add(updatedApp);
-                                }
-                                else
-                                {
-                                    newVisibleApplicationsInModel.add(visibleApp);
-                                }
-                            }
-                            model.setVisibleApplicationInfos(newVisibleApplicationsInModel);
+                                model.removeValidatingApp(info.id());
 
-                            String[] installedApplicationVersions = SaveLoadManager.getData().getInstalledApplicationVersions();
-                            installedApplicationVersions[updatedApp.id()] = updatedApp.version();
-                            SaveLoadManager.getData().setInstalledApplicationVersions(installedApplicationVersions);
-                        });
-                        installApp.setOnCancelled(e ->
-                        {
-                            model.removeValidatingApp(info.id());
-                        });
+                                ApplicationInfo openedApp = info;
+
+                                ApplicationInfo updatedApp = new ApplicationInfo(openedApp.id(), openedApp.name(), openedApp.image(), false, openedApp.availableVersion(), openedApp.availableVersion(), openedApp.descriptions(), openedApp.platforms(), openedApp.releaseDate(), openedApp.lastUpdate(), openedApp.isGame());
+                                model.setOpenedApplication(updatedApp);
+
+                                ArrayList<ApplicationInfo> applicationsInModel = model.getAllApplications();
+                                applicationsInModel.remove(openedApp);
+                                applicationsInModel.add(updatedApp);
+                                model.setAllApplications(applicationsInModel);
+
+                                ArrayList<ApplicationInfo> newVisibleApplicationsInModel = new ArrayList<>();
+                                for (ApplicationInfo visibleApp : model.getVisibleApplicationInfos())
+                                {
+                                    if (visibleApp.id() == (openedApp.id()))
+                                    {
+                                        newVisibleApplicationsInModel.add(updatedApp);
+                                    }
+                                    else
+                                    {
+                                        newVisibleApplicationsInModel.add(visibleApp);
+                                    }
+                                }
+                                model.setVisibleApplicationInfos(newVisibleApplicationsInModel);
+
+                                String[] installedApplicationVersions = SaveLoadManager.getData().getInstalledApplicationVersions();
+                                installedApplicationVersions[updatedApp.id()] = updatedApp.version();
+                                SaveLoadManager.getData().setInstalledApplicationVersions(installedApplicationVersions);
+                            });
+                            installApp.setOnCancelled(e ->
+                            {
+                                model.removeValidatingApp(info.id());
+                            });
+                        }
                     });
                 }
 
@@ -294,43 +323,52 @@ public class OptionsWindow extends VBox
                     uninstall_Button.setOnAction(event ->
                     {
                         applicationWindow.closeOptionsWindow();
-                        model.addRemovingApp(info.id());
 
-                        ApplicationWindow.RemoveApp removeApp = applicationWindow.new RemoveApp();
-                        new Thread(removeApp).start();
-
-                        removeApp.setOnSucceeded(e ->
+                        if (!Files.isWritable(SaveLoadManager.getData().getDataPath()))
                         {
-                            model.removeRemovingApp(info.id());
+                            ErrorMessage errorMessage = new ErrorMessage(false, MessageFormat.format(SaveLoadManager.getTranslation("InsufficientPrivileges"), SaveLoadManager.getData().getDataPath()));
+                            errorMessage.show();
+                        }
+                        else
+                        {
+                            model.addRemovingApp(info.id());
 
-                            ApplicationInfo openedApp = info;
+                            ApplicationWindow.RemoveApp removeApp = applicationWindow.new RemoveApp();
+                            new Thread(removeApp).start();
 
-                            ApplicationInfo updatedApp = new ApplicationInfo(openedApp.id(), openedApp.name(), openedApp.image(), openedApp.updateAvailable(), openedApp.availableVersion(), null, openedApp.descriptions(), openedApp.platforms(), openedApp.releaseDate(), openedApp.lastUpdate(), openedApp.isGame());
-                            model.setOpenedApplication(updatedApp);
-
-                            ArrayList<ApplicationInfo> applicationsInModel = model.getAllApplications();
-                            applicationsInModel.remove(openedApp);
-                            applicationsInModel.add(updatedApp);
-                            model.setAllApplications(applicationsInModel);
-
-                            ArrayList<ApplicationInfo> newVisibleApplicationsInModel = new ArrayList<>();
-                            for (ApplicationInfo visibleApp : model.getVisibleApplicationInfos())
+                            removeApp.setOnSucceeded(e ->
                             {
-                                if (visibleApp.id() == (openedApp.id()))
-                                {
-                                    newVisibleApplicationsInModel.add(updatedApp);
-                                }
-                                else
-                                {
-                                    newVisibleApplicationsInModel.add(visibleApp);
-                                }
-                            }
-                            model.setVisibleApplicationInfos(newVisibleApplicationsInModel);
+                                model.removeRemovingApp(info.id());
 
-                            String[] installedApplicationVersions = SaveLoadManager.getData().getInstalledApplicationVersions();
-                            installedApplicationVersions[updatedApp.id()] = updatedApp.version();
-                            SaveLoadManager.getData().setInstalledApplicationVersions(installedApplicationVersions);
-                        });
+                                ApplicationInfo openedApp = info;
+
+                                ApplicationInfo updatedApp = new ApplicationInfo(openedApp.id(), openedApp.name(), openedApp.image(), openedApp.updateAvailable(), openedApp.availableVersion(), null, openedApp.descriptions(), openedApp.platforms(), openedApp.releaseDate(), openedApp.lastUpdate(), openedApp.isGame());
+                                model.setOpenedApplication(updatedApp);
+
+                                ArrayList<ApplicationInfo> applicationsInModel = model.getAllApplications();
+                                applicationsInModel.remove(openedApp);
+                                applicationsInModel.add(updatedApp);
+                                model.setAllApplications(applicationsInModel);
+
+                                ArrayList<ApplicationInfo> newVisibleApplicationsInModel = new ArrayList<>();
+                                for (ApplicationInfo visibleApp : model.getVisibleApplicationInfos())
+                                {
+                                    if (visibleApp.id() == (openedApp.id()))
+                                    {
+                                        newVisibleApplicationsInModel.add(updatedApp);
+                                    }
+                                    else
+                                    {
+                                        newVisibleApplicationsInModel.add(visibleApp);
+                                    }
+                                }
+                                model.setVisibleApplicationInfos(newVisibleApplicationsInModel);
+
+                                String[] installedApplicationVersions = SaveLoadManager.getData().getInstalledApplicationVersions();
+                                installedApplicationVersions[updatedApp.id()] = updatedApp.version();
+                                SaveLoadManager.getData().setInstalledApplicationVersions(installedApplicationVersions);
+                            });
+                        }
                     });
 
                     HBox appSize_TextHolder = new HBox();

@@ -362,38 +362,46 @@ public class ApplicationWindow extends VBox implements InvalidationListener
 
                     installUpdateButton.setOnAction(e ->
                     {
-                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                        alert.setTitle(SaveLoadManager.getTranslation("INSTALL"));
-                        alert.setHeaderText(null);
-                        alert.getDialogPane().setContent(new Label(SaveLoadManager.getTranslation("ApplicationWillBeInstalledAt") + SaveLoadManager.getData().getDataPath() + "\n" + SaveLoadManager.getTranslation("ChangeInstallLocationInSettings")));
-
-                        ButtonType installButtonType = new ButtonType(StringUtils.capitalize(SaveLoadManager.getTranslation("INSTALL").toLowerCase()), ButtonBar.ButtonData.OK_DONE);
-                        ButtonType cancelButton = new ButtonType(SaveLoadManager.getTranslation("Cancel"), ButtonBar.ButtonData.CANCEL_CLOSE);
-                        alert.getButtonTypes().setAll(installButtonType, cancelButton);
-
-                        Optional<ButtonType> result = Optional.empty();
-                        if (!SaveLoadManager.getData().isChangeInstallLocationAlertWasShown())
+                        if (!Files.isWritable(SaveLoadManager.getData().getDataPath()))
                         {
-                            result = alert.showAndWait();
+                            ErrorMessage errorMessage = new ErrorMessage(false, MessageFormat.format(SaveLoadManager.getTranslation("InsufficientPrivileges"), SaveLoadManager.getData().getDataPath()));
+                            errorMessage.show();
                         }
-                        if (SaveLoadManager.getData().isChangeInstallLocationAlertWasShown() || result.isPresent() && result.get() == installButtonType)
-                        {// user clicked ok button, do something here after the dialog is closed
-                            SaveLoadManager.getData().setChangeInstallLocationAlertWasShown(true);
+                        else
+                        {
+                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                            alert.setTitle(SaveLoadManager.getTranslation("INSTALL"));
+                            alert.setHeaderText(null);
+                            alert.getDialogPane().setContent(new Label(SaveLoadManager.getTranslation("ApplicationWillBeInstalledAt") + SaveLoadManager.getData().getDataPath() + "\n" + SaveLoadManager.getTranslation("ChangeInstallLocationInSettings")));
 
-                            model.setUpdatingApp(openedApp.id());
-                            new Thread(installApp).start();
+                            ButtonType installButtonType = new ButtonType(StringUtils.capitalize(SaveLoadManager.getTranslation("INSTALL").toLowerCase()), ButtonBar.ButtonData.OK_DONE);
+                            ButtonType cancelButton = new ButtonType(SaveLoadManager.getTranslation("Cancel"), ButtonBar.ButtonData.CANCEL_CLOSE);
+                            alert.getButtonTypes().setAll(installButtonType, cancelButton);
 
-                            installButtonsHolder.getChildren().clear();
-                            VBox installProgressHolder = new VBox();
+                            Optional<ButtonType> result = Optional.empty();
+                            if (!SaveLoadManager.getData().isChangeInstallLocationAlertWasShown())
+                            {
+                                result = alert.showAndWait();
+                            }
+                            if (SaveLoadManager.getData().isChangeInstallLocationAlertWasShown() || result.isPresent() && result.get() == installButtonType)
+                            {// user clicked ok button, do something here after the dialog is closed
+                                SaveLoadManager.getData().setChangeInstallLocationAlertWasShown(true);
 
-                            Text installProgress_Text = new Text();
-                            ProgressBar progressBar = new ProgressBar();
+                                model.setUpdatingApp(openedApp.id());
+                                new Thread(installApp).start();
 
-                            installProgressHolder.getChildren().addAll(installProgress_Text, progressBar);
-                            installButtonsHolder.getChildren().add(installProgressHolder);
+                                installButtonsHolder.getChildren().clear();
+                                VBox installProgressHolder = new VBox();
 
-                            installProgress_Text.textProperty().bind(installApp.messageProperty()); //Update button's text with progress message
-                            progressBar.progressProperty().bind(installApp.progressProperty()); //Update the progressBar's progress with the progress
+                                Text installProgress_Text = new Text();
+                                ProgressBar progressBar = new ProgressBar();
+
+                                installProgressHolder.getChildren().addAll(installProgress_Text, progressBar);
+                                installButtonsHolder.getChildren().add(installProgressHolder);
+
+                                installProgress_Text.textProperty().bind(installApp.messageProperty()); //Update button's text with progress message
+                                progressBar.progressProperty().bind(installApp.progressProperty()); //Update the progressBar's progress with the progress
+                            }
                         }
                     });
                     installApp.setOnSucceeded(e ->
@@ -465,20 +473,28 @@ public class ApplicationWindow extends VBox implements InvalidationListener
 
                     installUpdateButton.setOnAction(e ->
                     {
-                        model.setUpdatingApp(openedApp.id());
-                        new Thread(installApp).start();
+                        if (!Files.isWritable(SaveLoadManager.getData().getDataPath()))
+                        {
+                            ErrorMessage errorMessage = new ErrorMessage(false, MessageFormat.format(SaveLoadManager.getTranslation("InsufficientPrivileges"), SaveLoadManager.getData().getDataPath()));
+                            errorMessage.show();
+                        }
+                        else
+                        {
+                            model.setUpdatingApp(openedApp.id());
+                            new Thread(installApp).start();
 
-                        installButtonsHolder.getChildren().clear();
-                        VBox installProgressHolder = new VBox();
+                            installButtonsHolder.getChildren().clear();
+                            VBox installProgressHolder = new VBox();
 
-                        Text installProgress_Text = new Text();
-                        ProgressBar progressBar = new ProgressBar();
+                            Text installProgress_Text = new Text();
+                            ProgressBar progressBar = new ProgressBar();
 
-                        installProgressHolder.getChildren().addAll(installProgress_Text, progressBar);
-                        installButtonsHolder.getChildren().add(installProgressHolder);
+                            installProgressHolder.getChildren().addAll(installProgress_Text, progressBar);
+                            installButtonsHolder.getChildren().add(installProgressHolder);
 
-                        installProgress_Text.textProperty().bind(installApp.messageProperty()); //Update button's text with progress message
-                        progressBar.progressProperty().bind(installApp.progressProperty()); //Update the progressBar's progress with the progress
+                            installProgress_Text.textProperty().bind(installApp.messageProperty()); //Update button's text with progress message
+                            progressBar.progressProperty().bind(installApp.progressProperty()); //Update the progressBar's progress with the progress
+                        }
                     });
                     installApp.setOnSucceeded(e ->
                     {
@@ -521,10 +537,18 @@ public class ApplicationWindow extends VBox implements InvalidationListener
 
                     removeButton.setOnAction(e ->
                     {
-                        new Thread(removeApp).start();
-                        installUpdateButton.setDisable(true);
-                        removeButton.setDisable(true);
-                        buttonText2.textProperty().bind(removeApp.messageProperty()); //Update button's text with progress
+                        if (!Files.isWritable(SaveLoadManager.getData().getDataPath()))
+                        {
+                            ErrorMessage errorMessage = new ErrorMessage(false, MessageFormat.format(SaveLoadManager.getTranslation("InsufficientPrivileges"), SaveLoadManager.getData().getDataPath()));
+                            errorMessage.show();
+                        }
+                        else
+                        {
+                            new Thread(removeApp).start();
+                            installUpdateButton.setDisable(true);
+                            removeButton.setDisable(true);
+                            buttonText2.textProperty().bind(removeApp.messageProperty()); //Update button's text with progress
+                        }
                     });
 
                     removeApp.setOnSucceeded(e ->
@@ -593,10 +617,18 @@ public class ApplicationWindow extends VBox implements InvalidationListener
 
                     removeButton.setOnAction(e ->
                     {
-                        new Thread(removeApp).start();
-                        playButton.setDisable(true);
-                        removeButton.setDisable(true);
-                        buttonText.textProperty().bind(removeApp.messageProperty()); //Update button's text with progress
+                        if (!Files.isWritable(SaveLoadManager.getData().getDataPath()))
+                        {
+                            ErrorMessage errorMessage = new ErrorMessage(false, MessageFormat.format(SaveLoadManager.getTranslation("InsufficientPrivileges"), SaveLoadManager.getData().getDataPath()));
+                            errorMessage.show();
+                        }
+                        else
+                        {
+                            new Thread(removeApp).start();
+                            installUpdateButton.setDisable(true);
+                            removeButton.setDisable(true);
+                            buttonText2.textProperty().bind(removeApp.messageProperty()); //Update button's text with progress
+                        }
                     });
 
                     removeApp.setOnSucceeded(e ->

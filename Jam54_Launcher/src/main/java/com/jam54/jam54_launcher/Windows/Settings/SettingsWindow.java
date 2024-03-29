@@ -25,7 +25,7 @@ public class SettingsWindow extends HBox
 {
     private Jam54LauncherModel model;
 
-    private VBox rightSide;
+    private InstallationLocationWindow rightSide;
 
     public SettingsWindow()
     {
@@ -163,6 +163,7 @@ public class SettingsWindow extends HBox
     public void setModel(Jam54LauncherModel model)
     {
         this.model = model;
+        rightSide.setModel(model);
     }
 
     /**

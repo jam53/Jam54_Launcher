@@ -18,12 +18,17 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.DirectoryChooser;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOExceptionList;
+import org.apache.commons.io.IOIndexedException;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.DirectoryNotEmptyException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.text.MessageFormat;
+import java.util.UUID;
 
 /**
  * This class is used to create the InstallationLocation window, at the right side within the settings window
@@ -31,6 +36,7 @@ import java.nio.file.StandardCopyOption;
 public class InstallationLocationWindow extends VBox implements InvalidationListener
 {
     private final Text dataFolderSize;
+    private Jam54LauncherModel model;
 
     public InstallationLocationWindow()
     {
@@ -72,6 +78,27 @@ public class InstallationLocationWindow extends VBox implements InvalidationList
      */
     private void chooseNewDataPathDirectory(Path currentDataPath, Text folderPath)
     {
+        if (model.getUpdatingApp() != null)
+        {//This means an installation or updating of an app is ongoing
+            ErrorMessage errorMessage = new ErrorMessage(false, MessageFormat.format(SaveLoadManager.getTranslation("KindlyHoldForInstall"), model.getApp(model.getUpdatingApp()).name()) + " " + SaveLoadManager.getTranslation("CancelInstall"));
+            errorMessage.show();
+            return;
+        }
+        else if (model.getLastValidatingApp() != null)
+        {//This means a file validation of an app is ongoing
+            ErrorMessage errorMessage = new ErrorMessage(false, MessageFormat.format(SaveLoadManager.getTranslation("KindlyHoldForValidationProcedure"), model.getApp(model.getUpdatingApp()).name()) + " " + SaveLoadManager.getTranslation("CancelUninstall"));
+            errorMessage.show();
+            return;
+        }
+        else if (model.getLastRemovingApp() != null)
+        {//This means a file validation of an app is ongoing
+            ErrorMessage errorMessage = new ErrorMessage(false, MessageFormat.format(SaveLoadManager.getTranslation("KindlyHoldForUninstall"), model.getApp(model.getUpdatingApp()).name()) + " " + SaveLoadManager.getTranslation("CancelValidationProcedure"));
+            errorMessage.show();
+            return;
+        }
+
+        folderPath.setText(SaveLoadManager.getTranslation("MovingFiles"));
+
         DirectoryChooser directoryChooser = new DirectoryChooser();
         directoryChooser.setInitialDirectory(currentDataPath.toFile());
 
@@ -79,18 +106,44 @@ public class InstallationLocationWindow extends VBox implements InvalidationList
 
         if (selectedFolder != null && selectedFolder.isDirectory())
         {
-            try
+            if (!Files.isWritable(selectedFolder.toPath()) || !Files.isWritable(currentDataPath))
+            {
+                folderPath.setText(currentDataPath.toString());
+                ErrorMessage errorMessage = new ErrorMessage(false, MessageFormat.format(SaveLoadManager.getTranslation("InsufficientPrivileges"), SaveLoadManager.getData().getDataPath()));
+                errorMessage.show();
+            }
+            else
             {
                 Path newDataPath = Path.of(selectedFolder.toString(), "Jam54Launcher");
+                newDataPath = Files.exists(newDataPath) ? Path.of(newDataPath.toString(), UUID.randomUUID().toString()) : newDataPath; //If there already exists a subfolder with the name "Jam54Launcher", create a new one within that subfolder with a "random" name
+                try
+                {
+                    FileUtils.moveDirectory(currentDataPath.toFile(), newDataPath.toFile());
+                    SaveLoadManager.getData().setDataPath(newDataPath);
+                    folderPath.setText(newDataPath.toString());
+                }
+                catch (IOExceptionList e)
+                {
+                    SaveLoadManager.getData().setDataPath(newDataPath);
+                    folderPath.setText(newDataPath.toString());
+                    ErrorMessage errorMessage = new ErrorMessage(false, MessageFormat.format(SaveLoadManager.getTranslation("NotAllOldFilesDeleted"), e.getMessage()));
+                    errorMessage.show();
+                }
+                catch (IOException e)
+                {
+                    folderPath.setText(currentDataPath.toString());
 
-                Files.move(currentDataPath, newDataPath, StandardCopyOption.REPLACE_EXISTING);
-                SaveLoadManager.getData().setDataPath(newDataPath);
-                folderPath.setText(newDataPath.toString());
-            }
-            catch (IOException e)
-            {
-                ErrorMessage errorMessage = new ErrorMessage(false, SaveLoadManager.getTranslation("CloseAppsAndDownloads") + " " + e.getMessage());
-                errorMessage.show();
+                    if (e.getMessage().startsWith("Cannot move directory: "))
+                    {//If the error message is: "Cannot move directory: " + srcDir + " to a subdirectory of itself: " + destDir
+                        ErrorMessage errorMessage = new ErrorMessage(false, e.getMessage());
+                        errorMessage.show();
+                    }
+                    else
+                    {
+                        ErrorMessage errorMessage = new ErrorMessage(false, SaveLoadManager.getTranslation("CloseAppsAndDownloads") + " " + e.getMessage());
+                        errorMessage.show();
+                    }
+                }
             }
         }
     }
@@ -121,6 +174,7 @@ public class InstallationLocationWindow extends VBox implements InvalidationList
 
     public void setModel(Jam54LauncherModel model)
     {
+        this.model = model;
         model.addListener(this);
     }
 
