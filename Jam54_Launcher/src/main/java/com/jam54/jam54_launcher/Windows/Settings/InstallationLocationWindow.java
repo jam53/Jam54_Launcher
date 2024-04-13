@@ -146,6 +146,8 @@ public class InstallationLocationWindow extends VBox implements InvalidationList
                 }
             }
         }
+
+        folderPath.setText(currentDataPath.toString());
     }
 
     /**
