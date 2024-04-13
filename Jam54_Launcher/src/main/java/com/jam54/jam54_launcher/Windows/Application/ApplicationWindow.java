@@ -885,8 +885,15 @@ public class ApplicationWindow extends VBox implements InvalidationListener
             Map<Integer, String> hashesChunksCloud = null;
             Map<Integer, String> chunksToReplace = null;
 
+            filesDownloaded = 0;
+            filesToDownload = filesToBeUpdated.size();
             for (Path fileToBeUpdated : filesToBeUpdated)
             {
+                System.out.println("Downloading chunks for file: " + fileToBeUpdated);
+                filesDownloaded++;
+                updateMessage(SaveLoadManager.getTranslation("APPLYINGPATCH") + " " + (Math.round((filesDownloaded/filesToDownload)*100) + "%"));
+                updateProgress(filesDownloaded, filesToDownload);
+
                 hashesChunksLocal = hashes.calculateChunkHashes(Path.of(appInstallationPath.toString(), fileToBeUpdated.toString()));
 
                 try
@@ -921,6 +928,7 @@ public class ApplicationWindow extends VBox implements InvalidationListener
                 {
                     for(Map.Entry<Integer, String> chunkToReplace : chunksToReplace.entrySet())
                     {
+                        System.out.println("Downloading chunk " + chunkToReplace.getKey());
                         byte[] newBytes;
 
                         try
