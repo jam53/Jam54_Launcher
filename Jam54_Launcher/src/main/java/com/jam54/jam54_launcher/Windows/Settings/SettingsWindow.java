@@ -9,9 +9,9 @@ import com.jam54.jam54_launcher.Data.SaveLoad.SaveLoadManager;
 import javafx.scene.control.Button;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
 import java.io.IOException;
@@ -105,6 +105,11 @@ public class SettingsWindow extends HBox
         discord.setId("discordButton");
         github.setId("githubButton");
         mail.setId("mailButton");
+
+        youtube.setTooltip(new Tooltip("YouTube"));
+        discord.setTooltip(new Tooltip("Discord"));
+        github.setTooltip(new Tooltip("GitHub"));
+        mail.setTooltip(new Tooltip(SaveLoadManager.getTranslation("Email")));
 
         youtube.setOnAction(e ->
         {
