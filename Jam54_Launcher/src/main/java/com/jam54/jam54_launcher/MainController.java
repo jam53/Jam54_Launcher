@@ -1,6 +1,7 @@
 package com.jam54.jam54_launcher;
 
 import com.jam54.jam54_launcher.Data.Jam54LauncherModel;
+import com.jam54.jam54_launcher.Data.Route;
 import com.jam54.jam54_launcher.Windows.Application.ApplicationWindow;
 import com.jam54.jam54_launcher.Windows.GamesPrograms.GamesProgramsWindow;
 import com.jam54.jam54_launcher.Windows.LeftBar;
@@ -38,8 +39,7 @@ public class MainController implements InvalidationListener
     {
         borderPane.setLeft(leftBar);
 
-        model.setGamesWindowSelected(false);
-        model.setProgramsWindowSelected(true); //When the program opens, we want to show the games/programs window
+        model.navigateToWindow(Route.HOME); //When the program opens, we want to show the HOME AKA games/programs window
     }
 
     public void setModel(Jam54LauncherModel model)
@@ -69,11 +69,11 @@ public class MainController implements InvalidationListener
     {
         updateAvailable_Button.setVisible(model.isNewVersionDownloaded());
 
-        if (model.isSettingsWindowSelected())
+        if (model.getSelectedWindow() == Route.SETTINGS)
         {
             borderPane.setCenter(settingsWindow);
         }
-        else if (model.isApplicationWindowSelected())
+        else if (model.getSelectedWindow() == Route.APPLICATION)
         {
             borderPane.setCenter(applicationWindow);
         }

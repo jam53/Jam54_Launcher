@@ -11,13 +11,8 @@ import com.jam54.jam54_launcher.Windows.Application.ApplicationButton;
 import com.jam54.jam54_launcher.database_access.Other.ApplicationInfo;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.geometry.Bounds;
-import javafx.geometry.Orientation;
-import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
@@ -27,9 +22,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
-import java.sql.SQLOutput;
 import java.util.List;
-import java.util.Set;
 
 /**
  * This class is used to create the Games/Programs window.
@@ -197,7 +190,7 @@ public class GamesProgramsWindow extends VBox implements InvalidationListener
             applicationsHolder.getChildren().add(appButtonHolder);
         }
 
-        if (applicationsHolder.getChildren().size() == 0)
+        if (applicationsHolder.getChildren().isEmpty())
         {
             HBox noApplicationsMatched = new HBox(new Text(SaveLoadManager.getTranslation("NoAppsForFilters")));
             noApplicationsMatched.setId("noApplicationsMatched");

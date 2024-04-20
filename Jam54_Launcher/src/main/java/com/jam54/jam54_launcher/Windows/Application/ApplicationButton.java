@@ -2,6 +2,7 @@ package com.jam54.jam54_launcher.Windows.Application;
 
 import com.jam54.jam54_launcher.Animations.ButtonColor;
 import com.jam54.jam54_launcher.Data.Jam54LauncherModel;
+import com.jam54.jam54_launcher.Data.Route;
 import com.jam54.jam54_launcher.Data.SaveLoad.ColorTheme;
 import com.jam54.jam54_launcher.Data.SaveLoad.SaveLoadManager;
 import com.jam54.jam54_launcher.LoadCSSStyles;
@@ -179,10 +180,7 @@ public class ApplicationButton extends VBox
         });
         model.setOpenedApplication(info);
 
-        model.setApplicationWindowSelected(true);
-        model.setSettingsWindowSelected(false);
-        //We don't set the Games/Programs windows' values to false. This is because only one of them would have been true anyway.
-        //And if we go "back to library" from the Application Window. This will allow us to reopen the last page we were on. Either Games or Programs
+        model.navigateToWindow(Route.APPLICATION);
     }
 
     /**

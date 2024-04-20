@@ -1,12 +1,10 @@
 package com.jam54.jam54_launcher.Data;
 
-import com.jam54.jam54_launcher.Windows.Application.ApplicationWindow;
-import com.jam54.jam54_launcher.database_access.Other.ApplicationInfo;
 import com.jam54.jam54_launcher.Windows.Application.Platforms;
+import com.jam54.jam54_launcher.database_access.Other.ApplicationInfo;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 
-import java.lang.reflect.Array;
 import java.util.*;
 import java.util.function.Predicate;
 
@@ -22,10 +20,7 @@ public class Jam54LauncherModel implements Observable
     private final List<InvalidationListener> listenerList;
 
     private boolean newVersionDownloaded;
-    private boolean gamesWindowSelected;
-    private boolean programsWindowSelected;
-    private boolean settingsWindowSelected;
-    private boolean applicationWindowSelected;
+    private Deque<Route> selectedWindow; //Used as a stack for routing/navigation to keep track of the currently selected screen
 
     private ApplicationInfo openedApplicationInfo;
     private ArrayList<ApplicationInfo> allApplicationInfos;
@@ -43,6 +38,7 @@ public class Jam54LauncherModel implements Observable
     public Jam54LauncherModel()
     {
         listenerList = new ArrayList<>();
+        selectedWindow = new ArrayDeque<>();
         runningApps = new HashMap<>();
         validatingApps = new ArrayList<>();
         removingApps = new ArrayList<>();
@@ -79,48 +75,34 @@ public class Jam54LauncherModel implements Observable
         fireInvalidationEvent();
     }
 
-    public boolean isGamesWindowSelected()
+    /**
+     * Adds the route of another window/screen to the route
+     * @param route the location of the window/screen we go to
+     */
+    public void navigateToWindow(Route route)
     {
-        return gamesWindowSelected;
-    }
-
-    public void setGamesWindowSelected(boolean gamesWindowSelected)
-    {
-        this.gamesWindowSelected = gamesWindowSelected;
+        selectedWindow.addFirst(route);
         fireInvalidationEvent();
     }
 
-    public boolean isProgramsWindowSelected()
+    public Route getSelectedWindow()
     {
-        return programsWindowSelected;
+        return selectedWindow.peekFirst();
     }
 
-    public void setProgramsWindowSelected(boolean programsWindowSelected)
+    /**
+     * Goes back to the previous "route", if the current route is the only one left the current route stays selected
+     * @return the removed/popped route, or the same route if there wasn't a previous route left to go to
+     */
+    public Route goToPreviousWindow()
     {
-        this.programsWindowSelected = programsWindowSelected;
-        fireInvalidationEvent();
-    }
+        if (selectedWindow.size() > 1)
+        {
+            selectedWindow.removeFirst();
+            fireInvalidationEvent();
+        }
 
-    public boolean isSettingsWindowSelected()
-    {
-        return settingsWindowSelected;
-    }
-
-    public void setSettingsWindowSelected(boolean settingsWindowSelected)
-    {
-        this.settingsWindowSelected = settingsWindowSelected;
-        fireInvalidationEvent();
-    }
-
-    public boolean isApplicationWindowSelected()
-    {
-        return applicationWindowSelected;
-    }
-
-    public void setApplicationWindowSelected(boolean applicationWindowSelected)
-    {
-        this.applicationWindowSelected = applicationWindowSelected;
-        fireInvalidationEvent();
+        return getSelectedWindow();
     }
 
     public ApplicationInfo getOpenedApplication()

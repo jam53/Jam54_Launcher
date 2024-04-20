@@ -218,10 +218,7 @@ public class ApplicationWindow extends VBox implements InvalidationListener
      */
     private void backToLibrary(ActionEvent event)
     {
-        model.setApplicationWindowSelected(false);
-        model.setSettingsWindowSelected(false);
-        //We don't set on of the Games/Programs windows' values to true. This is because one of them is already true. (Since we didn't set it to false when opening the ApplicationWindow)
-        //And if we go "back to library" from the Application Window. This will allow us to reopen the last page we were on. Either Games or Programs
+        model.goToPreviousWindow();
         backToLibrary.setSelected(false); //It would have been better to use a button, rather than a toggle button. But we already have the CSS styling and the ToggleButton skin so in order to relieve some of the work I just used a toggle button. But because it's a ToggleButton and not a Button, it will appear "clicked/hovered" when we return to the application window after having clicked on it before. That's why we set `selected` to `false`
     }
 
