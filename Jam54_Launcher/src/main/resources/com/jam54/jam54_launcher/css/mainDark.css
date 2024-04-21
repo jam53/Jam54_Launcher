@@ -32,7 +32,7 @@ BorderPane {
     -fx-background-color: -bg-foreground;
 }
 
-GamesProgramsWindow, ApplicationWindow, SettingsWindow {
+GamesProgramsWindow, ApplicationWindow, AvailableAppUpdatesWindow, SettingsWindow {
     -fx-background-color: -bg-main;
     -fx-background-radius: 8 0 0 0;
 }
@@ -83,6 +83,19 @@ GamesProgramsWindow, ApplicationWindow, SettingsWindow {
 
 .homeToggle:selected {
     -fx-background-image: url('../img/icons/Home_ButtonIconClicked.png');
+}
+
+.availableAppUpdatesToggle {
+    -fx-background-image: url('../img/icons/LargeUpdate_ButtonIconUnselected.png');
+    -fx-background-size: 37;
+}
+
+.availableAppUpdatesToggle:hover {
+    -fx-background-image: url('../img/icons/LargeUpdate_ButtonIconHovered.png');
+}
+
+.availableAppUpdatesToggle:selected {
+    -fx-background-image: url('../img/icons/LargeUpdate_ButtonIconClicked.png');
 }
 
 .settingsToggle {
@@ -708,8 +721,63 @@ To circumvent/get around this, we put the applicationButton in another VBox whic
     -fx-background-color: -filled-button-clicked;
 }
 
+.availableAppUpdateButton {
+    -fx-background-color: -bg-foreground;
+    -fx-padding: 10;
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+    -fx-border-color: transparent;
+    -fx-cursor: hand;
+    -fx-spacing: 15;
+    -fx-alignment: center-left;
+}
+
+.availableAppUpdateButton VBox {
+    -fx-alignment: center-left;
+}
+
+
+.availableAppUpdateButton Text {
+    -fx-font-size: 20;
+    -fx-fill: -text-highlighted;
+    -fx-font-family: 'Lato';
+    -fx-font-weight: bold;
+}
+
+#availableAppUpdateButtonBottomText {
+    -fx-font-size: 14;
+    -fx-font-weight: normal;
+}
+
+.availableAppUpdateButton:hover {
+    -fx-border-color: -other-border-division-scrollbar;
+}
+
+#availableAppUpdatesWindowTopBar {
+    -fx-padding: 0 0 10 0;
+}
+
+#availableAppUpdatesWindowTopBar Button, .availableAppUpdateButton Button {
+    -fx-font-size: 20;
+    -fx-font-family: 'Lato';
+    -fx-text-fill: white;
+    -fx-cursor: hand;
+    -fx-background-radius: 5;
+}
+
+.availableAppUpdatesWindow {
+    -fx-padding: 40 30 30 30;
+    -fx-spacing: 25;
+    -fx-pref-width: 346;
+}
+
+.applicationsWithUpdatesHolder {
+    -fx-padding: 5 15 0 0;
+    -fx-spacing: 15;
+}
+
 .settingsWindow {
-    -fx-padding: 40 80 30 20;
+    -fx-padding: 40 30 30 20;
     -fx-spacing: 40;
     -fx-pref-width: 346;
 }
@@ -718,7 +786,7 @@ To circumvent/get around this, we put the applicationButton in another VBox whic
     -fx-padding: 0 0 25 10;
 }
 
-#settingsWindowTitleHolder Text {
+#settingsWindowTitleHolder Text, #availableAppUpdatesWindowTopBar Text {
     -fx-font-size: 25;
     -fx-fill: -text-highlighted;
     -fx-font-family: 'Lato';

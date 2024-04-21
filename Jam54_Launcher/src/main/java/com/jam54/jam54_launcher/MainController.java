@@ -3,6 +3,7 @@ package com.jam54.jam54_launcher;
 import com.jam54.jam54_launcher.Data.Jam54LauncherModel;
 import com.jam54.jam54_launcher.Data.Route;
 import com.jam54.jam54_launcher.Windows.Application.ApplicationWindow;
+import com.jam54.jam54_launcher.Windows.AvailableAppUpdates.AvailableAppUpdatesWindow;
 import com.jam54.jam54_launcher.Windows.GamesPrograms.GamesProgramsWindow;
 import com.jam54.jam54_launcher.Windows.LeftBar;
 import com.jam54.jam54_launcher.Windows.Settings.SettingsWindow;
@@ -18,6 +19,7 @@ public class MainController implements InvalidationListener
 {
     private Jam54LauncherModel model;
     private final GamesProgramsWindow gamesProgramsWindow;
+    private final AvailableAppUpdatesWindow availableAppUpdatesWindow;
     private final SettingsWindow settingsWindow;
     private final ApplicationWindow applicationWindow;
     private final LeftBar leftBar;
@@ -30,6 +32,7 @@ public class MainController implements InvalidationListener
     public MainController()
     {
         gamesProgramsWindow = new GamesProgramsWindow();
+        availableAppUpdatesWindow = new AvailableAppUpdatesWindow();
         settingsWindow = new SettingsWindow();
         applicationWindow = new ApplicationWindow();
         leftBar = new LeftBar();
@@ -48,6 +51,7 @@ public class MainController implements InvalidationListener
         model.addListener(this);
 
         gamesProgramsWindow.setModel(model);
+        availableAppUpdatesWindow.setModel(model);
         settingsWindow.setModel(model);
         applicationWindow.setModel(model);
         leftBar.setModel(model);
@@ -69,17 +73,12 @@ public class MainController implements InvalidationListener
     {
         updateAvailable_Button.setVisible(model.isNewVersionDownloaded());
 
-        if (model.getSelectedWindow() == Route.SETTINGS)
+        switch (model.getSelectedWindow())
         {
-            borderPane.setCenter(settingsWindow);
-        }
-        else if (model.getSelectedWindow() == Route.APPLICATION)
-        {
-            borderPane.setCenter(applicationWindow);
-        }
-        else
-        {
-            borderPane.setCenter(gamesProgramsWindow);
+            case AVAILABLE_APP_UPDATES -> borderPane.setCenter(availableAppUpdatesWindow);
+            case SETTINGS -> borderPane.setCenter(settingsWindow);
+            case APPLICATION -> borderPane.setCenter(applicationWindow);
+            case null, default -> borderPane.setCenter(gamesProgramsWindow);
         }
     }
 }

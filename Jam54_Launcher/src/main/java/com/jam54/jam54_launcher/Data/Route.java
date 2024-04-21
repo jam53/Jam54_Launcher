@@ -5,5 +5,5 @@ package com.jam54.jam54_launcher.Data;
  */
 public enum Route
 {
-    HOME, APPLICATION, AVAILABLE_UPDATES, SETTINGS
+    HOME, APPLICATION, AVAILABLE_APP_UPDATES, SETTINGS
 }
