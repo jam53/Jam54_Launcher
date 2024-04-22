@@ -10,18 +10,19 @@ import com.jam54.jam54_launcher.database_access.Other.ApplicationInfo;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.geometry.Bounds;
-import javafx.scene.control.Button;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import org.apache.commons.lang3.StringUtils;
 
 import java.nio.file.Files;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * This class is used to create the available app updates window, where the user can update apps in one centralized place
@@ -180,11 +181,33 @@ public class AvailableAppUpdatesWindow extends VBox implements InvalidationListe
         }
         else
         {
-            model.setUpdatingApp(appInfo.id());
-            new Thread(installApp).start();
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle(SaveLoadManager.getTranslation("INSTALL"));
+            alert.setHeaderText(null);
+            alert.getDialogPane().setContent(new Label(SaveLoadManager.getTranslation("ApplicationWillBeInstalledAt") + SaveLoadManager.getData().getDataPath() + "\n" + SaveLoadManager.getTranslation("ChangeInstallLocationInSettings")));
 
-            model.setUpdatingAppMessageProperty(installApp.messageProperty());
-            model.setUpdatingAppProgressProperty(installApp.progressProperty());
+            ButtonType installButtonType = new ButtonType(StringUtils.capitalize(SaveLoadManager.getTranslation("INSTALL").toLowerCase()), ButtonBar.ButtonData.OK_DONE);
+            ButtonType cancelButton = new ButtonType(SaveLoadManager.getTranslation("Cancel"), ButtonBar.ButtonData.CANCEL_CLOSE);
+            alert.getButtonTypes().setAll(installButtonType, cancelButton);
+
+            Optional<ButtonType> result = Optional.empty();
+            if (!SaveLoadManager.getData().isChangeInstallLocationAlertWasShown())
+            {
+                result = alert.showAndWait();
+            }
+            if (SaveLoadManager.getData().isChangeInstallLocationAlertWasShown() || result.isPresent() && result.get() == installButtonType)
+            {// user clicked ok button, do something here after the dialog is closed
+                SaveLoadManager.getData().setChangeInstallLocationAlertWasShown(true);
+                model.setUpdatingApp(appInfo.id());
+                new Thread(installApp).start();
+
+                model.setUpdatingAppMessageProperty(installApp.messageProperty());
+                model.setUpdatingAppProgressProperty(installApp.progressProperty());
+            }
+            else
+            {
+                model.removeAppFromAppsToUpdateQueue(appInfo.id());
+            }
         }
         installApp.setOnSucceeded(e ->
         {
