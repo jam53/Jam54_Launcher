@@ -3,16 +3,24 @@ package com.jam54.jam54_launcher.Windows.AvailableAppUpdates;
 import com.jam54.jam54_launcher.Animations.ButtonColor;
 import com.jam54.jam54_launcher.Data.Jam54LauncherModel;
 import com.jam54.jam54_launcher.Data.SaveLoad.SaveLoadManager;
+import com.jam54.jam54_launcher.ErrorMessage;
 import com.jam54.jam54_launcher.LoadCSSStyles;
+import com.jam54.jam54_launcher.Windows.Application.ApplicationWindow;
 import com.jam54.jam54_launcher.database_access.Other.ApplicationInfo;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.geometry.Bounds;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
+import java.nio.file.Files;
+import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -40,6 +48,10 @@ public class AvailableAppUpdatesWindow extends VBox implements InvalidationListe
         updateAll_Button = new Button(SaveLoadManager.getTranslation("UpdateAll"));
         updateAll_Button.setId("primaryButton");
         updateAll_Button.setSkin(new ButtonColor(updateAll_Button, LoadCSSStyles.getCSSColor("-accent-button-main"), LoadCSSStyles.getCSSColor("-accent-button-hovered"), LoadCSSStyles.getCSSColor("-accent-button-clicked")));
+
+        updateAll_Button.setOnAction(e -> {
+            appsWithUpdates.stream().filter(app -> !model.isAppInAppsToUpdateQueue(app)).forEach(model::addAppToAppsUpdateQueue);
+        });
 
         HBox topBar = new HBox();
         topBar.setId("availableAppUpdatesWindowTopBar");
@@ -94,6 +106,31 @@ public class AvailableAppUpdatesWindow extends VBox implements InvalidationListe
     public void invalidated(Observable observable)
     {
         appsWithUpdates = model.getAllApplications().stream().filter(applicationInfo -> applicationInfo.updateAvailable() && applicationInfo.version() != null).toList();
+
+        if (appsWithUpdates.isEmpty() || appsWithUpdates.size() == model.getSizeOfAppsToUpdateQueue())
+        {//Make the button invisible if there aren't any applications with updates
+            updateAll_Button.setVisible(false);
+        }
+
+        //region check if we still have apps left the user wants to update and check if we can update or if there are other remove/validating/updating/... operations going on
+        if (model.getSizeOfAppsToUpdateQueue() > 0 && model.getOpenedApplication() != null)
+        {
+            ApplicationInfo openedApp = model.getOpenedApplication();
+            if (!model.isAppValidating(openedApp.id()) && !model.isAppRemoving(openedApp.id()) &&
+                    model.getUpdatingApp() == null && model.getLastValidatingApp() == null && model.getLastRemovingApp() == null
+            )
+            {
+                startAppUpdate(model.peekFirstAppFromAppsToUpdateQueue());
+            }
+        }
+        else if (model.getSizeOfAppsToUpdateQueue() > 0 && model.getOpenedApplication() == null)
+        {
+            if (model.getUpdatingApp() == null && model.getLastValidatingApp() == null && model.getLastRemovingApp() == null)
+            {
+                startAppUpdate(model.peekFirstAppFromAppsToUpdateQueue());
+            }
+        }
+        //endregion
         fillApplicationsHolder();
     }
 
@@ -101,13 +138,7 @@ public class AvailableAppUpdatesWindow extends VBox implements InvalidationListe
     {
         this.model = model;
         model.addListener(this);
-
-        appsWithUpdates = model.getAllApplications().stream().filter(applicationInfo -> applicationInfo.updateAvailable() && applicationInfo.version() != null).toList();
-        fillApplicationsHolder();
-        if (appsWithUpdates.isEmpty())
-        {//Make the button invisible if there aren't any applications with updates
-            updateAll_Button.setManaged(false);
-        }
+        invalidated(model);
     }
 
     private void fillApplicationsHolder()
@@ -131,5 +162,63 @@ public class AvailableAppUpdatesWindow extends VBox implements InvalidationListe
 
         int amountOfApps = appsWithUpdates.size();
         title.setText(SaveLoadManager.getTranslation("PendingApplicationUpdates") + (amountOfApps > 0 ? " (" + amountOfApps + ")" : ""));
+    }
+
+    /**
+     * Starts the update proces for a given ApplicationInfo
+     */
+    private void startAppUpdate(ApplicationInfo appInfo)
+    {
+        ApplicationWindow applicationWindow = new ApplicationWindow();
+        applicationWindow.setModel(model);
+        ApplicationWindow.InstallApp installApp = applicationWindow.new InstallApp();
+
+        if (!Files.isWritable(SaveLoadManager.getData().getDataPath()))
+        {
+            ErrorMessage errorMessage = new ErrorMessage(false, MessageFormat.format(SaveLoadManager.getTranslation("InsufficientPrivileges"), SaveLoadManager.getData().getDataPath()));
+            errorMessage.show();
+        }
+        else
+        {
+            model.setUpdatingApp(appInfo.id());
+            new Thread(installApp).start();
+
+            model.setUpdatingAppMessageProperty(installApp.messageProperty());
+            model.setUpdatingAppProgressProperty(installApp.progressProperty());
+        }
+        installApp.setOnSucceeded(e ->
+        {
+            ApplicationInfo updatedApp = new ApplicationInfo(appInfo.id(), appInfo.name(), appInfo.image(), false, appInfo.availableVersion(), appInfo.availableVersion(), appInfo.descriptions(), appInfo.platforms(), appInfo.releaseDate(), appInfo.lastUpdate(), appInfo.isGame());
+
+            ArrayList<ApplicationInfo> applicationsInModel = model.getAllApplications();
+            applicationsInModel.remove(appInfo);
+            applicationsInModel.add(updatedApp);
+            model.setAllApplications(applicationsInModel);
+
+            ArrayList<ApplicationInfo> newVisibleApplicationsInModel = new ArrayList<>();
+            for (ApplicationInfo visibleApp : model.getVisibleApplicationInfos())
+            {
+                if (visibleApp.id() == (appInfo.id()))
+                {
+                    newVisibleApplicationsInModel.add(updatedApp);
+                }
+                else
+                {
+                    newVisibleApplicationsInModel.add(visibleApp);
+                }
+            }
+            model.setVisibleApplicationInfos(newVisibleApplicationsInModel);
+
+            String[] installedApplicationVersions = SaveLoadManager.getData().getInstalledApplicationVersions();
+            installedApplicationVersions[updatedApp.id()] = updatedApp.version();
+            SaveLoadManager.getData().setInstalledApplicationVersions(installedApplicationVersions);
+
+            model.removeAppFromAppsToUpdateQueue(appInfo.id());
+            model.setUpdatingApp(null);
+        });
+        installApp.setOnCancelled(e ->
+        {
+            model.setUpdatingApp(null);
+        });
     }
 }

@@ -38,7 +38,6 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.text.MessageFormat;
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -399,6 +398,8 @@ public class ApplicationWindow extends VBox implements InvalidationListener
 
                                 installProgress_Text.textProperty().bind(installApp.messageProperty()); //Update button's text with progress message
                                 progressBar.progressProperty().bind(installApp.progressProperty()); //Update the progressBar's progress with the progress
+                                model.setUpdatingAppMessageProperty(installApp.messageProperty());
+                                model.setUpdatingAppProgressProperty(installApp.progressProperty());
                             }
                         }
                     });
@@ -408,7 +409,11 @@ public class ApplicationWindow extends VBox implements InvalidationListener
                         installUpdateButton.setDisable(false); //When the task finishes, enable the button again
 
                         ApplicationInfo updatedApp = new ApplicationInfo(openedApp.id(), openedApp.name(), openedApp.image(), false, openedApp.availableVersion(), openedApp.availableVersion(), openedApp.descriptions(), openedApp.platforms(), openedApp.releaseDate(), openedApp.lastUpdate(), openedApp.isGame());
-                        model.setOpenedApplication(updatedApp);
+
+                        if (model.getOpenedApplication().id() == updatedApp.id())
+                        {//Check if the current opened window is of the app we just updated. We don't want to refresh this screen if another app is open. Because that will replace the current open app on screen
+                            model.setOpenedApplication(updatedApp);//We use this to "refresh" this ApplicationWindow screen. This way after the install/remove/... operation is finished the correct buttons will be displayed
+                        }
 
                         ArrayList<ApplicationInfo> applicationsInModel = model.getAllApplications();
                         applicationsInModel.remove(openedApp);
@@ -492,6 +497,8 @@ public class ApplicationWindow extends VBox implements InvalidationListener
 
                             installProgress_Text.textProperty().bind(installApp.messageProperty()); //Update button's text with progress message
                             progressBar.progressProperty().bind(installApp.progressProperty()); //Update the progressBar's progress with the progress
+                            model.setUpdatingAppMessageProperty(installApp.messageProperty());
+                            model.setUpdatingAppProgressProperty(installApp.progressProperty());
                         }
                     });
                     installApp.setOnSucceeded(e ->
@@ -501,7 +508,11 @@ public class ApplicationWindow extends VBox implements InvalidationListener
                         removeButton.setDisable(false);
 
                         ApplicationInfo updatedApp = new ApplicationInfo(openedApp.id(), openedApp.name(), openedApp.image(), false, openedApp.availableVersion(), openedApp.availableVersion(), openedApp.descriptions(), openedApp.platforms(), openedApp.releaseDate(), openedApp.lastUpdate(), openedApp.isGame());
-                        model.setOpenedApplication(updatedApp);
+
+                        if (model.getOpenedApplication().id() == updatedApp.id())
+                        {//Check if the current opened window is of the app we just updated. We don't want to refresh this screen if another app is open. Because that will replace the current open app on screen
+                            model.setOpenedApplication(updatedApp);//We use this to "refresh" this ApplicationWindow screen. This way after the install/remove/... operation is finished the correct buttons will be displayed
+                        }
 
                         ArrayList<ApplicationInfo> applicationsInModel = model.getAllApplications();
                         applicationsInModel.remove(openedApp);
@@ -554,8 +565,12 @@ public class ApplicationWindow extends VBox implements InvalidationListener
                         installUpdateButton.setDisable(false); //When the task finishes, enable the button again
                         removeButton.setDisable(false);
 
-                        ApplicationInfo updatedApp = new ApplicationInfo(openedApp.id(), openedApp.name(), openedApp.image(), openedApp.updateAvailable(), openedApp.availableVersion(), null, openedApp.descriptions(), openedApp.platforms(), openedApp.releaseDate(), openedApp.lastUpdate(), openedApp.isGame());
-                        model.setOpenedApplication(updatedApp);
+                        ApplicationInfo updatedApp = new ApplicationInfo(openedApp.id(), openedApp.name(), openedApp.image(), true, openedApp.availableVersion(), null, openedApp.descriptions(), openedApp.platforms(), openedApp.releaseDate(), openedApp.lastUpdate(), openedApp.isGame());
+
+                        if (model.getOpenedApplication().id() == updatedApp.id())
+                        {//Check if the current opened window is of the app we just updated. We don't want to refresh this screen if another app is open. Because that will replace the current open app on screen
+                            model.setOpenedApplication(updatedApp);//We use this to "refresh" this ApplicationWindow screen. This way after the install/remove/... operation is finished the correct buttons will be displayed
+                        }
 
                         ArrayList<ApplicationInfo> applicationsInModel = model.getAllApplications();
                         applicationsInModel.remove(openedApp);
@@ -634,8 +649,12 @@ public class ApplicationWindow extends VBox implements InvalidationListener
                         playButton.setDisable(false); //When the task finishes, enable the button again
                         removeButton.setDisable(false);
 
-                        ApplicationInfo updatedApp = new ApplicationInfo(openedApp.id(), openedApp.name(), openedApp.image(), openedApp.updateAvailable(), openedApp.availableVersion(), null, openedApp.descriptions(), openedApp.platforms(), openedApp.releaseDate(), openedApp.lastUpdate(), openedApp.isGame());
-                        model.setOpenedApplication(updatedApp);
+                        ApplicationInfo updatedApp = new ApplicationInfo(openedApp.id(), openedApp.name(), openedApp.image(), true, openedApp.availableVersion(), null, openedApp.descriptions(), openedApp.platforms(), openedApp.releaseDate(), openedApp.lastUpdate(), openedApp.isGame());
+
+                        if (model.getOpenedApplication().id() == updatedApp.id())
+                        {//Check if the current opened window is of the app we just updated. We don't want to refresh this screen if another app is open. Because that will replace the current open app on screen
+                            model.setOpenedApplication(updatedApp);//We use this to "refresh" this ApplicationWindow screen. This way after the install/remove/... operation is finished the correct buttons will be displayed
+                        }
 
                         ArrayList<ApplicationInfo> applicationsInModel = model.getAllApplications();
                         applicationsInModel.remove(openedApp);
@@ -724,8 +743,18 @@ public class ApplicationWindow extends VBox implements InvalidationListener
                 installProgressHolder.getChildren().addAll(installProgress_Text, progressBar);
                 installButtonsHolder.getChildren().add(installProgressHolder);
 
-                installProgress_Text.textProperty().bind(installApp.messageProperty()); //Update button's text with progress message
-                progressBar.progressProperty().bind(installApp.progressProperty()); //Update the progressBar's progress with the progress
+                if (installApp == null)
+                {//This means this install/update was started not from the ApplicationWindow but from the AvailableAppUpdatesWindow
+                    installProgress_Text.textProperty().bind(model.getUpdatingAppMessageProperty());
+                    progressBar.progressProperty().bind(model.getUpdatingAppProgressProperty());
+                }
+                else
+                {
+                    installProgress_Text.textProperty().bind(installApp.messageProperty()); //Update button's text with progress message
+                    progressBar.progressProperty().bind(installApp.progressProperty()); //Update the progressBar's progress with the progress
+                    model.setUpdatingAppMessageProperty(installApp.messageProperty());
+                    model.setUpdatingAppProgressProperty(installApp.progressProperty());
+                }
             }
             else if (model.getUpdatingApp() != null)
             {
@@ -736,11 +765,12 @@ public class ApplicationWindow extends VBox implements InvalidationListener
                 installUpdateButton.setSkin(new ButtonColor(installUpdateButton, LoadCSSStyles.getCSSColor("-filled-button-unselected"), LoadCSSStyles.getCSSColor("-filled-button-hovered"), LoadCSSStyles.getCSSColor("-filled-button-clicked")));
 
                 Text text = new Text("");
-                while (installUpdateButton.getWidth() <= 0)
-                {
-                    //wait
-                }
-                text.setWrappingWidth(installUpdateButton.getWidth() / 1.3);
+                installUpdateButton.widthProperty().addListener((obs, oldV, newV) -> {
+                    text.setWrappingWidth(newV.doubleValue() * 0.7);
+                });
+                installUpdateButton.graphicProperty().addListener((obs, oldV, newV) -> {
+                    text.setWrappingWidth(installUpdateButton.getWidth() * 0.7);
+                });
                 text.setText(MessageFormat.format(SaveLoadManager.getTranslation("KindlyHoldForInstall"), model.getApp(model.getUpdatingApp()).name()));
                 installUpdateButton.setGraphic(text);
             }
@@ -755,7 +785,7 @@ public class ApplicationWindow extends VBox implements InvalidationListener
      */
     public class InstallApp extends Task<Void>
     {
-        int openedAppId = model.getOpenedApplication() != null ? model.getOpenedApplication().id() : model.getLastValidatingApp();
+        int openedAppId = model.getOpenedApplication() != null ? model.getOpenedApplication().id() : model.getLastValidatingApp() != null ? model.getLastValidatingApp() : model.peekFirstAppFromAppsToUpdateQueue().id(); //If model.getOpenedApplication().id() isn't null and is used to get the id of the app that we will apply the InstallApp code for, this means this InstallApp instance was started from the ApplicationWindow by either updating/downloading an app. If that is null but model.getLastValidatingApp() isn't null, then it means this instance of InstallApp was created from an OptionsWindow to validate an application. If that is also null then it means we have to use model.peekFirstAppFromAppsToUpdateQueue, in that case this instance of InstallApp was created from the AvailableAppUpdatesWindow
         Path appInstallationPath = Path.of(SaveLoadManager.getData().getDataPath().toString(), openedAppId + "");
         String appsBaseDownloadUrl = "";
         HashMap<String, Path> hashesLocal;

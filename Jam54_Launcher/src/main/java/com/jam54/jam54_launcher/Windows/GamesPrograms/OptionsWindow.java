@@ -8,8 +8,6 @@ import com.jam54.jam54_launcher.Windows.Application.ApplicationWindow;
 import com.jam54.jam54_launcher.database_access.Other.ApplicationInfo;
 import javafx.scene.control.Button;
 import javafx.scene.control.Separator;
-import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
@@ -86,7 +84,6 @@ public class OptionsWindow extends VBox
                                 ApplicationInfo openedApp = info;
 
                                 ApplicationInfo updatedApp = new ApplicationInfo(openedApp.id(), openedApp.name(), openedApp.image(), false, openedApp.availableVersion(), openedApp.availableVersion(), openedApp.descriptions(), openedApp.platforms(), openedApp.releaseDate(), openedApp.lastUpdate(), openedApp.isGame());
-                                model.setOpenedApplication(updatedApp);
 
                                 ArrayList<ApplicationInfo> applicationsInModel = model.getAllApplications();
                                 applicationsInModel.remove(openedApp);
@@ -158,8 +155,7 @@ public class OptionsWindow extends VBox
 
                                 ApplicationInfo openedApp = info;
 
-                                ApplicationInfo updatedApp = new ApplicationInfo(openedApp.id(), openedApp.name(), openedApp.image(), openedApp.updateAvailable(), openedApp.availableVersion(), null, openedApp.descriptions(), openedApp.platforms(), openedApp.releaseDate(), openedApp.lastUpdate(), openedApp.isGame());
-                                model.setOpenedApplication(updatedApp);
+                                ApplicationInfo updatedApp = new ApplicationInfo(openedApp.id(), openedApp.name(), openedApp.image(), true, openedApp.availableVersion(), null, openedApp.descriptions(), openedApp.platforms(), openedApp.releaseDate(), openedApp.lastUpdate(), openedApp.isGame());
 
                                 ArrayList<ApplicationInfo> applicationsInModel = model.getAllApplications();
                                 applicationsInModel.remove(openedApp);
@@ -274,7 +270,11 @@ public class OptionsWindow extends VBox
                                 ApplicationInfo openedApp = info;
 
                                 ApplicationInfo updatedApp = new ApplicationInfo(openedApp.id(), openedApp.name(), openedApp.image(), false, openedApp.availableVersion(), openedApp.availableVersion(), openedApp.descriptions(), openedApp.platforms(), openedApp.releaseDate(), openedApp.lastUpdate(), openedApp.isGame());
-                                model.setOpenedApplication(updatedApp);
+
+                                if (model.getOpenedApplication().id() == updatedApp.id())
+                                {//Check if the current opened window is of the app we just updated. We don't want to refresh this screen if another app is open. Because that will replace the current open app on screen
+                                    model.setOpenedApplication(updatedApp);//We use this to "refresh" the ApplicationWindow screen. This way after the install/remove/... operation is finished the correct buttons will be displayed
+                                }
 
                                 ArrayList<ApplicationInfo> applicationsInModel = model.getAllApplications();
                                 applicationsInModel.remove(openedApp);
@@ -342,8 +342,12 @@ public class OptionsWindow extends VBox
 
                                 ApplicationInfo openedApp = info;
 
-                                ApplicationInfo updatedApp = new ApplicationInfo(openedApp.id(), openedApp.name(), openedApp.image(), openedApp.updateAvailable(), openedApp.availableVersion(), null, openedApp.descriptions(), openedApp.platforms(), openedApp.releaseDate(), openedApp.lastUpdate(), openedApp.isGame());
-                                model.setOpenedApplication(updatedApp);
+                                ApplicationInfo updatedApp = new ApplicationInfo(openedApp.id(), openedApp.name(), openedApp.image(), true, openedApp.availableVersion(), null, openedApp.descriptions(), openedApp.platforms(), openedApp.releaseDate(), openedApp.lastUpdate(), openedApp.isGame());
+
+                                if (model.getOpenedApplication().id() == updatedApp.id())
+                                {//Check if the current opened window is of the app we just updated. We don't want to refresh this screen if another app is open. Because that will replace the current open app on screen
+                                    model.setOpenedApplication(updatedApp);//We use this to "refresh" the ApplicationWindow screen. This way after the install/remove/... operation is finished the correct buttons will be displayed
+                                }
 
                                 ArrayList<ApplicationInfo> applicationsInModel = model.getAllApplications();
                                 applicationsInModel.remove(openedApp);

@@ -4,6 +4,8 @@ import com.jam54.jam54_launcher.Windows.Application.Platforms;
 import com.jam54.jam54_launcher.database_access.Other.ApplicationInfo;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
+import javafx.beans.property.ReadOnlyDoubleProperty;
+import javafx.beans.property.ReadOnlyStringProperty;
 
 import java.util.*;
 import java.util.function.Predicate;
@@ -20,7 +22,7 @@ public class Jam54LauncherModel implements Observable
     private final List<InvalidationListener> listenerList;
 
     private boolean newVersionDownloaded;
-    private Deque<Route> selectedWindow; //Used as a stack for routing/navigation to keep track of the currently selected screen
+    private final Deque<Route> selectedWindow; //Used as a stack for routing/navigation to keep track of the currently selected screen
 
     private ApplicationInfo openedApplicationInfo;
     private ArrayList<ApplicationInfo> allApplicationInfos;
@@ -35,6 +37,10 @@ public class Jam54LauncherModel implements Observable
     private final ArrayList<Integer> validatingApps;
     private final ArrayList<Integer> removingApps;
 
+    private final Deque<ApplicationInfo> appsToUpdateQueue;
+    private ReadOnlyStringProperty updatingAppMessageProperty; //setten in availableappupdates window maar ook in application window //Generieker maken naar bv installingUpdatingAppMessageProperty
+    private ReadOnlyDoubleProperty updatingAppProgressProperty;
+
     public Jam54LauncherModel()
     {
         listenerList = new ArrayList<>();
@@ -42,11 +48,13 @@ public class Jam54LauncherModel implements Observable
         runningApps = new HashMap<>();
         validatingApps = new ArrayList<>();
         removingApps = new ArrayList<>();
+        appsToUpdateQueue = new ArrayDeque<>();
     }
 
     private void fireInvalidationEvent()
     {
-        for (InvalidationListener listener : listenerList)
+        //To prevent ConcurrentModificationException, which occurs if the list of listeners is modified while being iterated over, a copy of the listener list is created. This safeguard addresses the rare scenario where a listener is added or removed during the iteration process. Without this precaution, a ConcurrentModificationException may arise due to modifications to the listener list while iterating over it. By iterating over a copied list, any changes to the original list do not affect the iteration process.
+        for (InvalidationListener listener : new ArrayList<>(listenerList))
         {
             listener.invalidated(this);
         }
@@ -345,5 +353,81 @@ public class Jam54LauncherModel implements Observable
         {
             return null;
         }
+    }
+
+    /**
+     * Adds an app to the queue of apps that contains the apps that the user wants to update
+     */
+    public void addAppToAppsUpdateQueue(ApplicationInfo applicationInfo)
+    {
+        appsToUpdateQueue.add(applicationInfo);
+        fireInvalidationEvent();
+    }
+
+    /**
+     * Returns the first app of the queue of apps that the user wants to update
+     * @return null if the queue of apps is empty, else the first app in the queue
+     */
+    public ApplicationInfo peekFirstAppFromAppsToUpdateQueue()
+    {
+        return appsToUpdateQueue.peekFirst();
+    }
+
+    /**
+     * Removes an application info object based on the provided id from the queue of apps that the user wants to update
+     */
+    public void removeAppFromAppsToUpdateQueue(int appId)
+    {
+        appsToUpdateQueue.removeIf(app -> app.id() == appId);
+    }
+
+    /**
+     * Returns true if the given app is present in the queue of apps that contains the apps that the user wants to update
+     */
+    public boolean isAppInAppsToUpdateQueue(ApplicationInfo applicationInfo)
+    {
+        return appsToUpdateQueue.contains(applicationInfo);
+    }
+
+    /**
+     * Returns the amount of apps in the queue of apps that contains the apps that the user wants to update
+     */
+    public int getSizeOfAppsToUpdateQueue()
+    {
+        return appsToUpdateQueue.size();
+    }
+
+    /**
+     * Sets a property that holds the text that is displayed when installing/updating an app. For example "CALCULATING HASHES, DOWNLOADING, ..."
+     */
+    public void setUpdatingAppMessageProperty(ReadOnlyStringProperty property)
+    {
+        updatingAppMessageProperty = property;
+//        fireInvalidationEvent(); Do not call this, otherwise we just get an infinite loop of the place this gets set being invalidated, causing this to be set again, which then causes a new invalidation event, so on and so forth
+    }
+
+    /**
+     * Gets a property that holds the text that is displayed when installing/updating an app. For example "CALCULATING HASHES, DOWNLOADING, ..."
+     */
+    public ReadOnlyStringProperty getUpdatingAppMessageProperty()
+    {
+        return updatingAppMessageProperty;
+    }
+
+    /**
+     * Sets a property that holds the progression of the amount of downloaded files when installing/updating an app.
+     */
+    public void setUpdatingAppProgressProperty(ReadOnlyDoubleProperty property)
+    {
+        updatingAppProgressProperty = property;
+//        fireInvalidationEvent(); Do not call this, otherwise we just get an infinite loop of the place this gets set being invalidated, causing this to be set again, which then causes a new invalidation event, so on and so forth
+    }
+
+    /**
+     * Gets a property that holds the progression of the amount of downloaded files when installing/updating an app.
+     */
+    public ReadOnlyDoubleProperty getUpdatingAppProgressProperty()
+    {
+        return updatingAppProgressProperty;
     }
 }
