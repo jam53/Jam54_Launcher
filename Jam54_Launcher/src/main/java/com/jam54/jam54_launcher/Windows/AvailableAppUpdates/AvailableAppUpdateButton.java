@@ -71,6 +71,7 @@ public class AvailableAppUpdateButton extends HBox implements InvalidationListen
             if (model.getUpdatingAppMessageProperty() != null && model.getUpdatingAppProgressProperty() != null)
             {
                 text.textProperty().bind(model.getUpdatingAppMessageProperty());
+                radialProgressBarWithAppIcon.setProgress(model.getUpdatingAppProgressProperty().doubleValue()); //Set an initial value, because the function below will only update the progress with a value once it changes
                 model.getUpdatingAppProgressProperty().addListener((obs, oldV, newV) -> radialProgressBarWithAppIcon.setProgress(newV.doubleValue()));
             }
 
