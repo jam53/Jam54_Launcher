@@ -472,8 +472,8 @@ public class ApplicationWindow extends VBox implements InvalidationListener
                     }
                     installButtonsHolder.getChildren().add(installUpdateButton);
 
-                    RemoveApp removeApp = new RemoveApp();
                     installApp = new InstallApp(openedApp.id());
+                    RemoveApp removeApp = new RemoveApp(openedApp);
 
                     installUpdateButton.setOnAction(e ->
                     {
@@ -627,7 +627,7 @@ public class ApplicationWindow extends VBox implements InvalidationListener
                     }
                     installButtonsHolder.getChildren().add(playButton);
 
-                    RemoveApp removeApp = new RemoveApp();
+                    RemoveApp removeApp = new RemoveApp(openedApp);
 
                     removeButton.setOnAction(e ->
                     {
@@ -779,11 +779,11 @@ public class ApplicationWindow extends VBox implements InvalidationListener
      */
     public class InstallApp extends Task<Void>
     {
-        int openedAppId;
-        Path appInstallationPath;
-        String appsBaseDownloadUrl;
-        HashMap<String, Path> hashesLocal;
-        HashMap<String, Path> hashesCloud;
+        private final int openedAppId;
+        private final Path appInstallationPath;
+        private String appsBaseDownloadUrl;
+        private HashMap<String, Path> hashesLocal;
+        private HashMap<String, Path> hashesCloud;
 
         public InstallApp(int appId)
         {
@@ -1019,15 +1019,21 @@ public class ApplicationWindow extends VBox implements InvalidationListener
      */
     public class RemoveApp extends Task<Void>
     {
-        int openedAppId = model.getOpenedApplication() != null ? model.getOpenedApplication().id() : model.getLastRemovingApp();
-        Path appInstallationPath = Path.of(SaveLoadManager.getData().getDataPath().toString(), openedAppId + "");
+        private final ApplicationInfo openedApp;
+        private final Path appInstallationPath;
+
+        public RemoveApp(ApplicationInfo app)
+        {
+            openedApp = app;
+            appInstallationPath = Path.of(SaveLoadManager.getData().getDataPath().toString(), openedApp.id() + "");
+        }
 
         @Override
         protected Void call()
         {
             updateMessage(SaveLoadManager.getTranslation("UNINSTALLING"));
 
-            model.removeRunningApp(openedAppId);
+            model.removeRunningApp(openedApp.id());
             String openedAppExecutableName = "";
 
             try
@@ -1055,19 +1061,20 @@ public class ApplicationWindow extends VBox implements InvalidationListener
             }
             catch (IOException e)
             {
-                ErrorMessage errorMessage = new ErrorMessage(false, MessageFormat.format(SaveLoadManager.getTranslation("CloseOpenedAppBeforeUninstall"), openedAppExecutableName) + " " + e.getMessage());
-                errorMessage.show();
+                System.err.println("Could not find EntryPoint.txt for " + openedApp.name() + " to close the application in case it was running. This error isn't really an issue though, we will just move on with the uninstallation process, without trying to kill the application first.");
             }
 
             try
             {
                 FileUtils.deleteDirectory(appInstallationPath.toFile());
-                removeShortcut(model.getApp(openedAppId));
+                removeShortcut(model.getApp(openedApp.id()));
             }
             catch (IOException e)
             {
-                ErrorMessage errorMessage = new ErrorMessage(false, MessageFormat.format(SaveLoadManager.getTranslation("CloseOpenedAppBeforeUninstall"), openedAppExecutableName) + " " + e.getMessage());
-                errorMessage.show();
+                Platform.runLater(() -> {
+                    ErrorMessage errorMessage = new ErrorMessage(false, MessageFormat.format(SaveLoadManager.getTranslation("CloseOpenedAppBeforeUninstall"), openedApp.name()) + " " + e.getMessage());
+                    errorMessage.show();
+                });
             }
 
             return null;

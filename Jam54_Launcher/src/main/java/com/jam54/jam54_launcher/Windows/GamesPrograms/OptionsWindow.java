@@ -146,7 +146,7 @@ public class OptionsWindow extends VBox
 
                             ApplicationWindow applicationWindow = new ApplicationWindow();
                             applicationWindow.setModel(model);
-                            ApplicationWindow.RemoveApp removeApp = applicationWindow.new RemoveApp();
+                            ApplicationWindow.RemoveApp removeApp = applicationWindow.new RemoveApp(info);
                             new Thread(removeApp).start();
 
                             removeApp.setOnSucceeded(e ->
@@ -333,7 +333,7 @@ public class OptionsWindow extends VBox
                         {
                             model.addRemovingApp(info.id());
 
-                            ApplicationWindow.RemoveApp removeApp = applicationWindow.new RemoveApp();
+                            ApplicationWindow.RemoveApp removeApp = applicationWindow.new RemoveApp(info);
                             new Thread(removeApp).start();
 
                             removeApp.setOnSucceeded(e ->
