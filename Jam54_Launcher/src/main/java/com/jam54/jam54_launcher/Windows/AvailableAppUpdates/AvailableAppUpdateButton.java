@@ -8,12 +8,10 @@ import com.jam54.jam54_launcher.database_access.Other.ApplicationInfo;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.scene.control.Button;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
 /**
@@ -24,7 +22,8 @@ public class AvailableAppUpdateButton extends HBox implements InvalidationListen
     private Jam54LauncherModel model;
     private ApplicationInfo applicationInfo;
 
-    private final VBox rightSideHolder;
+    private final HBox rightSideHolder;
+    private final RadialProgressBarWithIcon radialProgressBarWithAppIcon;
 
     public AvailableAppUpdateButton(ApplicationInfo applicationInfo)
     {
@@ -32,19 +31,7 @@ public class AvailableAppUpdateButton extends HBox implements InvalidationListen
 
         this.getStyleClass().add("availableAppUpdateButton");
 
-        //region app icon
-        ImageView appIcon = new ImageView(applicationInfo.image());
-        appIcon.setFitWidth(50);
-        appIcon.setFitHeight(50);
-
-        Rectangle clipRounded = new Rectangle();
-        clipRounded.setWidth(50);
-        clipRounded.setHeight(50);
-        clipRounded.setArcHeight(10);
-        clipRounded.setArcWidth(10);
-
-        appIcon.setClip(clipRounded);
-        //endregion
+        radialProgressBarWithAppIcon = new RadialProgressBarWithIcon(applicationInfo.image());
 
         //region app text
         VBox textContainer = new VBox();
@@ -61,9 +48,9 @@ public class AvailableAppUpdateButton extends HBox implements InvalidationListen
         HBox.setHgrow(fillSpace, Priority.ALWAYS);
         //endregion
 
-        rightSideHolder = new VBox();
+        rightSideHolder = new HBox();
 
-        this.getChildren().addAll(appIcon, textContainer, fillSpace, rightSideHolder);
+        this.getChildren().addAll(radialProgressBarWithAppIcon, textContainer, fillSpace, rightSideHolder);
     }
 
     public void setModel(Jam54LauncherModel model)
@@ -79,7 +66,15 @@ public class AvailableAppUpdateButton extends HBox implements InvalidationListen
 
         if (model.getUpdatingApp() != null && model.getUpdatingApp() == applicationInfo.id())
         {
-            rightSideHolder.getChildren().add(new Text("progressie balk van update in progress"));
+            Text text = new Text();
+
+            if (model.getUpdatingAppMessageProperty() != null && model.getUpdatingAppProgressProperty() != null)
+            {
+                text.textProperty().bind(model.getUpdatingAppMessageProperty());
+                model.getUpdatingAppProgressProperty().addListener((obs, oldV, newV) -> radialProgressBarWithAppIcon.setProgress(newV.doubleValue()));
+            }
+
+            rightSideHolder.getChildren().add(text);
         }
         else if (!model.isAppInAppsToUpdateQueue(applicationInfo))
         {
@@ -95,7 +90,7 @@ public class AvailableAppUpdateButton extends HBox implements InvalidationListen
         }
         else if (model.isAppInAppsToUpdateQueue(applicationInfo))
         {
-            rightSideHolder.getChildren().add(new Text("In queue"));
+            rightSideHolder.getChildren().add(new Text(applicationInfo.version() == null ? SaveLoadManager.getTranslation("InstallationQueued") : SaveLoadManager.getTranslation("UpdateQueued")));
         }
     }
 }

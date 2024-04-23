@@ -743,6 +743,10 @@ To circumvent/get around this, we put the applicationButton in another VBox whic
     -fx-font-weight: bold;
 }
 
+.availableAppUpdateButton HBox {
+    -fx-alignment: center-right;
+}
+
 #availableAppUpdateButtonBottomText {
     -fx-font-size: 14;
     -fx-font-weight: normal;
@@ -1115,4 +1119,12 @@ To circumvent/get around this, we put the applicationButton in another VBox whic
     -fx-background-color : -bg-selected;
     -fx-background-insets : 2.0, 0.0, 0.0;
     -fx-background-radius : 2.0em;
+}
+
+RadialProgressBarWithIcon Circle {
+    -fx-fill: -bg-foreground;
+}
+
+RadialProgressBarWithIcon Arc {
+    -fx-fill: -accent-button-main;
 }

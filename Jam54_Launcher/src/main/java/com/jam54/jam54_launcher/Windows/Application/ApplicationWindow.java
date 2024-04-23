@@ -724,7 +724,7 @@ public class ApplicationWindow extends VBox implements InvalidationListener
                 }
                 installUpdateButton.widthProperty().addListener((obs, oldV, newV) ->
                 {
-                    if (newV.doubleValue() > 0)
+                    if (newV.doubleValue() > 0 && model.getLastRemovingApp() != null)
                     {
                         text.setWrappingWidth(newV.doubleValue()/1.3);
                         text.setText(MessageFormat.format(SaveLoadManager.getTranslation("KindlyHoldForUninstall"), model.getApp(model.getLastRemovingApp()).name()));
