@@ -218,6 +218,7 @@ public class ApplicationWindow extends VBox implements InvalidationListener
     private void backToLibrary(ActionEvent event)
     {
         model.goToPreviousWindow();
+        model.setOpenedApplication(null);
         backToLibrary.setSelected(false); //It would have been better to use a button, rather than a toggle button. But we already have the CSS styling and the ToggleButton skin so in order to relieve some of the work I just used a toggle button. But because it's a ToggleButton and not a Button, it will appear "clicked/hovered" when we return to the application window after having clicked on it before. That's why we set `selected` to `false`
     }
 
@@ -743,17 +744,10 @@ public class ApplicationWindow extends VBox implements InvalidationListener
                 installProgressHolder.getChildren().addAll(installProgress_Text, progressBar);
                 installButtonsHolder.getChildren().add(installProgressHolder);
 
-                if (installApp == null)
-                {//This means this install/update was started not from the ApplicationWindow but from the AvailableAppUpdatesWindow
+                if (model.getUpdatingAppMessageProperty() != null & model.getUpdatingAppProgressProperty() != null)
+                {
                     installProgress_Text.textProperty().bind(model.getUpdatingAppMessageProperty());
                     progressBar.progressProperty().bind(model.getUpdatingAppProgressProperty());
-                }
-                else
-                {
-                    installProgress_Text.textProperty().bind(installApp.messageProperty()); //Update button's text with progress message
-                    progressBar.progressProperty().bind(installApp.progressProperty()); //Update the progressBar's progress with the progress
-                    model.setUpdatingAppMessageProperty(installApp.messageProperty());
-                    model.setUpdatingAppProgressProperty(installApp.progressProperty());
                 }
             }
             else if (model.getUpdatingApp() != null)
