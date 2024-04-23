@@ -213,6 +213,10 @@ public class AvailableAppUpdatesWindow extends VBox implements InvalidationListe
         {
             ApplicationInfo updatedApp = new ApplicationInfo(appInfo.id(), appInfo.name(), appInfo.image(), false, appInfo.availableVersion(), appInfo.availableVersion(), appInfo.descriptions(), appInfo.platforms(), appInfo.releaseDate(), appInfo.lastUpdate(), appInfo.isGame());
 
+            if (model.getOpenedApplication().id() == updatedApp.id())
+            {//Check if the current opened window is of the app we just updated. We don't want to refresh this screen if another app is open. Because that will replace the current open app on screen
+                model.setOpenedApplication(updatedApp);//We use this to "refresh" this ApplicationWindow screen. This way after the install/remove/... operation is finished the correct buttons will be displayed
+            }
             ArrayList<ApplicationInfo> applicationsInModel = model.getAllApplications();
             applicationsInModel.remove(appInfo);
             applicationsInModel.add(updatedApp);
