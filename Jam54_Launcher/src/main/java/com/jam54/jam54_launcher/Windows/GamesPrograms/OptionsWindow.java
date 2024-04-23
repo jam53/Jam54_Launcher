@@ -74,7 +74,7 @@ public class OptionsWindow extends VBox
 
                             ApplicationWindow applicationWindow = new ApplicationWindow();
                             applicationWindow.setModel(model);
-                            ApplicationWindow.InstallApp installApp = applicationWindow.new InstallApp();
+                            ApplicationWindow.InstallApp installApp = applicationWindow.new InstallApp(info.id());
                             new Thread(installApp).start();
 
                             installApp.setOnSucceeded(e ->
@@ -260,7 +260,7 @@ public class OptionsWindow extends VBox
                         {
                             model.addValidatingApp(info.id());
 
-                            ApplicationWindow.InstallApp installApp = applicationWindow.new InstallApp();
+                            ApplicationWindow.InstallApp installApp = applicationWindow.new InstallApp(info.id());
                             new Thread(installApp).start();
 
                             installApp.setOnSucceeded(e ->

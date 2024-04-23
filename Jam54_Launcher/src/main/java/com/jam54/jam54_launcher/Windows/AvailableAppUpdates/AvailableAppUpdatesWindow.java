@@ -172,7 +172,7 @@ public class AvailableAppUpdatesWindow extends VBox implements InvalidationListe
     {
         ApplicationWindow applicationWindow = new ApplicationWindow();
         applicationWindow.setModel(model);
-        ApplicationWindow.InstallApp installApp = applicationWindow.new InstallApp();
+        ApplicationWindow.InstallApp installApp = applicationWindow.new InstallApp(appInfo.id());
 
         if (!Files.isWritable(SaveLoadManager.getData().getDataPath()))
         {

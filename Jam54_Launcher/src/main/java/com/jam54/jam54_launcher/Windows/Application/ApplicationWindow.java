@@ -356,7 +356,7 @@ public class ApplicationWindow extends VBox implements InvalidationListener
                     installUpdateButton.setGraphic(iconTextHolder);
                     installButtonsHolder.getChildren().add(installUpdateButton);
 
-                    installApp = new InstallApp();
+                    installApp = new InstallApp(openedApp.id());
 
                     installUpdateButton.setOnAction(e ->
                     {
@@ -472,8 +472,8 @@ public class ApplicationWindow extends VBox implements InvalidationListener
                     }
                     installButtonsHolder.getChildren().add(installUpdateButton);
 
-                    installApp = new InstallApp();
                     RemoveApp removeApp = new RemoveApp();
+                    installApp = new InstallApp(openedApp.id());
 
                     installUpdateButton.setOnAction(e ->
                     {
@@ -779,11 +779,18 @@ public class ApplicationWindow extends VBox implements InvalidationListener
      */
     public class InstallApp extends Task<Void>
     {
-        int openedAppId = model.getOpenedApplication() != null ? model.getOpenedApplication().id() : model.getLastValidatingApp() != null ? model.getLastValidatingApp() : model.peekFirstAppFromAppsToUpdateQueue().id(); //If model.getOpenedApplication().id() isn't null and is used to get the id of the app that we will apply the InstallApp code for, this means this InstallApp instance was started from the ApplicationWindow by either updating/downloading an app. If that is null but model.getLastValidatingApp() isn't null, then it means this instance of InstallApp was created from an OptionsWindow to validate an application. If that is also null then it means we have to use model.peekFirstAppFromAppsToUpdateQueue, in that case this instance of InstallApp was created from the AvailableAppUpdatesWindow
-        Path appInstallationPath = Path.of(SaveLoadManager.getData().getDataPath().toString(), openedAppId + "");
-        String appsBaseDownloadUrl = "";
+        int openedAppId;
+        Path appInstallationPath;
+        String appsBaseDownloadUrl;
         HashMap<String, Path> hashesLocal;
         HashMap<String, Path> hashesCloud;
+
+        public InstallApp(int appId)
+        {
+            openedAppId = appId;
+            appInstallationPath = Path.of(SaveLoadManager.getData().getDataPath().toString(), openedAppId + "");
+            appsBaseDownloadUrl = "";
+        }
 
         @Override
         protected Void call()
