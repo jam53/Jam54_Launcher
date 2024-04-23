@@ -57,10 +57,10 @@ public final class SaveLoadManager
                 String fileContents = FileUtils.readFileToString(savePath.toFile(), StandardCharsets.UTF_8);
                 data = new Gson().fromJson(decode(fileContents), Jam54LauncherData.class); //Load the user's save file and use it to overwrite the default values. Leave new default values that aren't present in the user's save file untouched
             }
-            catch (IOException e)
+            catch (Exception e)
             {
-                ErrorMessage errorMessage = new ErrorMessage(false, SaveLoadManager.getTranslation("ErrorLoadingDataFromDisk") + e);
-                errorMessage.show();
+                System.err.println("The save file is corrupt, replacing with a new empty savefile.");
+                data = new Jam54LauncherData();
             }
         }
 
