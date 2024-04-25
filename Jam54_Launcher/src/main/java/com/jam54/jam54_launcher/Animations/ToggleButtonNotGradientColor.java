@@ -47,7 +47,7 @@ public class ToggleButtonNotGradientColor extends ToggleButtonSkin
             {
                 return "-fx-background-color: " + colorToString(defaultColor) + ";";
             }
-        }, color);
+        }, color, control.selectedProperty());
 
         // bind the button's style property
         control.styleProperty().bind(cssColorSpec);

@@ -59,7 +59,7 @@ public final class SaveLoadManager
             }
             catch (Exception e)
             {
-                System.err.println("The save file is corrupt, replacing with a new empty savefile.");
+                System.err.println("The save file is corrupt, replacing with a new empty save file.");
                 data = new Jam54LauncherData();
             }
         }

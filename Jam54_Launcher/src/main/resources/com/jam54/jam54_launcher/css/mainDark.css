@@ -729,6 +729,7 @@ To circumvent/get around this, we put the applicationButton in another VBox whic
     -fx-border-color: transparent;
     -fx-spacing: 15;
     -fx-alignment: center-left;
+    -fx-cursor: hand;
 }
 
 .availableAppUpdateButton VBox {

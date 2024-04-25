@@ -2,12 +2,14 @@ package com.jam54.jam54_launcher.Windows.AvailableAppUpdates;
 
 import com.jam54.jam54_launcher.Animations.ButtonColor;
 import com.jam54.jam54_launcher.Data.Jam54LauncherModel;
+import com.jam54.jam54_launcher.Data.Route;
 import com.jam54.jam54_launcher.Data.SaveLoad.SaveLoadManager;
 import com.jam54.jam54_launcher.LoadCSSStyles;
 import com.jam54.jam54_launcher.database_access.Other.ApplicationInfo;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.scene.control.Button;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
@@ -20,14 +22,16 @@ import javafx.scene.text.Text;
 public class AvailableAppUpdateButton extends HBox implements InvalidationListener
 {
     private Jam54LauncherModel model;
-    private ApplicationInfo applicationInfo;
+    private final ApplicationInfo applicationInfo;
+    private final String buttonText;
 
     private final HBox rightSideHolder;
     private final RadialProgressBarWithIcon radialProgressBarWithAppIcon;
 
-    public AvailableAppUpdateButton(ApplicationInfo applicationInfo)
+    public AvailableAppUpdateButton(ApplicationInfo applicationInfo, String buttonText, String description)
     {
         this.applicationInfo = applicationInfo;
+        this.buttonText = buttonText;
 
         this.getStyleClass().add("availableAppUpdateButton");
 
@@ -37,7 +41,8 @@ public class AvailableAppUpdateButton extends HBox implements InvalidationListen
         VBox textContainer = new VBox();
 
         Text appTitle = new Text(applicationInfo.name());
-        Text bottomText = new Text(SaveLoadManager.getTranslation("InstalledVersion") + ": " + applicationInfo.version() + " | " + SaveLoadManager.getTranslation("AvailableVersion") + ": " + applicationInfo.availableVersion());
+        Text bottomText = new Text(description);
+
         bottomText.setId("availableAppUpdateButtonBottomText");
 
         textContainer.getChildren().addAll(appTitle, bottomText);
@@ -49,6 +54,8 @@ public class AvailableAppUpdateButton extends HBox implements InvalidationListen
         //endregion
 
         rightSideHolder = new HBox();
+
+        this.setOnMouseClicked(this::openApplicationWindow);
 
         this.getChildren().addAll(radialProgressBarWithAppIcon, textContainer, fillSpace, rightSideHolder);
     }
@@ -79,7 +86,7 @@ public class AvailableAppUpdateButton extends HBox implements InvalidationListen
         }
         else if (!model.isAppInAppsToUpdateQueue(applicationInfo))
         {
-            Button update_Button = new Button(SaveLoadManager.getTranslation("Update"));
+            Button update_Button = new Button(buttonText);
             update_Button.setId("primaryButton");
             update_Button.setSkin(new ButtonColor(update_Button, LoadCSSStyles.getCSSColor("-accent-button-main"), LoadCSSStyles.getCSSColor("-accent-button-hovered"), LoadCSSStyles.getCSSColor("-accent-button-clicked")));
 
@@ -93,5 +100,11 @@ public class AvailableAppUpdateButton extends HBox implements InvalidationListen
         {
             rightSideHolder.getChildren().add(new Text(applicationInfo.version() == null ? SaveLoadManager.getTranslation("InstallationQueued") : SaveLoadManager.getTranslation("UpdateQueued")));
         }
+    }
+
+    public void openApplicationWindow(MouseEvent event)
+    {
+        model.setOpenedApplication(applicationInfo);
+        model.navigateToWindow(Route.APPLICATION);
     }
 }

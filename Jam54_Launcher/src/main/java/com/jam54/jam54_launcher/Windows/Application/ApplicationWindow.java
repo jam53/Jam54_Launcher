@@ -758,14 +758,8 @@ public class ApplicationWindow extends VBox implements InvalidationListener
                 installUpdateButton.setDisable(true);
                 installUpdateButton.setSkin(new ButtonColor(installUpdateButton, LoadCSSStyles.getCSSColor("-filled-button-unselected"), LoadCSSStyles.getCSSColor("-filled-button-hovered"), LoadCSSStyles.getCSSColor("-filled-button-clicked")));
 
-                Text text = new Text("");
-                installUpdateButton.widthProperty().addListener((obs, oldV, newV) -> {
-                    text.setWrappingWidth(newV.doubleValue() * 0.7);
-                });
-                installUpdateButton.graphicProperty().addListener((obs, oldV, newV) -> {
-                    text.setWrappingWidth(installUpdateButton.getWidth() * 0.7);
-                });
-                text.setText(MessageFormat.format(SaveLoadManager.getTranslation("KindlyHoldForInstall"), model.getApp(model.getUpdatingApp()).name()));
+                Text text = new Text(MessageFormat.format(SaveLoadManager.getTranslation("KindlyHoldForInstall"), model.getApp(model.getUpdatingApp()).name()));
+                text.setWrappingWidth(600); //We hardcode this, rather than using something like: `text.setWrappingWidth(installUpdateButton.getWidth()/1.3);` Because at the time we would set the wrapping width, the button wouldn't have been rendered yet so setting the wrapping width based on the button's width wouldnt work. If we instead add a listener to set the wrapping width when the width of the button changes or when the graphic/Text of the button gets set, it sometimes also gives problems. Therefore we hardcode it
                 installUpdateButton.setGraphic(text);
             }
         }

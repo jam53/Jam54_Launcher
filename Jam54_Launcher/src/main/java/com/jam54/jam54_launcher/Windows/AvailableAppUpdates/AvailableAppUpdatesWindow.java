@@ -23,14 +23,16 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
- * This class is used to create the available app updates window, where the user can update apps in one centralized place
+ * This class is used to create the available app updates window, where the user can update apps in one centralized place. If there are no updates available, this window behaves similarly but in that case shows the application the user hasn't installed yet, instead of the applications with available updates. If that also isn't the case and every single application is installed, then we just display "no updates available at the moment"
  */
 public class AvailableAppUpdatesWindow extends VBox implements InvalidationListener
 {
     private Jam54LauncherModel model;
     private List<ApplicationInfo> appsWithUpdates;
+    private List<ApplicationInfo> appsThatCanBeInstalled;
 
     private final Text title;
     private final Button updateAll_Button;
@@ -46,12 +48,19 @@ public class AvailableAppUpdatesWindow extends VBox implements InvalidationListe
         Region fillSpace = new Region();
         HBox.setHgrow(fillSpace, Priority.ALWAYS);
 
-        updateAll_Button = new Button(SaveLoadManager.getTranslation("UpdateAll"));
+        updateAll_Button = new Button(); //Button text gets set in `invalidated()`
         updateAll_Button.setId("primaryButton");
         updateAll_Button.setSkin(new ButtonColor(updateAll_Button, LoadCSSStyles.getCSSColor("-accent-button-main"), LoadCSSStyles.getCSSColor("-accent-button-hovered"), LoadCSSStyles.getCSSColor("-accent-button-clicked")));
 
         updateAll_Button.setOnAction(e -> {
-            appsWithUpdates.stream().filter(app -> !model.isAppInAppsToUpdateQueue(app)).forEach(model::addAppToAppsUpdateQueue);
+            if (!appsWithUpdates.isEmpty())
+            {
+                appsWithUpdates.stream().filter(app -> !model.isAppInAppsToUpdateQueue(app)).forEach(model::addAppToAppsUpdateQueue);
+            }
+            else
+            {
+                appsThatCanBeInstalled.stream().filter(app -> !model.isAppInAppsToUpdateQueue(app)).forEach(model::addAppToAppsUpdateQueue);
+            }
         });
 
         HBox topBar = new HBox();
@@ -107,9 +116,20 @@ public class AvailableAppUpdatesWindow extends VBox implements InvalidationListe
     public void invalidated(Observable observable)
     {
         appsWithUpdates = model.getAllApplications().stream().filter(applicationInfo -> applicationInfo.updateAvailable() && applicationInfo.version() != null).toList();
+        appsThatCanBeInstalled = model.getAllApplications().stream().filter(applicationInfo -> applicationInfo.version() == null).toList();
 
-        if (appsWithUpdates.isEmpty() || appsWithUpdates.size() == model.getSizeOfAppsToUpdateQueue())
-        {//Make the button invisible if there aren't any applications with updates
+        if (!appsWithUpdates.isEmpty() && appsWithUpdates.size() != model.getSizeOfAppsToUpdateQueue())
+        {//Make the button visible if there are applications with updates && not all applications with updates have been added to the queue yet
+            updateAll_Button.setText(SaveLoadManager.getTranslation("UpdateAll"));
+            updateAll_Button.setVisible(true);
+        }
+        else if (!appsThatCanBeInstalled.isEmpty() && appsThatCanBeInstalled.size() != model.getSizeOfAppsToUpdateQueue())
+        {//Make the button visible if there are applications that can be installed && not all applications that can be installed have been added to the queue yet
+            updateAll_Button.setText(SaveLoadManager.getTranslation("InstallAll"));
+            updateAll_Button.setVisible(true);
+        }
+        else
+        {
             updateAll_Button.setVisible(false);
         }
 
@@ -146,9 +166,42 @@ public class AvailableAppUpdatesWindow extends VBox implements InvalidationListe
     {
         applicationsHolder.getChildren().clear();
 
-        for (ApplicationInfo application : appsWithUpdates)
+        List<ApplicationInfo> appsToDisplay = !appsWithUpdates.isEmpty() ? appsWithUpdates : appsThatCanBeInstalled;
+        appsToDisplay = appsToDisplay.stream().sorted((app1, app2) -> { //Makes it so the app that is currently updating/installing is displayed first
+            if (model.getUpdatingApp() != null && app1.id() == model.getUpdatingApp())
+            {
+                return -1;
+            }
+            else if (model.getUpdatingApp() != null && app2.id() == model.getUpdatingApp())
+            {
+                return 1;
+            }
+            else
+            {
+                return 0;
+            }
+        }).toList();
+
+        for (ApplicationInfo application : appsToDisplay)
         {
-            AvailableAppUpdateButton button = new AvailableAppUpdateButton(application);
+            AvailableAppUpdateButton button;
+
+            if (!appsWithUpdates.isEmpty())
+            {//If this button is for an app that has an update available
+                button = new AvailableAppUpdateButton(
+                        application,
+                        SaveLoadManager.getTranslation("Update"),
+                        SaveLoadManager.getTranslation("InstalledVersion") + ": " + application.version() + " | " + SaveLoadManager.getTranslation("AvailableVersion") + ": " + application.availableVersion()
+                );
+            }
+            else
+            {//If this button is for an app that isn't installed yet
+                button = new AvailableAppUpdateButton(
+                        application,
+                        StringUtils.capitalize(SaveLoadManager.getTranslation("INSTALL").toLowerCase()),
+                        SaveLoadManager.getTranslation("Platform") + ": " + application.platforms().stream().map(Enum::toString).sorted().collect(Collectors.joining(", ")) + " | " + SaveLoadManager.getTranslation("AvailableVersion") + ": " + application.availableVersion()
+                );
+            }
             button.setModel(model);
 
             applicationsHolder.getChildren().add(button);
@@ -161,8 +214,8 @@ public class AvailableAppUpdatesWindow extends VBox implements InvalidationListe
             applicationsHolder.getChildren().add(noApplicationsMatched);
         }
 
-        int amountOfApps = appsWithUpdates.size();
-        title.setText(SaveLoadManager.getTranslation("PendingApplicationUpdates") + (amountOfApps > 0 ? " (" + amountOfApps + ")" : ""));
+        int amountOfApps = appsToDisplay.size();
+        title.setText(!appsWithUpdates.isEmpty() || appsThatCanBeInstalled.isEmpty() ? SaveLoadManager.getTranslation("PendingApplicationUpdates") : SaveLoadManager.getTranslation("ApplicationsAvailableToInstall") + (amountOfApps > 0 ? " (" + amountOfApps + ")" : ""));
     }
 
     /**
@@ -213,10 +266,11 @@ public class AvailableAppUpdatesWindow extends VBox implements InvalidationListe
         {
             ApplicationInfo updatedApp = new ApplicationInfo(appInfo.id(), appInfo.name(), appInfo.image(), false, appInfo.availableVersion(), appInfo.availableVersion(), appInfo.descriptions(), appInfo.platforms(), appInfo.releaseDate(), appInfo.lastUpdate(), appInfo.isGame());
 
-            if (model.getOpenedApplication().id() == updatedApp.id())
+            if (model.getOpenedApplication() != null && model.getOpenedApplication().id() == updatedApp.id())
             {//Check if the current opened window is of the app we just updated. We don't want to refresh this screen if another app is open. Because that will replace the current open app on screen
                 model.setOpenedApplication(updatedApp);//We use this to "refresh" this ApplicationWindow screen. This way after the install/remove/... operation is finished the correct buttons will be displayed
             }
+
             ArrayList<ApplicationInfo> applicationsInModel = model.getAllApplications();
             applicationsInModel.remove(appInfo);
             applicationsInModel.add(updatedApp);

@@ -4,6 +4,7 @@ import com.jam54.jam54_launcher.Animations.ToggleButtonNotGradientColor;
 import com.jam54.jam54_launcher.Data.Jam54LauncherModel;
 import com.jam54.jam54_launcher.Data.Route;
 import com.jam54.jam54_launcher.LoadCSSStyles;
+import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.event.ActionEvent;
@@ -88,7 +89,7 @@ public class LeftBar extends VBox implements InvalidationListener
             case null, default -> toggleGroup.selectToggle(homeToggle);
         }
 
-        updatesAvailableNotification.setFill(model.getAllApplications().stream().anyMatch(applicationInfo -> applicationInfo.updateAvailable() && applicationInfo.version() != null) ? Color.RED : Color.TRANSPARENT);
+        updatesAvailableNotification.setFill(model.getAllApplications().stream().anyMatch(applicationInfo -> applicationInfo.updateAvailable() && applicationInfo.version() != null) ? Color.RED : Color.TRANSPARENT); //Show a red notification bubble if there are applications that have updates
     }
 
     private void selectHomeToggle(ActionEvent actionEvent)
