@@ -86,6 +86,46 @@
 
                 </configuration>
             </plugin>
+            <!--This plugin is used to build FAT/Uber jars-->
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                    <archive>
+                        <!--Makes it so the produced jar contains a manifest file. This allows us to run the jar using `java -jar file.jar`. Rather than having to run it as follows `java -cp file.jar path.to.main.class`-->
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <packageName>com.jam54.jam54_launcher</packageName>
+                            <mainClass>com.jam54.jam54_launcher.Main</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+            <!--Copy the dependency jars to the target folder-->
+            <plugin>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/lib</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
             <!-- https://mvnrepository.com/artifact/org.openjfx/javafx-maven-plugin-->
             <plugin>
                 <groupId>org.openjfx</groupId>

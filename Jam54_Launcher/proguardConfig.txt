@@ -1,0 +1,40 @@
+  # These paths are relative to where the config file is located, not the working directory Proguard is run from
+  -injars       .\target\Jam54_Launcher-1.0-SNAPSHOT.jar
+  -outjars      .\target\Jam54_Launcher-1.0-SNAPSHOT-proguard.jar
+  -libraryjars  .\target\lib
+  -libraryjars  D:\Program Files\jdk-21\jmods
+
+  -dontshrink
+  -dontoptimize
+
+  -printmapping .\target\jam54-proguard-obfuscation-map.txt
+
+  # Save meta-data for stack traces
+  -renamesourcefileattribute SourceFile
+  -keepattributes SourceFile,LineNumberTable
+
+  # Rename FXML files together with related views
+  -adaptresourcefilenames **.fxml,**.png,**.css
+  -adaptresourcefilecontents **.fxml
+  -adaptclassstrings
+
+  # Keep all annotations and meta-data
+  -keepattributes *Annotation*,Signature,EnclosingMethod
+
+  -keep public class com.jam54.jam54_launcher.Main {
+      public static void main(java.lang.String[]);
+  }
+
+  # Keep names of fields marked with @FXML attribute
+  -keepclassmembers class * {
+      @javafx.fxml.FXML *;
+  }
+
+  # Dont obfuscate the names of these classes. Most of the styling is done using style classes. However, sometimes we directly style a component using its classname. In those cases the components would no longer have their style applied, since the obfuscation process renames class names. Therefore don't obfuscate the names of these classes, but do obfuscate the content of them since that shouldn't break anything.
+  -keepnames class com.jam54.jam54_launcher.Animations.** { *; }
+  -keepnames class com.jam54.jam54_launcher.Windows.** { *; }
+  -keepnames class com.jam54.jam54_launcher.MainController { *; }
+  -keepnames class com.jam54.jam54_launcher.ErrorMessage { *; }
+
+  # Don't obfuscate these classes, otherwise it breaks some functionality
+  -keep class com.jam54.jam54_launcher.Data.Route { *; }

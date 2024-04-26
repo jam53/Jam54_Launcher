@@ -2,14 +2,14 @@
 As described in [Understanding what's in the project](./WhatsInTheRepository.md), there are 2 projects in this repository, the *Jam54Launcher* and *Updater*. Naturally this means that we will need to build twice.
 
 ## Building The Jam54_Launcher
-Build the main project first, *Jam54Launcher*. By following the steps described in the guide [creating a jar.](./CreatingAJar.md)
+Build the main project first, *Jam54Launcher*. This can be done by executing the Maven command `clean` followed by the Maven command `package` which will create an uber jar. The uber jar contains all of the dependencies required to run the Jam54 Launcher.
 
-This build process should result in folder called *out* to be created, in which there will be a subfolder called *artifacts*. In there you will find a folder called *Jam54_Launcher_jar*.
+This build process should result in a folder called *target* to be created, in which the uber jar `Jam54_Launcher-1.0-SNAPSHOT-jar-with-dependencies.jar` will be placed. 
 
-Move the contents of the *Jam54_Launcher_jar* folder to a new folder.
+## Obfuscating the built Jam54_Launcher jar
+Once we built the *Jam54Launcher*, we should obfuscate the package within the uber jar that contains our code. This can be done by running the `ObfuscateJam54LauncherBuild.bat` script.
 
-## Obfuscating `Jam54_Launcher.jar`
-Once we built the *Jam54Launcher*, we should obfuscate the main jar that contains our code. Follow the steps described in [Obfuscation.md](./Obfuscation.md).
+Rename the obfuscated uber jar to `Jam54_Launcher.jar` and move it to a new empty folder.
 
 ## Building The Updater
 - Right click on the `Updater` project and select *Publish*
@@ -24,14 +24,14 @@ Once we built the *Jam54Launcher*, we should obfuscate the main jar that contain
     - Trim unused code: true
 - Click on the *Publish* button
 - The build will be placed inside: `bin\Release\net6.0\publish\win-x64\`
-- Place the `Updater.exe` file inside the folder that contains the jar files produced by building the Jam54_Launcher project.
+- Place the `Updater.exe` file inside the same folder that contains the obfuscated uber jar file `Jam54_Launcher.jar`.
 
 ## Creating An Installer
 Once we have built both of our projects, we can create an installer by following the steps described in [creating an installer.](./CreatingAnInstaller.md) 
 
 ---
 
-Following the guide should yield this command:
+Following the guide should yield the command below. This command should be executed in the directory that contains both our `Jam54_Launcher.jar` file as well as the `Updater.exe` file:
 - Windows
     ```
     jpackage --input . --module-path "D:\Program Files\javafx-jmods-21" --add-modules javafx.controls,javafx.fxml,jdk.crypto.ec,java.sql,java.desktop --name "Jam54 Launcher" --icon "D:\GitHub\Jam54_Launcher\Jam54_Launcher\src\main\resources\com\jam54\jam54_launcher\img\jam54Icon.ico" --app-version 0.1.0 --vendor "jam54" --copyright "Copyright © 2021 jam54" --win-dir-chooser --win-shortcut --win-per-user-install --win-menu --license-file "D:\GitHub\Jam54_Launcher\LICENSE" --description "The Jam54 Launcher is used to install and update all of the software developed by jam54." --main-jar Jam54_Launcher.jar --main-class com.jam54.jam54_launcher.Main --type msi
