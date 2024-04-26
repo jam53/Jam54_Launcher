@@ -77,15 +77,20 @@ public class LauncherUpdater
         }
         else if (!versionInCloud.equals(properties.getProperty("version")) && !versionInCloud.equals(""))
         {//If true, this means there is a new version available
-            try
-            {
-                DownloadFile.saveUrlToFile(new URL(properties.getProperty("Jam54LauncherUrl")), newJarLocation, 10000, 10000, 10); //Download the new version of the launcher
-                model.setNewVersionDownloaded(true);
-            } catch (IOException e)
-            {
-                ErrorMessage errorMessage = new ErrorMessage(false, SaveLoadManager.getTranslation("FailedDownloadingNewJam54LauncherVersion"));
-                errorMessage.show();
-            }
+            new Thread(() -> {
+                try
+                {
+                    DownloadFile.saveUrlToFile(new URL(properties.getProperty("Jam54LauncherUrl")), newJarLocation, 10000, 10000, 10); //Download the new version of the launcher
+                    Platform.runLater(() -> model.setNewVersionDownloaded(true));
+                }
+                catch (IOException e)
+                {
+                    Platform.runLater(() -> {
+                        ErrorMessage errorMessage = new ErrorMessage(false, SaveLoadManager.getTranslation("FailedDownloadingNewJam54LauncherVersion"));
+                        errorMessage.show();
+                    });
+                }
+            }).start();
         }
         else
         {
