@@ -12,19 +12,13 @@ Once we built the *Jam54Launcher*, we should obfuscate the package within the ub
 Rename the obfuscated uber jar to `Jam54_Launcher.jar` and move it to a new empty folder.
 
 ## Building The Updater
-- Right click on the `Updater` project and select *Publish*
-- Select publish to *Folder*
-- Click either on *Show all settings* or *More actions > edit*
-    - Configuration: Release
-    - Target framework: net6.0
-    - Deployment mode: Self-contained
-    - Target runtime: win-x64
-    - Produce single file: true
-    - Enable ReadyToRun compilation: true
-    - Trim unused code: true
-- Click on the *Publish* button
-- The build will be placed inside: `bin\Release\net6.0\publish\win-x64\`
-- Place the `Updater.exe` file inside the same folder that contains the obfuscated uber jar file `Jam54_Launcher.jar`.
+Navigate to the `Updater` subfolder from the command line and execute the following command:
+
+```sh
+dotnet publish -r win-x64 -c Release
+```
+
+This will build the project and place the produced binary in `Updater\bin\Release\net8.0\win-x64\publish\`. Copy the produced `Updater.exe` file to the same folder that contains the obfuscated uber jar file `Jam54_Launcher.jar`.
 
 ## Creating An Installer
 Once we have built both of our projects, we can create an installer by following the steps described in [creating an installer.](./CreatingAnInstaller.md) 
