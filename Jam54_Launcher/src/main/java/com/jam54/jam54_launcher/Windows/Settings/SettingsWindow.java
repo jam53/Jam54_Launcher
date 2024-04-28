@@ -99,16 +99,19 @@ public class SettingsWindow extends HBox
         Button youtube = new Button();
         Button discord = new Button();
         Button github = new Button();
+        Button kofi = new Button();
         Button mail = new Button();
 
         youtube.setId("youtubeButton");
         discord.setId("discordButton");
         github.setId("githubButton");
+        kofi.setId("kofiButton");
         mail.setId("mailButton");
 
         youtube.setTooltip(new Tooltip("YouTube"));
         discord.setTooltip(new Tooltip("Discord"));
         github.setTooltip(new Tooltip("GitHub"));
+        kofi.setTooltip(new Tooltip("Ko-fi"));
         mail.setTooltip(new Tooltip(SaveLoadManager.getTranslation("Email")));
 
         youtube.setOnAction(e ->
@@ -144,6 +147,17 @@ public class SettingsWindow extends HBox
                 errorMessage.show();
             }
         });
+        kofi.setOnAction(e ->
+        {
+            try
+            {
+                (new ProcessBuilder("cmd.exe", "/c", "start", "\"\" " + '"' + "https://ko-fi.com/jam54" + '"')).start();
+            } catch (IOException ex)
+            {
+                ErrorMessage errorMessage = new ErrorMessage(false, SaveLoadManager.getTranslation("CouldntOpenWebsite") + " " + ex.getMessage());
+                errorMessage.show();
+            }
+        });
         mail.setOnAction(e ->
         {
             try
@@ -156,7 +170,7 @@ public class SettingsWindow extends HBox
             }
         });
 
-        socials.getChildren().addAll(youtube, discord, github, mail);
+        socials.getChildren().addAll(youtube, discord, github, kofi, mail);
 
         leftBarBottom.getChildren().addAll(versionHolder, socials);
 

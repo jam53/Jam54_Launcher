@@ -875,6 +875,7 @@ To circumvent/get around this, we put the applicationButton in another VBox whic
 
 #youtubeButton {
     -fx-background-image: url("../img/icons/YouTube_ButtonIconUnselected.png");
+    -fx-background-size: cover;
 }
 
 #youtubeButton:hover {
@@ -887,6 +888,7 @@ To circumvent/get around this, we put the applicationButton in another VBox whic
 
 #playstoreButton {
     -fx-background-image: url("../img/icons/PlayStore_ButtonIconUnselected.png");
+    -fx-background-size: cover;
 }
 
 #playstoreButton:hover {
@@ -899,6 +901,7 @@ To circumvent/get around this, we put the applicationButton in another VBox whic
 
 #discordButton {
     -fx-background-image: url("../img/icons/Discord_ButtonIconUnselected.png");
+    -fx-background-size: cover;
 }
 
 #discordButton:hover {
@@ -911,6 +914,7 @@ To circumvent/get around this, we put the applicationButton in another VBox whic
 
 #githubButton {
     -fx-background-image: url("../img/icons/GitHub_ButtonIconUnselected.png");
+    -fx-background-size: cover;
 }
 
 #githubButton:hover {
@@ -921,8 +925,22 @@ To circumvent/get around this, we put the applicationButton in another VBox whic
     -fx-background-image: url("../img/icons/GitHub_ButtonIconClicked.png");
 }
 
+#kofiButton {
+    -fx-background-image: url("../img/icons/Ko-fi_ButtonIconUnselected.png");
+    -fx-background-size: cover;
+}
+
+#kofiButton:hover {
+    -fx-background-image: url("../img/icons/Ko-fi_ButtonIconHovered.png");
+}
+
+#kofiButton:pressed {
+    -fx-background-image: url("../img/icons/Ko-fi_ButtonIconClicked.png");
+}
+
 #mailButton {
     -fx-background-image: url("../img/icons/Mail_ButtonIconUnselected.png");
+    -fx-background-size: cover;
 }
 
 #mailButton:hover {
