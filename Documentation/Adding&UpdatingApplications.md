@@ -70,7 +70,7 @@ INSERT INTO applications VALUES(5, 'AutoEditor', 'com/jam54/jam54_launcher/img/a
 
 INSERT INTO applications VALUES(6, 'ImageSearcher', 'com/jam54/jam54_launcher/img/applicationLogos/ImageSearcher.png', 0, 0, 1, 1582765200, 1587168000, 0);
 
-INSERT INTO applications VALUES(7, 'AstroRun', 'com/jam54/jam54_launcher/img/applicationLogos/AstroRun.png', 1, 0, 0, 1589500800, 1691575413, 1);
+INSERT INTO applications VALUES(7, 'AstroRun', 'com/jam54/jam54_launcher/img/applicationLogos/AstroRun.png', 1, 0, 0, 1589500800, 1714589084, 1);
 
 INSERT INTO applications VALUES(8, 'Flash', 'com/jam54/jam54_launcher/img/applicationLogos/Flash.png', 0, 0, 1, 1649808000, 1653004800, 0);
 
@@ -282,8 +282,8 @@ appVersion5=1.0.0
 appLatestUpdate5=1616029200
 appVersion6=1.0.0
 appLatestUpdate6=1587168000
-appVersion7=1.4.2
-appLatestUpdate7=1691575413
+appVersion7=1.4.3
+appLatestUpdate7=1714589084
 appVersion8=1.9.0
 appLatestUpdate8=1653004800
 appVersion9=1.1.9
