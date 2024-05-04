@@ -167,6 +167,7 @@ public class AvailableAppUpdatesWindow extends VBox implements InvalidationListe
         applicationsHolder.getChildren().clear();
 
         List<ApplicationInfo> appsToDisplay = !appsWithUpdates.isEmpty() ? appsWithUpdates : appsThatCanBeInstalled;
+        appsToDisplay = appsToDisplay.stream().sorted((app1, app2) -> app1.name().compareToIgnoreCase(app2.name())).toList();
         appsToDisplay = appsToDisplay.stream().sorted((app1, app2) -> { //Makes it so the app that is currently updating/installing is displayed first
             if (model.getUpdatingApp() != null && app1.id() == model.getUpdatingApp())
             {
