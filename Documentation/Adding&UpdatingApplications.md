@@ -56,7 +56,7 @@ sqlite3 applications.sqlite
 ```
 
 ```sql
-INSERT INTO applications VALUES(0, 'Stelexo', 'com/jam54/jam54_launcher/img/applicationLogos/Stelexo.png', 0, 0, 1, 1530835200, 1684925160, 1);
+INSERT INTO applications VALUES(0, 'Stelexo', 'com/jam54/jam54_launcher/img/applicationLogos/Stelexo.png', 0, 0, 1, 1530835200, 1565720497, 1);
 
 INSERT INTO applications VALUES(1, 'IToW', 'com/jam54/jam54_launcher/img/applicationLogos/IToW.png', 0, 0, 1, 1533340800, 1533340800, 0);
 
@@ -70,7 +70,7 @@ INSERT INTO applications VALUES(5, 'AutoEditor', 'com/jam54/jam54_launcher/img/a
 
 INSERT INTO applications VALUES(6, 'ImageSearcher', 'com/jam54/jam54_launcher/img/applicationLogos/ImageSearcher.png', 0, 0, 1, 1582765200, 1587168000, 0);
 
-INSERT INTO applications VALUES(7, 'AstroRun', 'com/jam54/jam54_launcher/img/applicationLogos/AstroRun.png', 1, 0, 0, 1589500800, 1714589084, 1);
+INSERT INTO applications VALUES(7, 'AstroRun', 'com/jam54/jam54_launcher/img/applicationLogos/AstroRun.png', 1, 0, 0, 1589500800, 1654798657, 1);
 
 INSERT INTO applications VALUES(8, 'Flash', 'com/jam54/jam54_launcher/img/applicationLogos/Flash.png', 0, 0, 1, 1649808000, 1653004800, 0);
 
@@ -269,7 +269,7 @@ appLatestUpdate<id>=<latest update in unix seconds>
 The contents of this file may look something like this:
 ```
 appVersion0=0.3.1
-appLatestUpdate0=1684925160
+appLatestUpdate0=1565720497
 appVersion1=1.0.0
 appLatestUpdate1=1533340800
 appVersion2=1.0.0
@@ -283,7 +283,7 @@ appLatestUpdate5=1616029200
 appVersion6=1.0.0
 appLatestUpdate6=1587168000
 appVersion7=1.4.3
-appLatestUpdate7=1714589084
+appLatestUpdate7=1654798657
 appVersion8=1.9.0
 appLatestUpdate8=1653004800
 appVersion9=1.1.12
