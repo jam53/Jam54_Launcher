@@ -6,7 +6,6 @@ import org.apache.commons.io.FileUtils;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;

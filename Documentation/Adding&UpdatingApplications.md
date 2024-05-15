@@ -303,8 +303,13 @@ Increment the size of the `installedApplicationVersions` and `installedApplicati
 > Each subfolder then contains all the binaries for that application  
 > \+ a file called `EntryPoint.txt`. This file contains one line and points to the executable of the app.  
 > \+ a file called `Hashes.txt`. This file contains all the hashes for the binaries of that application.  
-> \+ a file called `Split.txt`, which may or may not be empty. It contains the path to files that were bigger than a certain amount in megabytes and that have been split into smaller chunks.
-> > We split files that are larger than 99MBs into smaller chunks in order to stay below the 100MB size limit that GitHub imposes. (We host the binaries of the applications using GitHub pages)
+> \+ a file called `Split.txt`, which may or may not be empty. It contains the path to files that were bigger than a certain amount in megabytes and that have been split into smaller chunks.  
+> > We split files that are larger than 99MBs into smaller chunks in order to stay below the 100MB size limit that GitHub imposes. (We host the binaries of the applications using GitHub pages)  
+> 
+> \+ a folder called `Deltas`, this folder contains all of the deltas generated between the latest version and all other versions of the app. These deltas are stored as zip files following the naming convention below. Finally this folder also contains a file `Sizes.properties` which contains the size of the zips in bytes. 
+> - a.b.c-x.y.z.zip
+>   - a.b.c is the previous version of the app
+>   - x.y.z is the current version of the app
 >
 > This makes it so that when we want to download a specific file of a given application. We can do that by going visiting the following url: `base url` + `subfolder (a number representing the applicationId)` + `path to file`
 
@@ -343,7 +348,13 @@ Increment the size of the `installedApplicationVersions` and `installedApplicati
 
       Hashes hashes = new Hashes();
       hashes.calculateHashesTXTFiles(paths);
-      hashes.createAndCalculateChunkHashesTXTFiles(paths);
+      //Note: don't add the 2 lines below for apps that don't need deltas i.e. don't have any previous versions
+      hashes.createAndCalculateDeltaFiles(
+          Path.of("AppBuildsPreviousVersions\\0"), //This folder contains subfolders for each version of the app, where the name of each subfolder is the version of the app it contains
+          Path.of("pathToRootFolder\\0"), //This is the root folder that contains the files and folders of the current version of the app
+          "x.y.z" //The version number of the current version of the app
+      );
+      fileSplitterCombiner.splitFilesLargerThan(99, Path.of("pathToRootFolder\\0\\Deltas"));
       ```
 - Run the application
   - You may get an error along the lines of `Caused by: java.lang.NullPointerException: Cannot invoke "String.equals(Object)" because the return value of "java.util.Properties.getProperty(String)" is null`. This is fine. We just need to execute the code snippet we pasted to hash the files of the newly added app. The code that comes after it throws an error in this case because the `applicationsVersions.properties` gets downloaded from where our files are hosted. But that `applicationsVersions.properties` file is obviously still missing the entry for the newly added app. Hence why we get an error
@@ -424,7 +435,7 @@ Open the `applicationsVersions.properties` file, and update the value behind the
 - Remove the lines you added to the `Main.java` file in the previous step
 - Each of the subfolders should now contain both a `Hashes.txt` file and a `Split.txt` file
 - In root directory containing all of the subfolders, run the following command (adjust the name of the subfolders in the for loop, so that it contains all of the subfolders)
-  - `for folder in 0 1 2 3 5 6 8; do cd "$folder" && grep -F -f Split.txt Hashes.txt | grep .part -v | tee linesToRemove.txt && grep -F -f linesToRemove.txt Hashes.txt -v | tee newHashes.txt && rm linesToRemove.txt && mv newHashes.txt Hashes.txt && cd ..; done`
+  - `for folder in 0 1 2 3 5 6 8 10; do cd "$folder" && grep -F -f Split.txt Hashes.txt | grep .part -v | tee linesToRemove.txt && grep -F -f linesToRemove.txt Hashes.txt -v | tee newHashes.txt && rm linesToRemove.txt && mv newHashes.txt Hashes.txt && cd ..; done`
     > This command will remove the lines in `Hashes.txt` that point to the original unsplitted files that were larger than the specified treshold to the `splitFilesLargerThan()` function
 
 --- 

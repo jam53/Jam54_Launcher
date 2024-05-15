@@ -1,5 +1,7 @@
 package com.jam54.jam54_launcher.Updating;
 
+import org.apache.commons.io.input.CountingInputStream;
+
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -23,7 +25,7 @@ public class DownloadFile
      * @param progressCallback The callback function to report the amount of downloaded bytes
      * @throws IOException An IoException is thrown when a read or connection timeout occurs
      */
-    private static void saveUrlToFile(URL source, Path destination, int connectionTimeoutMillis, int readTimeoutMillis, Consumer<Long> progressCallback) throws IOException
+    private static void saveUrlToFile(URL source, Path destination, int connectionTimeoutMillis, int readTimeoutMillis, Consumer<Integer> progressCallback) throws IOException
     {
         HttpURLConnection connection = (HttpURLConnection) source.openConnection();
 
@@ -38,13 +40,11 @@ public class DownloadFile
         {
             byte[] buffer = new byte[4096];
             int bytesRead = -1;
-            long totalBytesRead = 0;
 
             while ((bytesRead = in.read(buffer)) != -1)
             {
-                totalBytesRead += bytesRead;
                 out.write(buffer, 0, bytesRead);
-                progressCallback.accept(totalBytesRead);
+                progressCallback.accept(bytesRead);
             }
         }
         finally
@@ -64,7 +64,7 @@ public class DownloadFile
      * @param progressCallback The callback function to report the amount of downloaded bytes
      * @throws IOException An IoException is thrown when a read or connection timeout occurs
      */
-    public static void saveUrlToFile(URL source, Path destination, int connectionTimeoutMillis, int readTimeoutMillis, int amountOfRetries, Consumer<Long> progressCallback) throws IOException
+    public static void saveUrlToFile(URL source, Path destination, int connectionTimeoutMillis, int readTimeoutMillis, int amountOfRetries, Consumer<Integer> progressCallback) throws IOException
     {
         int retryCount = 0;
         while (retryCount < amountOfRetries)

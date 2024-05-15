@@ -2,23 +2,29 @@ package com.jam54.jam54_launcher.Updating;
 
 import com.jam54.jam54_launcher.Data.SaveLoad.SaveLoadManager;
 import com.jam54.jam54_launcher.ErrorMessage;
+import com.nothome.delta.Delta;
+import com.nothome.delta.GDiffWriter;
+import javafx.application.Platform;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.CopyOption;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 import java.nio.file.Path;
 import java.util.concurrent.*;
+import java.util.stream.Stream;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 /**
  * This class is used to calculate hashes
  */
 public class Hashes
 {
-    public static final int CHUNK_SIZE = 1024 * 1024; // 1MB chunk size used for chunking files
-
     /**
      * Given a path, this function calculates the SHA-256 hash and returns it as a string
      */
@@ -31,61 +37,14 @@ public class Hashes
         }
         catch (IOException e)
         {
-            ErrorMessage errorMessage = new ErrorMessage(false, SaveLoadManager.getTranslation("CouldntCalculateHash") + e.getMessage());
-            errorMessage.show();
-        }
-
-        return SaveLoadManager.getTranslation("CouldntCalculateHash");
-    }
-
-    /**
-     * Given a path to a file, this function splits the file into 1MB chunks and calculates the hash of each 1MB chunk.
-     * @return A HashMap with key: The start byte position in the original file to which the 1MB chunk belongs, value: The hash of the 1MB chunk.
-     */
-    public HashMap<Integer, String> calculateChunkHashes(Path input)
-    {
-        ConcurrentHashMap<Integer, String> hashMap = new ConcurrentHashMap(); //k: Startbyte, v: hash
-
-        byte[] fileBytes;
-        try
-        {
-            fileBytes = FileUtils.readFileToByteArray(input.toFile());
-        }
-        catch (IOException e)
-        {
-            throw new RuntimeException(e);
-        }
-
-        ExecutorService vExecutorService = Executors.newVirtualThreadPerTaskExecutor();
-
-        for (int i = 0; i < fileBytes.length; i += CHUNK_SIZE)
-        {
-            final int startIndex = i;
-            final int endIndex = Math.min(i + CHUNK_SIZE, fileBytes.length);
-
-            vExecutorService.submit(() -> {
-                byte[] chunk = Arrays.copyOfRange(fileBytes, startIndex, endIndex);
-                String sha256 = DigestUtils.sha256Hex(chunk);
-                hashMap.put(startIndex, sha256);
+            Platform.runLater(() ->
+            {
+                ErrorMessage errorMessage = new ErrorMessage(false, SaveLoadManager.getTranslation("CouldntCalculateHash") + e.getMessage());
+                errorMessage.show();
             });
         }
 
-        try
-        {
-            vExecutorService.shutdown();
-            boolean completed = vExecutorService.awaitTermination(1, TimeUnit.HOURS);
-
-            if (!completed)
-            {
-                System.out.println("Not all threads completed");
-            }
-        }
-        catch (InterruptedException e)
-        {
-            System.out.println(e.getMessage());
-        }
-
-        return new HashMap<>(hashMap);
+        return SaveLoadManager.getTranslation("CouldntCalculateHash");
     }
 
     /**
@@ -110,60 +69,45 @@ public class Hashes
     }
 
     /**
-     * This function splits a given file into 1MB chunks and saves the chunks as separate files in the provided chunksFolder path. The filename of each file is the hash of that 1MB chunk file.
-     * The function also creates a new file with ".hashes" appended to the end of the filename of fileToChunk and places the file next to the fileToChunk file.
+     * This function computes the delta between all of the files in the previousVersion directory and the currentVersion directory.
+     *
+     * In order to this, it recursively iterates over all of the files in the currentVersion directory. For each file it then computes the delta with the corresponding file in the previousVersion directory.
+     * If a file is not present in the previousVersion directory, this file is skipped and wont be added to the delta zip. Since in {@code InstallApp} where we handle installs/updates we first download all files that are missing in the new version.
+     * If a file is not present in the currentVersion directory, this file is also skipped. This file will be deleted in {@code InstallApp}.
+     * If a file is both present in the previousVersion and currentVersion directory, then the delta is computed between the two versions of the file and added to the zip.
+     *
+     * @param previousVersion path to the directory of the previous version of the app
+     * @param currentVersion path to the directory of the current version of the app
      */
-    public void writeFileChunksToDisk(Path fileToChunk, Path chunksFolder)
+    private void writeDeltaZipToDisk(Path previousVersion, Path currentVersion, ZipOutputStream zipOutputStream) throws IOException
     {
-        HashMap<Integer, String> fileChunkHashes = calculateChunkHashes(fileToChunk);
+        NoCloseOutputStream outputStream = new NoCloseOutputStream(zipOutputStream);
 
-        byte[] fileBytes;
-        try
+        try (Stream<Path> currentFiles = Files.walk(Paths.get(currentVersion.toString())).filter(Files::isRegularFile).filter(path -> !path.getParent().getFileName().toString().equals("Deltas")))
         {
-            fileBytes = FileUtils.readFileToByteArray(fileToChunk.toFile());
-        }
-        catch (IOException e)
-        {
-            throw new RuntimeException(e);
-        }
-
-
-        //Hoeven we niet echt te optimaliseren met virtual threads en multithreading, want we gaan dit alleen maar uitvoeren tijdens development.
-        for (int i = 0; i < fileBytes.length; i += CHUNK_SIZE)
-        {
-            final int startIndex = i;
-            final int endIndex = Math.min(i + CHUNK_SIZE, fileBytes.length);
-
-            byte[] chunk = Arrays.copyOfRange(fileBytes, startIndex, endIndex);
-
-            try
+            Delta delta = new Delta();
+            currentFiles.forEach(currentFile ->
             {
-                FileUtils.writeByteArrayToFile(
-                        Path.of(chunksFolder.toFile().getAbsolutePath(), fileChunkHashes.get(startIndex)).toFile(),
-                        chunk,
-                        false
-                        );
-            }
-            catch (IOException e)
-            {//Since we will only ever use this during development/when publishing files, we don't need to create a fancy GUI error message window
-                throw new RuntimeException(e);
-            }
+                try
+                {
+                    Path relativePathToFile = currentVersion.relativize(currentFile);
+                    Path previousFile = Path.of(previousVersion.toString(), relativePathToFile.toString());
+
+                    if (previousFile.toFile().exists())
+                    {//If the file also existed in the previous version of the app
+                        zipOutputStream.putNextEntry(new ZipEntry(relativePathToFile + ".gdiff"));
+                        delta.compute(previousFile.toFile(), currentFile.toFile(), new GDiffWriter(outputStream));
+                        zipOutputStream.closeEntry();
+                    }
+                }
+                catch (IOException e)
+                {
+                    throw new RuntimeException(e);
+                }
+            });
         }
 
-        StringBuilder linesToWrite = new StringBuilder();
-
-        for (Map.Entry<Integer, String> fileChunk : fileChunkHashes.entrySet())
-        {
-            linesToWrite.append(fileChunk.getValue()).append("|").append(fileChunk.getKey()).append("\n");
-        }
-
-        try
-        {
-            FileUtils.writeStringToFile(new File(fileToChunk.toAbsolutePath() + ".hashes"), linesToWrite.toString(), StandardCharsets.UTF_8);
-        } catch (IOException e)
-        {//Since we will only ever use this during development/when publishing files, we don't need to create a fancy GUI error message window
-            throw new RuntimeException(e);
-        }
+        outputStream.manualClose();
     }
 
     /**
@@ -193,24 +137,52 @@ public class Hashes
     }
 
     /**
-     * Given a list of paths, for each one of the paths, every file in the path or in subdirectories of the path will be split into 1MB chunks where the filename is the hash of the 1MB chunk. These 1MB chunks then get placed in a folder called `Chunks` in the root of the path.
+     * Given a path to a directory containing previous versions of an app and the path to the folder that contains the current version of the app, this function will create deltas between each of the subfolders in the PreviousVersions directory against the files in the currentVersion directory.
      *
-     * Furthermore, a `filename.extension.hashes` file will be created for every file in the path or any subdirectories. This `filename.extension.hashes` file contains the hashes + startPositionOf1MBChunkInOriginalFile for all the 1MB chunks that are associated with the `filename.extension` file.
-     * @param paths A directory
+     * The created deltas will be placed in a folder called `Deltas` in the root of the currentVersion directory. This folder then contains a zipfile for each one of the subfolders in the PreviousVersions directory.
+     * Each of these zipfiles follows the same naming convention:
+     *      "a.b.c-x.y.z.zip"
+     * Where:
+     *      - a.b.c is the previous version of the app
+     *      - x.y.z is the current version of the app
+     *
+     * The created zipfile contains the exact same file and folder structure of the currentVersion directory. However, every filename has ".gdiff" added to it.
+     *
+     * Inside this `Deltas` directory a file called "Sizes.properties" is created. This Java Properties file contains the size of each of the delta zips in bytes as the value and the name of the zipfile as the key
+     *
+     * @param folderContainingPreviousVersions This should be the path to the directory, that contains subfolders which in turn contain previous versions of the app. Each subfolder should have the name of the version of the app it contains, i.e. the name of the subfolder should be "a.b.c"
+     * @param currentVersion This should be the path to the directory that contains the current version of our app
+     * @param currentVersionNumber The current version of the app i.e. "x.y.z"
      */
-    public void createAndCalculateChunkHashesTXTFiles(ArrayList<Path> paths)
+    public void createAndCalculateDeltaFiles(Path folderContainingPreviousVersions, Path currentVersion, String currentVersionNumber)
     {
-        for (Path path : paths)
+        try
         {
-            if (path.toFile().exists())
+            Properties sizesProperties = new Properties();
+
+            for (File path : folderContainingPreviousVersions.toFile().listFiles(File::isDirectory))
             {
-                Iterator<File> it = FileUtils.iterateFiles(path.toFile(), null, true);
-                while (it.hasNext())
-                {
-                    Path file = it.next().toPath();
-                    writeFileChunksToDisk(file, Path.of(path.toAbsolutePath().toString(), "/Chunks"));
-                }
+                Path outputZip = Path.of(
+                        currentVersion.toString(),
+                        "Deltas",
+                        path.getName() + '-' + currentVersionNumber + ".zip"
+                );
+                Files.createDirectories(outputZip.getParent());
+                outputZip.toFile().createNewFile();
+                ZipOutputStream zipOutputStream = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(outputZip.toFile())));
+
+                writeDeltaZipToDisk(path.toPath(), currentVersion, zipOutputStream);
+
+                zipOutputStream.close();
+
+                sizesProperties.put(outputZip.getFileName().toString(), "" + Files.size(outputZip)); //We need to convert the value to a String, otherwise the store() method we use to write the Properties to disk throws an error
             }
+
+            sizesProperties.store(new FileOutputStream(Path.of(currentVersion.toString(), "Deltas", "Sizes.properties").toString()), null);
+        }
+        catch (IOException e)
+        {
+            throw new RuntimeException(e);
         }
     }
 }

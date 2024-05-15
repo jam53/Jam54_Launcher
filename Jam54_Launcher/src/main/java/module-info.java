@@ -8,4 +8,5 @@ open module com.jam54.jam54_launcher {
     requires jdk.crypto.ec;
     requires java.sql;
     requires java.desktop;
+    requires javaxdelta;
 }

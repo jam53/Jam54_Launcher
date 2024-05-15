@@ -2,6 +2,7 @@ package com.jam54.jam54_launcher.Updating;
 
 import com.jam54.jam54_launcher.Data.SaveLoad.SaveLoadManager;
 import com.jam54.jam54_launcher.ErrorMessage;
+import javafx.application.Platform;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -128,15 +129,22 @@ public class FileSplitterCombiner
                 }
                 catch (IOException e)
                 {
-                    ErrorMessage errorMessage = new ErrorMessage(false, SaveLoadManager.getTranslation("ErrorMergeSplitFiles") + " " + e.getMessage());
-                    errorMessage.show();
+                    Platform.runLater(() ->
+                    {
+                        ErrorMessage errorMessage = new ErrorMessage(false, SaveLoadManager.getTranslation("ErrorMergeSplitFiles") + " " + e.getMessage());
+                        errorMessage.show();
+                    });
                 }
             }
         }
         catch (IOException e)
         {
-            ErrorMessage errorMessage = new ErrorMessage(false, SaveLoadManager.getTranslation("ErrorReadingSplitTXT") + " " + e.getMessage());
-            errorMessage.show();
+            e.printStackTrace();
+            Platform.runLater(() ->
+            {
+                ErrorMessage errorMessage = new ErrorMessage(false, SaveLoadManager.getTranslation("ErrorReadingSplitTXT") + " " + e.getMessage());
+                errorMessage.show();
+            });
         }
     }
 }

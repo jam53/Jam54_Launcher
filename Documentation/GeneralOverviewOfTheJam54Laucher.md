@@ -115,6 +115,9 @@ This of course isn't really efficient when handling updates to already installed
 
 I tried to improve on this in the Java implementation.
 I first did some research and as far as I understand most people/companies tend to have a full package containing all of the binaries. And then patch packages that are shipped for every new release. For me this caused a problem since I only wanted to host the latest versions of said applications. I didn't want to host both the full binary for every release and patch packages to go from one version to the next.
+
+> Eventually I did implement an update system for already installed apps using patch packages and scrapped the chunks approach. These patches AKA deltas are represented as a zip file, which in turn contain the deltas for each of the files that were changed in the update.  
+
 > Another thing I thought about was the fact that you not only have to host patch packages to go from lets say version 1.3 to 1.4. But also patch packages to go from any of the even older version to the most recent one. So I would have to create a ton of patch packages to support people updating from not only 1.3 -> 1.4 but also 1.2 -> 1.4, 1.1 -> 1.4 and so on.
 
 Eventually I implemented the delta updates like so:

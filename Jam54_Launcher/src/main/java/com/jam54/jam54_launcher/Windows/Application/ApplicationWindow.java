@@ -13,6 +13,8 @@ import com.jam54.jam54_launcher.Updating.FileSplitterCombiner;
 import com.jam54.jam54_launcher.Updating.Hashes;
 import com.jam54.jam54_launcher.Windows.GamesPrograms.OptionsWindow;
 import com.jam54.jam54_launcher.database_access.Other.ApplicationInfo;
+import com.nothome.delta.GDiffPatcher;
+import com.nothome.delta.RandomAccessFileSeekableSource;
 import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
@@ -31,6 +33,8 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Popup;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.*;
@@ -44,7 +48,14 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
+import java.util.zip.ZipInputStream;
 
 /**
  * This window displays more detail about a specific app.
@@ -903,38 +914,139 @@ public class ApplicationWindow extends VBox implements InvalidationListener
             //endregion
 
             //region Update the changed files
-            Map<Integer, String> hashesChunksLocal = null;
-            Map<Integer, String> hashesChunksCloud = null;
-            Map<Integer, String> chunksToReplace = null;
-
-            filesDownloaded = 0;
-            filesToDownload = filesToBeUpdated.size();
-            for (Path fileToBeUpdated : filesToBeUpdated)
-            {
-                System.out.println("Downloading chunks for file: " + fileToBeUpdated);
-                filesDownloaded++;
-                updateMessage(SaveLoadManager.getTranslation("APPLYINGPATCH") + " " + (Math.round((filesDownloaded/filesToDownload)*100) + "%"));
-                updateProgress(filesDownloaded, filesToDownload);
-
-                hashesChunksLocal = hashes.calculateChunkHashes(Path.of(appInstallationPath.toString(), fileToBeUpdated.toString()));
-
+            if ((model.getApp(openedAppId).version() != null) && model.getApp(openedAppId).updateAvailable())
+            {//If the app is installed and has an update available. Should it just have an updateAvailable but not be installed yet, we don't want to/can't apply a delta
                 try
                 {
-                    Path tempFile = Files.createTempFile("HashesChunksCloud", ".txt");
-                    tempFile.toFile().deleteOnExit();
-                    DownloadFile.saveUrlToFile(new URL(appsBaseDownloadUrl + openedAppId + "/" + fileToBeUpdated.toString().replace("\\", "/").replace(" ", "%20") + ".hashes"), tempFile, 10000, 10000, 10);
+                    updateMessage(SaveLoadManager.getTranslation("DOWNLOADINGPATCH"));
+                    updateProgress(0, 1); //Reset progress bar to 0% progression
 
-                    hashesChunksCloud = new HashMap<>();
-                    for (String line : FileUtils.readLines(tempFile.toFile(), StandardCharsets.UTF_8))
+                    Path zipDeltasSplitTXT = Files.createTempFile("Split" ,".txt");
+                    zipDeltasSplitTXT.toFile().deleteOnExit();
+                    DownloadFile.saveUrlToFile(new URL(appsBaseDownloadUrl + openedAppId + "/Deltas/Split.txt"), zipDeltasSplitTXT, 10000, 10000, 10);
+
+                    List<String> splittedDeltas; //This stream contains strings with the names of the original unsplitted delta files, if there are any delta files that were splitted
+                    try (Stream<String> stream = Files.lines(zipDeltasSplitTXT))
                     {
-                        String[] keyValue = line.split("\\|"); //Escaped '|' character
-                        hashesChunksCloud.put(Integer.parseInt(keyValue[1]), keyValue[0]);
+                        splittedDeltas = stream.map(line -> line.replace("\\", "/").replace(" ", "%20")).toList();
+                    }
+
+                    Properties zipDeltasSizesProperties = new Properties();
+
+                    Path zipDeltasSizes = Files.createTempFile("Sizes", ".properties");
+                    zipDeltasSizes.toFile().deleteOnExit();
+                    DownloadFile.saveUrlToFile(new URL(appsBaseDownloadUrl + openedAppId + "/Deltas/Sizes.properties"), zipDeltasSizes, 10000, 10000, 10);
+
+                    try (InputStream in = Files.newInputStream(zipDeltasSizes))
+                    {
+                        zipDeltasSizesProperties.load(in);
+                    }
+
+                    String zipWithDeltasFilename = model.getApp(openedAppId).version() + "-" + model.getApp(openedAppId).availableVersion() + ".zip";
+                    Path zipWithDeltas;
+
+                    if (splittedDeltas.contains(zipWithDeltasFilename))
+                    {//This means this zip with deltas was larger than our threshold filesize, and was therefore splitted into multiple parts.
+                        Path dirWithPartsOfZip = Files.createTempDirectory(zipWithDeltasFilename);
+
+                        AtomicReference<Double> totalDownloadedBytes = new AtomicReference<>(0.0);
+
+                        boolean allPartsDownloaded = false;
+                        for (int partIndex = 1; !allPartsDownloaded; partIndex++)
+                        {
+                            String zipDeltaPartFilename = zipWithDeltasFilename + ".part" + partIndex;
+                            System.out.println("Downloading part " + partIndex + " of the zip delta: " + zipWithDeltasFilename);
+
+                            try
+                            {
+                                long amountOfBytesToDownload = Long.parseLong(zipDeltasSizesProperties.getProperty(zipWithDeltasFilename));
+
+                                DownloadFile.saveUrlToFile(
+                                        new URL(appsBaseDownloadUrl + openedAppId + "/Deltas/" + zipDeltaPartFilename),
+                                        Path.of(dirWithPartsOfZip.toString(), zipDeltaPartFilename),
+                                        10000,
+                                        10000,
+                                        10,
+                                        downloadedBytes ->
+                                        {
+                                            totalDownloadedBytes.set(totalDownloadedBytes.get() + downloadedBytes);
+
+                                            updateMessage(SaveLoadManager.getTranslation("DOWNLOADINGPATCH") + " " + (Math.round((totalDownloadedBytes.get() / amountOfBytesToDownload) * 100) + "%"));
+                                            updateProgress(totalDownloadedBytes.get(), amountOfBytesToDownload);
+                                        }
+                                );
+                            }
+                            catch (IOException e)
+                            {//If an IO exception occurs, it means we were trying to download a non existing part, therefore we downloaded all the parts
+                                allPartsDownloaded = true;
+                            }
+                        }
+
+                        Path splitTXTForMergingSplittedZipDeltas = Path.of(dirWithPartsOfZip.toString(), "Split.txt");
+                        FileUtils.copyFile(zipDeltasSplitTXT.toFile(), splitTXTForMergingSplittedZipDeltas.toFile()); //The Split.txt file needs to be present in this directory with the parts of the splitted deltazip in order for the FileSplitterCombiner to be able to merge them into a single file again
+
+                        new FileSplitterCombiner().combineSplitFiles(dirWithPartsOfZip); //This will merge the splitted files and create the original zip with deltas file
+                        zipWithDeltas = Path.of(dirWithPartsOfZip.toString(), zipWithDeltasFilename);
+                    }
+                    else
+                    {//The zip wasn't splitted and can be downloaded as a single file
+                        System.out.println("Downloading the zip delta: " + zipWithDeltasFilename);
+                        zipWithDeltas = Files.createTempFile("", zipWithDeltasFilename);
+                        zipWithDeltas.toFile().deleteOnExit();
+
+                        long amountOfBytesToDownload = Long.parseLong(zipDeltasSizesProperties.getProperty(zipWithDeltasFilename));
+                        AtomicReference<Double> totalDownloadedBytes = new AtomicReference<>(0.0);
+
+                        DownloadFile.saveUrlToFile(
+                                new URL(appsBaseDownloadUrl + openedAppId + "/Deltas/" + zipWithDeltasFilename),
+                                zipWithDeltas,
+                                10000,
+                                10000,
+                                10,
+                                downloadedBytes ->
+                                {
+                                    totalDownloadedBytes.set(totalDownloadedBytes.get() + downloadedBytes);
+
+                                    updateMessage(SaveLoadManager.getTranslation("DOWNLOADINGPATCH") + " " + (Math.round((totalDownloadedBytes.get() / amountOfBytesToDownload) * 100) + "%"));
+                                    updateProgress(totalDownloadedBytes.get(), amountOfBytesToDownload);
+                                }
+                        );
+                    }
+
+                    ZipInputStream zipInputStream = new ZipInputStream(new FileInputStream(zipWithDeltas.toString()));
+
+                    int amountOfDeltasProcessed = 0;
+                    int amountOfDeltasInZip;
+                    try (ZipFile zipFile = new ZipFile(zipWithDeltas.toFile()))
+                    {
+                        amountOfDeltasInZip = zipFile.size();
+                    }
+
+                    ZipEntry zipEntry;
+                    while ((zipEntry = zipInputStream.getNextEntry()) != null)
+                    {
+                        amountOfDeltasProcessed++;
+                        updateMessage(SaveLoadManager.getTranslation("APPLYINGPATCH") + " " + (Math.round(((float) amountOfDeltasProcessed /amountOfDeltasInZip)*100) + "%"));
+                        updateProgress(amountOfDeltasProcessed, amountOfDeltasInZip);
+
+                        Path sourceFileRelativePath = Path.of(FilenameUtils.removeExtension(zipEntry.getName()));
+                        File sourceFile = Path.of(appInstallationPath.toString(), sourceFileRelativePath.toString()).toFile(); //The extension of the file inside this zip of deltas would be ".gdiff", since we add ".gdiff" to every filename when creating the delta. So we need to remove that extension first
+                        File patchedFile = new File(Path.of(appInstallationPath.toString(), UUID.randomUUID().toString()).toString());
+
+                        if (filesToBeUpdated.contains(sourceFileRelativePath))
+                        {
+                            System.out.println("Applying the delta: " + zipEntry.getName());
+                            patch(sourceFile, zipInputStream, patchedFile);
+
+                            sourceFile.delete();
+                            patchedFile.renameTo(sourceFile); //Renames the patchedFile to sourceFile and with that also moves it to the location of where the sourceFile resided
+                        }
+
+                        zipInputStream.closeEntry();
                     }
                 }
                 catch (IOException e)
                 {
-                    // Handle the exception (connection/read timeouts)
-
                     Platform.runLater(() -> {//Since we are here in a Task i.e. a separate thread we need to make any GUI related calls using Platform.runLater()
                         ErrorMessage errorMessage = new ErrorMessage(false, SaveLoadManager.getTranslation("FailedDownloadingFiles"));
                         errorMessage.show();
@@ -942,55 +1054,42 @@ public class ApplicationWindow extends VBox implements InvalidationListener
                     super.cancel(); //Makes it so the "endresult" of the Task was "CANCELLED" and not SUCCESFUL"
                     return null; //Exit/close and stop further execution of the Task
                 }
+            }
+            //endregion
 
-                chunksToReplace = hashesChunksCloud; //No need to make a deep copy, we will replace `hashesChunksCloud` in the next iteration of the loop
-                chunksToReplace.entrySet().removeAll(hashesChunksLocal.entrySet());
+            //region Here we hash all the "files to be updated" files to check if they were updated correctly. In the case the hash isn't correct, we redownload the entire file and replace it.
+            //In the if above we check if there is an update available and if so we apply a delta to the "files to be updated" files, but we still want to verify if applying the delta produced the correct files.
+            //On the other hand, the user might have wanted to verify the file integrity of this app. In that case we don't want to download the entire zip with deltas, since those deltas only "work" when the source file isn't corrupt/changed. So the "files to be updated" files that were found after verifying the file integrity will be updated here by redownloading and replacing them.
+            Map<Path, String> filepathToHash_Cloud = hashesCloud.entrySet().stream().collect(Collectors.toMap(Entry::getValue, Entry::getKey));
 
-                try (RandomAccessFile localFileToUpdate = new RandomAccessFile(Path.of(appInstallationPath.toString(), fileToBeUpdated.toString()).toFile(), "rw"))
+            float filesVerified = 0;
+            float filesToVerify = filesToBeUpdated.size();
+            for (Path fileToUpdate : filesToBeUpdated)
+            {
+                System.out.println("Verifying: " + fileToUpdate);
+                filesVerified++;
+                updateMessage(SaveLoadManager.getTranslation("VERIFYING") + " " + (Math.round((filesVerified/filesToVerify)*100) + "%"));
+                updateProgress(filesVerified, filesToVerify);
+
+                if (!hashes.calculateHash(Path.of(appInstallationPath.toString(), fileToUpdate.toString())).equals(filepathToHash_Cloud.get(fileToUpdate)))
                 {
-                    for(Map.Entry<Integer, String> chunkToReplace : chunksToReplace.entrySet())
+                    try
                     {
-                        System.out.println("Downloading chunk " + chunkToReplace.getKey());
-                        byte[] newBytes;
-
-                        try
-                        {
-                            Path tempFile = Files.createTempFile("newBytes", ".bin");
-                            tempFile.toFile().deleteOnExit();
-                            DownloadFile.saveUrlToFile(new URL(appsBaseDownloadUrl + openedAppId + "/" + "Chunks/" + chunkToReplace.getValue()), tempFile, 10000, 10000, 10);
-
-                            newBytes = FileUtils.readFileToByteArray(tempFile.toFile());
-                        }
-                        catch (IOException e)
-                        {
-                            // Handle the exception (connection/read timeouts)
-
-                            Platform.runLater(() -> {//Since we are here in a Task i.e. a separate thread we need to make any GUI related calls using Platform.runLater()
-                                ErrorMessage errorMessage = new ErrorMessage(false, SaveLoadManager.getTranslation("FailedDownloadingFiles"));
-                                errorMessage.show();
-                            });
-                            super.cancel(); //Makes it so the "endresult" of the Task was "CANCELLED" and not SUCCESFUL"
-                            return null; //Exit/close and stop further execution of the Task
-                        }
-
-                        localFileToUpdate.seek(chunkToReplace.getKey());
-                        localFileToUpdate.write(newBytes);
-
-                        // If the new chunk isn't a "full sized" chunk. This means that this chunk is the last chunk in the file. Now if this last chunk is smaller than the previous last chunk in the local file. The new chunk would overwrite the new bytes, but wouldn't remove the old excess bytes of the larger previous chunk. In that case we will need to truncate the excess bytes in the local file.
-                        if (newBytes.length < Hashes.CHUNK_SIZE)
-                        {
-                            localFileToUpdate.setLength(chunkToReplace.getKey() + newBytes.length);
-                        }
+                        System.out.println("Downloading file after verifying: " + fileToUpdate);
+                        // Attempt to download the file
+                        DownloadFile.saveUrlToFile(new URL(appsBaseDownloadUrl + openedAppId + "/" + fileToUpdate.toString().replace("\\", "/").replace(" ", "%20")), Path.of(appInstallationPath.toString(), fileToUpdate.toString()), 10000, 10000, 10);
                     }
-
-                    //If the chunksToReplace Map is empty, this means that the file in the cloud is an empty file without any content. In that case we don't have any chunks to replace the old chunks of this file with on the user's disk. That's why we do `.setLength(0)` to remove the contents of the file.
-                    if (chunksToReplace.isEmpty())
+                    catch (IOException e)
                     {
-                        localFileToUpdate.setLength(0);
+                        // Handle the exception (connection/read timeouts)
+
+                        Platform.runLater(() -> {//Since we are here in a Task i.e. a separate thread we need to make any GUI related calls using Platform.runLater()
+                            ErrorMessage errorMessage = new ErrorMessage(false, SaveLoadManager.getTranslation("FailedDownloadingFiles"));
+                            errorMessage.show();
+                        });
+                        super.cancel(); //Makes it so the "endresult" of the Task was "CANCELLED" and not SUCCESFUL"
+                        return null; //Exit/close and stop further execution of the Task
                     }
-                } catch (IOException e)
-                {
-                    throw new RuntimeException(e);
                 }
             }
             //endregion
@@ -1003,6 +1102,24 @@ public class ApplicationWindow extends VBox implements InvalidationListener
             //endregion
 
             return null;
+        }
+
+        private void patch(File file, InputStream patch, File patched) throws IOException
+        {
+            OutputStream out = null;
+            RandomAccessFile raf = null;
+            try
+            {
+                raf = new RandomAccessFile(file, "r");
+                RandomAccessFileSeekableSource source = new RandomAccessFileSeekableSource(raf);
+                out = new BufferedOutputStream(new FileOutputStream(patched));
+                new GDiffPatcher().patch(source, patch, out);
+            }
+            finally
+            {
+                IOUtils.closeQuietly(out);
+                IOUtils.closeQuietly(raf);
+            }
         }
     }
 
