@@ -1045,14 +1045,10 @@ public class ApplicationWindow extends VBox implements InvalidationListener
                         zipInputStream.closeEntry();
                     }
                 }
-                catch (IOException e)
+                catch (IOException | NumberFormatException e)
                 {
-                    Platform.runLater(() -> {//Since we are here in a Task i.e. a separate thread we need to make any GUI related calls using Platform.runLater()
-                        ErrorMessage errorMessage = new ErrorMessage(false, SaveLoadManager.getTranslation("FailedDownloadingFiles"));
-                        errorMessage.show();
-                    });
-                    super.cancel(); //Makes it so the "endresult" of the Task was "CANCELLED" and not SUCCESFUL"
-                    return null; //Exit/close and stop further execution of the Task
+                    //If we catch an error here, it means that something went wrong while trying to download/apply the delta. This could either be because a source file to which a delta had to be applied didn't exist on disk. Or we tried to download a deltazip for a non-existent version, ... .
+                    //In those cases we just catch the errors but don't do anything with them. In what follows we will anyway verify if all the files have the correct content, and redownload them if that isn't the case.
                 }
             }
             //endregion
