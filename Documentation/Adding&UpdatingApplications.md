@@ -76,7 +76,7 @@ INSERT INTO applications VALUES(8, 'Flash', 'com/jam54/jam54_launcher/img/applic
 
 INSERT INTO applications VALUES(9, 'Sky Screenshot Stats', 'com/jam54/jam54_launcher/img/applicationLogos/SkyScreenshotStats.jpg', 0, 1, 0, 1654128000, 1657238400, 0);
 
-INSERT INTO applications VALUES(10, 'Takma', 'com/jam54/jam54_launcher/img/applicationLogos/Takma.png', 0, 0, 1, 1692715543, 1713620953, 0);
+INSERT INTO applications VALUES(10, 'Takma', 'com/jam54/jam54_launcher/img/applicationLogos/Takma.png', 0, 0, 1, 1692715543, 1715795711, 0);
 
 
 
@@ -288,8 +288,8 @@ appVersion8=1.9.0
 appLatestUpdate8=1653004800
 appVersion9=1.1.12
 appLatestUpdate9=1657238400
-appVersion10=1.4.11
-appLatestUpdate10=1713620953
+appVersion10=1.4.12
+appLatestUpdate10=1715795711
 ```
 
 ### Jam54LauncherData.java
@@ -429,11 +429,17 @@ Open the `applicationsVersions.properties` file, and update the value behind the
 
       Hashes hashes = new Hashes();
       hashes.calculateHashesTXTFiles(paths);
-      hashes.createAndCalculateChunkHashesTXTFiles(paths);
+      //Note: don't add the 2 lines below for apps that don't need deltas i.e. don't have any previous versions
+      hashes.createAndCalculateDeltaFiles(
+          Path.of("AppBuildsPreviousVersions\\0"), //This folder contains subfolders for each version of the app, where the name of each subfolder is the version of the app it contains
+          Path.of("pathToRootFolder\\0"), //This is the root folder that contains the files and folders of the current version of the app
+          "x.y.z" //The version number of the current version of the app
+      );
+      fileSplitterCombiner.splitFilesLargerThan(99, Path.of("pathToRootFolder\\0\\Deltas"));
       ```
 - Run the application
 - Remove the lines you added to the `Main.java` file in the previous step
-- Each of the subfolders should now contain both a `Hashes.txt` file and a `Split.txt` file
+- Each of the subfolders should now contain both a `Hashes.txt` file and a `Split.txt` file. If the app had a previous version, the subfolder of the app should also contain a folder called `Deltas`
 - In root directory containing all of the subfolders, run the following command (adjust the name of the subfolders in the for loop, so that it contains all of the subfolders)
   - `for folder in 0 1 2 3 5 6 8 10; do cd "$folder" && grep -F -f Split.txt Hashes.txt | grep .part -v | tee linesToRemove.txt && grep -F -f linesToRemove.txt Hashes.txt -v | tee newHashes.txt && rm linesToRemove.txt && mv newHashes.txt Hashes.txt && cd ..; done`
     > This command will remove the lines in `Hashes.txt` that point to the original unsplitted files that were larger than the specified treshold to the `splitFilesLargerThan()` function
