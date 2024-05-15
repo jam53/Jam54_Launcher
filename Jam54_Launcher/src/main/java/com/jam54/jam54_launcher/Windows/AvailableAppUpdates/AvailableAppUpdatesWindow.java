@@ -123,8 +123,8 @@ public class AvailableAppUpdatesWindow extends VBox implements InvalidationListe
             updateAll_Button.setText(SaveLoadManager.getTranslation("UpdateAll"));
             updateAll_Button.setVisible(true);
         }
-        else if (!appsThatCanBeInstalled.isEmpty() && appsThatCanBeInstalled.size() != model.getSizeOfAppsToUpdateQueue())
-        {//Make the button visible if there are applications that can be installed && not all applications that can be installed have been added to the queue yet
+        else if (!appsThatCanBeInstalled.isEmpty() && appsThatCanBeInstalled.size() != model.getSizeOfAppsToUpdateQueue() && model.getUpdatingApp() == null)
+        {//Make the button visible if there are applications that can be installed && not all applications that can be installed have been added to the queue yet && there are no apps currently updating
             updateAll_Button.setText(SaveLoadManager.getTranslation("InstallAll"));
             updateAll_Button.setVisible(true);
         }
