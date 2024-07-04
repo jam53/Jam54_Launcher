@@ -114,13 +114,30 @@ If on the other hand the user would have already had the application installed, 
 This of course isn't really efficient when handling updates to already installed applications. If I were to change just one file of an application and push an update. This would mean the user would have to redownload the entire application.
 
 I tried to improve on this in the Java implementation.
-I first did some research and as far as I understand most people/companies tend to have a full package containing all of the binaries. And then patch packages that are shipped for every new release. For me this caused a problem since I only wanted to host the latest versions of said applications. I didn't want to host both the full binary for every release and patch packages to go from one version to the next.
+After some research I came to the conclusion that most people/companies tend to have a full package containing all of the binaries. After which patch packages are shipped for every new release. For me this initially caused a problem since I only wanted to host the latest versions of said applications. I didn't want to host both the full binary for every release and patch packages to go from one version to the next.
 
-> Eventually I did implement an update system for already installed apps using patch packages and scrapped the chunks approach. These patches AKA deltas are represented as a zip file, which in turn contain the deltas for each of the files that were changed in the update.  
+Eventually I did implement an update system for already installed apps using patch packages and scrapped the chunks approach. In this delta update system, patches are represented as a zip file. Which in turn contain the deltas for each of the files that were changed in the update.  
+The creation of patches and the way they are applied roughly goes as follows:
 
-> Another thing I thought about was the fact that you not only have to host patch packages to go from lets say version 1.3 to 1.4. But also patch packages to go from any of the even older version to the most recent one. So I would have to create a ton of patch packages to support people updating from not only 1.3 -> 1.4 but also 1.2 -> 1.4, 1.1 -> 1.4 and so on.
+Suppose we have one folder which contains the latest version of an app. We then have another folder which contains subfolders for each of the previous versions of the app for which we would like to generate a patch. The name of these subfolders correspond to the version of the app in the subfolder.
 
-Eventually I implemented the delta updates like so:
+We can now loop over all the subfolders with previous versions of the app, and compare each of them to the folder that contains the latest version. This process will result in a new folder called `Deltas` to be created. After each iteration we generate a zip file which we will place in this `Deltas` folder.  
+The created zip file represents the patch that can be used to go from one version to the next. The name of the zip file follows the format `A.B.C-X.Y.Z.zip` where `A.B.C` represents the source version and `X.Y.Z` destination version of the app to which the patch applies. 
+
+The content of these zip files (patches) mirror the exact same directory/file structure of all the files which are present in the destination version of the app, and were also present in the source version directory. With the exception that every filename is appended with the `.gdiff` suffix.  
+This means that files that were deleted won't have a corresponding `.gdiff` file in the patch (the zip file) and neither will new files that didn't exist in the source. However, files that haven't been changed from one version to the next still have a corresponding `.gdiff` file.
+
+As could already be inferred from above, the delta between two different versions of the same file is stored in a `.gdiff` file. GDIFF is a binary format that is used to store binary deltas.  
+The binary deltas are computed using the xdelta algorithm/program originally developed by Joshua MacDonald. xdelta generates the difference between two binary files. Whose output which we call a *diff*, is then stored in the GDIFF format.
+
+When it comes to applying the patch. We first compute the hashes of all the files that are currently present on disk. These are then compared to the hashes of all the files in the new version of the app. The hashes of the files present in the new version of the app can be obtained from the `Hashes.txt` file, more about this file later.  
+Based on the hashes of our locally stored files and the ones of the new version, we can compute the files that need to be deleted, downloaded and updated. Deletable files are files that are no longer present in the new version and may therefore be deleted, this is done first. The next step is to download new files in their entirety that weren't present in the previous version. The remaining files are the ones that were both present in the previous and current version of the app. These are the ones we will update/patch using the deltas we computed beforehand.  
+The patching process of these files is performed by iterating over all of the `.gdiff` files present in the zip that represents our patch. Using the old version of the file on disk and the corresponding `.gdiff` file from our patch we can create the new version of the file.  
+Once all the files that needed to be deleted, downloaded or updated have been processed, we perform a final check by hashing all of the files of our app once again. Should there be a discrepency between these hashes that we computed and the ones we expect based on the `Hashes.txt` file. In that case we redownload these files in their entirety and replace the local file that was obtained by applying a delta.
+
+Finally, the patches represented by zip files can be split into smaller parts if they are larger than a specified file size treshhold. The previously mentioned format `A.B.C-X.Y.Z.zip` now becomes `A.B.C-X.Y.Z.zip.partN` where `N` represents the index of the splitted zip file starting at 1.
+
+Initially I implemented delta updates using chunks, this was later superseded by delta updates that utilize binary diffs which is explained above. The albeit worse way of using chunks for delta updates can be found below for the sake of completeness:
 - For any new version of an application, hash all of the files and store them in a file called `Hashes.txt` and place this `Hashes.txt` file in the root directory of the application's files
     - Example of `Hashes.txt`
 ```
