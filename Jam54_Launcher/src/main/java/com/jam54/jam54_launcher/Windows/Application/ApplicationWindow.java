@@ -49,7 +49,9 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -789,12 +791,22 @@ public class ApplicationWindow extends VBox implements InvalidationListener
         private String appsBaseDownloadUrl;
         private HashMap<String, Path> hashesLocal;
         private HashMap<String, Path> hashesCloud;
+        private ExecutorService downloadExecutor;
 
         public InstallApp(int appId)
         {
             openedAppId = appId;
             appInstallationPath = Path.of(SaveLoadManager.getData().getDataPath().toString(), openedAppId + "");
             appsBaseDownloadUrl = "";
+            downloadExecutor = new ThreadPoolExecutor(
+                    5,
+                    5,
+                    0L,
+                    TimeUnit.MILLISECONDS,
+                    new LinkedBlockingQueue<>(),
+                    Thread.ofVirtual().factory()
+            ); //Create a bounded virtual thread pool to download multiple files concurrently, specifically when downloading many files during the initial installation of an app. This allows for downloading up to 5 files simultaneously, improving overall efficiency. As in minimizing the time that's lost between starting the next download once the current file finished downloading, this reduces downtime between downloads by fully utilizing the bandwidth.
+            //A bounded pool is used to prevent starting hundreds of downloads at once, which could overwhelm system and network resources.
         }
 
         @Override
@@ -815,7 +827,7 @@ public class ApplicationWindow extends VBox implements InvalidationListener
                     ErrorMessage errorMessage = new ErrorMessage(false, SaveLoadManager.getTranslation("ErrorLoadingJam54LauncherConfig"));
                     errorMessage.show();
                 });
-                super.cancel(); //Makes it so the "endresult" of the Task was "CANCELLED" and not SUCCESFUL"
+                super.cancel(); //Makes it so the "endresult" of the Task was "CANCELLED" and not "SUCCESSFUL"
                 return null; //Exit/close and stop further execution of the Task
             }
             //endregion
@@ -847,7 +859,7 @@ public class ApplicationWindow extends VBox implements InvalidationListener
                     ErrorMessage errorMessage = new ErrorMessage(false, SaveLoadManager.getTranslation("FailedDownloadingFiles"));
                     errorMessage.show();
                 });
-                super.cancel(); //Makes it so the "endresult" of the Task was "CANCELLED" and not SUCCESFUL"
+                super.cancel(); //Makes it so the "endresult" of the Task was "CANCELLED" and not "SUCCESSFUL"
                 return null; //Exit/close and stop further execution of the Task
             }
             //endregion
@@ -885,33 +897,35 @@ public class ApplicationWindow extends VBox implements InvalidationListener
             //endregion
 
             //region Download the missing/new files
-            float filesDownloaded = 0;
+            AtomicInteger filesDownloaded = new AtomicInteger(0);
             float filesToDownload = filesToBeDownloaded.size();
+            List<Future<?>> pendingDownloads = new ArrayList<>();
             for (Path fileToDownload : filesToBeDownloaded)
             {
-                System.out.println("Downloading: " + fileToDownload);
-                filesDownloaded++;
-                updateMessage(SaveLoadManager.getTranslation("DOWNLOADING") + " " + (Math.round((filesDownloaded/filesToDownload)*100) + "%"));
-                updateProgress(filesDownloaded, filesToDownload);
+                Callable<Void> callable = () -> {
+                    System.out.println("Downloading: " + fileToDownload);
 
-                try
-                {
                     // Attempt to download the file
                     DownloadFile.saveUrlToFile(new URL(appsBaseDownloadUrl + openedAppId + "/" + fileToDownload.toString().replace("\\", "/").replace(" ", "%20")), Path.of(appInstallationPath.toString(), fileToDownload.toString()), 10000, 10000, 10);
-                }
-                catch (IOException e)
-                {
-                    // Handle the exception (connection/read timeouts)
 
-                    Platform.runLater(() -> {//Since we are here in a Task i.e. a separate thread we need to make any GUI related calls using Platform.runLater()
-                        ErrorMessage errorMessage = new ErrorMessage(false, SaveLoadManager.getTranslation("FailedDownloadingFiles"));
-                        errorMessage.show();
-                    });
-                    super.cancel(); //Makes it so the "endresult" of the Task was "CANCELLED" and not SUCCESFUL"
-                    return null; //Exit/close and stop further execution of the Task
-                }
+                    filesDownloaded.incrementAndGet();
+                    updateMessage(SaveLoadManager.getTranslation("DOWNLOADING") + " " + (Math.round((filesDownloaded.get()/filesToDownload)*100) + "%"));
+                    updateProgress(filesDownloaded.get(), filesToDownload);
+
+                    System.out.println("Finished downloading: " + fileToDownload);
+
+                    return null; //If the download was successful, return null to indicate that the callable completed successfully. If the attempt to download using `DownloadFile.saveUrlToFile` threw an exception, the return statement wouldn't be reached and the
+                };
+                pendingDownloads.add(downloadExecutor.submit(callable));
             }
             //endregion
+
+            //Wait for all of the started callables i.e. downloads to complete before continuing.
+            if (!waitForDownloads(pendingDownloads))
+            {
+                super.cancel(); //Makes it so the "endresult" of the Task was "CANCELLED" and not "SUCCESSFUL"
+                return null; //Exit/close and stop further execution of the Task
+            }
 
             //region Update the changed files
             if ((model.getApp(openedAppId).version() != null) && model.getApp(openedAppId).updateAvailable())
@@ -1058,37 +1072,41 @@ public class ApplicationWindow extends VBox implements InvalidationListener
             //On the other hand, the user might have wanted to verify the file integrity of this app. In that case we don't want to download the entire zip with deltas, since those deltas only "work" when the source file isn't corrupt/changed. So the "files to be updated" files that were found after verifying the file integrity will be updated here by redownloading and replacing them.
             Map<Path, String> filepathToHash_Cloud = hashesCloud.entrySet().stream().collect(Collectors.toMap(Entry::getValue, Entry::getKey));
 
-            float filesVerified = 0;
+            AtomicInteger filesVerified = new AtomicInteger(0);
             float filesToVerify = filesToBeUpdated.size();
+            pendingDownloads.clear();
             for (Path fileToUpdate : filesToBeUpdated)
             {
-                System.out.println("Verifying: " + fileToUpdate);
-                filesVerified++;
-                updateMessage(SaveLoadManager.getTranslation("VERIFYING") + " " + (Math.round((filesVerified/filesToVerify)*100) + "%"));
-                updateProgress(filesVerified, filesToVerify);
-
-                if (!hashes.calculateHash(Path.of(appInstallationPath.toString(), fileToUpdate.toString())).equals(filepathToHash_Cloud.get(fileToUpdate)))
+                Callable<Void> callable = () ->
                 {
-                    try
+                    System.out.println("Verifying: " + fileToUpdate);
+
+                    if (!hashes.calculateHash(Path.of(appInstallationPath.toString(), fileToUpdate.toString())).equals(filepathToHash_Cloud.get(fileToUpdate)))
                     {
                         System.out.println("Downloading file after verifying: " + fileToUpdate);
+
                         // Attempt to download the file
                         DownloadFile.saveUrlToFile(new URL(appsBaseDownloadUrl + openedAppId + "/" + fileToUpdate.toString().replace("\\", "/").replace(" ", "%20")), Path.of(appInstallationPath.toString(), fileToUpdate.toString()), 10000, 10000, 10);
-                    }
-                    catch (IOException e)
-                    {
-                        // Handle the exception (connection/read timeouts)
 
-                        Platform.runLater(() -> {//Since we are here in a Task i.e. a separate thread we need to make any GUI related calls using Platform.runLater()
-                            ErrorMessage errorMessage = new ErrorMessage(false, SaveLoadManager.getTranslation("FailedDownloadingFiles"));
-                            errorMessage.show();
-                        });
-                        super.cancel(); //Makes it so the "endresult" of the Task was "CANCELLED" and not SUCCESFUL"
-                        return null; //Exit/close and stop further execution of the Task
+                        filesVerified.incrementAndGet();
+                        updateMessage(SaveLoadManager.getTranslation("VERIFYING") + " " + (Math.round((filesVerified.get() / filesToVerify) * 100) + "%"));
+                        updateProgress(filesVerified.get(), filesToVerify);
+
+                        System.out.println("Finished downloading file after verifying: " + fileToUpdate);
                     }
-                }
+
+                    return null; //If the download was successful, return null to indicate that the callable completed successfully. If the attempt to download using `DownloadFile.saveUrlToFile` threw an exception, the return statement wouldn't be reached and the
+                };
+                pendingDownloads.add(downloadExecutor.submit(callable));
             }
             //endregion
+
+            //Wait for all of the started callables i.e. downloads to complete before continuing.
+            if (!waitForDownloads(pendingDownloads))
+            {
+                super.cancel(); //Makes it so the "endresult" of the Task was "CANCELLED" and not "SUCCESSFUL"
+                return null; //Exit/close and stop further execution of the Task
+            }
 
             //region In case there were splitted files, merge them
             FileSplitterCombiner fileSplitterCombiner = new FileSplitterCombiner();
@@ -1116,6 +1134,35 @@ public class ApplicationWindow extends VBox implements InvalidationListener
                 IOUtils.closeQuietly(out);
                 IOUtils.closeQuietly(raf);
             }
+        }
+
+        /**
+         * Waits for all pending download tasks to complete. If any download fails, it cancels the remaining tasks and informs the user by showing an error message.
+         *
+         * @param pendingDownloads a list of {@link Future} objects representing the pending download tasks.
+         * @return true if all downloads completed successfully, false if any download failed
+         */
+        private boolean waitForDownloads(List<Future<?>> pendingDownloads)
+        {
+            for (Future<?> pendingDownload : pendingDownloads)
+            {
+                try
+                {
+                    pendingDownload.get(); //This will block until the task (AKA download) completes or throws an exception
+                }
+                catch (Exception e) //Handle exceptions thrown by the tasks. In case a download failed because of a connection/read timeout, cancel the remaining tasks in the thread pool and inform the user.
+                {
+                    downloadExecutor.shutdownNow();
+
+                    Platform.runLater(() -> {//Since we are here in a Task i.e. a separate thread we need to make any GUI related calls using Platform.runLater()
+                        ErrorMessage errorMessage = new ErrorMessage(false, SaveLoadManager.getTranslation("FailedDownloadingFiles"));
+                        errorMessage.show();
+                    });
+                    
+                    return false;
+                }
+            }
+            return true;
         }
     }
 
