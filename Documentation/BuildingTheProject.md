@@ -2,7 +2,7 @@
 As described in [Understanding what's in the project](./WhatsInTheRepository.md), there are 2 projects in this repository, the *Jam54Launcher* and *Updater*. Naturally this means that we will need to build twice.
 
 ## Building The Jam54_Launcher
-Build the main project first, *Jam54Launcher*. This can be done by executing the Maven command `clean` followed by the Maven command `package` which will create an uber jar. The uber jar contains all of the dependencies required to run the Jam54 Launcher.
+Build the main project first, *Jam54Launcher*. This can be done by executing the Maven command `mvnw clean` followed by the Maven command `mvnw package` which will create an uber jar. The uber jar contains all of the dependencies required to run the Jam54 Launcher.
 
 This build process should result in a folder called *target* to be created, in which the uber jar `Jam54_Launcher-1.0-SNAPSHOT-jar-with-dependencies.jar` will be placed. 
 
@@ -10,6 +10,16 @@ This build process should result in a folder called *target* to be created, in w
 Once we built the *Jam54Launcher*, we should obfuscate the package within the uber jar that contains our code. This can be done by running the `ObfuscateJam54LauncherBuild.bat` script.
 
 Rename the obfuscated uber jar to `Jam54_Launcher.jar` and move it to a new empty folder.
+
+> When you run the ObfuscateJam54LauncherBuild.bat script, you will be prompted to provide paths for the following resources:
+> 1. **Path to `proguard.bat`:**
+>    - This is the path to the `proguard.bat` file located in the `bin` directory of the ProGuard distribution. You can download ProGuard from the [official release page](https://github.com/Guardsquare/proguard/releases/latest).
+> 
+> 2. **Path to the Skidfuscator Jar:**
+>    - This is the path to the Skidfuscator jar file. You can obtain the Skidfuscator jar from the [Skidfuscator release page](https://github.com/skidfuscatordev/skidfuscator-java-obfuscator/releases/latest).
+> 
+> 3. **Path to the JDK Modules:**
+>    - This is the path to the JDK modules directory (not to be confused with the JavaFX modules). If you have followed the instructions in the [project setup guide](./SettingUpTheProject.md), the JDK should already be installed. The JDK modules will be located in a subfolder called `jmods` of the JDK installation.
 
 ## Building The Updater
 Navigate to the `Updater` subfolder from the command line and execute the following command:

@@ -1,39 +1,62 @@
-# General Overview Of The Jam54 Laucher
-## The idea
-Initially I had developed a few programs but I didn't really have one central place where people could download them from. That's when I decided to write some kind of launcher that bundles all of the applications I developed into one place.
+# General Overview of the Jam54 Laucher
+## The Idea
+Initially I developed a few programs but lacked a central place for people to download them from. This led me to create a launcher that bundles all the applications I developed into one place.
 
-Before I wrote the current implementation, I used Unity to develop the launcher. In hindsight this might not have been the best choice, hence why I rewrote it recently. But at the time Unity was the only platform/framework I was comfortable working with.
+Before the current implementation, I used Unity to develop the launcher. In hindsight this might not have been the best choice, which is why I recently rewrote it. At the time Unity was the only platform/framework I felt comfortable working with.
 
-This last iteration of the launcher was made using Java/JavaFX. I thought it might have been better to opt for a "native dektop app" since I would have to handle a lot of IO to download/patch/install other applications. But as far as I understand web apps using Electron/Tauri are also more than capable handling IO nowadays.  
-Knowing what I know now, I would probably choose to implement the launcher as a web app if I had to start over. But the Java/JavaFX implementation works well enough so I will leave it at that for now.
+This latest iteration of the launcher was made using Java/JavaFX. I opted for a "native desktop app" because I needed to handle a lot of IO operations to download, patch, and install other applications. However, I now understand that web apps using Electron or Tauri are also quite capable of handling IO operations.  
+Knowing what I know now, I would probably choose to implement the GUI part of the launcher as a web app if I had to start over. For backend logic and general functionality however, I believe Java would still be the better choice. Nevertheless, the Java/JavaFX implementation works well enough so I will leave it as it is for now.
 
 ## Features
-The main features are the following:
-- [An easy way to add applications to the launcher or update existing ones](#an-easy-way-to-add-applications-to-the-launcher-or-update-existing-ones)
-- [The launcher updates itself](#the-launcher-updates-itself)
-- [Applications are kept up to date using delta updates](#applications-are-kept-up-to-date-using-delta-updates)
-- [Enforcing a maximum filesize restriction of x megabytes for an application's binaries.](#enforcing-a-maximum-filesize-restriction-of-megabytes-for-an-applications-binaries)
-- [Verifying the file integrity of the installed applications](#verifying-the-file-integrity-of-the-installed-applications)
+The main features are as follows:
+- [An Easy Way to Add Applications to the Launcher or Update Existing Ones](#an-easy-way-to-add-applications-to-the-launcher-or-update-existing-ones)
+- [The Launcher Updates Itself](#the-launcher-updates-itself)
+- [Applications Are Kept Up to Date Using Delta Updates](#applications-are-kept-up-to-date-using-delta-updates)
+- [Enforcing a Maximum File Size Restriction of X Megabytes for an Application's Binaries](#enforcing-a-maximum-file-size-restriction-of-x-megabytes-for-an-applications-binaries)
+- [Verifying the File Integrity of Installed Applications](#verifying-the-file-integrity-of-installed-applications)
 - [Obfuscation of the launcher's bytecode](#obfuscation-of-the-launchers-bytecode)
 
 ## Limitations
-- You can only download/update/remove one application at the time
+Only one application can be downloaded, updated, or removed at a time. However, multiple applications can be queued for sequential installation or updates.
 
-## An easy way to add applications to the launcher or update existing ones
-In my previous, Unity implementation of the launcher I didn't really have that much coding experience when creating it. Which caused me to basically hardcode all of the applications that are handled by the launcher into the source code. This isn't easy to manage and doesn't scale at all. Which is why I definitely wanted to improve on this in the new Java implementation.
+## An Easy Way to Add Applications to the Launcher or Update Existing Ones
+In my previous Unity implementation of the launcher, my limited coding experience led me to hardcode all the applications into the source code. This approach was difficult to manage and didn't scale well. Therefore, I prioritized improving this aspect in the new Java implementation.
 
-For this purpose there are 2 files. One database called `applications.sqlite` that comes with the launcher, and one config file called `applicationsVersions.properties` that is hosted in the cloud. The former contains details about the applications (name, picture, description, release date, supported platforms, etc.), the latter is used to check whether or not the application in question has a new update.
+For this purpose, there are two files involved: 
+1. **`applications.sqlite`** - A local database included with the launcher that contains details about the applications (e.g., name, picture, description, release date, supported platforms, etc.).
+2. **`applicationsVersions.properties`** - A configuration file hosted in the cloud used to check for updates to the applications.
 
-Using this database file we can easily add a new application to the launcher by adding a new entry into the database, or update existing ones. Because all of the application's data is contained inside this database, we now longer have the issue of hardcoded data of the applications inside the launcher's source code.
+The local database manages application details, while the config file helps determine if new updates are available for a particular application.
 
-The sqlite3 database is nothing more than 2 simple tables as you can see below:
+By using this database file, we can easily add new applications to the launcher or update existing ones simply by adding or modifying entries in the database. Since all application data is now contained within this database, we have eliminated the issue of hardcoding application information directly into the launcher's source code.
+
+The `sqlite3` database consists of just two simple tables, as shown below:
+
 ```sql
-CREATE TABLE applications(id INT PRIMARY KEY, name TEXT, logo TEXT, android INT, web INT, windows INT, releaseDate INT, latestUpdate INT, isGame INT);
+CREATE TABLE applications (
+    id INT PRIMARY KEY, 
+    name TEXT, 
+    logo TEXT, 
+    android INT, 
+    web INT, 
+    windows INT, 
+    releaseDate INT, 
+    latestUpdate INT, 
+    isGame INT
+);
 
-CREATE TABLE application_description(language TEXT, id INT REFERENCES applications(id), description TEXT, PRIMARY KEY (language, id));
+CREATE TABLE application_description (
+    language TEXT, 
+    id INT REFERENCES applications(id), 
+    description TEXT, 
+    PRIMARY KEY (language, id)
+);
 ```
 
-The content of the `applicationsVersion.properties` file may look something like this:
+The `applications` table holds basic information about each application, while the `application_description` table contains descriptions of each application in different languages.
+
+The `applicationsVersions.properties` file might look something like this:
+
 ```properties
 app0=0.3.1
 app1=1.0.0
@@ -47,76 +70,82 @@ app8=1.9.0
 app9=1.1.9
 ```
 
-This `applicationsVersion.properties` file gets downloaded from wherever it's hosted in the cloud. The version numbers inside are then used to check whether or not there are updates available for any of the installed applications.
+This file contains version information for each application, where each entry maps an application identifier (e.g., `app0`, `app1`, etc.) to its current version number.
 
-## The launcher updates itself
-Basically the launcher is only half the story, there is also a small *Updater* program I wrote to work alongside the *launcher*.
+The `applicationsVersions.properties` file is downloaded from its cloud-hosted location. The version numbers within this file are used to check for updates for any of the installed applications.
 
-The Java *launcher* contains the main program, i.e. the *Jam54Launcher* that manages all of the applications. It is used to download applications and helps to keep them up to date.
+## The Launcher Updates Itself
+The launcher consists of two components: the main *Jam54Launcher* program and a separate *Updater* application.
 
-Apart from the *Jam54Launcher*, there is another program called *Updater*. This is a C# console application whose sole purpose is to update the *Jam54Launcher* itself.
+The Java-based *Jam54Launcher* is the core component that manages all applications. It handles downloading and updating the applications.
 
-### How does it work
-The *Jam54Launcher* is the main program, and will normally be launched first. Now let's say there is a new update available for the *Jam54Launcher*.
+In addition to the *Jam54Launcher*, there is a C# console application called *Updater*. Its sole purpose is to update the *Jam54Launcher* itself.
 
-In this case the *Jam54Launcher* will start downloading the necessary files in the background. Once it's finished, there will be a green button at the top of the screen that allows the user to relaunch the launcher in order to complete the update.
+### How It Works
+The *Jam54Launcher* is the main program and is usually launched first. When a new update for the *Jam54Launcher* is available, the launcher begins downloading the necessary files in the background. 
 
-One of two things could happen:
-    A) The user presses on the green button to relaunch the program.
-    B) The user closes the program without pressing the button.
+Once the download is complete, a green button will appear at the top of the screen allowing the user to relaunch the launcher to complete the update.
 
-### Option A: The User Chose To Relaunch The Program
-- In this scenario the *Jam54Launcher* will launch the *Updater*, after which it will immediately close itself
-- Once the *Updater* has been launched, it will look for the newly downloaded version of the *Jam54Launcher*. It will then replace the old version of the *Jam54Launcher* with the new one.
-- Once the files have been updated, the *Updater* will first launch the Jam54Launcher, before it closes itself
-- The *Jam54Launcher* has now been updated, and is ready to be used.
+Two scenarios can occur:
+1. The user clicks the green button to relaunch the program.
+2. The user closes the program without clicking the button.
 
-### Option B: The User Closed The Program
-- In this scenario the update process will continue the next time the *Jam54Launcher* is launched by the user.
-- Right after getting launched, the *Jam54Launcher* will check if a new version was downloaded the previous time it was launched. Which will be the case this time around.
-- The *Jam54Launcher* will now launch the *Updater*, after which it will immediately close itself.
-- Once the *Updater* has been launched, it will look for the newly downloaded version of the Jam54Launcher. It will then replace the old version of the *Jam54Launcher* with the new one.
-- Once the files have been updated, the *Updater* will first launch the Jam54Launcher, before it closes itself
-- The *Jam54Launcher* has now been updated, and is ready to be used.
+#### Option A: The User Chooses to Relaunch the Program
+- In this scenario, the *Jam54Launcher* will start the *Updater* and then immediately close itself.
+- The *Updater* will look for the newly downloaded version of the *Jam54Launcher* and replace the old version with the new one.
+- After updating the files, the *Updater* will launch the new version of the *Jam54Launcher* before closing itself.
+- The *Jam54Launcher* is now updated and ready for use.
+
+#### Option B: The User Closes the Program
+- If the user closes the program without updating, the update process will resume the next time the *Jam54Launcher* is started.
+- Upon launching, the *Jam54Launcher* will check if a new version was downloaded during the previous session. In this case it will find that a new version is available.
+- The *Jam54Launcher* will then start the *Updater* and close itself.
+- The *Updater* will replace the old version of the *Jam54Launcher* with the newly downloaded version.
+- After the update, the *Updater* will launch the updated *Jam54Launcher* before closing itself.
+- The *Jam54Launcher* is now updated and ready for use.
 
 ## Updater
-As mentioned previously, this *Updater* C# console program does nothing more than replace the old version of the launcher with the new one (which has already been downloaded by the *launcher*). Therefore the one class below contains all of the code used in the *Updater* program.
+As previously mentioned, the *Updater* is a C# console application that simply replaces the old version of the launcher with the newly downloaded version. The following class contains all the code used in the *Updater* program:
+
 ```csharp
-//Main.cs
+// Main.cs
 using System.Diagnostics;
+using System.IO;
 using System.Threading;
 
 class Updater
 {
     static void Main(string[] args)
     {
-        Thread.Sleep(5000); //Wait for the Jam54Launcher to close
+        Thread.Sleep(5000); // Wait for the Jam54Launcher to close
 
-        string oldLauncher = Path.Combine(Directory.GetCurrentDirectory(), "..", "Jam54_Launcher.jar"); //This goes one directory up, and then grabs the path to the old version of the launcher
-        string newLauncher = Path.Combine(Directory.GetCurrentDirectory(), "..", "Jam54_Launcher_New.jar"); //This goes one directory up, and then grabs the path to the new version of the launcher
+        // Define paths for the old and new versions of the launcher
+        string oldLauncher = Path.Combine(Directory.GetCurrentDirectory(), "..", "Jam54_Launcher.jar");
+        string newLauncher = Path.Combine(Directory.GetCurrentDirectory(), "..", "Jam54_Launcher_New.jar");
 
-        string jam54Launcher = Path.Combine(Directory.GetCurrentDirectory(), "..", "..", "Jam54 Launcher.exe"); //This goes up 2 directories, and grabs the path to the executable, used to run the Jam54 Launcher
+        // Path to the executable used to run the Jam54 Launcher
+        string jam54Launcher = Path.Combine(Directory.GetCurrentDirectory(), "..", "..", "Jam54 Launcher.exe");
 
+        // Only proceed if a new version is available
         if (File.Exists(newLauncher))
-        {//Only perform the update process, if there is a new version downloaded
-            File.Move(newLauncher, oldLauncher, true); //Replace the old jar of the launcher, with the new version. And rename the new version so it has the same name as the old version.
-            Process.Start(jam54Launcher); //Start the Jam54 Laucher
-            File.Delete(newLauncher); //Delete the downloaded file after it has been installed
+        {
+            File.Move(newLauncher, oldLauncher, true); // Replace the old launcher with the new version
+            Process.Start(jam54Launcher); // Launch the updated Jam54 Launcher
+            File.Delete(newLauncher); // Remove the downloaded file after installation
         }
     }
 }
 ```
 
-## Applications are kept up to date using delta updates
-This is another aspect I improved upon. In the Unity implementation the downloading/updating process was handled in a rather simple way. For each application, I would host a zip file containing the latest version of that application's binaries. When the user would choose to download an application, I would just download and unzip the zip.
-If on the other hand the user would have already had the application installed, but there was an update. Then I would first delete the old binaries of the application, download the new zip file and unzip it.
+## Applications Are Kept Up to Date Using Delta Updates
+This is an another area where I made significant improvements. In the Unity implementation, the update process was fairly straightforward: each application had a zip file containing its latest binaries. When a user chose to download an application, I would simply download and unzip the file. If an update was needed for an already installed application, I would delete the old binaries, download the new zip file, and unzip it.
 
-This of course isn't really efficient when handling updates to already installed applications. If I were to change just one file of an application and push an update. This would mean the user would have to redownload the entire application.
+This approach however, was inefficient for updating existing installations. If only a single file of an application changed, the user would still need to redownload and replace the entire application. 
 
 I tried to improve on this in the Java implementation.
 After some research I came to the conclusion that most people/companies tend to have a full package containing all of the binaries. After which patch packages are shipped for every new release. For me this initially caused a problem since I only wanted to host the latest versions of said applications. I didn't want to host both the full binary for every release and patch packages to go from one version to the next.
 
-Eventually I did implement an update system for already installed apps using patch packages and scrapped the chunks approach. In this delta update system, patches are represented as a zip file. Which in turn contain the deltas for each of the files that were changed in the update.  
+Eventually I did implement an update system for already installed apps using patch packages. In this delta update system, patches are represented as a zip file. Which in turn contain the deltas for each of the files that were changed in the update.  
 The creation of patches and the way they are applied roughly goes as follows:
 
 Suppose we have one folder which contains the latest version of an app. We then have another folder which contains subfolders for each of the previous versions of the app for which we would like to generate a patch. The name of these subfolders correspond to the version of the app in the subfolder.
@@ -138,15 +167,15 @@ Once all the files that needed to be deleted, downloaded or updated have been pr
 Finally, the patches represented by zip files can be split into smaller parts if they are larger than a specified file size treshhold. The previously mentioned format `A.B.C-X.Y.Z.zip` now becomes `A.B.C-X.Y.Z.zip.partN` where `N` represents the index of the splitted zip file starting at 1.
 
 Initially I implemented delta updates using chunks, this was later superseded by delta updates that utilize binary diffs which is explained above. The albeit worse way of using chunks for delta updates can be found below for the sake of completeness:
-- For any new version of an application, hash all of the files and store them in a file called `Hashes.txt` and place this `Hashes.txt` file in the root directory of the application's files
+- For any new version of an application, hash all of the files and store them in a file named `Hashes.txt`, which is placed in the root directory of the application's files.
     - Example of `Hashes.txt`
 ```
 10521fe73fe05f2ba95d40757d9f676f2091e2ed578da9d5cdef352f986f3bcd|runtime\bin\ucrtbase.dll
 2afbfa1d77969d0f4cee4547870355498d5c1da81d241e09556d0bd1d6230f8c|runtime\bin\api-ms-win-core-console-l1-1-0.dll
 ...
 ```
-- For each file that's part of the application, split the file into chunks of 1MB (1024^2 bytes) and store these in a folder called `Chunks` in the root directory of the application's files. Where the filename of each 1MB chunk is the hash of the 1MB file.
-  - For each file of the application, create a file of the same name in the same location with `.hashes` appended to the end of the filename. All of the 1MB chunks that are associated with this file should be stored in the `applicationFile.extension.hashes` file. Where the first value represents the hash of the 1MB chunk and the second value stands for the start index of this 1MB chunk.
+- For each file that's part of the application, split the file into chunks of 1MB (1024^2 bytes) and store these chunks in a folder named `Chunks` in the root directory of the application's files. Where the filename of each 1MB chunk is the hash of that 1MB file.
+  - For each file in the application, create a corresponding file with the same name and `.hashes` appended to the end of the filename located in the same directory. This corresponding `.hashes` file should list all 1MB chunks associated with the original file. Each entry in this file includes the hash of the 1MB chunk and the byte offset where the chunk starts in the original file.
     - Example of `applicationFile.extension.hashes`
 ```
 4aee721b7c796ae3c2a4b54de7efefd0b39a9f673c3b96f0e2ab30c19bd360e0|1048576
@@ -182,11 +211,11 @@ a8581dda005d9cbcfce573ea4c3aacdf6db40837421fb77018baf0d944828ba0|4194304
 
 Following the steps above, should result in the most recent version of a given application. Without having to host patch packages.
 
-## Enforcing a maximum filesize restriction of $x$ megabytes for an application's binaries.
-I also implemented a rather simple piece functionality that limits the filesize of an application's files. If a given file is larger than $x$ megabytes, then we split the file into chunks that are each $< x$ megabytes. Once we downloaded all of the application's files, we merge those chunks into one file again.
+## Enforcing a Maximum File Size Restriction of X Megabytes for an Application's Binaries
+I implemented a feature to enforce a maximum file size restriction for an application's binaries. If a file exceeds `X` megabytes, it is split into smaller chunks each less than `X` megabytes. After downloading all the chunks, they are merged back together to form the complete file.
 
-## Verifying the file integrity of the installed applications
-Here we hash all the files of a given application on the user's filesystem and compare those to the `Hashes.txt` file hosted in the cloud. In the case that certain files are missing/have a different content, we redownload/update them. If there are files present locally that aren't in `Hashes.txt` we remove them.
+## Verifying the File Integrity of Installed Applications
+We verify the integrity of installed applications by hashing all the files associated with the application on the user's filesystem and comparing these hashes to those listed in the `Hashes.txt` file hosted in the cloud. If any files are missing or have different content, they are re-downloaded. Conversely, any local files not listed in `Hashes.txt` are removed.
 
-## Obfuscation of the launcher's bytecode
-Not that anyone would bother to decompile the Java bytecode of the launcher. But in case someone would try, it would hopefully make it a bit harder for them to understand how everything works because of the obfuscation.
+## Obfuscation of the Launcher's Bytecode
+Although it's unlikely that someone would attempt to decompile the Java bytecode of the launcher, obfuscation is used to make it more challenging to understand the inner workings of the code. This added layer of complexity helps protect the launcher's implementation from reverse engineering.

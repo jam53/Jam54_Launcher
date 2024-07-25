@@ -1,12 +1,11 @@
 # Adding And/Or Updating Applications
 ## Prerequisites
-> Make sure you have sqlite3 installed on your system
+> Make sure you have SQLite3 installed on your system
 
-- The project should already come with an existing sqlite3 database. If this isn't the case, navigate to the following folder: `\Jam54_Launcher\src\main\resources\com\jam54\jam54_launcher`
+- The project should already come with an existing SQLite3 database. If this isn't the case, navigate to the following folder: `\Jam54_Launcher\src\main\resources\com\jam54\jam54_launcher`
 
-- Open WSL (not CMD) and run the following commands to create a new database:
-    - > We use WSL since the sqlite3 binary on Windows only supports ASCII characters.  
-      > Working with the database in CMD (i.e. Windows binary) would cause issues since the database will contain none ASCII characters.
+- Open a terminal and run the following commands to create a new database:
+    - > Note: On Windows it's recommended to use WSL because the SQLite3 binary for Windows only supports ASCII characters. Using CMD or PowerShell (i.e., the Windows binary) may cause issues with databases containing non-ASCII characters.
 -   ```
     sqlite3 applications.sqlite
     ```
@@ -23,11 +22,11 @@
 > After adding a new application, the `Jam54_Launcher.jar` and `Jam54LauncherSetup.msi` files will need to be rebuild and reuploaded. 
 > Follow the steps described in [Updating the Jam54Launcher](./UpdatingTheJam54Launcher.md) to rebuild and upload the launcher's binaries.
 
-We will need to insert a tuple in the database `applications.sqlite` that comes with the launcher, and also insert two lines in the `applicationsVersions.properties` file that is stored online. The former contains details about the application, the latter is used to check whether or not the application in question has a new update.
+You will need to insert a tuple in the database `applications.sqlite` that comes with the launcher, and also insert two lines in the `applicationsVersions.properties` file that is stored online. The former contains details about the application, the latter is used to check whether or not the application in question has a new update.
 
 ### applications.sqlite
 
-You can add a new application by entering the following command in WSL (not CMD)
+You can add a new application by entering the following command:
 ```sql
 sqlite3 applications.sqlite
 
@@ -49,7 +48,7 @@ INSERT INTO application_description VALUES(
 ```
 
 <details>
-<summary>The following tuples are stored inside the database of the launcher</summary>
+<summary>The following tuples are stored inside the database of the launcher:</summary>
 
 ```
 sqlite3 applications.sqlite

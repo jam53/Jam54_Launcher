@@ -2,7 +2,8 @@
   -injars       .\target\Jam54_Launcher-1.0-SNAPSHOT.jar
   -outjars      .\target\Jam54_Launcher-1.0-SNAPSHOT-proguard.jar
   -libraryjars  .\target\lib
-  -libraryjars  D:\Program Files\jdk-21\jmods
+  # The line below specifying the JDK modules path, gets set by the `ObfuscateJam54LauncherBuild.bat` script
+  # -libraryjars  path/to/jdk/jmods 
 
   -dontshrink
   -dontoptimize

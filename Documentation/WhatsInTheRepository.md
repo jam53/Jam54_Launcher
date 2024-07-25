@@ -1,31 +1,31 @@
 # Understanding What's In The Repository
 This repository consists of 2 projects, the *Jam54_Launcher* itself, and the *Updater*.
 
-# Jam54_Launcher
-This IntelliJ project contains the main program, i.e. the *Jam54Launcher* that manages all of the applications. It is used to download applications and helps to keep them up to date.
+## Jam54_Launcher
+This Java project contains the main program, i.e. the *Jam54Launcher* that manages all of the applications. It is used to download applications and helps to keep them up to date.
 
-# Updater
+## Updater
 Apart from the *Jam54Launcher*, there is another project called *Updater*. This is a C# console application whose sole purpose is to update the *Jam54Launcher* itself. 
 
-# How does it work
-The *Jam54Launcher* is the main program, and will normally be launched first. Now let's say there is a new update available for the *Jam54Launcher*. 
+## How It Works
+The *Jam54Launcher* is the main program and is usually launched first. When a new update for the *Jam54Launcher* is available, the launcher begins downloading the necessary files in the background. 
 
-In this case the *Jam54Launcher* will start downloading the necessary files in the background. Once it's finished, there will be a green button at the top of the screen that allows the user to relaunch the program in order to complete the update.
+Once the download is complete, a green button will appear at the top of the screen allowing the user to relaunch the launcher to complete the update.
 
-One of two things could happen:
-- **A)** The user presses on the green button to relaunch the program. 
-- **B)** The user closes the program without pressing the button.
+Two scenarios can occur:
+1. The user clicks the green button to relaunch the program.
+2. The user closes the program without clicking the button.
 
-## Option A: The User Chose To Relaunch The Program
-- In this scenario the *Jam54Launcher* will launch the *Updater*, after which it will immediately close itself
-- Once the *Updater* has been launched, it will look for the newly downloaded version of the *Jam54Launcher*. It will then replace the old version of the *Jam54Launcher* with the new one.
-- Once the files have been updated, the *Updater* will first launch the Jam54Launcher, before it closes itself
-- The *Jam54Launcher* has now been updated, and is ready to be used.
+### Option A: The User Chooses to Relaunch the Program
+- In this scenario, the *Jam54Launcher* will start the *Updater* and then immediately close itself.
+- The *Updater* will look for the newly downloaded version of the *Jam54Launcher* and replace the old version with the new one.
+- After updating the files, the *Updater* will launch the new version of the *Jam54Launcher* before closing itself.
+- The *Jam54Launcher* is now updated and ready for use.
 
-## Option B: The User Closed The Program
-- In this scenario the update process will continue the next time the *Jam54Launcher* is launched by the user.
-- Right after getting launched, the *Jam54Launcher* will check if a new version was downloaded the previous time it was launched. Which will be the case this time around.
-- The *Jam54Launcher* will now launch the *Updater*, after which it will immediately close itself.
-- Once the *Updater* has been launched, it will look for the newly downloaded version of the Jam54Launcher. It will then replace the old version of the *Jam54Launcher* with the new one.
-- Once the files have been updated, the *Updater* will first launch the Jam54Launcher, before it closes itself
-- The *Jam54Launcher* has now been updated, and is ready to be used.
+### Option B: The User Closes the Program
+- If the user closes the program without updating, the update process will resume the next time the *Jam54Launcher* is started.
+- Upon launching, the *Jam54Launcher* will check if a new version was downloaded during the previous session. In this case it will find that a new version is available.
+- The *Jam54Launcher* will then start the *Updater* and close itself.
+- The *Updater* will replace the old version of the *Jam54Launcher* with the newly downloaded version.
+- After the update, the *Updater* will launch the updated *Jam54Launcher* before closing itself.
+- The *Jam54Launcher* is now updated and ready for use.

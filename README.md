@@ -9,10 +9,10 @@ The programs/games available within the launcher can either be updated manually 
 Furthermore, the launcher can be used in a variety of languages and the user can choose a specific install location.
 
 ## Downloading the launcher
-You can download the launcher from [here](https://jam53.github.io/jam54/download.html).
+You can download the launcher from [here](https://jam54.com/download.html).
 
 ## Development of the Jam54 Launcher
-The main reason behind the development of the launcher, was to create one unified place for people to download all the games/programs that have been developed by jam54. Instead of having to search for download links that are scattered all over the [official website.](https://jam53.github.io/jam54)
+The main reason behind the development of the launcher, was to create one unified place for people to download all the games/programs that have been developed by jam54. Instead of having to search for download links that are scattered all over the [official website.](https://jam54.com/)
 
 If you want to know more about how the launcher works. Or are curious as to why and how certain things were implemented you can read more in [General overview of the Jam54 Launcher.](./Documentation/GeneralOverviewOfTheJam54Laucher.md)
 
