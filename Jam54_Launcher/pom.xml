@@ -64,6 +64,18 @@
             <artifactId>javaxdelta</artifactId>
             <version>2.0.1</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>2.0.13</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-simple -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>2.0.13</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -76,7 +88,7 @@
                 <configuration>
                     <release>21</release>
 <!--
-The <release> tag defines the versions used for the source code and the bytecode that gets compiled. 
+The <release> tag defines the versions used for the source code and the bytecode that gets compiled.
 
 As for why we specify the version explicitly. Suppose we publish the Jam54 Launcher with Java 17 and later release an update compiled with Java 18. Since updating the Jam54 Launcher only involves replacing the JAR file, this will lead to problems. The JAR will now be compiled with Java 18, while the JRE bundled with the Jam54 Launcher will still be version 17. Since the version of our Jam54 Launcher JAR is higher than the JRE it's running on, it will not work, resulting in the following type of error:
 
