@@ -31,11 +31,7 @@ dotnet publish -r win-x64 -c Release
 This will build the project and place the produced binary in `Updater\bin\Release\net8.0\win-x64\publish\`. Copy the produced `Updater.exe` file to the same folder that contains the obfuscated uber jar file `Jam54_Launcher.jar`.
 
 ## Creating An Installer
-Once we have built both of our projects, we can create an installer by following the steps described in [creating an installer.](./CreatingAnInstaller.md) 
-
----
-
-Following the guide should yield the command below. This command should be executed in the directory that contains both our `Jam54_Launcher.jar` file as well as the `Updater.exe` file:
+Once we have built both of our projects, we can create an installer using the command below. This command should be executed in the directory that contains both our `Jam54_Launcher.jar` file as well as the `Updater.exe` file:
 - Windows
     ```
     jpackage --input . --module-path "D:\Program Files\javafx-jmods-21" --add-modules javafx.controls,javafx.fxml,jdk.crypto.ec,java.sql,java.desktop --name "Jam54 Launcher" --icon "D:\GitHub\Jam54_Launcher\Jam54_Launcher\src\main\resources\com\jam54\jam54_launcher\img\jam54Icon.ico" --app-version 0.1.0 --vendor "jam54" --copyright "Copyright © 2021 jam54" --win-dir-chooser --win-shortcut --win-per-user-install --win-menu --license-file "D:\GitHub\Jam54_Launcher\LICENSE" --description "The Jam54 Launcher is used to install and update all of the software developed by jam54." --main-jar Jam54_Launcher.jar --main-class com.jam54.jam54_launcher.Main --type msi
