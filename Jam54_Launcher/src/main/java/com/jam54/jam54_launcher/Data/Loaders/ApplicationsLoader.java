@@ -14,6 +14,8 @@ import org.apache.commons.io.FileUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -115,7 +117,7 @@ public class ApplicationsLoader
 
             Path applicationsVersions = Files.createTempFile("applicationsVersions", ".properties");
             applicationsVersions.toFile().deleteOnExit();
-            DownloadFile.saveUrlToFile(new URL(jam54LauncherConfigProperties.getProperty("applicationVersions")), applicationsVersions, 10000, 10000, 10);
+            DownloadFile.saveUrlToFile(new URI(jam54LauncherConfigProperties.getProperty("applicationVersions")).toURL(), applicationsVersions, 10000, 10000, 10);
 
             try (InputStream in2 = Files.newInputStream(applicationsVersions))
             {
@@ -149,6 +151,10 @@ public class ApplicationsLoader
         {
             updatedApps = apps; //If we don't have an internet connection, we won't be able to check for updates.
             //In that case, we will return the original list of ApplicationInfo objects, and leave the "updateAvailable" variable on false
+        }
+        catch (URISyntaxException e)
+        {
+            throw new RuntimeException(e);
         }
 
         return updatedApps;

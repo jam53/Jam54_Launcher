@@ -10,6 +10,7 @@ import org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -49,10 +50,10 @@ public class LauncherUpdater
         {
             Path tempFile = Files.createTempFile("version", ".txt");
             tempFile.toFile().deleteOnExit();
-            DownloadFile.saveUrlToFile(new URL(properties.getProperty("versionUrl")), tempFile, 10000, 10000, 10);
+            DownloadFile.saveUrlToFile(new URI(properties.getProperty("versionUrl")).toURL(), tempFile, 10000, 10000, 10);
             versionInCloud = FileUtils.readFileToString(tempFile.toFile(), StandardCharsets.UTF_8);
         }
-        catch (IOException e)
+        catch (IOException | URISyntaxException e)
         {
             ErrorMessage errorMessage = new ErrorMessage(false, SaveLoadManager.getTranslation("FailedCheckingUpdates"));
             errorMessage.show();
@@ -80,10 +81,10 @@ public class LauncherUpdater
             new Thread(() -> {
                 try
                 {
-                    DownloadFile.saveUrlToFile(new URL(properties.getProperty("Jam54LauncherUrl")), newJarLocation, 10000, 10000, 10); //Download the new version of the launcher
+                    DownloadFile.saveUrlToFile(new URI(properties.getProperty("Jam54LauncherUrl")).toURL(), newJarLocation, 10000, 10000, 10); //Download the new version of the launcher
                     Platform.runLater(() -> model.setNewVersionDownloaded(true));
                 }
-                catch (IOException e)
+                catch (IOException | URISyntaxException e)
                 {
                     Platform.runLater(() -> {
                         ErrorMessage errorMessage = new ErrorMessage(false, SaveLoadManager.getTranslation("FailedDownloadingNewJam54LauncherVersion"));

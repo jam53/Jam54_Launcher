@@ -38,6 +38,8 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.*;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -843,7 +845,7 @@ public class ApplicationWindow extends VBox implements InvalidationListener
             {
                 Path tempFile = Files.createTempFile("Hashes", ".txt");
                 tempFile.toFile().deleteOnExit();
-                DownloadFile.saveUrlToFile(new URL(appsBaseDownloadUrl + openedAppId + "/" + "Hashes.txt"), tempFile, 10000, 10000, 10);
+                DownloadFile.saveUrlToFile(new URI(appsBaseDownloadUrl + openedAppId + "/" + "Hashes.txt").toURL(), tempFile, 10000, 10000, 10);
 
                 for(String line : FileUtils.readLines(tempFile.toFile(), StandardCharsets.UTF_8))
                 {
@@ -851,7 +853,7 @@ public class ApplicationWindow extends VBox implements InvalidationListener
                     hashesCloud.put(keyValue[0], Path.of(keyValue[1]));
                 }
             }
-            catch (IOException e)
+            catch (IOException | URISyntaxException e)
             {
                 // Handle the exception (connection/read timeouts)
 
@@ -906,7 +908,7 @@ public class ApplicationWindow extends VBox implements InvalidationListener
                     System.out.println("Downloading: " + fileToDownload);
 
                     // Attempt to download the file
-                    DownloadFile.saveUrlToFile(new URL(appsBaseDownloadUrl + openedAppId + "/" + fileToDownload.toString().replace("\\", "/").replace(" ", "%20")), Path.of(appInstallationPath.toString(), fileToDownload.toString()), 10000, 10000, 10);
+                    DownloadFile.saveUrlToFile(new URI(appsBaseDownloadUrl + openedAppId + "/" + fileToDownload.toString().replace("\\", "/").replace(" ", "%20")).toURL(), Path.of(appInstallationPath.toString(), fileToDownload.toString()), 10000, 10000, 10);
 
                     filesDownloaded.incrementAndGet();
                     updateMessage(SaveLoadManager.getTranslation("DOWNLOADING") + " " + (Math.round((filesDownloaded.get()/filesToDownload)*100) + "%"));
@@ -937,7 +939,7 @@ public class ApplicationWindow extends VBox implements InvalidationListener
 
                     Path zipDeltasSplitTXT = Files.createTempFile("Split" ,".txt");
                     zipDeltasSplitTXT.toFile().deleteOnExit();
-                    DownloadFile.saveUrlToFile(new URL(appsBaseDownloadUrl + openedAppId + "/Deltas/Split.txt"), zipDeltasSplitTXT, 10000, 10000, 10);
+                    DownloadFile.saveUrlToFile(new URI(appsBaseDownloadUrl + openedAppId + "/Deltas/Split.txt").toURL(), zipDeltasSplitTXT, 10000, 10000, 10);
 
                     List<String> splittedDeltas; //This stream contains strings with the names of the original unsplitted delta files, if there are any delta files that were splitted
                     try (Stream<String> stream = Files.lines(zipDeltasSplitTXT))
@@ -949,7 +951,7 @@ public class ApplicationWindow extends VBox implements InvalidationListener
 
                     Path zipDeltasSizes = Files.createTempFile("Sizes", ".properties");
                     zipDeltasSizes.toFile().deleteOnExit();
-                    DownloadFile.saveUrlToFile(new URL(appsBaseDownloadUrl + openedAppId + "/Deltas/Sizes.properties"), zipDeltasSizes, 10000, 10000, 10);
+                    DownloadFile.saveUrlToFile(new URI(appsBaseDownloadUrl + openedAppId + "/Deltas/Sizes.properties").toURL(), zipDeltasSizes, 10000, 10000, 10);
 
                     try (InputStream in = Files.newInputStream(zipDeltasSizes))
                     {
@@ -976,7 +978,7 @@ public class ApplicationWindow extends VBox implements InvalidationListener
                                 long amountOfBytesToDownload = Long.parseLong(zipDeltasSizesProperties.getProperty(zipWithDeltasFilename));
 
                                 DownloadFile.saveUrlToFile(
-                                        new URL(appsBaseDownloadUrl + openedAppId + "/Deltas/" + zipDeltaPartFilename),
+                                        new URI(appsBaseDownloadUrl + openedAppId + "/Deltas/" + zipDeltaPartFilename).toURL(),
                                         Path.of(dirWithPartsOfZip.toString(), zipDeltaPartFilename),
                                         10000,
                                         10000,
@@ -1012,7 +1014,7 @@ public class ApplicationWindow extends VBox implements InvalidationListener
                         AtomicReference<Double> totalDownloadedBytes = new AtomicReference<>(0.0);
 
                         DownloadFile.saveUrlToFile(
-                                new URL(appsBaseDownloadUrl + openedAppId + "/Deltas/" + zipWithDeltasFilename),
+                                new URI(appsBaseDownloadUrl + openedAppId + "/Deltas/" + zipWithDeltasFilename).toURL(),
                                 zipWithDeltas,
                                 10000,
                                 10000,
@@ -1059,7 +1061,7 @@ public class ApplicationWindow extends VBox implements InvalidationListener
                         zipInputStream.closeEntry();
                     }
                 }
-                catch (IOException | NumberFormatException e)
+                catch (IOException | NumberFormatException | URISyntaxException e)
                 {
                     //If we catch an error here, it means that something went wrong while trying to download/apply the delta. This could either be because a source file to which a delta had to be applied didn't exist on disk. Or we tried to download a deltazip for a non-existent version, ... .
                     //In those cases we just catch the errors but don't do anything with them. In what follows we will anyway verify if all the files have the correct content, and redownload them if that isn't the case.
@@ -1086,7 +1088,7 @@ public class ApplicationWindow extends VBox implements InvalidationListener
                         System.out.println("Downloading file after verifying: " + fileToUpdate);
 
                         // Attempt to download the file
-                        DownloadFile.saveUrlToFile(new URL(appsBaseDownloadUrl + openedAppId + "/" + fileToUpdate.toString().replace("\\", "/").replace(" ", "%20")), Path.of(appInstallationPath.toString(), fileToUpdate.toString()), 10000, 10000, 10);
+                        DownloadFile.saveUrlToFile(new URI(appsBaseDownloadUrl + openedAppId + "/" + fileToUpdate.toString().replace("\\", "/").replace(" ", "%20")).toURL(), Path.of(appInstallationPath.toString(), fileToUpdate.toString()), 10000, 10000, 10);
 
                         filesVerified.incrementAndGet();
                         updateMessage(SaveLoadManager.getTranslation("VERIFYING") + " " + (Math.round((filesVerified.get() / filesToVerify) * 100) + "%"));
