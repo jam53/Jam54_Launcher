@@ -55,7 +55,7 @@ class JDBCApplicationDAO implements ApplicationDAO
                     {
                         while (rsDescriptions.next())
                         {
-                            descriptions.put(new Locale(rsDescriptions.getString("language")), rsDescriptions.getString("description"));
+                            descriptions.put(Locale.of(rsDescriptions.getString("language")), rsDescriptions.getString("description"));
                         }
                     }
 

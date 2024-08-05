@@ -54,7 +54,7 @@ public class Jam54LauncherData
      */
     public Locale getLocale()
     {
-        return new Locale(locale);
+        return Locale.of(locale);
     }
 
     /**

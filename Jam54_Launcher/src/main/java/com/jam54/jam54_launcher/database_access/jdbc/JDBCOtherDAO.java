@@ -48,7 +48,7 @@ public class JDBCOtherDAO implements OtherDAO
             {
                 while (rsLanguages.next())
                 {
-                    languages.add(new Locale(rsLanguages.getString("language")));
+                    languages.add(Locale.of(rsLanguages.getString("language")));
                 }
             }
         }
