@@ -1,6 +1,8 @@
 # Jam54_Launcher
 The Jam54 Launcher is used to install and update all of the software developed by jam54. The launcher itself is written in Java and JavaFX.
 
+![](./Documentation/Pictures/Jam54LauncherGamesProgramsWindow_Effort6_Quality90.webp)
+
 ## Functionality
 The launcher updates automatically to the latest version available. No user interaction is required.
 
