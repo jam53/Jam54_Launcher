@@ -38,7 +38,7 @@ Once we have built both of our projects, we can create an installer using the co
     ```
 
 > ### Note:
-> - `--input .` means that all the files/folders in the current folder will be packed into the installer. Therefore we should run this command in the folder where we placed the `Updater.exe` file + the output of building our Jam54_Launcher project.
+> - `--input .` means that all the files/folders in the current directory will be packed into the installer. Therefore we should run this command in the directory where we placed both the `Updater.exe` and `Jam54_Launcher.jar` files. Ensure that there are no unnecessary files present in this directory, as they will also be included in the installer.
 > - Make sure to use the `Jam54_Launcher.jar` as the "main jar".
 > - The Jam54Launcher is for Windows only, so we tell jpackage to create an .msi installer
 
