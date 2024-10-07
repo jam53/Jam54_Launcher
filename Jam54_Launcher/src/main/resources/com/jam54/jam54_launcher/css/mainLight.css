@@ -413,33 +413,23 @@ GamesProgramsWindow, ApplicationWindow, AvailableAppUpdatesWindow, SettingsWindo
     -fx-background-color: -bg-foreground;
     -fx-background-radius: 5;
     -fx-border-radius: 5;
-    -fx-border-color: -other-border-division-scrollbar;
+    -fx-border-color: -other-border-division-scrollbar, -bg-main;
+    -fx-border-width: 2;
+    -fx-border-insets: 1, 0;
     -fx-pref-width: 188;
     -fx-cursor: hand;
 }
 
-.applicationButtonHolder:hover ApplicationButton {
+.applicationButton:hover {
     -fx-effect: dropshadow(gaussian, -other-blur, 8, 0, 0.0, 0.0);
-    -fx-border-width: 3;
-    -fx-border-color: -accent-button-main;
-} /* We only want to enable this 3px width border, when the holder around this applicationButton is being hovered. Otherwise the user might hover over just the holder which will remove the holder's border width. Which will cause visual UI tripping */
+    -fx-border-width: 2;
+    -fx-border-insets: 0, 1;
+    -fx-border-color: -accent-button-main, -accent-button-main;
+}
 
 .applicationButton:pressed {
     -fx-effect: dropshadow(gaussian, -other-blur, 11, 0, 0.0, 0.0);
     -fx-border-color: -accent-button-clicked;
-}
-
-/*When we increase the border of the applicationButton upon hovering, it gets 2 pixels bigger. (From border width 1 to 3). This causes all the other applicationButtons to slightly move up/down when we hover. Since there is a difference in height now
-
-To circumvent/get around this, we put the applicationButton in another VBox which has a border of 2 pixels. When we then hover we set the border width of the applicationButtonHolder to 0. These cancel each other out and this way the size stays the same, which no longer causes all the applicationButtons to shift up/down when hovering over them
-*/
-.applicationButtonHolder {
-    -fx-border-width: 2;
-    -fx-border-color: transparent;
-}
-
-.applicationButtonHolder:hover {
-    -fx-border-width: 0;
 }
 
 .applicationButton HBox {

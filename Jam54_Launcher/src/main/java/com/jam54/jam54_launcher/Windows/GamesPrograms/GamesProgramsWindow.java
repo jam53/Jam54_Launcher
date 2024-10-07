@@ -183,11 +183,7 @@ public class GamesProgramsWindow extends VBox implements InvalidationListener
             button.setModel(model);
             appplicationsAdded++;
 
-            VBox appButtonHolder = new VBox(); //See explanation for this extra holder in the `applicationButtonHolder` styleclass inside the stylesheet
-            appButtonHolder.getStyleClass().add("applicationButtonHolder");
-
-            appButtonHolder.getChildren().add(button);
-            applicationsHolder.getChildren().add(appButtonHolder);
+            applicationsHolder.getChildren().add(button);
         }
 
         if (applicationsHolder.getChildren().isEmpty())
