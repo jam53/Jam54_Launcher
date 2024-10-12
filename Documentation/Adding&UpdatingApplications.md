@@ -75,7 +75,7 @@ INSERT INTO applications VALUES(8, 'Flash', 'com/jam54/jam54_launcher/img/applic
 
 INSERT INTO applications VALUES(9, 'Sky Screenshot Stats', 'com/jam54/jam54_launcher/img/applicationLogos/SkyScreenshotStats.jpg', 0, 1, 0, 1654128000, 1657238400, 0);
 
-INSERT INTO applications VALUES(10, 'Takma', 'com/jam54/jam54_launcher/img/applicationLogos/Takma.png', 0, 0, 1, 1692715543, 1728669196, 0);
+INSERT INTO applications VALUES(10, 'Takma', 'com/jam54/jam54_launcher/img/applicationLogos/Takma.png', 0, 0, 1, 1692715543, 1728762633, 0);
 
 
 
@@ -287,8 +287,8 @@ appVersion8=1.9.0
 appLatestUpdate8=1653004800
 appVersion9=1.1.12
 appLatestUpdate9=1657238400
-appVersion10=1.6.1
-appLatestUpdate10=1728669196
+appVersion10=1.6.2
+appLatestUpdate10=1728762633
 ```
 
 ### Jam54LauncherData.java
