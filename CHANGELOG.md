@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Changed
+- chore: update Takma to 1.7.2 ([`88a3bb9`](https://github.com/jam53/Jam54_Launcher/commit/88a3bb9d6a6baf17eb18c5dca4f2eac51d5ed1dc))
 - chore: update Takma to 1.7.1 ([`f41770c`](https://github.com/jam53/Jam54_Launcher/commit/f41770c6fc519627e99677ab072eeae2d760bf1d))
 - chore: update Takma to 1.7.0 ([`0e85417`](https://github.com/jam53/Jam54_Launcher/commit/0e85417fcd7d96f64bb955f1632212fe955467eb))
 - docs: Update Jam54 Launcher download link in README ([`98327b3`](https://github.com/jam53/Jam54_Launcher/commit/98327b33d06f821a0437d8122ae2b78b729afdb3))
