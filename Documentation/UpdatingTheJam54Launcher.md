@@ -1,5 +1,5 @@
 # Updating The Jam54Launcher
-Please follow the steps stated in this document, in chronological order.
+Please follow the steps stated in this document, in chronological order. And update [CHANGELOG.md](../CHANGELOG.md) to reflect the changes in this release.
 
 # Inside the Jam54Launcher IntelliJ project
 - Open *Jam54LauncherConfig.properties*, and update the `version` variable.
