@@ -413,7 +413,7 @@ Open the `applicationsVersions.properties` file, and update the value behind the
 
 #### Hashing & splitting the files
 - Navigate to the "root" folder containing all of the apps: `OneDrive\Documenten\Scripts\Builds\Jam54Launcher\AppBuilds`
-- Remove all the files and folders apart from `EntryPoint.txt` and `LICENSE` in the subfolder of the app which you wish to update, and place the new binaries in the subfolder. 
+- Before proceeding you may want to keep a copy of the app's old version for archival reasons or to compute deltas later. Then, in the subfolder of the app you wish to update remove all files and folders apart from `EntryPoint.txt` and `LICENSE`, and place the new binaries in the subfolder.
     - > Make sure to update the `EntryPoint.txt` file if necessary. 
 
 ---
