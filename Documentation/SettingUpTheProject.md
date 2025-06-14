@@ -11,7 +11,7 @@
 ## Prerequisites
 
 ### Downloading the JDK
-It's recommend to use the latest stable version of OpenJDK which can be downloaded from [here](https://jdk.java.net/). Once downloaded and installed, ensure that the `java` executable is added to your system's PATH or environment variables.  
+It's recommended to use the latest stable version of OpenJDK which can be downloaded from [here](https://jdk.java.net/). Once downloaded and installed, ensure that the `java` executable is added to your system's PATH or environment variables.  
 Please note that the code is compiled to Java 21 at build time. This is because Java 21 was the latest version when the Jam54 Launcher was initially released. Therefore, while we recommend using the latest version of Java, any version that is OpenJDK 21 or higher should work.
 
 ### Downloading the JavaFX jmods
@@ -41,7 +41,7 @@ You can now open the Jam54_Launcher project using *IntelliJ IDEA*.
 ---
 
 ### Downloading .NET
-It's recommend to use the latest version of .NET which can be downloaded from [here](https://dotnet.microsoft.com/en-us/download). Once downloaded and installed, ensure that the `dotnet` executable is added to your system's PATH or environment variables.  
+It's recommended to use the latest version of .NET which can be downloaded from [here](https://dotnet.microsoft.com/en-us/download). Once downloaded and installed, ensure that the `dotnet` executable is added to your system's PATH or environment variables.  
 While we recommend using the latest version of .NET, any version that is higher than the one specified [here](https://github.com/jam53/Jam54_Launcher/blob/master/Updater/Updater.csproj#L5) higher should work.
 
 ### Downloading the C# IDE
