@@ -77,6 +77,8 @@ INSERT INTO applications VALUES(9, 'Sky Screenshot Stats', 'com/jam54/jam54_laun
 
 INSERT INTO applications VALUES(10, 'Takma', 'com/jam54/jam54_launcher/img/applicationLogos/Takma.png', 0, 0, 1, 1692715543, 1749304232, 0);
 
+INSERT INTO applications VALUES(11, 'Honey Horizon', 'com/jam54/jam54_launcher/img/applicationLogos/HoneyHorizonQuality95SubsampleChromaBy2ChromaQuality84.jpg', 0, 0, 1, 1724170200, 1724170200, 1);
+
 
 
 INSERT INTO application_description VALUES('AR', 0, "ستيليكسو هو مجاني للعب لعبة صندوق الرمل للاعب واحد. يتميز بعالم تم إنشاؤه بشكل عشوائي تمامًا ، والذي يشمل الصخور والأشجار والحيوانات والأعداء وأكثر من ذلك بكثير! عالم مليء بالأسرار والمغامرات في انتظارك!\nبدأ تطوير Stelexo بشكل أساسي في يوليو 2018 وكان أول لعبة رئيسية عملت عليها.\nكانت الخطة هي إنشاء عالم تم إنشاؤه إجرائيًا ، معزز بالمخلوقات والأشياء وأكثر من ذلك.  أدركت أن نطاق هذا المشروع كان طريقة ما يمكنني القيام به بمفردي. لذلك بعد التحديث النهائي في أغسطس 2019 ، انتهى تطوير Stelexo.");
@@ -254,19 +256,35 @@ INSERT INTO application_description VALUES('PT', 10, "Takma é uma ferramenta de
 INSERT INTO application_description VALUES('RU', 10, "Takma - это инструмент для повышения продуктивности в стиле Канбан, который позволяет вам эффективно управлять задачами и проектами с легкостью.\nЧерпая вдохновение из известной платформы Trello, Takma предлагает элегантный и интуитивно понятный интерфейс, разработанный для отражения знакомого внешнего вида и ощущения Trello. Однако что отличает Takma, так это его беспрецедентная офлайн-функциональность, которая позволяет вам работать без прерываний, не полагаясь на серверы сторонних производителей. С поддержкой Markdown, меток, сроков выполнения, чек-листов и глубоких ссылок, Takma предоставляет вам гибкость работать над вашими проектами в любое время и в любом месте, не жертвуя конфиденциальностью данных или подключением к интернету.");
 INSERT INTO application_description VALUES('TR', 10, "Takma, görevlerinizi ve projelerinizi etkili bir şekilde yönetmenize olanak tanıyan bir Kanban tarzı üretkenlik aracıdır.\nÜnlü Trello platformundan ilham alan Takma, Trello'nun tanıdık görünümünü ve hissini yansıtan şık ve sezgisel bir arayüz sunar. Ancak Takma'yı diğerlerinden ayıran şey, benzersiz çevrimdışı işlevselliğidir. Bu özellik, üçüncü taraf sunuculara bağlı kalmadan kesintisiz bir şekilde çevrimdışı çalışmanıza olanak tanır. Markdown, etiketler, son tarihler, kontrol listeleri ve derin bağlantılar desteği ile Takma, projeleriniz üzerinde her zaman ve her yerde çalışabilmeniz için size esneklik sunar, veri gizliliğinden veya internet bağlantısından ödün vermenizi gerektirmez.");
 INSERT INTO application_description VALUES('ZH', 10, "Takma 是一款类似于看板法的生产力工具，使您能够轻松高效地管理任务和项目。\n从著名的 Trello 平台汲取灵感，Takma 提供了一个优雅且直观的界面，旨在镜像 Trello 熟悉的外观和感觉。然而，Takma 的独特之处在于其无与伦比的离线功能，使您能够无缝地离线工作，而无需依赖第三方服务器。支持 Markdown、标签、截止日期、检查清单和深度链接的 Takma 为您提供了随时随地处理项目的灵活性，而无需妥协数据隐私或互联网连接。");
+
+INSERT INTO application_description VALUES('AR', 11, "هوني هورايزن هي لعبة تم إنشاؤها لـ جيم جام GMTK 2024 بواسطة فريق من ثلاثة أشخاص، وتم تطويرها حول موضوع ""مبنية للتوسع.""");
+INSERT INTO application_description VALUES('DE', 11, "Honey Horizon ist ein Spiel, das von einem Team aus drei Personen für den GMTK 2024 Game Jam entwickelt wurde, rund um das Thema ""Auf Skalierbarkeit ausgelegt.""");
+INSERT INTO application_description VALUES('EN', 11, "Honey Horizon is a game made for the GMTK 2024 Game Jam by a team of three people, created around the theme ""Built to Scale.""");
+INSERT INTO application_description VALUES('ES', 11, "Honey Horizon es un juego creado para el GMTK 2024 Game Jam por un equipo de tres personas, desarrollado en torno al tema ""Construido para escalar.""");
+INSERT INTO application_description VALUES('ET', 11, "Honey Horizon on mäng, mille lõi kolmeliikmeline meeskond GMTK 2024 Game Jam'i jaoks teemal ""Loodud skaleeruma.""");
+INSERT INTO application_description VALUES('FR', 11, "Honey Horizon est un jeu créé pour le GMTK 2024 Game Jam par une équipe de trois personnes, autour du thème ""Conçu pour être évolutif.""");
+INSERT INTO application_description VALUES('HI', 11, "हनी होराइजन GMTK 2024 गेम जैम के लिए तीन लोगों की टीम द्वारा बनाया गया एक गेम है, जो ""स्केल करने के लिए निर्मित"" थीम के आसपास बनाया गया है।");
+INSERT INTO application_description VALUES('ID', 11, "Honey Horizon adalah game yang dibuat untuk GMTK 2024 Game Jam oleh tim yang terdiri dari tiga orang, diciptakan dengan tema ""Dibuat untuk Skala.""");
+INSERT INTO application_description VALUES('JA', 11, "ハニーホライゾンは、3人のチームによってGMTK 2024ゲームジャムのために制作されたゲームで、「スケーラブルに構築。」というテーマを中心に作られています。");
+INSERT INTO application_description VALUES('KO', 11, "허니 호라이즌은 세 명으로 구성된 팀이 GMTK 2024 게임 잼을 위해 ""확장 가능하게 구축.""이라는 주제를 중심으로 만든 게임입니다.");
+INSERT INTO application_description VALUES('NL', 11, "Honey Horizon is een spel gemaakt voor de GMTK 2024 Game Jam door een team van drie personen, gecreëerd rond het thema ""Gebouwd om te schalen.""");
+INSERT INTO application_description VALUES('PT', 11, "Honey Horizon é um jogo feito para o GMTK 2024 Game Jam por uma equipe de três pessoas, criado em torno do tema ""Construído para Escalar.""");
+INSERT INTO application_description VALUES('RU', 11, "Honey Horizon — это игра, созданная командой из трех человек для геймджема GMTK 2024 на тему ""Создано для масштабирования.""");
+INSERT INTO application_description VALUES('TR', 11, "Honey Horizon, GMTK 2024 Game Jam için üç kişilik bir ekip tarafından ""Ölçeklemek İçin Tasarlandı."" teması etrafında oluşturulmuş bir oyundur.");
+INSERT INTO application_description VALUES('ZH', 11, "《蜜糖地平线》是一款由三人团队为 GMTK 2024 Game Jam 制作的游戏，围绕主题“为扩展而构建。”创作。");
 ```
 </details>
 
 ### applicationsVersions.properties
 To add a new application, add two new lines to the `applicationsVersions.properties` file.
 > The id for this application should be the same one that is used inside the `applications.sqlite` database:
-```
+```properties
 appVersion<id>=<version>
 appLatestUpdate<id>=<latest update in unix seconds>
 ```
 
 The contents of this file may look something like this:
-```
+```properties
 appVersion0=0.3.1
 appLatestUpdate0=1565720497
 appVersion1=1.0.0
@@ -289,6 +307,8 @@ appVersion9=1.1.15
 appLatestUpdate9=1733048627
 appVersion10=1.7.6
 appLatestUpdate10=1749304232
+appVersion11=1.0.0
+appLatestUpdate11=1724170200
 ```
 
 ### Jam54LauncherData.java

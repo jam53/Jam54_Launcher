@@ -15,8 +15,8 @@ public class Jam54LauncherData
     //region data/variables
     private String dataPath = Paths.get(System.getenv("LOCALAPPDATA"), "Jam54Launcher").toString(); //A path where the launcher can place the downloaded apps
     private String locale = "en"; //The locale/language that should be used when displaying the application
-    private String[] installedApplicationVersions = new String[11]; //The version numbers of the installed applications, null in case the application isn't installed
-    private long[] installedApplicationLatestUpdates = new long[11]; //The latest update of the installed applications in unix seconds
+    private String[] installedApplicationVersions = new String[12]; //The version numbers of the installed applications, null in case the application isn't installed
+    private long[] installedApplicationLatestUpdates = new long[12]; //The latest update of the installed applications in unix seconds
     private ColorTheme colorTheme = ColorTheme.DARK; //Holds the value of the selected colortheme, Dark by default
     private boolean changeInstallLocationAlertWasShown; //Default false, once the user has told once that the install location can be changed in settings this will be true
     //endregion
